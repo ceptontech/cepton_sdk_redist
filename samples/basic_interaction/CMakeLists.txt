@@ -5,4 +5,6 @@ file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/*.c)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} ${CEPTON_SDK_LIBRARY} ${OS_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${OS_LIBRARIES}
+  debug ${CEPTON_SDK_LIBRARY_DEBUG}
+  optimized  ${CEPTON_SDK_LIBRARY_RELEASE})
