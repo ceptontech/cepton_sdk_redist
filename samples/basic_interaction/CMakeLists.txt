@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 2.8)
 project(basic_interaction)
 
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/*.c)
@@ -9,3 +9,4 @@ target_link_libraries(${PROJECT_NAME}
   debug ${CEPTON_SDK_LIBRARY_DEBUG}
   optimized  ${CEPTON_SDK_LIBRARY_RELEASE}
   general ${OS_LIBRARIES})
+
