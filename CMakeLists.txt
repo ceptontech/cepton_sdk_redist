@@ -36,3 +36,4 @@ endif()
 
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/samples/basic_interaction)
+add_subdirectory(${PROJECT_SOURCE_DIR}/samples/capture_replay)

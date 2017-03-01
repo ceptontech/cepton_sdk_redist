@@ -1,7 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
-project(basic_interaction)
+project(capture_replay)
 
-file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/*.c)
+set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
+
+file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/*.cpp ${PROJECT_SOURCE_DIR}/*.hpp)
+include_directories(SYSTEM ${CEPTON_SDK_INCLUDE_REDIST})
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

@@ -1,6 +1,10 @@
 # Cepton SDK
 Welcome to Cepton SDK distribution! Current version of SDK is V0.1 (beta)
 ## Release Notes
+### Version 0.2 (beta)
+* Suport capture/replay, with sample code.
+* Add win64_debug library.
+
 ### Version 0.1 (beta)
 * Initial release
 

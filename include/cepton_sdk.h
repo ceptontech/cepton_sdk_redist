@@ -1,7 +1,7 @@
 //
 // Copyright Cepton Technologies Inc. 2017, All rights reserved.
 //
-// Cepton Sensor SDK v0.1 (Beta)
+// Cepton Sensor SDK v0.2 (Beta)
 //
 #pragma once
 
@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#define CEPTON_SDK_VERSION 1
+#define CEPTON_SDK_VERSION 2
 
 typedef uint64_t CeptonSensorHandle;  // Handle of the sensor device
 
@@ -89,6 +89,7 @@ struct CeptonSensorInformation {
   CeptonSensorHandle handle;
   uint64_t serial_number;
   char model_name[32];
+  char firmware_version[32];
 
   float last_reported_temperature;
   float last_reported_humidity;
@@ -141,6 +142,16 @@ struct CeptonSensorInformation const *cepton_sdk_get_sensor_information_by_index
 // Sensor calibrations
 int cepton_sdk_set_calibration(CeptonSensorHandle h,
   struct CeptonSensorCalibration const *cal);
+
+//--------------------------------------------
+// Mock Sensor replay and capture
+void cepton_sdk_mock_network_receive(uint64_t ipv4_address, uint8_t const *mac,
+  uint8_t const *buffer, size_t size);
+
+typedef void(*FpCeptonNetworkReceiveCb)(int error_code, uint64_t ipv4_address, uint8_t const *mac,
+  uint8_t const *buffer, size_t size);
+void cepton_sdk_listen_network_packet(FpCeptonNetworkReceiveCb cb);
+
 
 #ifdef __cplusplus
 } // extern "C" 
