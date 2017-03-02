@@ -1,11 +1,11 @@
 # Cepton SDK
-Welcome to Cepton SDK distribution! Current version of SDK is V0.1 (beta)
+Welcome to Cepton SDK distribution! Current version of SDK is V0.2 (beta)
 ## Release Notes
-### Version 0.2 (beta)
+### Version 0.2 (beta) 2017-02-28
 * Suport capture/replay, with sample code.
 * Add win64_debug library.
 
-### Version 0.1 (beta)
+### Version 0.1 (beta) 2017-02-25
 * Initial release
 
 ## To setup repository
@@ -74,7 +74,85 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 ```
 
 ## SDK Reference
-TODO, please see cepton_sdk.h for details.
+```C
+#include <cepton_sdk.h>
+```
+### State/service management
+```C
+int cepton_sdk_initialize(int ver, unsigned flags, FpCeptonSensorEventCallback cb);
+```
+Allocates buffers, make connections, launch threads etc.
+* NOTE: flags is reserved and must be 0 for now.
+```C
+int cepton_sdk_deinitialize();
+```
+Deallocation
+
+### Sensor Information
+```C
+int cepton_sdk_get_number_of_sensors();
+struct CeptonSensorInformation const *cepton_sdk_get_sensor_information(CeptonSensorHandle h);
+struct CeptonSensorInformation const *cepton_sdk_get_sensor_information_by_index(int sensor_index);
+```
+
+### Set Callbacks to listen for frames/scanlines
+```C
+struct CeptonSensorPoint {
+  uint64_t timestamp;  // Microseconds since last successful cepton_sdk_initialize()
+  float x, y, z;       // These measurements in meters
+  float intensity;     // 0-1 range
+};
+```
+
+```C
+typedef void (*FpCeptonSensorDataCallback)(int error_code, 
+  CeptonSensorHandle sensor, size_t n_points, 
+  struct CeptonSensorPoint const *p_points);
+```
+
+```C
+int cepton_sdk_listen_frames(FpCeptonSensorDataCallback cb);
+```
+Set callback triggered at each frame change
+
+```
+int cepton_sdk_unlisten_frames(FpCeptonSensorDataCallback cb);
+```
+Remove callback previously set by cepton_sdk_listen_frames
+
+```C
+int cepton_sdk_listen_scanlines(FpCeptonSensorDataCallback cb);
+```
+Set callback triggered at completion of each scanline
+
+```C
+int cepton_sdk_unlisten_scanlines(FpCeptonSensorDataCallback cb);
+```
+Remove callback previously set by cepton_sdk_listen_scanlines
+
+### Sensor Calibration
+Each sensor has several calibration parameters which can be explicity set using a ```CeptonSensorCalibration``` structure.  
+* See ```cepton_sdk.h``` for possible values. 
+* Distances are in meters. 
+* Angles are in radians.
+```C
+int cepton_sdk_set_calibration(CeptonSensorHandle h, 
+  struct CeptonSensorCalibration const *cal);
+```
+
+### Networking
+```C
+void cepton_sdk_listen_network_packet(FpCeptonNetworkReceiveCb cb);
+```
+Set a callback to listen for network packets
+
+```C
+typedef void(*FpCeptonNetworkReceiveCb)(int error_code, uint64_t ipv4_address, 
+  uint8_t const *mac, uint8_t const *buffer, size_t size);
+void cepton_sdk_mock_network_receive(uint64_t ipv4_address, uint8_t const *mac, 
+  uint8_t const *buffer, size_t size);
+```
+Cause a network packet to be received as though from the adapter
 
 
 ### SDK notes / FAQ

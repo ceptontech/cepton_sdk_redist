@@ -116,7 +116,7 @@ int cepton_sdk_deinitialize();
 //--------------------------------------------
 // Receiving data from sensor
 struct CeptonSensorPoint {
-  uint64_t timestamp;  // Microseconds since last successful initalize()
+  uint64_t timestamp;  // Microseconds since last successful cepton_sdk_initialize()
   float x, y, z;       // These measurements in meters
   float intensity;     // 0-1 range
 };
@@ -151,7 +151,6 @@ void cepton_sdk_mock_network_receive(uint64_t ipv4_address, uint8_t const *mac,
 typedef void(*FpCeptonNetworkReceiveCb)(int error_code, uint64_t ipv4_address, uint8_t const *mac,
   uint8_t const *buffer, size_t size);
 void cepton_sdk_listen_network_packet(FpCeptonNetworkReceiveCb cb);
-
 
 #ifdef __cplusplus
 } // extern "C" 
