@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdio>
+#include <string>
 #include <stdint.h>
 #include <mutex>
 #include <vector>

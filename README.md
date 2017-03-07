@@ -1,6 +1,14 @@
 # Cepton SDK
-Welcome to Cepton SDK distribution! Current version of SDK is V0.2 (beta)
+Welcome to Cepton SDK distribution! Current version of SDK is v0.3 (beta)
 ## Release Notes
+### Version 0.3 (beta) 2017-03-07
+* Support Mac OSX starting this version
+* Improved support for Linux (esp. Ubuntu 14.04)
+* Included pre-built binary of CeptonViewer
+* Additional sample for data_exporter to dump points into CSV or binary formats.
+* Differentiate between real sensor and a replay of capture.
+* Networking change to allow multiple applications to share the same device.
+
 ### Version 0.2 (beta) 2017-02-28
 * Suport capture/replay, with sample code.
 * Add win64_debug library.
@@ -115,7 +123,7 @@ int cepton_sdk_listen_frames(FpCeptonSensorDataCallback cb);
 ```
 Set callback triggered at each frame change
 
-```
+```C
 int cepton_sdk_unlisten_frames(FpCeptonSensorDataCallback cb);
 ```
 Remove callback previously set by cepton_sdk_listen_frames
@@ -141,21 +149,22 @@ int cepton_sdk_set_calibration(CeptonSensorHandle h,
 ```
 
 ### Networking
-```C
-void cepton_sdk_listen_network_packet(FpCeptonNetworkReceiveCb cb);
-```
-Set a callback to listen for network packets
 
 ```C
-typedef void(*FpCeptonNetworkReceiveCb)(int error_code, uint64_t ipv4_address, 
-  uint8_t const *mac, uint8_t const *buffer, size_t size);
 void cepton_sdk_mock_network_receive(uint64_t ipv4_address, uint8_t const *mac, 
   uint8_t const *buffer, size_t size);
 ```
-Cause a network packet to be received as though from the adapter
+Cause a network packet to be received as though from the adapter. Used to replay a capture file (see sample code provided)
 
 
 ### SDK notes / FAQ
 * A very common problem is firewall blocking UDP broadcast packets coming from the device. Make sure to check that first when there is no connection.
 * Intensity output is set to 1.0 right now. Intensity will be supported very shortly.
 * Sensor detection and reporting of the first data can be slightly delayed (up to 200ms) if the SDK needs to discover calibration first. This will not happen in production level devices.
+
+### Technical notes from the internals
+* All the callbacks are invoked from the same network receive thread that gets launched at
+the ```cepton_sdk_initialize``` time. It is a good practice to not spend too much time
+servicing the callbacks. If you need more than ~1ms to handle the callback, it is probably
+time to consider feeding data into a queue and processing them asynchronously. 
+* The callbacks are not re-entrant since they come from the same thread.

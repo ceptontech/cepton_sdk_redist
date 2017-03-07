@@ -1,10 +1,24 @@
-// #include <vld.h> // https://vld.codeplex.com/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
 #include "cepton_sdk.h"
 #pragma warning(disable:4996)
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
+void common_sleep(int milliseconds) {
+  //sleep:
+#ifdef _WIN32
+  Sleep(milliseconds);
+#else
+  usleep(milliseconds * 1000);
+#endif
+}
 
 int frames = 0;
 int lines = 0;
@@ -23,7 +37,6 @@ void print_stats(size_t n_points, struct CeptonSensorPoint const *p_points) {
 
 	for (size_t i = 0; i < n_points; i++) {
 		struct CeptonSensorPoint const *p = &p_points[i];
-		//printf("Got point %f, %f, %f, %f\n", p->x, p->y, p->z, p->intensity);
 
 		minx = (p->x < minx) ? p->x : minx;
 		maxx = (p->x > maxx) ? p->x : maxx;
@@ -93,7 +106,7 @@ int main(int argc, char ** argv) {
   int error_code = cepton_sdk_initialize(CEPTON_SDK_VERSION, 0, on_event);
   if (error_code != CEPTON_SUCCESS) {
 	  perror("cepton_sdk_initialize failed: ");
-	  return 0;
+	  return -1;
   }
 
   printf("Cepton SDK functions:\n");
@@ -103,36 +116,39 @@ int main(int argc, char ** argv) {
   error_code = cepton_sdk_listen_frames(on_frame);
   if (error_code != CEPTON_SUCCESS) {
 	  perror("cepton_sdk_listen_frames failed: ");
-	  return 0;
+	  return -1;
   }
 
   while (frames < 10) {
 	 // wait here for 10 frames...
+    common_sleep(200);
   }
   error_code = cepton_sdk_unlisten_frames(on_frame);
   if (error_code != CEPTON_SUCCESS) {
 	  perror("cepton_sdk_unlisten_frames failed: ");
-	  return 0;
+	  return -1;
   }
 
   error_code = cepton_sdk_listen_scanlines(on_scanline);
   if (error_code != CEPTON_SUCCESS) {
 	  perror("cepton_sdk_listen_scanlines failed: ");
-	  return 0;
+	  return -1;
   }
 
   while (lines < 20) {
-	  // wait here for 20 lines...
+    // wait here for 20 lines...
+    common_sleep(200);
   }
   error_code = cepton_sdk_unlisten_scanlines(on_scanline);
   if (error_code != CEPTON_SUCCESS) {
 	  perror("cepton_sdk_unlisten_lines failed: ");
-	  return 0;
+	  return -1;
   }
 
 
   // Teardown connections etc.
   cepton_sdk_deinitialize();
-
-  return 1;
+  printf("Basic interaction sample completed successfully, press ENTER to quit.\n");
+  getchar();
+  return 0;
 }

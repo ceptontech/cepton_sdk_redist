@@ -9,7 +9,7 @@ namespace cepton {
 
 class CaptureReplay {
 public:
-  CaptureReplay(): 
+  CaptureReplay():
     m_pcap_feeder(nullptr), paused(false) {}
   ~CaptureReplay() {
     close();

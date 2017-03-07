@@ -1,7 +1,7 @@
 //
 // Copyright Cepton Technologies Inc. 2017, All rights reserved.
 //
-// Cepton Sensor SDK v0.2 (Beta)
+// Cepton Sensor SDK v0.3 (Beta)
 //
 #pragma once
 
@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#define CEPTON_SDK_VERSION 2
+#define CEPTON_SDK_VERSION 3
 
 typedef uint64_t CeptonSensorHandle;  // Handle of the sensor device
 
@@ -91,14 +91,18 @@ struct CeptonSensorInformation {
   char model_name[32];
   char firmware_version[32];
 
-  float last_reported_temperature;
-  float last_reported_humidity;
+  float last_reported_temperature; // Celsius
+  float last_reported_humidity; // %
   float last_reported_frequency;
-  float last_reported_age;
+  float last_reported_age; // hours
 
   // Internal data, these will change over time, please don't depend on them
   struct CeptonSensorCalibration calibration;
   uint64_t timestamp_offset;
+
+  // Internal flags
+  uint32_t is_mocked : 1; // Set if this device is created through cepton_sdk_mock_network_receive
+  uint32_t unused_flags : 31;
 };
 //--------------------------------------------
 // Global state/service management

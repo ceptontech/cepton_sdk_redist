@@ -1,6 +1,7 @@
-#include <cstring>
+#include <string>
 #include <chrono>
 #include <algorithm>
+#include <cstring>
 #include "capture.hpp"
 
 namespace cepton {
@@ -27,17 +28,17 @@ struct pcap_rec_header {
 // netinet/ip.h
 struct ip {
   uint8_t ip_hl_v; // header length + version
-  uint8_t	ip_tos; // type of service 
+  uint8_t	ip_tos; // type of service
   uint16_t ip_len; // total length
 
   uint16_t ip_id; // identification
-  uint16_t ip_off; // fragment offset field 
+  uint16_t ip_off; // fragment offset field
 
-  uint8_t ip_ttl; // time to live 
-  uint8_t ip_p; // protocol 
-  uint16_t ip_sum; // checksum 
+  uint8_t ip_ttl; // time to live
+  uint8_t ip_p; // protocol
+  uint16_t ip_sum; // checksum
 
-  uint32_t ip_src, ip_dst;	// source and dest address 
+  uint32_t ip_src, ip_dst;	// source and dest address
 };
 
 struct eth_ip_udp_header {

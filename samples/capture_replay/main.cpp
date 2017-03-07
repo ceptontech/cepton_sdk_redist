@@ -1,5 +1,22 @@
 #include <cepton_sdk.h>
+#include <string>
 #include "capture_replay.hpp"
+
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
+void common_sleep(int milliseconds) {
+  //sleep:
+#ifdef _WIN32
+  Sleep(milliseconds);
+#else
+  usleep(milliseconds * 1000);
+#endif
+}
+
 
 int frames = 0;
 
@@ -55,6 +72,7 @@ int basic_interaction() {
 
   while (frames < 10) {
     // wait here for 10 frames...
+    common_sleep(200);
   }
   error_code = cepton_sdk_unlisten_frames(on_frame);
   if (error_code != CEPTON_SUCCESS) {
