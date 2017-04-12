@@ -63,13 +63,12 @@ void CaptureReplay::feed_pcap() {
       if (tdelta > 0 && tdelta < 1000000) {
         std::this_thread::sleep_for(std::chrono::microseconds(tdelta));
       }
-      else if (tdelta < 0) {
+      else if (tdelta <= 0) {
         // catchup, do nothing here
       }
       else {
         m_pcap.seek(ts_usec - start_usec);
       }
-
 
       uint8_t mac[6];
       mac[0] = 0x18;

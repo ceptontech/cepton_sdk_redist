@@ -1,5 +1,6 @@
 #include <cepton_sdk.h>
 #include <string>
+
 #include "capture_replay.hpp"
 
 #ifdef _WIN32
@@ -30,7 +31,7 @@ void on_frame(int error_code, CeptonSensorHandle sensor, size_t n_points,
   frames++;
   pinfo = cepton_sdk_get_sensor_information(sensor);
 
-  printf("Sensor serial: %d Frame: %d\n", (int)pinfo->serial_number, frames);
+  printf("Sensor serial: %d Frame: %d (%d points)\n", (int)pinfo->serial_number, frames, (int)n_points);
 }
 
 void on_event(int error_code, CeptonSensorHandle sensor,
@@ -54,7 +55,7 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 
 int basic_interaction() {
   // Setup to listen for sensor output
-  int error_code = cepton_sdk_initialize(CEPTON_SDK_VERSION, 0, on_event);
+  int error_code = cepton_sdk_initialize(CEPTON_SDK_VERSION, CEPTON_SDK_CONTROL_RETURN_UNMEASURABLE, on_event);
   if (error_code != CEPTON_SUCCESS) {
     perror("cepton_sdk_initialize failed: ");
     return 0;
@@ -101,5 +102,5 @@ int main(int argc, char **argv) {
   // If we get here, the replay is already going
   // Code from here can be 100% same as if dealing with real sensors
   basic_interaction();
-
+  getchar();
 }

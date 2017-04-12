@@ -92,8 +92,8 @@ bool Capture::open_for_read(std::string const &fname) {
   m_fh = fopen(fname.c_str(), "rb");
   if (!m_fh) return false;
   read_file_header();
-  if (is_valid_pcap())
-    build_read_index();
+  //if (is_valid_pcap())
+  //  build_read_index();
   return is_valid_pcap();
 }
 

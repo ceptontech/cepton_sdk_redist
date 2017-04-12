@@ -22,10 +22,11 @@ void common_sleep(int milliseconds) {
 }
 
 
-FILE *fh = NULL;
+char const *fname = nullptr;
 int got_frame = 0; 
 int file_mode = 0; // 0-CSV, 1-BIN
 int frame_to_get = 1;
+bool split = false;
 
 void on_frame(int error_code, CeptonSensorHandle sensor,
   size_t n_points, struct CeptonSensorPoint const *p_points) {
@@ -34,6 +35,15 @@ void on_frame(int error_code, CeptonSensorHandle sensor,
     return; // Skip first partial frame
   }
   if (got_frame > frame_to_get + 1) return; // Got enough frames already
+
+  char name[64];
+  if (split)
+    snprintf(name, sizeof(name) - 4, "%s%d", fname, got_frame - 1);
+  else
+    snprintf(name, sizeof(name) - 4, "%s", fname);
+  // Try append ext
+  FILE *fh = fopen(name, "ab");
+  printf("Writing frame %d to %s\n", got_frame - 1, name);
   if (file_mode) {
     fwrite(p_points, sizeof(CeptonSensorPoint), n_points, fh);
   }
@@ -44,6 +54,7 @@ void on_frame(int error_code, CeptonSensorHandle sensor,
         p_points[i].intensity);
     }
   }
+  fclose(fh);
   got_frame++;
 }
 
@@ -66,15 +77,19 @@ Options are:
   -n <N>    Number of frames to capture, default is 1
   -f <fmt>  Valid formats are csv or bin, default is csv
       binary files uses CeptonSensorPoint for each point
-
+  --split   Add frame number to files and split one frame per file.
 )"
     );
     return 0;
   }
 
   int argptr = 1;
-  while (argc > argptr + 1 && argv[argptr][0] == '-') {
+  while (argc > argptr && argv[argptr][0] == '-') {
     if (strcmp(argv[argptr], "-n") == 0) {
+      if (argc == argptr + 1) {
+        printf("Expect number of frames after -n\n");
+        return -1;
+      }
       frame_to_get = atoi(argv[argptr + 1]);
       if (frame_to_get <= 0 || frame_to_get > 1000) {
         printf("Invalid number of frames, maximum allowed is 1000\n");
@@ -83,6 +98,10 @@ Options are:
       argptr += 2;
     }
     else if (strcmp(argv[argptr], "-f") == 0) {
+      if (argc == argptr + 1) {
+        printf("Expect file format after -f\n");
+        return -1;
+      }
       if (strcmp(argv[argptr + 1], "csv") == 0) {
         file_mode = 0;
       }
@@ -95,6 +114,10 @@ Options are:
       }
       argptr += 2;
     }
+    else if (strcmp(argv[argptr], "--split") == 0) {
+      split = true;
+      argptr += 1;
+    }
   }
 
   if (argc > argptr + 1) {
@@ -105,12 +128,11 @@ Options are:
     return -1;
   }
 
-  char const *fname = argv[argptr];
+  fname = argv[argptr];
   if (fname[0] == '-') {
     printf("Invalid file name: %s\n", fname);
     return -1;
   }
-  fh = fopen(fname, "w+b");
 
   int err = cepton_sdk_initialize(CEPTON_SDK_VERSION, 0, on_event);
   if (err != CEPTON_SUCCESS) {
@@ -123,7 +145,6 @@ Options are:
   }
 
   cepton_sdk_deinitialize();
-  fclose(fh);
 
   return 0;
 }

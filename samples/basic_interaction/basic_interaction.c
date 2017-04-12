@@ -21,7 +21,9 @@ void common_sleep(int milliseconds) {
 }
 
 int frames = 0;
+int frames_to_read = 10;
 int lines = 0;
+int lines_to_read = 40;
 
 void print_stats(size_t n_points, struct CeptonSensorPoint const *p_points) {
 	float  minx, miny, minz, maxx, maxy, maxz;
@@ -58,11 +60,15 @@ void on_frame(int error_code, CeptonSensorHandle sensor, size_t n_points,
 
   if (error_code < 0)
     return; // Handle error here
-  frames++;
+
+  if (frames >= frames_to_read) 
+	  return;
+
   pinfo = cepton_sdk_get_sensor_information(sensor);
 
-  printf("Sensor serial: %d Frame: %d\n", (int)pinfo->serial_number, frames);
+  printf("Sensor serial: %d Frame: %d\n", (int)pinfo->serial_number, frames+1);
   print_stats(n_points, p_points);
+  frames++;
 }
 
 
@@ -73,12 +79,14 @@ void on_scanline(int error_code, CeptonSensorHandle sensor, size_t n_points,
 
 	if (error_code < 0)
 		return; // Handle error here
+	if (lines >= lines_to_read) 
+		return;
 
-	lines++;
 	pinfo = cepton_sdk_get_sensor_information(sensor);
 
-	printf("Sensor serial: %d Scanline: %d\n", (int)pinfo->serial_number, lines);
+	printf("Sensor serial: %d Scanlines: %d-%d\n", (int)pinfo->serial_number, lines+1, lines+2);
 	print_stats(n_points, p_points);
+	lines += 2;   // Each trigger of this callback gives us two scanlines
 }
 
 void on_event(int error_code, CeptonSensorHandle sensor,
@@ -113,15 +121,16 @@ int main(int argc, char ** argv) {
   printf("number of sensors: %d\n", cepton_sdk_get_number_of_sensors());
 
   // Immediately setup to listen for frame data
+  printf("Listen for %d frames...\n", frames_to_read);
   error_code = cepton_sdk_listen_frames(on_frame);
   if (error_code != CEPTON_SUCCESS) {
 	  perror("cepton_sdk_listen_frames failed: ");
 	  return -1;
   }
 
-  while (frames < 10) {
-	 // wait here for 10 frames...
-    common_sleep(200);
+  while (frames < frames_to_read) {
+	 // wait here for frames_to_read frames...
+    common_sleep(frames_to_read*20);
   }
   error_code = cepton_sdk_unlisten_frames(on_frame);
   if (error_code != CEPTON_SUCCESS) {
@@ -129,15 +138,16 @@ int main(int argc, char ** argv) {
 	  return -1;
   }
 
+  printf("\n\nListen for %d scanlines...\n", lines_to_read);
   error_code = cepton_sdk_listen_scanlines(on_scanline);
   if (error_code != CEPTON_SUCCESS) {
 	  perror("cepton_sdk_listen_scanlines failed: ");
 	  return -1;
   }
 
-  while (lines < 20) {
-    // wait here for 20 lines...
-    common_sleep(200);
+  while (lines < lines_to_read) {
+    // wait here for lines_to_read lines...
+    common_sleep(lines_to_read);
   }
   error_code = cepton_sdk_unlisten_scanlines(on_scanline);
   if (error_code != CEPTON_SUCCESS) {
