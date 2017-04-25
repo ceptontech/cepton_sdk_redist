@@ -1,7 +1,7 @@
 //
 // Copyright Cepton Technologies Inc. 2017, All rights reserved.
 //
-// Cepton Sensor SDK v0.4 (Beta)
+// Cepton Sensor SDK v0.5 (Beta)
 //
 #pragma once
 
@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#define CEPTON_SDK_VERSION 4
+#define CEPTON_SDK_VERSION 5
 
 typedef uint64_t CeptonSensorHandle;  // Handle of the sensor device
 
@@ -36,49 +36,6 @@ enum CeptonSensorEvent {
   CEPTON_EVENT_FRAME = 3,
 };
 
-#define CEPTON_SDK_CALIBRATION_SIGNATURE 0xB8435343
-#define cepton_sdk_max_lasers_per_lidar 8
-
-struct CeptonLaserCalibration {
-  int16_t encoder_offset_x;  // [encoder units]
-  int16_t encoder_offset_z;  // [encoder units]
-  int16_t image_offset_x;    // [encoder units]
-  int16_t image_offset_z;    // [encoder units]
-  int16_t distance_offset;   // [fpga units]
-
-  float image_scale_x;
-  float image_scale_z;
-  float image_shear;
-  float distance_scale;
-  float focal_length;  // [m]
-};
-
-struct CeptonSensorCalibration {
-  uint32_t signature;
-  // Intrinsic calibrations
-  float image_clip_min_x;     // [m]
-  float image_clip_min_z;     // [m]
-  float image_clip_max_x;     // [m]
-  float image_clip_max_z;     // [m]
-  float image_clip_radius_x;  // [m]
-  float image_clip_radius_z;  // [m]
-
-  struct CeptonLaserCalibration
-      laser_calibrations[cepton_sdk_max_lasers_per_lidar];
-
-  // Extrinsic calibrations
-  float sensor_x;  // [m]
-  float sensor_y;  // [m]
-  float sensor_z;  // [m]
-
-  // Rotation matrix
-  float sensor_m00, sensor_m01, sensor_m02, sensor_m10, sensor_m11, sensor_m12,
-      sensor_m20, sensor_m21, sensor_m22;
-
-  // Internal device information
-  uint16_t min_depth_cutoff;  // [fpga units]
-};
-
 struct CeptonSensorInformation {
   CeptonSensorHandle handle;
   uint64_t serial_number;
@@ -97,14 +54,12 @@ struct CeptonSensorInformation {
   uint8_t gps_ts_min; // 0-59
   uint8_t gps_ts_sec; // 0-59
 
-  // Internal data, these will change over time, please don't depend on them
-  struct CeptonSensorCalibration calibration;
+  uint8_t sensor_index; // Internal index, can be passed to _by_index functions
 
-  // Internal flags
+  // flags
   uint32_t is_mocked : 1; // Set if this device is created through cepton_sdk_mock_network_receive
   uint32_t is_pps_connected : 1; // Set if GPS/PPS is available
   uint32_t is_nmea_connected : 1; // Set if GPS/NMEA is available
-  uint32_t unused_flags : 31;
 };
 //--------------------------------------------
 // Global state/service management
@@ -130,6 +85,7 @@ struct CeptonSensorPoint {
   float x, y, z;       // These measurements in meters
   float intensity;     // 0-1 range
 };
+
 typedef void (*FpCeptonSensorDataCallback)(int error_code, CeptonSensorHandle sensor,
   size_t n_points, struct CeptonSensorPoint const *p_points);
 
@@ -149,9 +105,14 @@ struct CeptonSensorInformation const *cepton_sdk_get_sensor_information(CeptonSe
 struct CeptonSensorInformation const *cepton_sdk_get_sensor_information_by_index(int sensor_index);
 
 //--------------------------------------------
-// Sensor calibrations
-int cepton_sdk_set_calibration(CeptonSensorHandle h,
-  struct CeptonSensorCalibration const *cal);
+struct CeptonSensorTransform {
+  // We use quaternion to represent rotation, this must be normalized
+  float rotation_quaternion[4]; // [Axis*sin(theta/2), cos(theta/2)]
+  float translation[3]; // X, Y, Z, [m]
+};
+
+int cepton_sdk_set_transform(CeptonSensorHandle h, struct CeptonSensorTransform const *transform);
+int cepton_sdk_get_transform(CeptonSensorHandle h, struct CeptonSensorTransform *transform);
 
 //--------------------------------------------
 // Mock Sensor replay and capture

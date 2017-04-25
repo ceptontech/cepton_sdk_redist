@@ -1,5 +1,5 @@
 # Cepton SDK
-Welcome to Cepton SDK distribution! Current version of SDK is v0.4 (beta)
+Welcome to Cepton SDK distribution! Current version of SDK is v0.5 (beta)
 ## Table of contents
 * [Release Notes](#release-notes)
 * [To setup repository](#to-setup-repository)
@@ -8,6 +8,12 @@ Welcome to Cepton SDK distribution! Current version of SDK is v0.4 (beta)
 * [Notes/FAQ](#notes--faq)
 
 ## Release Notes
+### Version 0.5 (beta) 2017-04-24
+* New architechure supported: ARM64. This is primarily for NVIDIA's Jetson TX/TK systems and DrivePX2.
+* Explicit support for multiple sensors with per-sensor transformations.
+* Decoupled calibration from SDK so that we don't need to rev SDK for calibration changes.
+* New improved CeptonViewer binary is included.
+
 ### Version 0.4 (beta) 2017-04-12
 * !NOTE: coordinate system changed! (to conform to popular world coordinates such as ROS, distance is Y and height is Z starting from SDK version 0.4)
 * Support GPS timestamps (require external GPS hookup)
@@ -178,15 +184,22 @@ int cepton_sdk_unlisten_scanlines(FpCeptonSensorDataCallback cb);
 ```
 Remove callback previously set by cepton_sdk_listen_scanlines
 
-### Sensor Calibration
-Each sensor has several calibration parameters which can be explicity set using a ```CeptonSensorCalibration``` structure.  
-* See ```cepton_sdk.h``` for possible values. 
-* Distances are in meters. 
-* Angles are in radians.
+### Sensor Coordinate Transformations
+Many frameworks (such as ROS) provides facility to transform sensor output outside SDK. For more flexibility and convenience, we provide functionality for coordinate transformation inside SDK.
+
+Internally we use quaternions to represent rotation. If you use other systems, conversion is usually easy, e.g. https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+
 ```C
-int cepton_sdk_set_calibration(CeptonSensorHandle h, 
-  struct CeptonSensorCalibration const *cal);
+struct CeptonSensorTransform {
+  // We use quaternion to represent rotation, this must be normalized
+  float rotation_quaternion[4]; // [Axis*sin(theta/2), cos(theta/2)]
+  float translation[3]; // X, Y, Z, [m]
+};
+
+int cepton_sdk_set_transform(CeptonSensorHandle h, struct CeptonSensorTransform const *cal);
+int cepton_sdk_get_transform(CeptonSensorHandle h, struct CeptonSensorTransform *cal);
 ```
+
 
 ### Networking
 
@@ -199,8 +212,7 @@ Cause a network packet to be received as though from the adapter. Used to replay
 
 ## Notes / FAQ
 * A very common problem is firewall blocking UDP broadcast packets coming from the device. Make sure to check that first when there is no connection.
-* Intensity output is set to 1.0 right now. Intensity will be supported very shortly.
-* Sensor detection and reporting of the first data can be slightly delayed (up to 200ms) if the SDK needs to discover calibration first. This will not happen in production level devices.
+* Intensity output is set to 1.0 for the sensors/firmware versions that does not expose it.
 
 ### Technical notes from the internals
 * All the callbacks are invoked from the same network receive thread that gets launched at
@@ -208,3 +220,4 @@ the ```cepton_sdk_initialize``` time. It is a good practice to not spend too muc
 servicing the callbacks. If you need more than ~1ms to handle the callback, it is probably
 time to consider feeding data into a queue and processing them asynchronously. 
 * The callbacks are not re-entrant since they come from the same thread.
+
