@@ -71,9 +71,12 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 int main(int argc, char **argv) {
   if (argc == 1) {
     printf(R"(
+Cepton data_exporter version 0.6
+
 Usage: data_exporter <options> <outputfile>
 
 Options are:
+  -c <capture file> Load from capture file instead of real lidar
   -n <N>    Number of frames to capture, default is 1
   -f <fmt>  Valid formats are csv or bin, default is csv
       binary files uses CeptonSensorPoint for each point
@@ -83,6 +86,7 @@ Options are:
     return 0;
   }
 
+  const char *replay_file = nullptr;
   int argptr = 1;
   while (argc > argptr && argv[argptr][0] == '-') {
     if (strcmp(argv[argptr], "-n") == 0) {
@@ -114,6 +118,14 @@ Options are:
       }
       argptr += 2;
     }
+    else if (strcmp(argv[argptr], "-c") == 0) {
+      if (argc == argptr + 1) {
+        printf("Expect capture file after -c\n");
+        return -1;
+      }
+      replay_file = argv[argptr + 1];
+      argptr += 2;
+    }
     else if (strcmp(argv[argptr], "--split") == 0) {
       split = true;
       argptr += 1;
@@ -138,6 +150,11 @@ Options are:
   if (err != CEPTON_SUCCESS) {
     printf("Initialize SDK failed\n");
     return -1;
+  }
+
+  if (replay_file) {
+    cepton_sdk_capture_replay_open(replay_file);
+    cepton_sdk_capture_replay_resume();
   }
 
   while (got_frame <= frame_to_get + 1) {

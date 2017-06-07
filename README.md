@@ -1,5 +1,5 @@
 # Cepton SDK
-Welcome to Cepton SDK distribution! Current version of SDK is v0.5 (beta)
+Welcome to Cepton SDK distribution! Current version of SDK is v0.6 (beta)
 ## Table of contents
 * [Release Notes](#release-notes)
 * [To setup repository](#to-setup-repository)
@@ -8,6 +8,14 @@ Welcome to Cepton SDK distribution! Current version of SDK is v0.5 (beta)
 * [Notes/FAQ](#notes--faq)
 
 ## Release Notes
+### Version 0.6 (beta) 2017-06-06
+* New supported model: HR80W
+* SDK entries for image space
+* Networking improvements
+* SDK in both static and dynamic libraries for all the archs we support
+* Capture/Replay functionality embedded in SDK
+* New improved CeptonViewer binary is included.
+
 ### Version 0.5 (beta) 2017-04-24
 * New architechure supported: ARM64. This is primarily for NVIDIA's Jetson TX/TK systems and DrivePX2.
 * Explicit support for multiple sensors with per-sensor transformations.
@@ -220,4 +228,3 @@ the ```cepton_sdk_initialize``` time. It is a good practice to not spend too muc
 servicing the callbacks. If you need more than ~1ms to handle the callback, it is probably
 time to consider feeding data into a queue and processing them asynchronously. 
 * The callbacks are not re-entrant since they come from the same thread.
-

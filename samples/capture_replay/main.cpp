@@ -22,7 +22,7 @@ void common_sleep(int milliseconds) {
 int frames = 0;
 
 void on_frame(int error_code, CeptonSensorHandle sensor, size_t n_points,
-  struct CeptonSensorPoint const *p_points)
+  struct CeptonSensorImagePoint const *p_points)
 {
   struct CeptonSensorInformation const *pinfo;
 
@@ -55,7 +55,7 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 
 int basic_interaction() {
   // Setup to listen for sensor output
-  int error_code = cepton_sdk_initialize(CEPTON_SDK_VERSION, CEPTON_SDK_CONTROL_RETURN_UNMEASURABLE, on_event);
+  int error_code = cepton_sdk_initialize(CEPTON_SDK_VERSION, 0, on_event);
   if (error_code != CEPTON_SUCCESS) {
     perror("cepton_sdk_initialize failed: ");
     return 0;
@@ -65,7 +65,7 @@ int basic_interaction() {
   printf("number of sensors: %d\n", cepton_sdk_get_number_of_sensors());
 
   // Immediately setup to listen for frame data
-  error_code = cepton_sdk_listen_frames(on_frame);
+  error_code = cepton_sdk_listen_image_frames(on_frame);
   if (error_code != CEPTON_SUCCESS) {
     perror("cepton_sdk_listen_frames failed: ");
     return 0;
@@ -75,7 +75,7 @@ int basic_interaction() {
     // wait here for 10 frames...
     common_sleep(200);
   }
-  error_code = cepton_sdk_unlisten_frames(on_frame);
+  error_code = cepton_sdk_unlisten_image_frames(on_frame);
   if (error_code != CEPTON_SUCCESS) {
     perror("cepton_sdk_unlisten_frames failed: ");
     return 0;
