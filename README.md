@@ -8,6 +8,16 @@ Welcome to Cepton SDK distribution! Current version of SDK is v0.6 (beta)
 * [Notes/FAQ](#notes--faq)
 
 ## Release Notes
+### Version 0.6b (beta) 2017-06-28
+* Service release of binary images only. There is no SDK interface change.
+* Fixed a timestamp overflow bug where reported timestamp is incorrect.
+* Fixed captured pcap file problems.
+* Removed capture_replay sample as the improved functionality is supported in SDK directly.
+
+### Version 0.6a (beta) 2017-06-20
+* Service release of binary images only. There is no SDK interface change.
+* Key reason for this binary release is some networking stability improvements. Notably fixed a problem where sometimes the SDK is holding up the exit process.
+
 ### Version 0.6 (beta) 2017-06-06
 * New supported model: HR80W
 * SDK entries for image space

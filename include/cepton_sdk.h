@@ -1,7 +1,7 @@
 //
 // Copyright Cepton Technologies Inc. 2017, All rights reserved.
 //
-// Cepton Sensor SDK v0.6 (Beta)
+// Cepton Sensor SDK v0.6b (Beta)
 //
 #pragma once
 
