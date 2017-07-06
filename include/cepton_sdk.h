@@ -1,7 +1,7 @@
 //
 // Copyright Cepton Technologies Inc. 2017, All rights reserved.
 //
-// Cepton Sensor SDK v0.6b (Beta)
+// Cepton Sensor SDK v0.6c (Beta)
 //
 #pragma once
 
@@ -197,16 +197,27 @@ typedef void (*FpCeptonNetworkReceiveCb)(int error_code, uint64_t ipv4_address,
 DLL_EXPORT int cepton_sdk_listen_network_packet(FpCeptonNetworkReceiveCb cb);
 DLL_EXPORT int cepton_sdk_unlisten_network_packet(FpCeptonNetworkReceiveCb cb);
 
-DLL_EXPORT int cepton_sdk_capture_replay_is_open(int * const is_open);
+// Network capture replay
+DLL_EXPORT int cepton_sdk_capture_replay_is_open(int * is_open_ptr);
 DLL_EXPORT int cepton_sdk_capture_replay_open(char const * const path);
 DLL_EXPORT int cepton_sdk_capture_replay_close();
-DLL_EXPORT int cepton_sdk_capture_replay_is_running(int * const is_running);
+
+DLL_EXPORT int cepton_sdk_capture_replay_get_position(float * sec_ptr);
+
+// Replay must be paused before seeking.
+DLL_EXPORT int cepton_sdk_capture_replay_seek(float sec);
+DLL_EXPORT int cepton_sdk_capture_replay_seek_relative(float sec);
+
+// Replay capture data in current thread.
+// No sleep between packets.
+DLL_EXPORT int cepton_sdk_capture_replay_resume_blocking_once();
 DLL_EXPORT int cepton_sdk_capture_replay_resume_blocking(float sec);
+
+// Replay capture data in a separate thread.
+// Sleep between packets to simulate realtime data.
+DLL_EXPORT int cepton_sdk_capture_replay_is_running(int * is_running_ptr);
 DLL_EXPORT int cepton_sdk_capture_replay_resume();
 DLL_EXPORT int cepton_sdk_capture_replay_pause();
-DLL_EXPORT int cepton_sdk_capture_replay_seek(float sec);
-DLL_EXPORT int cepton_sdk_capture_replay_skip_forward(float sec);
-DLL_EXPORT int cepton_sdk_capture_replay_skip_backward(float sec);
 
 #ifdef __cplusplus
 }  // extern "C"

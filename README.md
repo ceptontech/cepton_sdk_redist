@@ -8,6 +8,10 @@ Welcome to Cepton SDK distribution! Current version of SDK is v0.6 (beta)
 * [Notes/FAQ](#notes--faq)
 
 ## Release Notes
+### Version 0.6c (beta) 2017-07-06
+* New SDK APIs for more capture replay functionality.
+* Some calibration data updated.
+
 ### Version 0.6b (beta) 2017-06-28
 * Service release of binary images only. There is no SDK interface change.
 * Fixed a timestamp overflow bug where reported timestamp is incorrect.

@@ -130,6 +130,10 @@ Options are:
       split = true;
       argptr += 1;
     }
+    else {
+      printf("Unexpected option: %s\n", argv[argptr]);
+      return -1;
+    }
   }
 
   if (argc > argptr + 1) {
