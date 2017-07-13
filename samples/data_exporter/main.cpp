@@ -71,7 +71,7 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 int main(int argc, char **argv) {
   if (argc == 1) {
     printf(R"(
-Cepton data_exporter version 0.6
+Cepton data_exporter version 0.6d
 
 Usage: data_exporter <options> <outputfile>
 
@@ -158,7 +158,7 @@ Options are:
 
   if (replay_file) {
     cepton_sdk_capture_replay_open(replay_file);
-    cepton_sdk_capture_replay_resume();
+    cepton_sdk_capture_replay_resume(1);
   }
 
   while (got_frame <= frame_to_get + 1) {

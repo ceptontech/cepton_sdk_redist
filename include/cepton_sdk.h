@@ -1,7 +1,7 @@
 //
 // Copyright Cepton Technologies Inc. 2017, All rights reserved.
 //
-// Cepton Sensor SDK v0.6c (Beta)
+// Cepton Sensor SDK v0.6d (Beta)
 //
 #pragma once
 
@@ -36,6 +36,8 @@ enum CeptonSensorErrorCode {
   CEPTON_ERROR_NOT_INITIALIZED = -10,
 };
 
+const char *const cepton_get_error_code_name(int error_code);
+
 enum CeptonSensorEvent {
   CEPTON_EVENT_ATTACH = 1,
   CEPTON_EVENT_DETACH = 2,  // For now never fired
@@ -68,6 +70,7 @@ struct DLL_EXPORT CeptonSensorInformation {
   uint32_t is_pps_connected : 1;   // Set if GPS/PPS is available
   uint32_t is_nmea_connected : 1;  // Set if GPS/NMEA is available
 };
+DLL_EXPORT extern const size_t cepton_sensor_information_size;
 //--------------------------------------------
 // Global state/service management
 
@@ -94,6 +97,7 @@ struct DLL_EXPORT CeptonSensorPoint {
   float x, y, z;       // These measurements in meters
   float intensity;     // 0-1 range
 };
+DLL_EXPORT extern const size_t cepton_sensor_point_size;
 
 DLL_EXPORT void cepton_sdk_get_sensor_points_timestamp(
     size_t n_points, struct CeptonSensorPoint const *p_points,
@@ -127,6 +131,7 @@ struct DLL_EXPORT CeptonSensorImagePoint {
   float image_z;       // z-offset on a unit image plane
   float intensity;     // 0-1 scaled intensity
 };
+DLL_EXPORT extern const size_t cepton_sensor_image_point_size;
 
 DLL_EXPORT void cepton_sdk_get_sensor_image_points_timestamp(
     size_t n_points, struct CeptonSensorImagePoint const *p_points,
@@ -178,6 +183,7 @@ struct DLL_EXPORT CeptonSensorTransform {
   float rotation_quaternion[4];  // [Axis*sin(theta/2), cos(theta/2)]
   float translation[3];          // X, Y, Z, [m]
 };
+DLL_EXPORT extern const size_t cepton_sensor_transform_size;
 
 DLL_EXPORT int cepton_sdk_set_transform(
     CeptonSensorHandle h, struct CeptonSensorTransform const *transform);
@@ -186,6 +192,10 @@ DLL_EXPORT int cepton_sdk_get_transform(
 
 //--------------------------------------------
 // Mock Sensor replay and capture
+
+/*
+  DEPRICATED. Use capture replay interface.
+*/
 DLL_EXPORT void cepton_sdk_mock_network_receive(uint64_t ipv4_address,
                                                 uint8_t const *mac,
                                                 uint8_t const *buffer,
@@ -197,26 +207,77 @@ typedef void (*FpCeptonNetworkReceiveCb)(int error_code, uint64_t ipv4_address,
 DLL_EXPORT int cepton_sdk_listen_network_packet(FpCeptonNetworkReceiveCb cb);
 DLL_EXPORT int cepton_sdk_unlisten_network_packet(FpCeptonNetworkReceiveCb cb);
 
-// Network capture replay
-DLL_EXPORT int cepton_sdk_capture_replay_is_open(int * is_open_ptr);
-DLL_EXPORT int cepton_sdk_capture_replay_open(char const * const path);
+DLL_EXPORT int cepton_sdk_capture_replay_is_open(int *is_open_ptr);
+DLL_EXPORT int cepton_sdk_capture_replay_open(char const *const path);
 DLL_EXPORT int cepton_sdk_capture_replay_close();
 
-DLL_EXPORT int cepton_sdk_capture_replay_get_position(float * sec_ptr);
+/*
+  Get capture file position (seconds relative to start of file).
+*/
+DLL_EXPORT int cepton_sdk_capture_replay_get_position(float *sec_ptr);
 
-// Replay must be paused before seeking.
+/*
+  Get capture file length in seconds.
+*/
+DLL_EXPORT int cepton_sdk_capture_replay_get_length(float *sec_ptr);
+
+/*
+  Returns true if at end of capture file.
+  This is only relevant when using resume_blocking methods.
+*/
+DLL_EXPORT int cepton_sdk_capture_replay_is_end(int *is_end_ptr);
+
+/*
+  Seek to start of capture file.
+
+  Returns error if replay is running or is not open.
+*/
+DLL_EXPORT int cepton_sdk_capture_replay_rewind();
+
+/*
+  Seek to capture file position.
+  Position must be in range [0.0, capture length).
+
+  Returns error if replay is running or is not open.
+*/
 DLL_EXPORT int cepton_sdk_capture_replay_seek(float sec);
-DLL_EXPORT int cepton_sdk_capture_replay_seek_relative(float sec);
 
-// Replay capture data in current thread.
-// No sleep between packets.
+/*
+  Replay next packet in current thread without sleeping.
+  Pauses replay thread if it is running.
+  Stops at end of file; must call rewind to continue.
+
+  Returns error if replay is not open.
+*/
 DLL_EXPORT int cepton_sdk_capture_replay_resume_blocking_once();
+
+/*
+  Replay multiple packets in current thread without sleeping between packets.
+  Resume duration must be non-negative. Pauses replay thread if it is running.
+  Stops at end of file; must call rewind to continue.
+
+  Returns error if replay is not open.
+*/
 DLL_EXPORT int cepton_sdk_capture_replay_resume_blocking(float sec);
 
-// Replay capture data in a separate thread.
-// Sleep between packets to simulate realtime data.
-DLL_EXPORT int cepton_sdk_capture_replay_is_running(int * is_running_ptr);
-DLL_EXPORT int cepton_sdk_capture_replay_resume();
+/*
+  Return true if replay thread is resumed, false if it is paused.
+*/
+DLL_EXPORT int cepton_sdk_capture_replay_is_running(int *is_running_ptr);
+
+/*
+  Resume asynchronous replay thread. Packets are replayed in realtime.
+  Replay thread sleeps in between packets.
+
+  Returns error if replay is not open.
+*/
+DLL_EXPORT int cepton_sdk_capture_replay_resume(int enable_loop);
+
+/*
+  Pause asynchronous replay thread.
+
+  Returns error if replay is not open.
+*/
 DLL_EXPORT int cepton_sdk_capture_replay_pause();
 
 #ifdef __cplusplus

@@ -1,5 +1,5 @@
 # Cepton SDK
-Welcome to Cepton SDK distribution! Current version of SDK is v0.6 (beta)
+Welcome to Cepton SDK distribution! Current version of SDK is v0.6d (beta)
 ## Table of contents
 * [Release Notes](#release-notes)
 * [To setup repository](#to-setup-repository)
@@ -8,6 +8,10 @@ Welcome to Cepton SDK distribution! Current version of SDK is v0.6 (beta)
 * [Notes/FAQ](#notes--faq)
 
 ## Release Notes
+### Version 0.6d (beta) 2017-07-12
+* Correct intensity for units shipped with intensity calibration data.
+* Capture replay functionality improvements
+
 ### Version 0.6c (beta) 2017-07-06
 * New SDK APIs for more capture replay functionality.
 * Some calibration data updated.
