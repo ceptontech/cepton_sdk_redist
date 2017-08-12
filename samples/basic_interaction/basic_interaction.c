@@ -97,7 +97,8 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 
   switch(event) {
     case CEPTON_EVENT_ATTACH:
-      printf("Sensor: (serial number: %d model: %s) Attached\n", (int)p_info->serial_number, p_info->model_name);
+      printf("Sensor: (serial number: %d, model: %s, firmware: %s) Attached\n",
+        (int)p_info->serial_number, p_info->model_name, p_info->firmware_version);
 	  // Do stuff for newly detected sensor
       break;
     case CEPTON_EVENT_FRAME:

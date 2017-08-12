@@ -12,7 +12,7 @@
 #include <unistd.h>
 #endif
 
-void common_sleep(int milliseconds) {
+void common_sleep(unsigned milliseconds) {
   //sleep:
 #ifdef _WIN32
   Sleep(milliseconds);
@@ -71,7 +71,7 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 int main(int argc, char **argv) {
   if (argc == 1) {
     printf(R"(
-Cepton data_exporter version 0.6d
+Cepton data_exporter version 0.7
 
 Usage: data_exporter <options> <outputfile>
 
@@ -152,7 +152,7 @@ Options are:
 
   int err = cepton_sdk_initialize(CEPTON_SDK_VERSION, 0, on_event);
   if (err != CEPTON_SUCCESS) {
-    printf("Initialize SDK failed\n");
+    printf("Initialize SDK failed: %s\n", cepton_get_error_code_name(err));
     return -1;
   }
 

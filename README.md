@@ -1,5 +1,5 @@
 # Cepton SDK
-Welcome to Cepton SDK distribution! Current version of SDK is v0.6d (beta)
+Welcome to Cepton SDK distribution! Current version of SDK is v0.7 (beta)
 ## Table of contents
 * [Release Notes](#release-notes)
 * [To setup repository](#to-setup-repository)
@@ -8,6 +8,14 @@ Welcome to Cepton SDK distribution! Current version of SDK is v0.6d (beta)
 * [Notes/FAQ](#notes--faq)
 
 ## Release Notes
+### Version 0.7 (beta) 2017-08-11
+* Control flags to remove clipped edges
+* Control flags to return near pixels (uncalibrated right now)
+* Control flags to use SDK without networking stack
+* Allow working with sensors through different UDP ports
+* Better support for multiple sensors through world coordinate transformations
+* Internal bugfixes and improvements.
+
 ### Version 0.6d (beta) 2017-07-12
 * Correct intensity for units shipped with intensity calibration data.
 * Capture replay functionality improvements
@@ -230,8 +238,7 @@ int cepton_sdk_get_transform(CeptonSensorHandle h, struct CeptonSensorTransform 
 ### Networking
 
 ```C
-void cepton_sdk_mock_network_receive(uint64_t ipv4_address, uint8_t const *mac, 
-  uint8_t const *buffer, size_t size);
+void cepton_sdk_mock_network_receive(uint64_t ipv4_address, uint8_t const *buffer, size_t size);
 ```
 Cause a network packet to be received as though from the adapter. Used to replay a capture file (see sample code provided)
 
