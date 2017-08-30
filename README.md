@@ -1,5 +1,5 @@
 # Cepton SDK
-Welcome to Cepton SDK distribution! Current version of SDK is v0.7 (beta)
+Welcome to Cepton SDK distribution! Current version of SDK is v0.7a (beta)
 ## Table of contents
 * [Release Notes](#release-notes)
 * [To setup repository](#to-setup-repository)
@@ -8,6 +8,12 @@ Welcome to Cepton SDK distribution! Current version of SDK is v0.7 (beta)
 * [Notes/FAQ](#notes--faq)
 
 ## Release Notes
+### Version 0.7a (beta) 2017-08-30
+* Model enumerations in CeptonSensorInformation
+* Lots of internal improvements for clipping, calibration, intensity and GPS.
+* Support for new models and firmware variations.
+* Bugfixes
+
 ### Version 0.7 (beta) 2017-08-11
 * Control flags to remove clipped edges
 * Control flags to return near pixels (uncalibrated right now)

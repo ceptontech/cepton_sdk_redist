@@ -1,3 +1,11 @@
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#define _BSD_SOURCE  // For usleep
+#include <unistd.h>
+#endif
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -5,13 +13,7 @@
 #include "cepton_sdk.h"
 #pragma warning(disable:4996)
 
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <unistd.h>
-#endif
-
-void common_sleep(int milliseconds) {
+void common_sleep(unsigned milliseconds) {
   //sleep:
 #ifdef _WIN32
   Sleep(milliseconds);
