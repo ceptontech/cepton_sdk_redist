@@ -10,3 +10,4 @@ target_link_libraries(${PROJECT_NAME}
   optimized  ${CEPTON_SDK_LIBRARY_RELEASE}
   general ${OS_LIBRARIES})
 
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)

@@ -1,7 +1,10 @@
 //
 // Copyright Cepton Technologies Inc. 2017, All rights reserved.
 //
-// Cepton Sensor SDK v0.7a (Beta)
+// Cepton Sensor SDK v0.8 (Beta)
+//
+// NOTE: CEPTON_SDK_VERSION is independent of the version string,
+//       it is used to enforce API compatibility
 //
 #pragma once
 
@@ -34,6 +37,11 @@ enum CeptonSensorErrorCode {
   CEPTON_ERROR_INVALID_ARGUMENTS = -8,
   CEPTON_ERROR_ALREADY_INITIALIZED = -9,
   CEPTON_ERROR_NOT_INITIALIZED = -10,
+  CEPTON_ERROR_INVALID_FILE_TYPE = -11,
+  CEPTON_ERROR_FILE_IO = -12,
+  CEPTON_ERROR_CORRUPT_FILE = -13,
+  CEPTON_ERROR_NOT_OPEN = -14,
+  CEPTON_ERROR_EOF = -15,
 };
 
 const char *const cepton_get_error_code_name(int error_code);
@@ -51,13 +59,14 @@ enum CeptonSensorModel {
   HR80T = 1,
   HR80M = 2,
   HR80W = 3,
+  SORA_200 = 4,
 };
 
 struct DLL_EXPORT CeptonSensorInformation {
   CeptonSensorHandle handle;
   uint64_t serial_number;
   char model_name[28];
-  int model;
+  uint32_t model;
   char firmware_version[32];
 
   float last_reported_temperature;  // [celsius]
@@ -257,6 +266,15 @@ DLL_EXPORT int cepton_sdk_capture_replay_rewind();
 DLL_EXPORT int cepton_sdk_capture_replay_seek(float sec);
 
 /*
+  If loop enabled, replay will automatically rewind at end.
+*/
+DLL_EXPORT int cepton_sdk_capture_replay_set_enable_loop(int enable_loop);
+DLL_EXPORT int cepton_sdk_capture_replay_get_enable_loop(int *enable_loop_ptr);
+
+DLL_EXPORT int cepton_sdk_capture_replay_set_speed(float speed);
+DLL_EXPORT int cepton_sdk_capture_replay_get_speed(float *speed_ptr);
+
+/*
   Replay next packet in current thread without sleeping.
   Pauses replay thread if it is running.
   Stops at end of file; must call rewind to continue.
@@ -285,7 +303,7 @@ DLL_EXPORT int cepton_sdk_capture_replay_is_running(int *is_running_ptr);
 
   Returns error if replay is not open.
 */
-DLL_EXPORT int cepton_sdk_capture_replay_resume(int enable_loop);
+DLL_EXPORT int cepton_sdk_capture_replay_resume();
 
 /*
   Pause asynchronous replay thread.

@@ -23,7 +23,7 @@ void common_sleep(unsigned milliseconds) {
 
 
 char const *fname = nullptr;
-int got_frame = 0; 
+int got_frame = 0;
 int file_mode = 0; // 0-CSV, 1-BIN
 int frame_to_get = 1;
 bool split = false;
@@ -71,7 +71,7 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 int main(int argc, char **argv) {
   if (argc == 1) {
     printf(R"(
-Cepton data_exporter version 0.7
+Cepton data_exporter version 0.8
 
 Usage: data_exporter <options> <outputfile>
 
@@ -157,8 +157,9 @@ Options are:
   }
 
   if (replay_file) {
+    cepton_sdk_capture_replay_set_enable_loop((int)true);
     cepton_sdk_capture_replay_open(replay_file);
-    cepton_sdk_capture_replay_resume(1);
+    cepton_sdk_capture_replay_resume();
   }
 
   while (got_frame <= frame_to_get + 1) {

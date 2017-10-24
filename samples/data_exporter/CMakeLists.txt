@@ -12,3 +12,5 @@ target_link_libraries(${PROJECT_NAME}
   debug ${CEPTON_SDK_LIBRARY_DEBUG}
   optimized  ${CEPTON_SDK_LIBRARY_RELEASE}
   general ${OS_LIBRARIES})
+
+install(TARGETS ${PROJECT_NAME} DESTINATION bin)
