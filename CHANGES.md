@@ -1,4 +1,10 @@
 # Cepton SDK Release Notes
+### Version 0.9 (beta) 2018-01-09
+* New product line supported: Vista 860
+* New feature supported in all products: Multiple returns
+* Deprecated support for very old firmware version (V1xx)
+* Bugfixes
+
 ### Version 0.8 (beta) 2017-10-24
 * New product line supported: SORA 200
 * Internal bug fixes and improvements.

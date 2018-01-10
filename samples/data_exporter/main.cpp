@@ -71,7 +71,7 @@ void on_event(int error_code, CeptonSensorHandle sensor,
 int main(int argc, char **argv) {
   if (argc == 1) {
     printf(R"(
-Cepton data_exporter version 0.8
+Cepton data_exporter version 0.9
 
 Usage: data_exporter <options> <outputfile>
 

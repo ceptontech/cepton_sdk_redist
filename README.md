@@ -1,5 +1,5 @@
 # Cepton SDK
-Welcome to Cepton SDK distribution! Current version of SDK is v0.8 (beta)
+Welcome to Cepton SDK distribution! Current version of SDK is v0.9 (beta)
 ## Table of contents
 * [To setup repository](#to-setup-repository)
 * [SDK Interactions](#sdk-interactions)
@@ -17,7 +17,7 @@ For WINDOWS
 ```
 mkdir build_win64
 cd build_win64
-cmake -G "Visual Studio 14 Win64" ..
+cmake -G "Visual Studio 15 Win64" ..
 start build_win64\cepton_sdk_redist.sln
 ```
 
@@ -103,7 +103,15 @@ int cepton_sdk_initialize(int version, unsigned flags, FpCeptonSensorEventCallba
 ```
 Allocates buffers, make connections, launch threads etc. Error will be returned if called while SDK is already initialized.
 * ```version``` should always be ```CEPTON_SDK_VERSION```, this is a safeguard against linking with the wrong library.
-* ```flags``` is a bit field that controls the SDK behavior. Pass ```0``` for default operations.
+* ```flags``` is a bit field that controls the SDK behavior. Pass ```0``` for default operations. Valid flags are:
+  * ```CEPTON_SDK_CONTROL_DISABLE_NETWORK```
+  Disable networking operations. Must pass packets manually to ```cepton_sdk_mock_network_receive```.
+  * ```CEPTON_SDK_CONTROL_DISABLE_IMAGE_CLIP```
+  Disable clipping image field of view.
+  * ```CEPTON_SDK_CONTROL_DISABLE_DISTANCE_CLIP```
+  Disable clipping distance.
+  * ```CEPTON_SDK_CONTROL_ENABLED_MULTIPLE_RETURNS```
+  Multiple returns. When set, ```return_count``` in ```CeptonSensorInformation``` will indicate number of returns per laser.
 
 ```C
 int cepton_sdk_deinitialize();
@@ -178,10 +186,19 @@ Cause a network packet to be received as though from the adapter. Used to replay
 
 
 ## Notes / FAQ
-* A very common problem is firewall blocking UDP broadcast packets coming from the device. Make sure to check that first when there is no connection.
-* Intensity output is set to 1.0 for the sensors/firmware versions that does not expose it.
+### About networking
+* A very common connectivity problem is firewall blocking UDP broadcast packets coming from the device. Make sure to check that first when there is no connection.
+* Cepton devices are IPv4 only for now. Make sure your IPv4 networking is turned on if you use Linux environment.
 
-### Technical notes from the internals
+### About multiple returns
+* To use multiple returns feature, the SDK needs to be initialized with ```CEPTON_SDK_CONTROL_ENABLED_MULTIPLE_RETURNS``` control flag set.
+* Currently Cepton sensors only support up to 2 returns.
+* First return is always the strongest signal.
+* Second return is the last detectable signal if it is not the strongest. Otherwise it is the second strongest signal detectable.
+* Second return can be empty if only one signal is detectable.
+* Some applications require the farthest return. Farthest detectable signal is guaranteed to be always present in the list, compare the distance of the two returns to obtain it reliably.
+
+### Technical notes for the SDK internals
 * All the callbacks are invoked from the same network receive thread that gets launched at
 the ```cepton_sdk_initialize``` time. It is a good practice to not spend too much time
 servicing the callbacks. If you need more than ~1ms to handle the callback, it is probably
