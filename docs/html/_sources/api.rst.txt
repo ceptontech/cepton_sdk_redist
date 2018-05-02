@@ -1,0 +1,26 @@
+API
+===
+
+High level SDK api for prototyping (`cepton_sdk_api.hpp`). Mimics Python SDK api.
+
+.. doxygenfunction:: cepton_sdk::api::is_live
+.. doxygenfunction:: cepton_sdk::api::wait
+.. doxygenfunction:: cepton_sdk::api::get_time
+
+Errors
+------
+
+.. doxygenstruct:: cepton_sdk::api::SensorError
+.. doxygenfunction:: cepton_sdk::api::check_error_code
+.. doxygenfunction:: cepton_sdk::api::default_on_error
+
+Setup
+-----
+
+.. doxygenfunction:: cepton_sdk::api::initialize
+
+Sensors
+-------
+
+.. doxygenfunction:: cepton_sdk::api::get_sensor_information_by_serial_number
+.. doxygenfunction:: cepton_sdk::api::get_sensor_serial_numbers

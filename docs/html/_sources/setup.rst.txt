@@ -1,0 +1,44 @@
+Setup
+=====
+
+Types
+-----
+
+.. doxygentypedef:: cepton_sdk::Control
+.. doxygentypedef:: CeptonSDKControl
+.. doxygenenum:: _CeptonSDKControl
+
+.. doxygentypedef:: cepton_sdk::FrameMode
+.. doxygentypedef:: CeptonSDKFrameMode
+.. doxygenenum:: _CeptonSDKFrameMode
+
+.. doxygentypedef:: cepton_sdk::FrameOptions
+.. doxygenstruct:: CeptonSDKFrameOptions
+  :members:
+  :undoc-members:
+.. doxygenfunction:: cepton_sdk::create_frame_options
+
+.. doxygentypedef:: cepton_sdk::Options
+.. doxygenstruct:: CeptonSDKOptions
+  :members:
+  :undoc-members:
+.. doxygenfunction:: cepton_sdk::create_options
+
+.. doxygentypedef:: FpSensorErrorCallback
+
+Methods
+-------
+
+.. doxygenfunction:: cepton_sdk::initialize
+.. doxygenfunction:: cepton_sdk::deinitialize
+
+.. doxygenfunction:: cepton_sdk::set_control_flags
+.. doxygenfunction:: cepton_sdk::get_control_flags
+.. doxygenfunction:: cepton_sdk::has_control_flag
+
+.. doxygenfunction:: cepton_sdk::get_port
+.. doxygenfunction:: cepton_sdk::set_port
+
+.. doxygenfunction:: cepton_sdk::set_frame_options
+.. doxygenfunction:: cepton_sdk::get_frame_mode
+.. doxygenfunction:: cepton_sdk::get_frame_length

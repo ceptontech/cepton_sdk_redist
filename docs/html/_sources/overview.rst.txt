@@ -1,0 +1,26 @@
+Overview
+========
+
+Timestamps
+----------
+
+All timestamps are microseconds since the Unix epoch (UTC). If a GPS is connected to the sensor, point timestamps are based on the GPS clock, otherwise they are based on the host computer's clock.
+
+Multiple Returns
+----------------
+
+To enable multiple returns, pass the :any:`cepton_sdk::CONTROL_ENABLE_MULTIPLE_RETURNS` flag during initialization.
+
+The returns are as follows:
+
+  1. Strongest signal.
+  2. Furthest signal, if it is not the strongest. Otherwise, the second strongest signal.
+
+Concurrency
+-----------
+
+To disable networking, pass the :any:`cepton_sdk::CONTROL_DISABLE_NETWORK`.
+
+- If networking is enabled, the sdk creates 1 thread for networking. All callbacks occur in this networking thread.
+- If networking is disabled, the sdk does not create any threads. All callbacks occur in the main thread.
+- All sdk getter functions are thread safe, and can be called from callbacks. Other sdk functions are not guarunteed to be thread safe, and can cause deadlock if called from callbacks.

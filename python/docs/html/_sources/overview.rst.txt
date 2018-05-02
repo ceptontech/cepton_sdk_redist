@@ -1,0 +1,9 @@
+Overview
+========
+
+If a method is undocumented, consult the C/C++ SDK documentation, since many methods in this library are just wrapper functions.
+
+Timestamps
+----------
+
+All timestamps are seconds since the Unix epoch (UTC).

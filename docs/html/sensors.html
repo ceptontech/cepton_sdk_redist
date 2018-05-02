@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Sensors &mdash; cepton_sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
+        <link rel="next" title="Points" href="points.html"/>
+        <link rel="prev" title="Setup" href="setup.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cepton_sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sensors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#types">Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="points.html">Points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_replay.html">Capture Replay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cepton_sdk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Sensors</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/sensors.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="points.html" class="btn btn-neutral float-right" title="Points" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="setup.html" class="btn btn-neutral" title="Setup" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sensors">
+<h1>Sensors<a class="headerlink" href="#sensors" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="types">
+<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<dl class="type">
+<dt id="_CPPv2N10cepton_sdk12SensorHandleE">
+<span id="cepton_sdk::SensorHandle"></span><span class="target" id="cepton__sdk_8hpp_1a6e0d9af768e23f9b3900ba5efef8bbde"></span><em class="property">typedef </em>CeptonSensorHandle <code class="descclassname">cepton_sdk::</code><code class="descname">SensorHandle</code><a class="headerlink" href="#_CPPv2N10cepton_sdk12SensorHandleE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sensor identifier. </p>
+</dd></dl>
+
+<dl class="type">
+<dt id="_CPPv2N10cepton_sdk11SensorModelE">
+<span id="cepton_sdk::SensorModel"></span><span class="target" id="cepton__sdk_8hpp_1a8a44371b2884cb1c2628479681e0ea9f"></span><em class="property">typedef </em>CeptonSensorModel <code class="descclassname">cepton_sdk::</code><code class="descname">SensorModel</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorModelE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="enum">
+<dt id="c._CeptonSensorModel">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fd"></span><em class="property">enum </em><code class="descname">_CeptonSensorModel</code><a class="headerlink" href="#c._CeptonSensorModel" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">CeptonSensorModel</span></code> implementation. </p>
+<p><em>Values:</em></p>
+<dl class="enumvalue">
+<dt id="c.HR80T">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda391240c09f45a3e2b48550aceb90f605"></span><code class="descname">HR80T</code> = 1<a class="headerlink" href="#c.HR80T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.HR80M">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fdad1380fb0537a6f43d19c93bd14955052"></span><code class="descname">HR80M</code> = 2<a class="headerlink" href="#c.HR80M" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.HR80W">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda9e889217287260a3191632897c07f5c8"></span><code class="descname">HR80W</code> = 3<a class="headerlink" href="#c.HR80W" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.SORA_200">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda000b34cf1bffcada1542a14c3d1275b0"></span><code class="descname">SORA_200</code> = 4<a class="headerlink" href="#c.SORA_200" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.VISTA_860">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda4c33c5073dfdccd636370b5f93a7c6de"></span><code class="descname">VISTA_860</code> = 5<a class="headerlink" href="#c.VISTA_860" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.HR80T_R2">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda5b24577520f0b15f8ba0197c3b2b63ab"></span><code class="descname">HR80T_R2</code> = 6<a class="headerlink" href="#c.HR80T_R2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="type">
+<dt id="_CPPv2N10cepton_sdk17SensorInformationE">
+<span id="cepton_sdk::SensorInformation"></span><span class="target" id="cepton__sdk_8hpp_1a292ee2c118ad2def44796a64e1dd4edb"></span><em class="property">typedef </em>CeptonSensorInformation <code class="descclassname">cepton_sdk::</code><code class="descname">SensorInformation</code><a class="headerlink" href="#_CPPv2N10cepton_sdk17SensorInformationE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="struct">
+<dt id="c.CeptonSensorInformation">
+<span class="target" id="structCeptonSensorInformation"></span><em class="property">struct </em><code class="descname">CeptonSensorInformation</code><a class="headerlink" href="#c.CeptonSensorInformation" title="Permalink to this definition">¶</a></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::handle">
+<span class="target" id="structCeptonSensorInformation_1a0e2874f6a15c5958bae1013d19421d5f"></span>CeptonSensorHandle <code class="descname">handle</code><a class="headerlink" href="#c.CeptonSensorInformation::handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::serial_number">
+<span class="target" id="structCeptonSensorInformation_1a55d47307df6ecb2ca92a147fe75e08fd"></span>uint64_t <code class="descname">serial_number</code><a class="headerlink" href="#c.CeptonSensorInformation::serial_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt>
+<span class="target" id="structCeptonSensorInformation_1adea0437286d886b34242a3849b59b60f"></span><code class="descname">char CeptonSensorInformation::model_name[28]</code></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::model">
+<span class="target" id="structCeptonSensorInformation_1a5e31b3ce7b9cfb048e6d078f6f45ad03"></span>CeptonSensorModel <code class="descname">model</code><a class="headerlink" href="#c.CeptonSensorInformation::model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt>
+<span class="target" id="structCeptonSensorInformation_1a8694e3f6b50ab71b11db63b2fa68ad07"></span><code class="descname">char CeptonSensorInformation::firmware_version[32]</code></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::last_reported_temperature">
+<span class="target" id="structCeptonSensorInformation_1a4cf734740e0a4f6a88bd23a3de0b4f35"></span>float <code class="descname">last_reported_temperature</code><a class="headerlink" href="#c.CeptonSensorInformation::last_reported_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>[celsius] </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::last_reported_humidity">
+<span class="target" id="structCeptonSensorInformation_1a6bc1b79e933bcaaa5c72bf7eaafe9f71"></span>float <code class="descname">last_reported_humidity</code><a class="headerlink" href="#c.CeptonSensorInformation::last_reported_humidity" title="Permalink to this definition">¶</a></dt>
+<dd><p>[%] </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::last_reported_age">
+<span class="target" id="structCeptonSensorInformation_1a98ae0f850313805ff495695d8209c6b1"></span>float <code class="descname">last_reported_age</code><a class="headerlink" href="#c.CeptonSensorInformation::last_reported_age" title="Permalink to this definition">¶</a></dt>
+<dd><p>[hours] </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::ptp_ts">
+<span class="target" id="structCeptonSensorInformation_1ac1fab0f4e0221aad242150cda553d6cc"></span>uint64_t <code class="descname">ptp_ts</code><a class="headerlink" href="#c.CeptonSensorInformation::ptp_ts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::gps_ts_year">
+<span class="target" id="structCeptonSensorInformation_1ac4912b059d949cd0581d31c4c28b665f"></span>uint8_t <code class="descname">gps_ts_year</code><a class="headerlink" href="#c.CeptonSensorInformation::gps_ts_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>0-99 (2017 -&gt; 17) </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::gps_ts_month">
+<span class="target" id="structCeptonSensorInformation_1a3a4a9d307d5bdc7258f1ca46d173d6de"></span>uint8_t <code class="descname">gps_ts_month</code><a class="headerlink" href="#c.CeptonSensorInformation::gps_ts_month" title="Permalink to this definition">¶</a></dt>
+<dd><p>1-12 </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::gps_ts_day">
+<span class="target" id="structCeptonSensorInformation_1a56f8573441e87bd0cbfdb7c56178817e"></span>uint8_t <code class="descname">gps_ts_day</code><a class="headerlink" href="#c.CeptonSensorInformation::gps_ts_day" title="Permalink to this definition">¶</a></dt>
+<dd><p>1-31 </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::gps_ts_hour">
+<span class="target" id="structCeptonSensorInformation_1a0bce3fde7f8ee71e3a83f3d19e14bd27"></span>uint8_t <code class="descname">gps_ts_hour</code><a class="headerlink" href="#c.CeptonSensorInformation::gps_ts_hour" title="Permalink to this definition">¶</a></dt>
+<dd><p>0-23 </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::gps_ts_min">
+<span class="target" id="structCeptonSensorInformation_1a1af0c5b5cddec08a108214070457e4ff"></span>uint8_t <code class="descname">gps_ts_min</code><a class="headerlink" href="#c.CeptonSensorInformation::gps_ts_min" title="Permalink to this definition">¶</a></dt>
+<dd><p>0-59 </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::gps_ts_sec">
+<span class="target" id="structCeptonSensorInformation_1a5924d7d51df981cac71eebf4bf9635fd"></span>uint8_t <code class="descname">gps_ts_sec</code><a class="headerlink" href="#c.CeptonSensorInformation::gps_ts_sec" title="Permalink to this definition">¶</a></dt>
+<dd><p>0-59 </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::return_count">
+<span class="target" id="structCeptonSensorInformation_1aabd7efa7950b7ca72b5c2924ac7369b5"></span>uint8_t <code class="descname">return_count</code><a class="headerlink" href="#c.CeptonSensorInformation::return_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::reserved">
+<span class="target" id="structCeptonSensorInformation_1ade997a9371409fd88584c49d468d6845"></span>uint8_t <code class="descname">reserved</code><a class="headerlink" href="#c.CeptonSensorInformation::reserved" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_mocked">
+<span class="target" id="structCeptonSensorInformation_1adb4f3b47487836cd25125849bb27752a"></span>uint32_t <code class="descname">is_mocked</code><a class="headerlink" href="#c.CeptonSensorInformation::is_mocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Created by capture replay. </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_pps_connected">
+<span class="target" id="structCeptonSensorInformation_1a1b12bef069a7e709c9cb7357cd95810d"></span>uint32_t <code class="descname">is_pps_connected</code><a class="headerlink" href="#c.CeptonSensorInformation::is_pps_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>GPS PPS is available. </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_nmea_connected">
+<span class="target" id="structCeptonSensorInformation_1afb784e0d30a73514fefa9e22c5779523"></span>uint32_t <code class="descname">is_nmea_connected</code><a class="headerlink" href="#c.CeptonSensorInformation::is_nmea_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>GPS NMEA is available. </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_ptp_connected">
+<span class="target" id="structCeptonSensorInformation_1a14a6915d929a0c1f631fe61f3756a54f"></span>uint32_t <code class="descname">is_ptp_connected</code><a class="headerlink" href="#c.CeptonSensorInformation::is_ptp_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>PTP is available. </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_calibrated">
+<span class="target" id="structCeptonSensorInformation_1ab8d2e8bd69c99f404baac687c6a4279c"></span>uint32_t <code class="descname">is_calibrated</code><a class="headerlink" href="#c.CeptonSensorInformation::is_calibrated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk13get_n_sensorsEv">
+<span id="cepton_sdk::get_n_sensors"></span><span class="target" id="cepton__sdk_8hpp_1ac91bb980e255202a4e04c1ea3fae0fd6"></span><em class="property">static</em> std::size_t <code class="descclassname">cepton_sdk::</code><code class="descname">get_n_sensors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk13get_n_sensorsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Get number of sensors attached. Use to check for new sensors. Sensors are not deleted until deinitialization. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk34get_sensor_handle_by_serial_numberE8uint64_tR12SensorHandle">
+<span id="cepton_sdk::get_sensor_handle_by_serial_number__uint64_t.SensorHandleR"></span><span class="target" id="cepton__sdk_8hpp_1ac17c78c6d83a729cc0b80ba0ccb0018e"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">get_sensor_handle_by_serial_number</code><span class="sig-paren">(</span>uint64_t <em>serial_number</em>, <a class="reference internal" href="#_CPPv2N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> &amp;<em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk34get_sensor_handle_by_serial_numberE8uint64_tR12SensorHandle" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns error if sensor not found. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk31get_sensor_information_by_indexENSt6size_tER17SensorInformation">
+<span id="cepton_sdk::get_sensor_information_by_index__std::s.SensorInformationR"></span><span class="target" id="cepton__sdk_8hpp_1ad3b7dfb44bc283df914e10868fd9c79a"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">get_sensor_information_by_index</code><span class="sig-paren">(</span>std::size_t <em>idx</em>, <a class="reference internal" href="#_CPPv2N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk31get_sensor_information_by_indexENSt6size_tER17SensorInformation" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Valid indices are in range [0, n_sensors). Returns error if index invalid. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk22get_sensor_informationE12SensorHandleR17SensorInformation">
+<span id="cepton_sdk::get_sensor_information__SensorHandle.SensorInformationR"></span><span class="target" id="cepton__sdk_8hpp_1ae6418b2c99f329591450cb40e2e8e42a"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">get_sensor_information</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> <em>handle</em>, <a class="reference internal" href="#_CPPv2N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk22get_sensor_informationE12SensorHandleR17SensorInformation" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns error if sensor not found. </p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="points.html" class="btn btn-neutral float-right" title="Points" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="setup.html" class="btn btn-neutral" title="Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cepton Technologies.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

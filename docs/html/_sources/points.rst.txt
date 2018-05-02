@@ -1,0 +1,19 @@
+Points
+======
+
+Types
+-----
+
+.. doxygentypedef:: cepton_sdk::SensorImagePoint
+.. doxygenstruct:: CeptonSensorImagePoint
+  :members:
+  :undoc-members:
+
+Methods
+-------
+
+.. doxygenfunction:: cepton_sdk::clear_cache
+
+.. doxygentypedef:: FpCeptonSensorImageDataCallback
+.. doxygenfunction:: cepton_sdk::listen_image_frames
+.. doxygenfunction:: cepton_sdk::unlisten_image_frames

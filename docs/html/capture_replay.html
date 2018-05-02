@@ -1,0 +1,359 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Capture Replay &mdash; cepton_sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
+        <link rel="next" title="API" href="api.html"/>
+        <link rel="prev" title="Networking" href="networking.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cepton_sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensors.html">Sensors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="points.html">Points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Capture Replay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cepton_sdk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Capture Replay</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/capture_replay.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="networking.html" class="btn btn-neutral" title="Networking" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="capture-replay">
+<h1>Capture Replay<a class="headerlink" href="#capture-replay" title="Permalink to this headline">¶</a></h1>
+<p>PCAP capture file replay. Source code can be found in the <cite>source</cite> folder. Functions are not thread safe, and should only be called from the main thread.</p>
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay7is_openEv">
+<span id="cepton_sdk::capture_replay::is_open"></span><span class="target" id="cepton__sdk_8hpp_1a125d61b15aebb3cee500a3e59bebc137"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">is_open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay7is_openEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay4openERKNSt6stringE">
+<span id="cepton_sdk::capture_replay::open__ssCR"></span><span class="target" id="cepton__sdk_8hpp_1a2767e74bf353b263be5a8b07cf100507"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">open</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay4openERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Opens capture file. </p>
+<p>Must be called before any other replay functions listed below. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay5closeEv">
+<span id="cepton_sdk::capture_replay::close"></span><span class="target" id="cepton__sdk_8hpp_1ac5a32854942a933980fe81a2e7924feb"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay5closeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay14get_start_timeEv">
+<span id="cepton_sdk::capture_replay::get_start_time"></span><span class="target" id="cepton__sdk_8hpp_1abace94ebd4797c8e46ae6d84ec9c3f02"></span><em class="property">static</em> uint64_t <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">get_start_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay14get_start_timeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns capture start timestamp (unix time [microseconds]). </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay12get_positionEv">
+<span id="cepton_sdk::capture_replay::get_position"></span><span class="target" id="cepton__sdk_8hpp_1a3210951c1c3ab0c900860e91d9c679e6"></span><em class="property">static</em> float <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">get_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay12get_positionEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns capture file position [seconds]. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay10get_lengthEv">
+<span id="cepton_sdk::capture_replay::get_length"></span><span class="target" id="cepton__sdk_8hpp_1a4007e36c0df8af47cbaa18bb93982766"></span><em class="property">static</em> float <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">get_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay10get_lengthEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns capture file length [seconds]. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay6is_endEv">
+<span id="cepton_sdk::capture_replay::is_end"></span><span class="target" id="cepton__sdk_8hpp_1a05c11c6b89ec5e4cb9fa18b03e33dd62"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">is_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay6is_endEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns true if at end of capture file. </p>
+<p>This is only relevant when using <code class="docutils literal"><span class="pre">resume_blocking</span></code> methods. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay6rewindEv">
+<span id="cepton_sdk::capture_replay::rewind"></span><span class="target" id="cepton__sdk_8hpp_1ac07ebf8161ca6794a303a2f71bb93059"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">rewind</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay6rewindEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Seek to start of capture file. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay4seekEf">
+<span id="cepton_sdk::capture_replay::seek__float"></span><span class="target" id="cepton__sdk_8hpp_1a88669b6b375384cdff69f37e794bef4b"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">seek</code><span class="sig-paren">(</span>float <em>position</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay4seekEf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Seek to capture file position [seconds]. </p>
+<p>Position must be in range [0.0, capture length). Returns error if position is invalid. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay15set_enable_loopEb">
+<span id="cepton_sdk::capture_replay::set_enable_loop__b"></span><span class="target" id="cepton__sdk_8hpp_1ab3d924ef8fcd4e2b27e07bfa6d3bbf3b"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">set_enable_loop</code><span class="sig-paren">(</span>bool <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay15set_enable_loopEb" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>If enabled, replay will automatically rewind at end. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay15get_enable_loopEv">
+<span id="cepton_sdk::capture_replay::get_enable_loop"></span><span class="target" id="cepton__sdk_8hpp_1a54f9dda5ac48950a1b772f209b685cbc"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">get_enable_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay15get_enable_loopEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay9set_speedEf">
+<span id="cepton_sdk::capture_replay::set_speed__float"></span><span class="target" id="cepton__sdk_8hpp_1a08c3528ec613451bf5f2901c8756ed79"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">set_speed</code><span class="sig-paren">(</span>float <em>speed</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay9set_speedEf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Replay speed multiplier for asynchronous replay. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay9get_speedEv">
+<span id="cepton_sdk::capture_replay::get_speed"></span><span class="target" id="cepton__sdk_8hpp_1ab2baf60d7d6c55f4fdea654d0f54db24"></span><em class="property">static</em> float <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">get_speed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay9get_speedEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay20resume_blocking_onceEv">
+<span id="cepton_sdk::capture_replay::resume_blocking_once"></span><span class="target" id="cepton__sdk_8hpp_1a611ae39194337b040047139ae534958b"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">resume_blocking_once</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay20resume_blocking_onceEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Replay next packet in current thread without sleeping. </p>
+<p>Pauses replay thread if it is running. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay15resume_blockingEf">
+<span id="cepton_sdk::capture_replay::resume_blocking__float"></span><span class="target" id="cepton__sdk_8hpp_1a887229f0e51b87767b7f2ea32f9a9dd3"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">resume_blocking</code><span class="sig-paren">(</span>float <em>duration</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay15resume_blockingEf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Replay multiple packets synchronously. </p>
+<p>No sleep between packets. Resume duration must be non-negative. Pauses replay thread if it is running. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay10is_runningEv">
+<span id="cepton_sdk::capture_replay::is_running"></span><span class="target" id="cepton__sdk_8hpp_1adfe7503a23e3a32fada5be7d8d141b35"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">is_running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay10is_runningEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns true if replay thread is running. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay6resumeEv">
+<span id="cepton_sdk::capture_replay::resume"></span><span class="target" id="cepton__sdk_8hpp_1a1e159b2fb42450d291ed05ff43573bbd"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">resume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay6resumeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Packets are replayed in realtime. Replay thread sleeps in between packets. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk14capture_replay5pauseEv">
+<span id="cepton_sdk::capture_replay::pause"></span><span class="target" id="cepton__sdk_8hpp_1a2d3ca99e1c88e07d23ea7710a08ee5e2"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::capture_replay::</code><code class="descname">pause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14capture_replay5pauseEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Pauses asynchronous replay thread. </p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="networking.html" class="btn btn-neutral" title="Networking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cepton Technologies.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

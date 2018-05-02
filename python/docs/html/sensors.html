@@ -1,0 +1,355 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Sensors &#8212; cepton_sdk  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Points" href="points.html" />
+    <link rel="prev" title="Setup" href="setup.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="points.html" title="Points"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="Setup"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cepton_sdk  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sensors">
+<h1>Sensors<a class="headerlink" href="#sensors" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="types">
+<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="cepton_sdk.SensorModel">
+<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">SensorModel</code><a class="reference internal" href="_modules/cepton_sdk/sensor.html#SensorModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.SensorModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>An enumeration.</p>
+<dl class="attribute">
+<dt id="cepton_sdk.SensorModel.HR80M">
+<code class="descname">HR80M</code><em class="property"> = 2</em><a class="headerlink" href="#cepton_sdk.SensorModel.HR80M" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorModel.HR80T">
+<code class="descname">HR80T</code><em class="property"> = 1</em><a class="headerlink" href="#cepton_sdk.SensorModel.HR80T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorModel.HR80T_R2">
+<code class="descname">HR80T_R2</code><em class="property"> = 6</em><a class="headerlink" href="#cepton_sdk.SensorModel.HR80T_R2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorModel.HR80W">
+<code class="descname">HR80W</code><em class="property"> = 3</em><a class="headerlink" href="#cepton_sdk.SensorModel.HR80W" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorModel.SORA_200">
+<code class="descname">SORA_200</code><em class="property"> = 4</em><a class="headerlink" href="#cepton_sdk.SensorModel.SORA_200" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorModel.VISTA_860">
+<code class="descname">VISTA_860</code><em class="property"> = 5</em><a class="headerlink" href="#cepton_sdk.SensorModel.VISTA_860" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cepton_sdk.SensorInformation">
+<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">SensorInformation</code><a class="reference internal" href="_modules/cepton_sdk/sensor.html#SensorInformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.SensorInformation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.handle">
+<code class="descname">handle</code><a class="headerlink" href="#cepton_sdk.SensorInformation.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.serial_number">
+<code class="descname">serial_number</code><a class="headerlink" href="#cepton_sdk.SensorInformation.serial_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.model_name">
+<code class="descname">model_name</code><a class="headerlink" href="#cepton_sdk.SensorInformation.model_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.model">
+<code class="descname">model</code><a class="headerlink" href="#cepton_sdk.SensorInformation.model" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#cepton_sdk.SensorModel" title="cepton_sdk.SensorModel"><code class="xref py py-class docutils literal"><span class="pre">cepton_sdk.SensorModel</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.firmware_version">
+<code class="descname">firmware_version</code><a class="headerlink" href="#cepton_sdk.SensorInformation.firmware_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.last_reported_temperature">
+<code class="descname">last_reported_temperature</code><a class="headerlink" href="#cepton_sdk.SensorInformation.last_reported_temperature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.last_reported_humidity">
+<code class="descname">last_reported_humidity</code><a class="headerlink" href="#cepton_sdk.SensorInformation.last_reported_humidity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.last_reported_age">
+<code class="descname">last_reported_age</code><a class="headerlink" href="#cepton_sdk.SensorInformation.last_reported_age" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.gps_ts_year">
+<code class="descname">gps_ts_year</code><a class="headerlink" href="#cepton_sdk.SensorInformation.gps_ts_year" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.gps_ts_mont">
+<code class="descname">gps_ts_mont</code><a class="headerlink" href="#cepton_sdk.SensorInformation.gps_ts_mont" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.gps_ts_day">
+<code class="descname">gps_ts_day</code><a class="headerlink" href="#cepton_sdk.SensorInformation.gps_ts_day" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.gps_ts_hour">
+<code class="descname">gps_ts_hour</code><a class="headerlink" href="#cepton_sdk.SensorInformation.gps_ts_hour" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.gps_ts_min">
+<code class="descname">gps_ts_min</code><a class="headerlink" href="#cepton_sdk.SensorInformation.gps_ts_min" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.gps_ts_sec">
+<code class="descname">gps_ts_sec</code><a class="headerlink" href="#cepton_sdk.SensorInformation.gps_ts_sec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.return_count">
+<code class="descname">return_count</code><a class="headerlink" href="#cepton_sdk.SensorInformation.return_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.is_mocked">
+<code class="descname">is_mocked</code><a class="headerlink" href="#cepton_sdk.SensorInformation.is_mocked" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.is_pps_connected">
+<code class="descname">is_pps_connected</code><a class="headerlink" href="#cepton_sdk.SensorInformation.is_pps_connected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.is_nmea_connected">
+<code class="descname">is_nmea_connected</code><a class="headerlink" href="#cepton_sdk.SensorInformation.is_nmea_connected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorInformation.is_calibrated">
+<code class="descname">is_calibrated</code><a class="headerlink" href="#cepton_sdk.SensorInformation.is_calibrated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cepton_sdk.Sensor">
+<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">Sensor</code><span class="sig-paren">(</span><em>sensor_info</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="cepton_sdk.Sensor.information">
+<code class="descname">information</code><a class="headerlink" href="#cepton_sdk.Sensor.information" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#cepton_sdk.SensorInformation" title="cepton_sdk.SensorInformation"><code class="xref py py-class docutils literal"><span class="pre">cepton_sdk.SensorInformation</span></code></a></p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="cepton_sdk.Sensor.create">
+<em class="property">classmethod </em><code class="descname">create</code><span class="sig-paren">(</span><em>sensor_serial_number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="cepton_sdk.Sensor.create_by_handle">
+<em class="property">classmethod </em><code class="descname">create_by_handle</code><span class="sig-paren">(</span><em>sensor_handle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.create_by_handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.create_by_handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="cepton_sdk.Sensor.create_by_index">
+<em class="property">classmethod </em><code class="descname">create_by_index</code><span class="sig-paren">(</span><em>sensor_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.create_by_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.create_by_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.Sensor.firmware_version">
+<code class="descname">firmware_version</code><a class="headerlink" href="#cepton_sdk.Sensor.firmware_version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cepton_sdk.Sensor.get_image_frames">
+<code class="descname">get_image_frames</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.get_image_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.get_image_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <cite>cepton_sdk.get_sensor_image_frames</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cepton_sdk.Sensor.get_image_points">
+<code class="descname">get_image_points</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.get_image_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.get_image_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <cite>cepton_sdk.get_sensor_image_points</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cepton_sdk.Sensor.get_image_points_by_n">
+<code class="descname">get_image_points_by_n</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.get_image_points_by_n"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.get_image_points_by_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <cite>cepton_sdk.get_sensor_image_points_by_n</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.Sensor.handle">
+<code class="descname">handle</code><a class="headerlink" href="#cepton_sdk.Sensor.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cepton_sdk.Sensor.is_hr80t">
+<code class="descname">is_hr80t</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.is_hr80t"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.is_hr80t" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cepton_sdk.Sensor.is_hr80w">
+<code class="descname">is_hr80w</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.is_hr80w"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.is_hr80w" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cepton_sdk.Sensor.is_sora">
+<code class="descname">is_sora</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.is_sora"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.is_sora" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cepton_sdk.Sensor.is_vista860">
+<code class="descname">is_vista860</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.is_vista860"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.is_vista860" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.Sensor.model">
+<code class="descname">model</code><a class="headerlink" href="#cepton_sdk.Sensor.model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.Sensor.model_name">
+<code class="descname">model_name</code><a class="headerlink" href="#cepton_sdk.Sensor.model_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.Sensor.serial_number">
+<code class="descname">serial_number</code><a class="headerlink" href="#cepton_sdk.Sensor.serial_number" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="cepton_sdk.Sensor.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#Sensor.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Sensor.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update sensor information.</p>
+<p>Should be called often, to pull latest sensor information.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="cepton_sdk.get_sensors">
+<code class="descclassname">cepton_sdk.</code><code class="descname">get_sensors</code><span class="sig-paren">(</span><em>cls=&lt;class 'cepton_sdk.api.Sensor'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_sensors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_sensors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns attached sensors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of sensors, indexed by serial number.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="setup.html"
+                        title="previous chapter">Setup</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="points.html"
+                        title="next chapter">Points</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="points.html" title="Points"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="Setup"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cepton_sdk  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Cepton Technologies.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

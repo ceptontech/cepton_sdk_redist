@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Errors &mdash; cepton_sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
+        <link rel="next" title="Setup" href="setup.html"/>
+        <link rel="prev" title="Overview" href="overview.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cepton_sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Errors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#types">Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensors.html">Sensors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="points.html">Points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_replay.html">Capture Replay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cepton_sdk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Errors</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/errors.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="setup.html" class="btn btn-neutral float-right" title="Setup" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="errors">
+<h1>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="types">
+<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<dl class="type">
+<dt id="_CPPv2N10cepton_sdk15SensorErrorCodeE">
+<span id="cepton_sdk::SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1a2d89666c1731ab7c94f3f5c0c141e202"></span><em class="property">typedef </em>CeptonSensorErrorCode <code class="descclassname">cepton_sdk::</code><code class="descname">SensorErrorCode</code><a class="headerlink" href="#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Error code returned by most sdk functions. </p>
+<p>Most getter functions do not return an error, because they cannot fail. </p>
+</dd></dl>
+
+<dl class="typedef">
+<dt id="c.CeptonSensorErrorCode">
+<span class="target" id="cepton__sdk_8h_1a87daef30533fbcea3311d25f4c6cb542"></span><em class="property">typedef </em>int <code class="descname">CeptonSensorErrorCode</code><a class="headerlink" href="#c.CeptonSensorErrorCode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enum">
+<dt id="c._CeptonSensorErrorCode">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8"></span><em class="property">enum </em><code class="descname">_CeptonSensorErrorCode</code><a class="headerlink" href="#c._CeptonSensorErrorCode" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">CeptonSensorErrorCode</span></code> implementation. </p>
+<p><em>Values:</em></p>
+<dl class="enumvalue">
+<dt id="c.CEPTON_SUCCESS">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8ad7180c8b4e4e172b6fa259bf4a6b3a53"></span><code class="descname">CEPTON_SUCCESS</code> = 0<a class="headerlink" href="#c.CEPTON_SUCCESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_GENERIC">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a71d3526d1c2e7e3d1d814b2f9d81e208"></span><code class="descname">CEPTON_ERROR_GENERIC</code> = -1<a class="headerlink" href="#c.CEPTON_ERROR_GENERIC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_OUT_OF_MEMORY">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a97b3aba11d2ebcb7d65459d622ab1601"></span><code class="descname">CEPTON_ERROR_OUT_OF_MEMORY</code> = -2<a class="headerlink" href="#c.CEPTON_ERROR_OUT_OF_MEMORY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_SENSOR_NOT_FOUND">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a5822bd68f254685a4178b1ede4558903"></span><code class="descname">CEPTON_ERROR_SENSOR_NOT_FOUND</code> = -4<a class="headerlink" href="#c.CEPTON_ERROR_SENSOR_NOT_FOUND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_SDK_VERSION_MISMATCH">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a3f47044a8a70b1ea1c76538ae7480ffd"></span><code class="descname">CEPTON_ERROR_SDK_VERSION_MISMATCH</code> = -5<a class="headerlink" href="#c.CEPTON_ERROR_SDK_VERSION_MISMATCH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_COMMUNICATION">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8aebf7e587805d1fc61d12ba51bd8c166b"></span><code class="descname">CEPTON_ERROR_COMMUNICATION</code> = -6<a class="headerlink" href="#c.CEPTON_ERROR_COMMUNICATION" title="Permalink to this definition">¶</a></dt>
+<dd><p>Networking error. </p>
+</dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_TOO_MANY_CALLBACKS">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a9423c4124071dd7a68c8a53220ea6b76"></span><code class="descname">CEPTON_ERROR_TOO_MANY_CALLBACKS</code> = -7<a class="headerlink" href="#c.CEPTON_ERROR_TOO_MANY_CALLBACKS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_INVALID_ARGUMENTS">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a3984a85628318523b8781e12a48f53bc"></span><code class="descname">CEPTON_ERROR_INVALID_ARGUMENTS</code> = -8<a class="headerlink" href="#c.CEPTON_ERROR_INVALID_ARGUMENTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invalid value or uninitialized struct. </p>
+</dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_ALREADY_INITIALIZED">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a69f1732dca14d9100f24381adceebd9c"></span><code class="descname">CEPTON_ERROR_ALREADY_INITIALIZED</code> = -9<a class="headerlink" href="#c.CEPTON_ERROR_ALREADY_INITIALIZED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_NOT_INITIALIZED">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a25717dcff2d002ed22dd840d5adfc545"></span><code class="descname">CEPTON_ERROR_NOT_INITIALIZED</code> = -10<a class="headerlink" href="#c.CEPTON_ERROR_NOT_INITIALIZED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_INVALID_FILE_TYPE">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a560741d658df77f452a4ed85a4f07b72"></span><code class="descname">CEPTON_ERROR_INVALID_FILE_TYPE</code> = -11<a class="headerlink" href="#c.CEPTON_ERROR_INVALID_FILE_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_FILE_IO">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8ab553e1ef5d822caeb3f2674e1cb06824"></span><code class="descname">CEPTON_ERROR_FILE_IO</code> = -12<a class="headerlink" href="#c.CEPTON_ERROR_FILE_IO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_CORRUPT_FILE">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8afe965d74f8ee3fdafff0058df60f08f0"></span><code class="descname">CEPTON_ERROR_CORRUPT_FILE</code> = -13<a class="headerlink" href="#c.CEPTON_ERROR_CORRUPT_FILE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_NOT_OPEN">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a1654fa47d80650b53249f4de5b18136f"></span><code class="descname">CEPTON_ERROR_NOT_OPEN</code> = -14<a class="headerlink" href="#c.CEPTON_ERROR_NOT_OPEN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_ERROR_EOF">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a825b7a5765359b94c20abe00042f6b84"></span><code class="descname">CEPTON_ERROR_EOF</code> = -15<a class="headerlink" href="#c.CEPTON_ERROR_EOF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_INTERNAL">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8aa07edabc8868d1645b9bc00652563fdb"></span><code class="descname">CEPTON_FAULT_INTERNAL</code> = -1000<a class="headerlink" href="#c.CEPTON_FAULT_INTERNAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal parameter out of range. </p>
+</dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_EXTREME_TEMPERATURE">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8afd2d469866d470f26a237bbd9f2590a4"></span><code class="descname">CEPTON_FAULT_EXTREME_TEMPERATURE</code> = -1001<a class="headerlink" href="#c.CEPTON_FAULT_EXTREME_TEMPERATURE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reading exceed spec. </p>
+</dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_EXTREME_HUMIDITY">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8adcb5560a2c7cd47ebb5e53e0d7698be2"></span><code class="descname">CEPTON_FAULT_EXTREME_HUMIDITY</code> = -1002<a class="headerlink" href="#c.CEPTON_FAULT_EXTREME_HUMIDITY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reading exceeds spec. </p>
+</dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_EXTREME_ACCELERATION">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a1405a7a2469bc256437ee4906e382dab"></span><code class="descname">CEPTON_FAULT_EXTREME_ACCELERATION</code> = -1003<a class="headerlink" href="#c.CEPTON_FAULT_EXTREME_ACCELERATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_ABNORMAL_FOV">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a80753e6dccc4bfc20b500fe5162b63b4"></span><code class="descname">CEPTON_FAULT_ABNORMAL_FOV</code> = -1004<a class="headerlink" href="#c.CEPTON_FAULT_ABNORMAL_FOV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_ABNORMAL_FRAME_RATE">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8adaded51ab9124c17725b7ce4538ec949"></span><code class="descname">CEPTON_FAULT_ABNORMAL_FRAME_RATE</code> = -1005<a class="headerlink" href="#c.CEPTON_FAULT_ABNORMAL_FRAME_RATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_MOTOR_MALFUNCTION">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a386f23f21e71d2d4386a7c276747c480"></span><code class="descname">CEPTON_FAULT_MOTOR_MALFUNCTION</code> = -1006<a class="headerlink" href="#c.CEPTON_FAULT_MOTOR_MALFUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_LASER_MALFUNCTION">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a9fbe6e1a4116f6faae7eb8a05a257181"></span><code class="descname">CEPTON_FAULT_LASER_MALFUNCTION</code> = -1007<a class="headerlink" href="#c.CEPTON_FAULT_LASER_MALFUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.CEPTON_FAULT_DETECTOR_MALFUNCTION">
+<span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a24eb87b4a350978543ce649c6778797e"></span><code class="descname">CEPTON_FAULT_DETECTOR_MALFUNCTION</code> = -1008<a class="headerlink" href="#c.CEPTON_FAULT_DETECTOR_MALFUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk19get_error_code_nameE15SensorErrorCode">
+<span id="cepton_sdk::get_error_code_name__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1a6053fbd96beeea7b8197fc1773c78fc1"></span><em class="property">static</em> std::string <code class="descclassname">cepton_sdk::</code><code class="descname">get_error_code_name</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk19get_error_code_nameE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns string name of error code. </p>
+<p>Returns empty string if error code is invalid. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk13is_error_codeE15SensorErrorCode">
+<span id="cepton_sdk::is_error_code__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1aa961511a37cbf20743354b386b2330d7"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::</code><code class="descname">is_error_code</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk13is_error_codeE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk13is_fault_codeE15SensorErrorCode">
+<span id="cepton_sdk::is_fault_code__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1acf6991d09f7013a474f3e014dad3dd56"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::</code><code class="descname">is_fault_code</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk13is_fault_codeE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="setup.html" class="btn btn-neutral float-right" title="Setup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cepton Technologies.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

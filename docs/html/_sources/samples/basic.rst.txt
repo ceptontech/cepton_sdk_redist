@@ -1,0 +1,7 @@
+Basic
+=====
+
+.. literalinclude:: ../../../samples/basic.cpp
+  :language: c
+  :linenos:
+  :caption: samples/basic.cpp

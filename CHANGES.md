@@ -1,4 +1,14 @@
 # Cepton SDK Release Notes
+
+## Version 1.0 2018-05-01
+* Added API documentation.
+* Major C interface changes.
+* Removed CeptonSensorPoint. All functions return CeptonSensorImagePoint.
+* Added frame accumulation modes.
+* CeptonViewer bugfixes/improvements.
+* Added C++, MATLAB, Python bindings.
+* Released partial source code.
+
 ### Version 0.9 (beta) 2018-01-09
 * New product line supported: Vista 860
 * New feature supported in all products: Multiple returns

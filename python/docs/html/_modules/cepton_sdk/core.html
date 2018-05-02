@@ -1,0 +1,225 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cepton_sdk.core &#8212; cepton_sdk  documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">cepton_sdk  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for cepton_sdk.core</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">atexit</span>
+<span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">cepton_sdk.c</span>
+<span class="kn">from</span> <span class="nn">cepton_sdk.common</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ControlFlag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FrameMode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;deinitialize&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_control_flags&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_frame_length&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_frame_mode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;get_port&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_control_flag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;is_initialized&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SensorError&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;set_control_flags&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;set_frame_options&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;set_port&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">SensorError</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span>
+    <span class="s2">&quot;SensorError&quot;</span><span class="p">,</span> <span class="s2">&quot;error_code message error_data&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ControlFlag"><a class="viewcode-back" href="../../setup.html#cepton_sdk.ControlFlag">[docs]</a><span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<span class="k">class</span> <span class="nc">ControlFlag</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="n">DISABLE_NETWORK</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+    <span class="n">DISABLE_IMAGE_CLIP</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span>
+    <span class="n">DISABLE_DISTANCE_CLIP</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span>
+    <span class="n">ENABLE_MULTIPLE_RETURNS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span></div>
+
+
+<span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
+<span class="k">class</span> <span class="nc">FrameMode</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="n">STREAMING</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">TIMED</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">COVER</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">CYCLE</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<span class="k">class</span> <span class="nc">_Manager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">_error_callback</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">_c_on_error</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">control_flags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">error_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">frame_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">error_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="o">=</span> <span class="n">error_callback</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_on_error</span> <span class="o">=</span> \
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_SensorErrorCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_global_on_error</span><span class="p">)</span>
+
+        <span class="n">c_options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_create_options</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">control_flags</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">c_options</span><span class="o">.</span><span class="n">control_flags</span> <span class="o">=</span> <span class="n">control_flags</span>
+        <span class="k">if</span> <span class="n">frame_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">c_options</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">frame_length</span>
+        <span class="k">if</span> <span class="n">frame_mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">c_options</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">frame_mode</span>
+        <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">c_options</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_initialize</span><span class="p">(</span>
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">SDK_VERSION</span><span class="p">,</span> <span class="n">c_options</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_c_on_error</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">deinitialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_deinitialize</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">BaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">set_error_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_callback</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="o">=</span> <span class="n">error_callback</span>
+
+    <span class="k">def</span> <span class="nf">clear_error_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_global_on_error</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">_manager</span><span class="o">.</span><span class="n">_on_error</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_on_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_handle</span><span class="p">,</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">error_data</span><span class="p">,</span> <span class="n">error_data_size</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">check_error_code</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">error_code</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">SensorError</span><span class="p">(</span>
+                <span class="n">error_code</span><span class="o">=</span><span class="n">error_code</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">error_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span><span class="p">(</span><span class="n">sensor_handle</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+
+
+<span class="n">_manager</span> <span class="o">=</span> <span class="n">_Manager</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">is_initialized</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_is_initialized</span><span class="p">())</span>
+
+
+<span class="n">deinitialize</span> <span class="o">=</span> <span class="n">_manager</span><span class="o">.</span><span class="n">deinitialize</span>
+
+<span class="n">set_error_callback</span> <span class="o">=</span> <span class="n">_manager</span><span class="o">.</span><span class="n">set_error_callback</span>
+<span class="n">clear_error_callback</span> <span class="o">=</span> <span class="n">_manager</span><span class="o">.</span><span class="n">clear_error_callback</span>
+
+
+<span class="k">def</span> <span class="nf">get_control_flags</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_get_control_flags</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">set_control_flags</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">flags</span><span class="p">):</span>
+    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_set_control_flags</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">has_control_flag</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_has_control_flag</span><span class="p">(</span><span class="n">flag</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">get_port</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_get_port</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">set_port</span><span class="p">(</span><span class="n">port</span><span class="p">):</span>
+    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_set_port</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">set_frame_options</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">c_options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_create_frame_options</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">c_options</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">length</span>
+    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_set_frame_options</span><span class="p">(</span><span class="n">c_options</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_frame_length</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_get_frame_length</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">get_frame_mode</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">FrameMode</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_get_frame_mode</span><span class="p">())</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">cepton_sdk  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Cepton Technologies.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

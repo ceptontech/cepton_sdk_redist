@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Utilities &mdash; cepton_sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
+        <link rel="next" title="Samples" href="samples.html"/>
+        <link rel="prev" title="API" href="api.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cepton_sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensors.html">Sensors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="points.html">Points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_replay.html">Capture Replay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#common">Common</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#points">Points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transform">Transform</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cepton_sdk</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Utilities</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/utilities.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="samples.html" class="btn btn-neutral float-right" title="Samples" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api.html" class="btn btn-neutral" title="API" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h1>
+<p>Utility functions and classes for prototyping (<cite>cepton_sdk_util.hpp</cite>).</p>
+<div class="section" id="common">
+<h2>Common<a class="headerlink" href="#common" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk18get_timestamp_usecEv">
+<span id="cepton_sdk::get_timestamp_usec"></span><span class="target" id="cepton__sdk__util_8hpp_1ad31a8985fc6f90efdd5b9dbc7bd39881"></span><em class="property">static</em> uint64_t <code class="descclassname">cepton_sdk::</code><code class="descname">get_timestamp_usec</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk18get_timestamp_usecEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns current unix timestamp [microseconds]. </p>
+<p>This is the timestamp format used by all sdk functions. </p>
+</dd></dl>
+
+</div>
+<div class="section" id="points">
+<h2>Points<a class="headerlink" href="#points" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk28convert_image_point_to_pointEfffRfRfRf">
+<span id="cepton_sdk::convert_image_point_to_point__float.float.float.floatR.floatR.floatR"></span><span class="target" id="cepton__sdk__util_8hpp_1a9df6d20d3909804cd67bc27cf163bdd8"></span><em class="property">static</em> void <code class="descclassname">cepton_sdk::</code><code class="descname">convert_image_point_to_point</code><span class="sig-paren">(</span>float <em>image_x</em>, float <em>image_z</em>, float <em>distance</em>, float &amp;<em>x</em>, float &amp;<em>y</em>, float &amp;<em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk28convert_image_point_to_pointEfffRfRfRf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert image point to 3d point. </p>
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv2N10cepton_sdk11SensorPointE">
+<span id="cepton_sdk::SensorPoint"></span><span class="target" id="structcepton__sdk_1_1SensorPoint"></span><em class="property">struct </em><code class="descclassname">cepton_sdk::</code><code class="descname">SensorPoint</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorPointE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>3d point class. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk11SensorPoint9timestampE">
+<span id="cepton_sdk::SensorPoint::timestamp__uint64_t"></span><span class="target" id="structcepton__sdk_1_1SensorPoint_1a5dce755f4ec68915698b9f660eb052b5"></span>uint64_t <code class="descname">timestamp</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorPoint9timestampE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk11SensorPoint1xE">
+<span id="cepton_sdk::SensorPoint::x__float"></span><span class="target" id="structcepton__sdk_1_1SensorPoint_1ae313c338cd4c05acc92fbdf9e82f38ea"></span>float <code class="descname">x</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorPoint1xE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk11SensorPoint1yE">
+<span id="cepton_sdk::SensorPoint::y__float"></span><span class="target" id="structcepton__sdk_1_1SensorPoint_1a1d962c0682be832ea10a659127a38629"></span>float <code class="descname">y</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorPoint1yE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk11SensorPoint1zE">
+<span id="cepton_sdk::SensorPoint::z__float"></span><span class="target" id="structcepton__sdk_1_1SensorPoint_1a201065357cf2e8458d123397a1e1ca96"></span>float <code class="descname">z</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorPoint1zE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk11SensorPoint9intensityE">
+<span id="cepton_sdk::SensorPoint::intensity__float"></span><span class="target" id="structcepton__sdk_1_1SensorPoint_1aac34db9a8ffab0743092edf82f903cda"></span>float <code class="descname">intensity</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorPoint9intensityE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk11SensorPoint13return_numberE">
+<span id="cepton_sdk::SensorPoint::return_number__uint8_t"></span><span class="target" id="structcepton__sdk_1_1SensorPoint_1aaa9e8c16a3d07712cf154ac3aabfc569"></span>uint8_t <code class="descname">return_number</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorPoint13return_numberE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk11SensorPoint5validE">
+<span id="cepton_sdk::SensorPoint::valid__uint8_t"></span><span class="target" id="structcepton__sdk_1_1SensorPoint_1a6f5dbd3782a99cb61c1523603ae23559"></span>uint8_t <code class="descname">valid</code><a class="headerlink" href="#_CPPv2N10cepton_sdk11SensorPoint5validE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk35convert_sensor_image_point_to_pointERK22CeptonSensorImagePointR11SensorPoint">
+<span id="cepton_sdk::convert_sensor_image_point_to_point__CeptonSensorImagePointCR.SensorPointR"></span><span class="target" id="cepton__sdk__util_8hpp_1a4ffa593a4209e9d9666868d2148196ab"></span><em class="property">static</em> void <code class="descclassname">cepton_sdk::</code><code class="descname">convert_sensor_image_point_to_point</code><span class="sig-paren">(</span><em class="property">const</em> CeptonSensorImagePoint &amp;<em>image_point</em>, <a class="reference internal" href="#_CPPv2N10cepton_sdk11SensorPointE" title="cepton_sdk::SensorPoint">SensorPoint</a> &amp;<em>point</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk35convert_sensor_image_point_to_pointERK22CeptonSensorImagePointR11SensorPoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convenience method to convert <code class="docutils literal"><a class="reference internal" href="points.html#structCeptonSensorImagePoint"><span class="std std-ref"><span class="pre">CeptonSensorImagePoint</span></span></a></code> to <code class="docutils literal"><a class="reference internal" href="#structcepton__sdk_1_1SensorPoint"><span class="std std-ref"><span class="pre">cepton_sdk::SensorPoint</span></span></a></code>. </p>
+</dd></dl>
+
+</div>
+<div class="section" id="transform">
+<h2>Transform<a class="headerlink" href="#transform" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransformE">
+<span id="cepton_sdk::CompiledTransform"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform"></span><em class="property">class </em><code class="descclassname">cepton_sdk::</code><code class="descname">CompiledTransform</code><a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransformE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>3d translation and rotation. </p>
+<p>For more functionality, use Eigen’s Geometry module. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform5applyERfRfRf">
+<span id="cepton_sdk::CompiledTransform::apply__floatR.floatR.floatR"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1af8c30e607f4861e9940e4706e1c136fa"></span>void <code class="descname">apply</code><span class="sig-paren">(</span>float &amp;<em>x</em>, float &amp;<em>y</em>, float &amp;<em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform5applyERfRfRf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Apply transformation to 3d position. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform11translationE">
+<span id="cepton_sdk::CompiledTransform::translation__std::array:float.3:"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1a6540520943009ca50a1bc06156807af3"></span>std::array&lt;float, 3&gt; <code class="descname">translation</code><a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform11translationE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m00E">
+<span id="cepton_sdk::CompiledTransform::rotation_m00__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1a3f96965648f2bf925824564637774f66"></span>float <code class="descname">rotation_m00</code> = 1.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m00E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m01E">
+<span id="cepton_sdk::CompiledTransform::rotation_m01__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1aa1c16ee284a2c91d1260c6f95f666e15"></span>float <code class="descname">rotation_m01</code> = 0.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m01E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m02E">
+<span id="cepton_sdk::CompiledTransform::rotation_m02__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1aa34687f71caf9b39726f521248634857"></span>float <code class="descname">rotation_m02</code> = 0.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m02E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m10E">
+<span id="cepton_sdk::CompiledTransform::rotation_m10__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1a19721fcfdbfda50ebb4ee3b2dc8150fd"></span>float <code class="descname">rotation_m10</code> = 0.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m10E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m11E">
+<span id="cepton_sdk::CompiledTransform::rotation_m11__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1ace0c391a157c11e288c7367cfe69c916"></span>float <code class="descname">rotation_m11</code> = 1.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m11E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m12E">
+<span id="cepton_sdk::CompiledTransform::rotation_m12__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1a004b4e5f24879a63d6ca3e98eabe3ca5"></span>float <code class="descname">rotation_m12</code> = 0.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m12E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m20E">
+<span id="cepton_sdk::CompiledTransform::rotation_m20__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1aa7d66f4936587afb0e1dcede7089e0f4"></span>float <code class="descname">rotation_m20</code> = 0.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m20E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m21E">
+<span id="cepton_sdk::CompiledTransform::rotation_m21__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1ae17a4b9b687d86b2caaa3579949198a1"></span>float <code class="descname">rotation_m21</code> = 0.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m21E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform12rotation_m22E">
+<span id="cepton_sdk::CompiledTransform::rotation_m22__float"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1a6c5f2a5ef7bc309adf9ce0697fecf0d0"></span>float <code class="descname">rotation_m22</code> = 1.0f<a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform12rotation_m22E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk17CompiledTransform6createEPCKfPCKf">
+<span id="cepton_sdk::CompiledTransform::create__floatCPC.floatCPC"></span><span class="target" id="classcepton__sdk_1_1CompiledTransform_1a69fa8d900c608b53e370a2675ebcc050"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv2N10cepton_sdk17CompiledTransformE" title="cepton_sdk::CompiledTransform">CompiledTransform</a> <code class="descname">create</code><span class="sig-paren">(</span><em class="property">const</em> float *<em class="property">const</em> <em>translation</em>, <em class="property">const</em> float *<em class="property">const</em> <em>rotation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk17CompiledTransform6createEPCKfPCKf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create from translation and rotation. </p>
+<p><dl class="docutils">
+<dt><strong>Parameters</strong></dt>
+<dd><ul class="breatheparameterlist first last simple">
+<li><code class="docutils literal"><span class="pre">translation</span></code>: Cartesian (x, y, z) </li>
+<li><code class="docutils literal"><span class="pre">rotation</span></code>: Quaternion (x, y, z, w) </li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="samples.html" class="btn btn-neutral float-right" title="Samples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api.html" class="btn btn-neutral" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cepton Technologies.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

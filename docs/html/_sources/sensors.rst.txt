@@ -1,0 +1,23 @@
+Sensors
+=======
+
+Types
+-----
+
+.. doxygentypedef:: cepton_sdk::SensorHandle
+
+.. doxygentypedef:: cepton_sdk::SensorModel
+.. doxygenenum:: _CeptonSensorModel
+
+.. doxygentypedef:: cepton_sdk::SensorInformation
+.. doxygenstruct:: CeptonSensorInformation
+  :members:
+  :undoc-members:
+
+Methods
+-------
+
+.. doxygenfunction:: cepton_sdk::get_n_sensors
+.. doxygenfunction:: cepton_sdk::get_sensor_handle_by_serial_number
+.. doxygenfunction:: cepton_sdk::get_sensor_information_by_index
+.. doxygenfunction:: cepton_sdk::get_sensor_information

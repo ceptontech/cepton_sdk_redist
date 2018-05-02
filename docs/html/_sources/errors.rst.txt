@@ -1,0 +1,16 @@
+Errors
+======
+
+Types
+-----
+
+.. doxygentypedef:: cepton_sdk::SensorErrorCode
+.. doxygentypedef:: CeptonSensorErrorCode
+.. doxygenenum:: _CeptonSensorErrorCode
+
+Methods
+-------
+
+.. doxygenfunction:: cepton_sdk::get_error_code_name
+.. doxygenfunction:: cepton_sdk::is_error_code
+.. doxygenfunction:: cepton_sdk::is_fault_code

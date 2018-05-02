@@ -1,0 +1,56 @@
+Points
+======
+
+Types
+-----
+
+.. autoclass:: cepton_sdk.ImagePoints
+  :members:
+
+.. autoclass:: cepton_sdk.Points
+  :members:
+
+All sdk methods return image points, but they can easily be converted to 3d points:
+
+.. code-block:: python
+  :linenos:
+
+  points = image_points.to_points()
+
+All point array classes support numpy indexing and assignment as if they were 1-d arrays:
+
+.. code-block:: python
+  :linenos:
+
+  n_points = len(image_points_1)
+  image_points_2[10:20] = image_points_1[:10]
+
+Multiple point arrays can also be combined:
+
+.. code-block:: python
+  :linenos:
+
+  image_points = cepton_sdk.ImagePoints.combine([image_points_1, image_points_2])
+
+Methods
+-------
+
+There are multiple methods for getting points, but only one method should be used at a time. For example, don't call :any:`cepton_sdk.get_sensor_image_frames` for multiple sensors. Instead, call :any:`cepton_sdk.get_image_frames`.
+
+Get by Frame
+~~~~~~~~~~~~
+
+.. autofunction:: cepton_sdk.get_image_frames
+.. autofunction:: cepton_sdk.get_sensor_image_frames
+
+Get by Time
+~~~~~~~~~~~
+
+.. autofunction:: cepton_sdk.get_image_points
+.. autofunction:: cepton_sdk.get_sensor_image_points
+
+Export
+~~~~~~
+
+.. autofunction:: cepton_sdk.export.save_points_las
+.. autofunction:: cepton_sdk.export.load_points_las
