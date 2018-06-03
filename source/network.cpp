@@ -76,12 +76,12 @@ void NetworkManager::deinitialize() {
 
   if (m_sensor_socket_ptr) {
     try {
-      m_sensor_socket_ptr->shutdown(asio::ip::tcp::socket::shutdown_both);
+      m_sensor_socket_ptr->shutdown(asio::ip::udp::socket::shutdown_both);
+      m_sensor_socket_ptr->close();
     } catch (std::system_error) {
       // On OSX we will get system_error: shutdown: Socket is not connected
       // This is safe to ignore
     }
-    m_sensor_socket_ptr->close();
   }
 
   if (m_io_service_ptr) {

@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-
 import pprint
 
 import cepton_sdk
-
 import common
 
 if __name__ == "__main__":

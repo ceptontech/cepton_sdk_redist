@@ -78,6 +78,8 @@ class Capture {
 
  private:
   void build_read_index();
+  bool load_read_index(std::ifstream &f);
+  void save_read_index(std::ofstream &f) const;
   void write_file_header();
   bool read_file_header();
 
@@ -96,6 +98,12 @@ class Capture {
   int64_t m_total_usec = 0;
   int64_t m_start_time = 0;
   int32_t m_timestamp_offset = 0;
+
+  struct IndexFileHeader {
+    std::size_t version = 0;
+    uint64_t start_time;
+    std::size_t n;
+  };
 
   struct PacketIndex {
     int64_t time_usec;

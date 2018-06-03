@@ -18,6 +18,13 @@ namespace api {
 /// Returns false if capture replay is open, true otherwise.
 static bool is_live() { return !capture_replay::is_open(); }
 
+static bool is_end() { return (is_live()) ? false : capture_replay::is_end(); }
+
+/// Returns capture replay time or live time.
+static uint64_t get_time() {
+  return (is_live()) ? get_timestamp_usec() : capture_replay::get_time();
+}
+
 /// Sleeps or resumes capture replay for duration.
 static SensorErrorCode wait(float t_length = 0.1f) {
   if (is_live()) {
@@ -26,16 +33,6 @@ static SensorErrorCode wait(float t_length = 0.1f) {
     return CEPTON_SUCCESS;
   } else {
     return capture_replay::resume_blocking(t_length);
-  }
-}
-
-/// Returns capture replay time or live time.
-static uint64_t get_time() {
-  if (is_live()) {
-    return get_timestamp_usec();
-  } else {
-    return capture_replay::get_start_time() +
-           (uint64_t)(1e6 * capture_replay::get_position());
   }
 }
 
@@ -54,8 +51,8 @@ struct SensorError : public std::runtime_error {
 /**
  * - If error, raises `cepton_sdk::api::SensorError` exception.
  * - If fault, prints message.
- * - Otherwise, does nothing. 
- * 
+ * - Otherwise, does nothing.
+ *
  * This is for sample code; production code should handle errors properly.
  */
 static void check_error_code(SensorErrorCode error_code,

@@ -3,9 +3,12 @@
 #include <cstring>
 
 #include <algorithm>
+#include <fstream>
 #include <string>
 
 #include "cepton_sdk_util.hpp"
+
+#include <iostream>
 
 namespace cepton_sdk {
 
@@ -106,7 +109,24 @@ bool Capture::open_for_read(std::string const &fname) {
     return false;
   }
   m_is_read_mode = true;
-  build_read_index();
+
+  bool index_loaded = false;
+
+  const std::string index_path =
+      fname + ".cep" + std::to_string(IndexFileHeader().version);
+  {
+    std::ifstream f(index_path.c_str(), std::ios::in | std::ios::binary);
+    if (f) index_loaded = load_read_index(f);
+  }
+  if (!index_loaded) {
+    build_read_index();
+    {
+      std::ofstream f(index_path.c_str(),
+                      std::ios::out | std::ios::trunc | std::ios::binary);
+      if (f) save_read_index(f);
+    }
+  }
+  if (!m_read_index.empty()) m_total_usec = m_read_index.back().time_usec;
   return true;
 }
 
@@ -184,18 +204,47 @@ void Capture::build_read_index() {
   for (;;) {
     if (fseek(m_fh, file_ptr, SEEK_SET)) break;           // Failed to seek
     if (fread(&rhdr, sizeof(rhdr), 1, m_fh) != 1) break;  // Done with file
-    if (m_start_time == 0) {
+    if (m_start_time == 0)
       m_start_time = rhdr.ts_sec * 1000000LL + rhdr.ts_usec;
-    }
     pi.time_usec = rhdr.ts_sec * 1000000LL + rhdr.ts_usec - m_start_time;
     pi.read_ptr = file_ptr;
     m_read_index.push_back(pi);  // Copy in
     file_ptr += sizeof(pcap_rec_header) + rhdr.incl_len;
     if (rhdr.incl_len == 0) break;  // Sanity check
   }
-  if (!m_read_index.empty()) {
-    m_total_usec = m_read_index.back().time_usec;
-  }
+}
+
+template <typename T>
+bool read_value(std::ifstream &f, T &value, int n = 1) {
+  f.read(reinterpret_cast<char *>(&value), n * sizeof(T));
+  return bool(f);
+}
+
+bool Capture::load_read_index(std::ifstream &f) {
+  m_read_index.clear();
+
+  IndexFileHeader hdr;
+  if (!read_value(f, hdr)) return false;
+  if (hdr.version != IndexFileHeader().version) return false;
+  m_start_time = hdr.start_time;
+  m_read_index.resize(hdr.n);
+  if (!read_value(f, m_read_index[0], hdr.n)) return false;
+  f.peek();
+  return f.eof();
+}
+
+template <typename T>
+void write_value(std::ofstream &f, const T &value, int n = 1) {
+  f.write(reinterpret_cast<const char *>(&value), n * sizeof(T));
+}
+
+void Capture::save_read_index(std::ofstream &f) const {
+  IndexFileHeader hdr;
+  hdr.start_time = m_start_time;
+  hdr.n = m_read_index.size();
+  write_value(f, hdr);
+  write_value(f, m_read_index[0], hdr.n);
+  f.close();
 }
 
 bool Capture::seek(int64_t usec) {
@@ -261,7 +310,7 @@ l_try_again:
   // Skip if port is not the right one (big endian)
   // 8808 = 0x2268 => 0x6822
   // 2368 = 0x0940 => 0x4009
-  //if ((hdr.udp_hdr.uh_dport != 0x6822) && (hdr.udp_hdr.uh_dport != 0x4009)) {
+  // if ((hdr.udp_hdr.uh_dport != 0x6822) && (hdr.udp_hdr.uh_dport != 0x4009)) {
   //  m_read_pointer += sizeof(pcap_rec_header) + hdr.rec_hdr.incl_len;
   //  goto l_try_again;
   //}

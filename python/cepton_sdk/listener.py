@@ -88,7 +88,6 @@ class _FramesListenerBase(object):
                 frame_tmp = self._frames.popleft()
                 self._n_points -= len(frame_tmp.points)
 
-
 def _global_on_image_points(*args):
     _frames_listener._on_image_points(*args)
 
@@ -144,10 +143,7 @@ class PointsListener(_ListenerBase):
 
     def get_points(self):
         self.update()
-        options = {
-            "frame_id_lb": self._frame_id,
-        }
-        frames_list = self._frames_listener.get_frames(**options)
+        frames_list = self._frames_listener.get_frames(frame_id_lb=self._frame_id)
         if len(frames_list) == 0:
             return {}
 

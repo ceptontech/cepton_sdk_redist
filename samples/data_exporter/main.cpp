@@ -159,7 +159,7 @@ void on_image_frame(CeptonSensorHandle sensor, size_t n_points,
 
 static void print_help() {
   printf(R"(
-Cepton data_exporter version 1.0
+Cepton data_exporter version 1.1
 
 Usage: data_exporter <options> <outputfile>
 

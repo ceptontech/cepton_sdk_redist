@@ -9,7 +9,7 @@ from ctypes import *
 
 import numpy
 
-SDK_VERSION = 10
+SDK_VERSION = 11
 
 # ------------------------------------------------------------------------------
 # Load library
@@ -91,6 +91,14 @@ def convert_ndarray_to_c_array(a, c_type):
     c_a_bytes = numpy.ctypeslib.as_ctypes(a_bytes)
     c_a = cast(c_a_bytes, POINTER(c_type))
     return c_a
+
+
+def unpackbits(a):
+    bits = numpy.unpackbits(a.flatten().view(numpy.uint8)).astype(bool)
+    bits = bits.reshape([a.size, -1, 8])
+    bits = bits[:, :, ::-1]
+    bits = bits.reshape(list(a.shape) + [-1])
+    return bits
 
 
 # ------------------------------------------------------------------------------
@@ -343,6 +351,8 @@ class C_SensorImagePoint(Structure):
         ("intensity", c_float),
         ("return_number", c_uint8),
         ("valid", c_uint8),
+        ("saturated", c_uint8),
+        ("reserved", c_uint8)
     ]
 
 

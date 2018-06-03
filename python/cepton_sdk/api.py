@@ -1,3 +1,4 @@
+import datetime
 import time
 
 import cepton_sdk.c
@@ -15,7 +16,9 @@ __all__ = [
     "get_sensor_image_points_by_n",
     "get_sensor_image_points",
     "get_sensors",
+    "get_time",
     "initialize",
+    "get_timestamp",
     "is_end",
     "is_live",
     "Sensor",
@@ -35,6 +38,19 @@ def is_end():
     if cepton_sdk.capture_replay.get_enable_loop():
         return False  # Looping captures never end
     return cepton_sdk.capture_replay.is_end()
+
+
+def get_timestamp():
+    """Returns unix timestamp"""
+    return datetime.datetime.utcnow().timestamp()
+
+
+def get_time():
+    """Returns capture replay time or live time"""
+    if is_live():
+        return get_timestamp()
+    else:
+        return cepton_sdk.capture_replay.get_time()
 
 
 def wait(t_length=0.1):
@@ -89,8 +105,9 @@ def clear_cache():
 
 
 def _get_points_wait(wait_func, return_partial=False, timeout=None):
-    if is_live():
-        cepton_sdk.listener.clear_cache()
+    if not cepton_sdk.core.is_initialized():
+        raise cepton_sdk.c.C_Error(cepton_sdk.c.C_Error.CEPTON_ERROR_NOT_INITIALIZED)
+
     if wait_func():
         return
     if is_end():
@@ -292,6 +309,9 @@ class Sensor(object):
 
     def is_hr80t(self):
         return self.model == cepton_sdk.sensor.SensorModel.HR80T
+
+    def is_hr80t_r2(self):
+        return self.model == cepton_sdk.sensor.SensorModel.HR80T_R2
 
     def is_hr80w(self):
         return self.model == cepton_sdk.sensor.SensorModel.HR80W

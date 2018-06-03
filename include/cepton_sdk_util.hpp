@@ -55,6 +55,7 @@ struct SensorPoint {
   float intensity;
   uint8_t return_number;
   uint8_t valid;
+  uint8_t saturated;
 };
 
 /// Convenience method to convert `CeptonSensorImagePoint` to
@@ -65,6 +66,7 @@ inline static void convert_sensor_image_point_to_point(
   point.intensity = image_point.intensity;
   point.return_number = image_point.return_number;
   point.valid = image_point.valid;
+  point.saturated = image_point.saturated;
 
   convert_image_point_to_point(image_point.image_x, image_point.image_z,
                                image_point.distance, point.x, point.y, point.z);

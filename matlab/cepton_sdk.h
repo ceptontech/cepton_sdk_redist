@@ -15,7 +15,7 @@ extern "C" {
 
 #include "cepton_export.h"
 
-#define CEPTON_SDK_VERSION 10
+#define CEPTON_SDK_VERSION 11
 
 //------------------------------------------------------------------------------
 // Errors
@@ -118,8 +118,10 @@ struct EXPORT CeptonSensorImagePoint {
   float distance;      ///< distance [meters]
   float image_z;       ///< z image coordinate
   float intensity;     ///< 0-1 scaled intensity
-  uint8_t return_number;
-  uint8_t valid;  ///< 1=valid; 0=clipped/invalid
+  uint8_t return_number; ///< 0=first return, 1=second return
+  uint8_t valid;       ///< 1=valid; 0=clipped/invalid
+  uint8_t saturated;   ///< If satruated, intensity cannot be trusted
+  uint8_t reserved;
 };
 EXPORT extern const size_t cepton_sensor_image_point_size;
 

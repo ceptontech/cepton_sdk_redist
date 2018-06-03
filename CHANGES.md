@@ -1,6 +1,13 @@
 # Cepton SDK Release Notes
 
-## Version 1.0 2018-05-01
+### Version 1.1 2018-06-03
+* Added `saturated` flag for all returned points.
+* Improved calibrations and better support for intensity output
+* Improved support for HR80T Rev2
+* Renamed data_exporter to cepton_data_exporter
+* Bugfixes and improvements
+
+### Version 1.0 2018-05-01
 * Added API documentation.
 * Major C interface changes.
 * Removed CeptonSensorPoint. All functions return CeptonSensorImagePoint.

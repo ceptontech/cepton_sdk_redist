@@ -26,12 +26,13 @@ class Points(StructureOfArrays):
         self.intensities = numpy.zeros([n])
         self.return_numbers = numpy.zeros([n], dtype=numpy.uint8)
         self.valid = numpy.zeros([n], dtype=bool)
+        self.saturated = numpy.zeros([n], dtype=bool)
         self._check_array_members()
 
     @classmethod
     def _get_array_member_names(cls):
         return ["timestamps", "positions", "intensities", "return_numbers",
-                "valid"]
+                "valid", "saturated"]
 
 
 class ImagePoints(StructureOfArrays, ToCMixin):
@@ -54,6 +55,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         self.intensities = numpy.zeros([n])
         self.return_numbers = numpy.zeros([n], dtype=numpy.uint8)
         self.valid = numpy.zeros([n], dtype=bool)
+        self.saturated = numpy.zeros([n], dtype=bool)
         self._check_array_members()
 
     @classmethod
@@ -63,7 +65,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
     @classmethod
     def _get_array_member_names(cls):
         return ["timestamps", "positions", "distances", "intensities",
-                "return_numbers", "valid"]
+                "return_numbers", "valid", "saturated"]
 
     @classmethod
     def from_c(cls, n_points, c_image_points):
@@ -79,6 +81,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         image_points.intensities[:] = data["intensity"]
         image_points.return_numbers[:] = data["return_number"]
         image_points.valid[:] = data["valid"]
+        image_points.saturated[:] = data["saturated"]
         return image_points
 
     def to_c(self, c_type=None):
@@ -94,6 +97,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         data["intensity"][:] = self.intensities
         data["return_number"][:] = self.return_numbers
         data["valid"][:] = self.valid
+        data["saturated"][:] = self.saturated
 
         c_image_points_ptr = \
             cepton_sdk.c.convert_ndarray_to_c_array(data, c_type)
@@ -109,6 +113,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         points.intensities[:] = self.intensities
         points.return_numbers[:] = self.return_numbers
         points.valid[:] = self.valid
+        points.saturated[:] = self.saturated
 
         hypotenuse_small = numpy.sqrt(
             self.positions[:, 0]**2 +
@@ -130,6 +135,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         image_points.intensities[:] = points.intensities
         image_points.return_numbers[:] = points.return_numbers
         image_points.valid[:] = points.valid
+        image_points.saturated[:] = points.saturated
 
         image_points.positions[:, :] = \
             -points.positions[:, [0, 2]] / points.positions[:, [1]]

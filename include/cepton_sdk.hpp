@@ -100,7 +100,7 @@ static Options create_options() { return cepton_sdk_create_options(); }
 /// Callback for receiving sdk and sensor errors.
 /**
  * Currently, error_data is not used.
-*/
+ */
 typedef void (*FpSensorErrorCallback)(SensorHandle handle,
                                       SensorErrorCode error_code,
                                       const char *error_msg,
@@ -225,7 +225,7 @@ static SensorErrorCode get_sensor_information(SensorHandle handle,
 /**
  * \param handle Unique sensor identifier (e.g. IP address).
  * Returns error if callback already set.
-*/
+ */
 typedef void (*FpNetworkReceiveCallback)(SensorHandle handle,
                                          uint8_t const *buffer,
                                          size_t buffer_size, void *user_data);
@@ -270,8 +270,8 @@ static bool is_open() { return (bool)cepton_sdk_capture_replay_is_open(); }
 
 /// Opens capture file.
 /**
-  * Must be called before any other replay functions listed below.
-  */
+ * Must be called before any other replay functions listed below.
+ */
 static SensorErrorCode open(const std::string &path) {
   return cepton_sdk_capture_replay_open(path.c_str());
 }
@@ -285,6 +285,11 @@ static uint64_t get_start_time() {
 
 /// Returns capture file position [seconds].
 static float get_position() { return cepton_sdk_capture_replay_get_position(); }
+
+/// Returns capture file time (unix time [microseconds])
+static uint64_t get_time() {
+  return get_start_time() + uint64_t(1e6f * get_position());
+}
 
 /// Returns capture file length [seconds].
 static float get_length() { return cepton_sdk_capture_replay_get_length(); }
@@ -304,6 +309,15 @@ static SensorErrorCode rewind() { return cepton_sdk_capture_replay_rewind(); }
  * Returns error if position is invalid.
  */
 static SensorErrorCode seek(float position) {
+  return cepton_sdk_capture_replay_seek(position);
+}
+
+/// Seek to relative capture file position [seconds].
+/**
+ * Returns error if position is invalid.
+ */
+static SensorErrorCode seek_relative(float position) {
+  position += get_position();
   return cepton_sdk_capture_replay_seek(position);
 }
 

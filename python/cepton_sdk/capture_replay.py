@@ -8,9 +8,11 @@ __all__ = [
     "get_length",
     "get_position",
     "get_start_time",
+    "get_time",
     "is_end",
     "is_open",
     "rewind",
+    "seek_relative",
     "seek",
 ]
 
@@ -41,6 +43,10 @@ def get_position():
     return float(cepton_sdk.c.c_capture_replay_get_position())
 
 
+def get_time():
+    return get_start_time() + get_position()
+
+
 def get_length():
     return float(cepton_sdk.c.c_capture_replay_get_length())
 
@@ -57,6 +63,11 @@ def rewind():
 def seek(t):
     cepton_sdk.c.c_capture_replay_seek(t)
     cepton_sdk.listener.clear_cache()
+
+
+def seek_relative(t):
+    t += get_position()
+    seek(t)
 
 
 def get_enable_loop():

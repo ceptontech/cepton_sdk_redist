@@ -1,11 +1,27 @@
-if(WINDOWS)
-  set(OS_NAME "win64")
+cmake_minimum_required(VERSION 2.8)
+project(cepton_sdk_redist)
+
+include("${PROJECT_SOURCE_DIR}/cmake/Redist.cmake")
+
+# ------------------------------------------------------------------------------
+# Install
+# ------------------------------------------------------------------------------
+install(PROGRAMS
+  "bin/${OS_NAME}/CeptonViewer"
+	DESTINATION .
+)
+
+set(CPACK_PACKAGE_NAME "cepton_sdk")
+set(CPACK_PACKAGE_VENDOR "Cepton Technologies")
+set(CPACK_PACKAGE_DESCRIPTION "Cepton SDK")
+set(CPACK_PACKAGE_CONTACT "Cepton Technologies")
+
+if(WIN32)
+  set(CPACK_GENERATOR "WIX")
+elseif(APPLE)
+  set(CPACK_GENERATOR "DragNDrop")
 elseif(UNIX)
-  if(APPLE)
-    set(OS_NAME "osx")
-  else()
-    execute_process(COMMAND uname -m OUTPUT_VARIABLE MACHINE_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
-    set(OS_NAME "linux-${MACHINE_ARCH}")
-else()
-  message(FATAL_ERROR "unsupported architecture")
+  set(CPACK_GENERATOR "DEB")
 endif()
+
+include(CPack)
