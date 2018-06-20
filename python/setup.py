@@ -1,12 +1,12 @@
 import platform
 import sys
 
-from setuptools import setup
+import setuptools
 
 if __name__ == "__main__":
-    setup(
+    setuptools.setup(
         name="cepton_sdk",
-        version="0.2",
+        version="0.2.1",
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
@@ -17,7 +17,7 @@ if __name__ == "__main__":
         ],
         keywords="cepton sdk",
         python_requires=">=3.3",
-        packages=["cepton_sdk", "cepton_util"],
+        packages=setuptools.find_packages(),
         include_package_data=True,
         install_requires=[
             "numpy",
