@@ -6,7 +6,7 @@ from setuptools import setup
 if __name__ == "__main__":
     setup(
         name="cepton_sdk",
-        version="0.1.2",
+        version="0.2",
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
@@ -17,10 +17,13 @@ if __name__ == "__main__":
         ],
         keywords="cepton sdk",
         python_requires=">=3.3",
-        packages=["cepton_sdk"],
+        packages=["cepton_sdk", "cepton_util"],
         include_package_data=True,
         install_requires=[
             "numpy",
+            "pyqt5",
+            "pyserial",
+            "transforms3d",
             "uuid",
         ]
     )
