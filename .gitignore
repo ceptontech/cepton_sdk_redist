@@ -1,1 +1,32 @@
-build*
+# OS
+# --
+.DS_Store
+
+# Build
+# -----
+build*/
+dist*/
+install*/
+
+# Visual Studio
+# -------------
+.vscode
+*.VC.db
+*.VC.VC.opendb
+.vs
+Debug
+Release
+ipch
+
+# CLion
+# -----
+.idea/
+cmake-build-debug
+
+# Python
+# ------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.benchmarks/
+*.egg-info/
