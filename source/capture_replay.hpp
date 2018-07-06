@@ -24,7 +24,7 @@ class CaptureReplay {
   virtual CeptonSensorErrorCode open(std::string const &fname);
   virtual CeptonSensorErrorCode close();
 
-  virtual uint64_t get_start_time() const;
+  virtual int64_t get_start_time() const;
   virtual float get_position() const;
   virtual float get_length() const;
   virtual bool is_end() const { return m_is_end; }

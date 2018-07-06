@@ -1,5 +1,11 @@
 # Cepton SDK Release Notes
 
+## Version 1.2 2018-07-09
+* Add support for latest VISTA_860 revision.
+* Change CeptonViewer point colormaps.
+* Change timestamps from uint64_t to int64_t.
+* Fix threading bugs.
+
 ### Version 1.1 2018-06-03
 * Added `saturated` flag for all returned points.
 * Improved calibrations and better support for intensity output
@@ -7,7 +13,7 @@
 * Renamed data_exporter to cepton_data_exporter
 * Bugfixes and improvements
 
-### Version 1.0 2018-05-01
+## Version 1.0 2018-05-01
 * Added API documentation.
 * Major C interface changes.
 * Removed CeptonSensorPoint. All functions return CeptonSensorImagePoint.

@@ -52,5 +52,9 @@ Get by Time
 Export
 ~~~~~~
 
+The following functions can easily be modified to export points to any binary file format.
+
 .. autofunction:: cepton_sdk.export.save_points_las
 .. autofunction:: cepton_sdk.export.load_points_las
+.. autofunction:: cepton_sdk.export.save_points_ply
+.. autofunction:: cepton_sdk.export.save_points_pcd

@@ -49,7 +49,6 @@ EXPORT int cepton_sdk_matlab_has_error();
 EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_error(
     CeptonSensorHandle *const handle, CeptonSensorErrorCode *const error_code,
     size_t *const msg_size);
-EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_error_data(char *const msg);
 
 EXPORT int cepton_sdk_matlab_has_image_points();
 EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_image_points(

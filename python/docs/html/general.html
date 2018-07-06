@@ -1,0 +1,133 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>General &#8212; cepton_sdk  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sensors" href="sensors.html" />
+    <link rel="prev" title="Setup" href="setup.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="sensors.html" title="Sensors"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="Setup"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cepton_sdk  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="general">
+<h1>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h1>
+<p>API for code that is agnostic to live/replay mode.</p>
+<dl class="function">
+<dt id="cepton_sdk.is_live">
+<code class="descclassname">cepton_sdk.</code><code class="descname">is_live</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#is_live"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.is_live" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if capture replay is not open, false otherwise.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cepton_sdk.get_timestamp">
+<code class="descclassname">cepton_sdk.</code><code class="descname">get_timestamp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns unix timestamp</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cepton_sdk.get_time">
+<code class="descclassname">cepton_sdk.</code><code class="descname">get_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns capture replay time or live time</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cepton_sdk.is_end">
+<code class="descclassname">cepton_sdk.</code><code class="descname">is_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#is_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.is_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if capture replay is open and at end, false otherwise.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cepton_sdk.wait">
+<code class="descclassname">cepton_sdk.</code><code class="descname">wait</code><span class="sig-paren">(</span><em>t_length=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resumes capture replay or sleeps for duration.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="setup.html"
+                        title="previous chapter">Setup</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sensors.html"
+                        title="next chapter">Sensors</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="sensors.html" title="Sensors"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="setup.html" title="Setup"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">cepton_sdk  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Cepton Technologies.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

@@ -9,7 +9,7 @@ from ctypes import *
 
 import numpy
 
-SDK_VERSION = 11
+SDK_VERSION = 13
 
 # ------------------------------------------------------------------------------
 # Load library
@@ -18,19 +18,21 @@ SDK_VERSION = 11
 
 def _load_c_library():
     module_path = os.path.dirname(os.path.abspath(__file__))
-    lib_dir = None
-    lib_name = None
     if sys.platform.startswith("linux"):
-        lib_dir = "lib/linux-{}/".format(platform.machine())
-        lib_name = "libcepton_sdk.so".format()
+        if platform.machine().startswith("armv"):
+            os_name = "linux-arm"
+        else:
+            os_name = "linux-{}".format(platform.machine())
+        lib_name = "libcepton_sdk.so"
     elif sys.platform.startswith("darwin"):
-        lib_dir = "lib/osx/"
+        os_name = "osx"
         lib_name = "libcepton_sdk.dylib"
     elif sys.platform.startswith("win"):
-        lib_dir = "lib/win64/"
+        os_name = "win64"
         lib_name = "cepton_sdk.dll"
     else:
         raise NotImplementedError("Platform not supported!")
+    lib_dir = "lib/{}/".format(os_name)
 
     # Try local and global search paths
     module_file = os.path.join(module_path, lib_dir, lib_name)
@@ -293,7 +295,7 @@ class C_SensorInformation(Structure):
         ("last_reported_age", c_float),
         ("", c_float),
 
-        ("ptp_ts", c_uint64),
+        ("ptp_ts", c_int64),
 
         ("gps_ts_year", c_uint8),
         ("gps_ts_month", c_uint8),
@@ -344,7 +346,7 @@ _add_c_error_check(c_get_sensor_information_by_index)
 
 class C_SensorImagePoint(Structure):
     _fields_ = [
-        ("timestamp", c_uint64),
+        ("timestamp", c_int64),
         ("image_x", c_float),
         ("distance", c_float),
         ("image_z", c_float),
@@ -389,7 +391,7 @@ _add_c_error_check(c_capture_replay_close)
 
 c_capture_replay_get_start_time = \
     libcepton_sdk.cepton_sdk_capture_replay_get_start_time
-c_capture_replay_get_start_time.restype = c_uint64
+c_capture_replay_get_start_time.restype = c_int64
 
 c_capture_replay_get_position = \
     libcepton_sdk.cepton_sdk_capture_replay_get_position

@@ -215,7 +215,7 @@ void Capture::build_read_index() {
 }
 
 template <typename T>
-bool read_value(std::ifstream &f, T &value, int n = 1) {
+bool read_value(std::ifstream &f, T &value, size_t n = 1) {
   f.read(reinterpret_cast<char *>(&value), n * sizeof(T));
   return bool(f);
 }

@@ -3,6 +3,7 @@
 import pprint
 
 import cepton_sdk
+import cepton_sdk.plot
 import common
 
 if __name__ == "__main__":
@@ -23,4 +24,4 @@ if __name__ == "__main__":
     points = image_points.to_points()
 
     # Plot
-    common.plot_points(points)
+    cepton_sdk.plot.plot_points(points)

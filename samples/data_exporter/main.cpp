@@ -184,7 +184,7 @@ Options are:
       Valid formats are csv, json, or bin. Default is csv. Binary files uses
       CeptonSensorImagePoint structure for each point. CSV and JSON will 
       convert timestamps to seconds since epoch, while BIN will retain the 
-      uint_64 value of microseconds since epoch.
+      int64 value of microseconds since epoch.
 
   -x, --convert
      If specified, points are converted to world coordinates XYZI. By default

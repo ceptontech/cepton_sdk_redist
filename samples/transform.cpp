@@ -1,5 +1,4 @@
-#include "cepton_sdk.hpp"
-#include "cepton_sdk_util.hpp"
+#include "cepton_sdk_api.hpp"
 
 int main() {
   // Create transform

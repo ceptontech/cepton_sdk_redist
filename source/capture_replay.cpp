@@ -37,12 +37,11 @@ CeptonSensorErrorCode CaptureReplay::close() {
     m_capture.close();
   }
   m_is_end = true;
-  cepton_sdk_set_control_flags(CEPTON_SDK_CONTROL_DISABLE_NETWORK, 0);
   cepton_sdk_set_mock_time_base(0);
   return CEPTON_SUCCESS;
 }
 
-uint64_t CaptureReplay::get_start_time() const {
+int64_t CaptureReplay::get_start_time() const {
   if (!is_open()) return 0;
 
   std::lock_guard<std::mutex> lock(m_capture_mutex);
@@ -86,7 +85,7 @@ CeptonSensorErrorCode CaptureReplay::seek(float sec) {
   cepton_sdk_clear_cache();
   {
     std::lock_guard<std::mutex> lock(m_capture_mutex);
-    if (!m_capture.seek((int64_t)(sec * 1e6f))) return m_capture.error_code();
+    if (!m_capture.seek(int64_t(1e6f * sec))) return m_capture.error_code();
   }
   if (is_running_tmp) resume();
   return CEPTON_SUCCESS;
@@ -213,7 +212,7 @@ void CaptureReplay::sleep_once() {
     std::lock_guard<std::mutex> lock(m_capture_mutex);
     offset_usec = m_capture.current_offset_usec() - m_start_offset_usec;
   }
-  offset_usec = (int64_t)((float)offset_usec / m_speed);
+  offset_usec = int64_t((float)offset_usec / m_speed);
 
   const int64_t t_delta = offset_usec - ts_usec;
   if (std::abs(t_delta) > (int)1e6) {

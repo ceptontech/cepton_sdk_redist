@@ -55,10 +55,10 @@ def get_time():
 
 def wait(t_length=0.1):
     """Resumes capture replay or sleeps for duration."""
-    if cepton_sdk.capture_replay.is_open():
-        cepton_sdk.capture_replay.resume_blocking(t_length)
-    else:
+    if is_live() or cepton_sdk.capture_replay.is_running():
         time.sleep(t_length)
+    else:
+        cepton_sdk.capture_replay.resume_blocking(t_length)
 
 
 def _wait_on_func(func, timeout=None):
@@ -91,12 +91,12 @@ def initialize(capture_path=None, control_flags=0, error_callback=None, port=Non
     cepton_sdk.core._manager.initialize(**options)
     cepton_sdk.listener.initialize()
 
-    if capture_path is None:
-        time.sleep(1)
-    else:
+    if capture_path is not None:
         cepton_sdk.capture_replay.open(capture_path)
-        cepton_sdk.capture_replay.resume_blocking(1)
+    wait(3)
+    if capture_path is not None:
         cepton_sdk.capture_replay.seek(0)
+    # print(keys(get_sensors()))
 
 
 def clear_cache():
@@ -106,7 +106,8 @@ def clear_cache():
 
 def _get_points_wait(wait_func, return_partial=False, timeout=None):
     if not cepton_sdk.core.is_initialized():
-        raise cepton_sdk.c.C_Error(cepton_sdk.c.C_Error.CEPTON_ERROR_NOT_INITIALIZED)
+        raise cepton_sdk.c.C_Error(
+            cepton_sdk.c.C_Error.CEPTON_ERROR_NOT_INITIALIZED)
 
     if wait_func():
         return

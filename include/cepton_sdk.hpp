@@ -113,10 +113,11 @@ static bool is_initialized() { return (bool)cepton_sdk_is_initialized(); }
 /**
  * Must be called before any other sdk function listed below.
  */
-static SensorErrorCode initialize(int ver, const Options &options,
-                                  const FpSensorErrorCallback &cb,
-                                  void *const user_data) {
-  return cepton_sdk_initialize(ver, &options, cb, user_data);
+static SensorErrorCode initialize(int version,
+                                  const Options &options = create_options(),
+                                  const FpSensorErrorCallback &cb = nullptr,
+                                  void *const user_data = nullptr) {
+  return cepton_sdk_initialize(version, &options, cb, user_data);
 }
 
 /// Resets everything and deallocates memory.

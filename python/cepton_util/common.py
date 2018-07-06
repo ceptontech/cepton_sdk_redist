@@ -8,7 +8,6 @@ import sys
 import threading
 import time
 
-import PyQt5.QtWidgets
 import serial
 import serial.tools.list_ports
 
@@ -63,23 +62,6 @@ def get_environment(key):
         return STRING_BOOL_LOOKUP[s.lower()]
     return s
 
-
-def get_serial_port_dialog(filter_func=None):
-    app = PyQt5.QtWidgets.QApplication([])
-
-    ports = serial.tools.list_ports.comports()
-    if filter_func is not None:
-        ports = list(filter(filter_func, ports))
-    port_names = [str(x) for x in ports]
-    port_lookup = {str(x): x.device for x in ports}
-    item, valid = PyQt5.QtWidgets.QInputDialog.getItem(
-        None, "Select Serial Port", "Port:", port_names, 0, False)
-    if valid:
-        return port_lookup[item]
-    else:
-        return None
-
-    app.exec_()
 
 # ------------------------------------------------------------------------------
 # Execute process

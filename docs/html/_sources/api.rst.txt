@@ -1,11 +1,12 @@
 API
 ===
 
-High level SDK api for prototyping (`cepton_sdk_api.hpp`). Mimics Python SDK api.
+High level SDK api for prototyping (`cepton_sdk_api.hpp`). Methods are agnostic to live/replay mode.
 
 .. doxygenfunction:: cepton_sdk::api::is_live
-.. doxygenfunction:: cepton_sdk::api::wait
+.. doxygenfunction:: cepton_sdk::api::is_end
 .. doxygenfunction:: cepton_sdk::api::get_time
+.. doxygenfunction:: cepton_sdk::api::wait
 
 Errors
 ------

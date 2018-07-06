@@ -18,7 +18,7 @@ function initialize(varargin)
 
     error_code = ...
         cepton_sdk.c.call('cepton_sdk_matlab_initialize', ...
-            cepton_sdk.c.sdk_version(), control_flags);
+            13, control_flags);
     cepton_sdk.c.check_error_code(error_code)
 
     if cepton_sdk.common.is_none(args.capture_path)

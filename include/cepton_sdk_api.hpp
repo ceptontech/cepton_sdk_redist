@@ -27,7 +27,7 @@ static uint64_t get_time() {
 
 /// Sleeps or resumes capture replay for duration.
 static SensorErrorCode wait(float t_length = 0.1f) {
-  if (is_live()) {
+  if (is_live() || capture_replay::is_running()) {
     std::this_thread::sleep_for(
         std::chrono::milliseconds((int)(1e3f * t_length)));
     return CEPTON_SUCCESS;
@@ -77,7 +77,7 @@ static void check_error_code(SensorErrorCode error_code,
 /**
  * Calls `cepton_sdk::api::check_error_code`.
  */
-static void default_on_error(SensorHandle h, int error_code,
+static void default_on_error(SensorHandle h, SensorErrorCode error_code,
                              const char *const error_msg,
                              const void *const error_data,
                              std::size_t error_data_size,
@@ -94,8 +94,8 @@ inline static SensorErrorCode initialize(Options options = create_options(),
   // Initialize
   if (!capture_path.empty())
     options.control_flags |= CEPTON_SDK_CONTROL_DISABLE_NETWORK;
-  auto error_code = ::cepton_sdk::initialize(CEPTON_SDK_VERSION, options,
-                                             default_on_error, nullptr);
+  auto error_code =
+      ::cepton_sdk::initialize(CEPTON_SDK_VERSION, options, default_on_error);
   if (error_code) return error_code;
 
   // Open capture replay

@@ -14,7 +14,7 @@ import numpy
 import cepton_sdk
 import cepton_sdk.capture_replay
 import cepton_sdk.export
-import common
+from cepton_util.common import *
 
 
 def main():
@@ -27,11 +27,11 @@ def main():
     parser.add_argument("--t_length", type=float, help="Maximum export time.")
     args = parser.parse_args()
 
-    output_dir = common.fix_path(args.output)
+    output_dir = fix_path(args.output)
     shutil.rmtree(output_dir, ignore_errors=True)
 
     options = {
-        "capture_path": common.fix_path(args.capture_path),
+        "capture_path": fix_path(args.capture_path),
     }
     cepton_sdk.initialize(**options)
     if args.capture_seek is not None:

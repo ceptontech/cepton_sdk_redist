@@ -176,7 +176,7 @@
             
   <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
-<p>High level SDK api for prototyping (<cite>cepton_sdk_api.hpp</cite>). Mimics Python SDK api.</p>
+<p>High level SDK api for prototyping (<cite>cepton_sdk_api.hpp</cite>). Methods are agnostic to live/replay mode.</p>
 <dl class="function">
 <dt id="_CPPv2N10cepton_sdk3api7is_liveEv">
 <span id="cepton_sdk::api::is_live"></span><span class="target" id="cepton__sdk__api_8hpp_1af39df450aab1f9d6265a7e0ec27d2df0"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::api::</code><code class="descname">is_live</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk3api7is_liveEv" title="Permalink to this definition">¶</a><br /></dt>
@@ -184,15 +184,20 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk3api4waitEf">
-<span id="cepton_sdk::api::wait__float"></span><span class="target" id="cepton__sdk__api_8hpp_1ae5abb2d21deac54f267877730478f557"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::api::</code><code class="descname">wait</code><span class="sig-paren">(</span>float <em>t_length</em> = 0.1f<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk3api4waitEf" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Sleeps or resumes capture replay for duration. </p>
-</dd></dl>
+<dt id="_CPPv2N10cepton_sdk3api6is_endEv">
+<span id="cepton_sdk::api::is_end"></span><span class="target" id="cepton__sdk__api_8hpp_1aa8c8dfa807092b5bf2cbd64dce2ef42c"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::api::</code><code class="descname">is_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk3api6is_endEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="_CPPv2N10cepton_sdk3api8get_timeEv">
 <span id="cepton_sdk::api::get_time"></span><span class="target" id="cepton__sdk__api_8hpp_1a5e5a7c0f5b9b46d12e42c0ab73e5c2d9"></span><em class="property">static</em> uint64_t <code class="descclassname">cepton_sdk::api::</code><code class="descname">get_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk3api8get_timeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture replay time or live time. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv2N10cepton_sdk3api4waitEf">
+<span id="cepton_sdk::api::wait__float"></span><span class="target" id="cepton__sdk__api_8hpp_1ae5abb2d21deac54f267877730478f557"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::api::</code><code class="descname">wait</code><span class="sig-paren">(</span>float <em>t_length</em> = 0.1f<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk3api4waitEf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sleeps or resumes capture replay for duration. </p>
 </dd></dl>
 
 <div class="section" id="errors">
@@ -218,8 +223,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk3api16default_on_errorE12SensorHandleiPCKcPCKvNSt6size_tEPCv">
-<span id="cepton_sdk::api::default_on_error__SensorHandle.i.cCPC.voidCPC.std::s.voidPC"></span><span class="target" id="cepton__sdk__api_8hpp_1a49775c39062eb95e51db745bd50861bb"></span><em class="property">static</em> void <code class="descclassname">cepton_sdk::api::</code><code class="descname">default_on_error</code><span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv2N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> <em>h</em>, int <em>error_code</em>, <em class="property">const</em> char *<em class="property">const</em> <em>error_msg</em>, <em class="property">const</em> void *<em class="property">const</em> <em>error_data</em>, std::size_t <em>error_data_size</em>, void *<em class="property">const</em> <em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk3api16default_on_errorE12SensorHandleiPCKcPCKvNSt6size_tEPCv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv2N10cepton_sdk3api16default_on_errorE12SensorHandle15SensorErrorCodePCKcPCKvNSt6size_tEPCv">
+<span id="cepton_sdk::api::default_on_error__SensorHandle.SensorErrorCode.cCPC.voidCPC.std::s.voidPC"></span><span class="target" id="cepton__sdk__api_8hpp_1aaebecf875c0139e68fadcae5c07b0360"></span><em class="property">static</em> void <code class="descclassname">cepton_sdk::api::</code><code class="descname">default_on_error</code><span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv2N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> <em>h</em>, <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em>, <em class="property">const</em> char *<em class="property">const</em> <em>error_msg</em>, <em class="property">const</em> void *<em class="property">const</em> <em>error_data</em>, std::size_t <em>error_data_size</em>, void *<em class="property">const</em> <em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk3api16default_on_errorE12SensorHandle15SensorErrorCodePCKcPCKvNSt6size_tEPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Basic SDK error callback. </p>
 <p>Calls <code class="docutils literal"><span class="pre">cepton_sdk::api::check_error_code</span></code>. </p>
 </dd></dl>

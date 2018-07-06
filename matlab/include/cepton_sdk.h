@@ -15,7 +15,7 @@ extern "C" {
 
 #include "cepton_export.h"
 
-#define CEPTON_SDK_VERSION 11
+#define CEPTON_SDK_VERSION 13
 
 //------------------------------------------------------------------------------
 // Errors
@@ -87,7 +87,7 @@ struct EXPORT CeptonSensorInformation {
   float last_reported_age;          ///< [hours]
   float padding;
 
-  uint64_t ptp_ts;
+  int64_t ptp_ts;
 
   uint8_t gps_ts_year;   ///< 0-99 (2017 -> 17)
   uint8_t gps_ts_month;  ///< 1-12
@@ -113,14 +113,14 @@ EXPORT extern const size_t cepton_sensor_information_size;
  * To convert to 3d point, refer to `cepton_sdk_util.hpp`.
 */
 struct EXPORT CeptonSensorImagePoint {
-  uint64_t timestamp;  ///< unix time [microseconds]
+  int64_t timestamp;  ///< unix time [microseconds]
   float image_x;       ///< x image coordinate
   float distance;      ///< distance [meters]
   float image_z;       ///< z image coordinate
   float intensity;     ///< 0-1 scaled intensity
   uint8_t return_number; ///< 0=first return, 1=second return
   uint8_t valid;       ///< 1=valid; 0=clipped/invalid
-  uint8_t saturated;   ///< If satruated, intensity cannot be trusted
+  uint8_t saturated;   ///< If saturated, intensity cannot be trusted
   uint8_t reserved;
 };
 EXPORT extern const size_t cepton_sensor_image_point_size;
@@ -255,7 +255,7 @@ EXPORT CeptonSensorErrorCode cepton_sdk_listen_network_packet(
     FpCeptonNetworkReceiveCallback cb, void *const user_data);
 EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_network_packet();
 
-EXPORT CeptonSensorErrorCode cepton_sdk_set_mock_time_base(uint64_t time_base);
+EXPORT CeptonSensorErrorCode cepton_sdk_set_mock_time_base(int64_t time_base);
 
 EXPORT CeptonSensorErrorCode cepton_sdk_mock_network_receive(
     CeptonSensorHandle handle, const uint8_t *const buffer, size_t buffer_size);
@@ -268,7 +268,7 @@ EXPORT CeptonSensorErrorCode
 cepton_sdk_capture_replay_open(const char *const path);
 EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_close();
 
-EXPORT uint64_t cepton_sdk_capture_replay_get_start_time();
+EXPORT int64_t cepton_sdk_capture_replay_get_start_time();
 EXPORT float cepton_sdk_capture_replay_get_position();
 EXPORT float cepton_sdk_capture_replay_get_length();
 EXPORT int cepton_sdk_capture_replay_is_end();
