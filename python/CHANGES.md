@@ -1,6 +1,6 @@
 # Cepton SDK Python Release Notes
 
-### Version 0.3 (beta) 2018-06-06
+### Version 0.3 (beta) 2018-07-06
 * Update SDK binaries.
 * Add export points sample.
 

@@ -20,7 +20,6 @@ __all__ = [
     "fix_path",
     "get_environment",
     "get_output_path",
-    "get_serial_port_dialog",
     "get_timestamp_str",
     "get_timestamp",
     "modify_path",
