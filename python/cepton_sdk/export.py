@@ -151,6 +151,8 @@ def get_points_file_type_extension(file_type):
 
 
 def save_points(points, path, file_type=PointsFileType.LAS):
+    ext = get_points_file_type_extension(file_type)
+    path = os.path.splitext(path)[0] + ext
     if file_type == PointsFileType.LAS:
         save_points_las(points, path)
     elif file_type == PointsFileType.PCD:

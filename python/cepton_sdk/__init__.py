@@ -1,5 +1,5 @@
 __author__ = "Cepton Technologies"
-__version__ = "0.3.2"
+__version__ = "0.3.4"
 
 import cepton_sdk.capture_replay
 
