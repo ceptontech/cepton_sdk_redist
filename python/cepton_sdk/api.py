@@ -6,7 +6,7 @@ import cepton_sdk.capture_replay
 import cepton_sdk.core
 import cepton_sdk.listener
 import cepton_sdk.sensor
-from cepton_sdk.common import *
+from cepton_sdk.common.function import *
 
 __all__ = [
     "clear_cache",
@@ -96,7 +96,6 @@ def initialize(capture_path=None, control_flags=0, error_callback=None, port=Non
     wait(3)
     if capture_path is not None:
         cepton_sdk.capture_replay.seek(0)
-    # print(keys(get_sensors()))
 
 
 def clear_cache():

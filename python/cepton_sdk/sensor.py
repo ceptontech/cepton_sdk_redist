@@ -2,7 +2,7 @@ import ctypes
 import enum
 
 import cepton_sdk.c
-from cepton_sdk.common import *
+from cepton_sdk.common.mixin import *
 
 __all__ = [
     "get_n_sensors",

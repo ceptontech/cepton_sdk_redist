@@ -1,6 +1,10 @@
 import vispy.scene
 import vispy.app
 
+__all__ = [
+    "plot_points",
+]
+
 
 def plot_points(points):
     # Initialize canvas

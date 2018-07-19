@@ -1,22 +1,20 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include <iostream>
 #include <string>
 #include <vector>
 
-#include "cepton_sdk_api.hpp"
+#include <cepton_sdk_api.hpp>
+
+cepton_sdk::util::SensorImageFramesCallbackManager callback_manager;
+
+void on_image_frame(cepton_sdk::SensorHandle handle, std::size_t n_points,
+                    const cepton_sdk::SensorImagePoint *c_image_points) {}
 
 /// Frames callback.
 class FramesListener {
  public:
-  static void global_on_image_frame(
-      cepton_sdk::SensorHandle handle, std::size_t n_points,
-      const cepton_sdk::SensorImagePoint *c_image_points,
-      void *const instance) {
-    ((FramesListener *)instance)
-        ->on_image_frame(handle, n_points, c_image_points);
-  }
-
   void on_image_frame(cepton_sdk::SensorHandle handle, std::size_t n_points,
                       const cepton_sdk::SensorImagePoint *c_image_points) {
     // Get sensor info
@@ -44,6 +42,7 @@ int main(int argc, char **argv) {
   // Initialize
   cepton_sdk::api::check_error_code(
       cepton_sdk::api::initialize(cepton_sdk::create_options(), capture_path));
+  cepton_sdk::api::check_error_code(callback_manager.initialize());
 
   // Get sensor
   std::printf("Waiting for sensor to connect...\n");
@@ -56,10 +55,20 @@ int main(int argc, char **argv) {
 
   // Listen for frames
   std::printf("Listening for frames...\n");
+
+  // Listen lambda
+  callback_manager.listen(
+      [](cepton_sdk::SensorHandle handle, std::size_t n_points,
+         const cepton_sdk::SensorImagePoint *c_image_points) {});
+
+  // Listen global function
+  callback_manager.listen(on_image_frame);
+
+  // Listen member function
   FramesListener frames_listener;
-  cepton_sdk::api::check_error_code(cepton_sdk::listen_image_frames(
-      FramesListener::global_on_image_frame, &frames_listener));
-  cepton_sdk::api::check_error_code(cepton_sdk::api::wait(1.0f));
+  callback_manager.listen(&frames_listener, &FramesListener::on_image_frame);
+
+  cepton_sdk::api::check_error_code(cepton_sdk::api::wait(5.0f));
 
   // Deinitialize (optional)
   cepton_sdk::api::check_error_code(cepton_sdk::deinitialize());

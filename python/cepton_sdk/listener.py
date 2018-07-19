@@ -4,7 +4,7 @@ import threading
 import cepton_sdk.c
 import cepton_sdk.point
 import cepton_sdk.sensor
-from cepton_sdk.common import *
+from cepton_sdk.common.function import *
 
 
 class _Frame(object):
@@ -88,14 +88,12 @@ class _FramesListenerBase(object):
                 frame_tmp = self._frames.popleft()
                 self._n_points -= len(frame_tmp.points)
 
-def _global_on_image_points(*args):
-    _frames_listener._on_image_points(*args)
-
 
 class _FramesListener(_FramesListenerBase):
     def initialize(self):
         self._c_on_points = \
-            cepton_sdk.c.C_SensorImageDataCallback(_global_on_image_points)
+            cepton_sdk.c.C_SensorImageDataCallback(
+                lambda *args: self._on_image_points(*args))
         cepton_sdk.c.c_listen_image_frames(self._c_on_points, None)
 
     def _on_image_points(self, sensor_handle, n_points, c_image_points_ptr, c_user_data_ptr):
@@ -143,7 +141,8 @@ class PointsListener(_ListenerBase):
 
     def get_points(self):
         self.update()
-        frames_list = self._frames_listener.get_frames(frame_id_lb=self._frame_id)
+        frames_list = self._frames_listener.get_frames(
+            frame_id_lb=self._frame_id)
         if len(frames_list) == 0:
             return {}
 

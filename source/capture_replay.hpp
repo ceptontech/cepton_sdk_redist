@@ -21,14 +21,13 @@ class CaptureReplay {
 
   virtual std::string filename() const;
   virtual bool is_open() const;
-  virtual CeptonSensorErrorCode open(std::string const &fname);
+  virtual CeptonSensorErrorCode open(std::string const& fname);
   virtual CeptonSensorErrorCode close();
 
   virtual int64_t get_start_time() const;
   virtual float get_position() const;
   virtual float get_length() const;
   virtual bool is_end() const { return m_is_end; }
-  virtual CeptonSensorErrorCode rewind();
   virtual CeptonSensorErrorCode seek(float sec);
 
   virtual CeptonSensorErrorCode set_enable_loop(bool enable_loop);
@@ -44,6 +43,10 @@ class CaptureReplay {
   virtual CeptonSensorErrorCode pause();
 
  private:
+  CeptonSensorErrorCode modify_setting(const std::function<void()>& func);
+  CeptonSensorErrorCode run_paused(
+      const std::function<CeptonSensorErrorCode()>& func);
+  CeptonSensorErrorCode seek_impl(int64_t usec);
   void reset_time();
   void sleep_once();
   void feed_pcap_once(bool enable_sleep);

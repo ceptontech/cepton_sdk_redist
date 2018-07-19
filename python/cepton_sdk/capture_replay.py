@@ -11,7 +11,6 @@ __all__ = [
     "get_time",
     "is_end",
     "is_open",
-    "rewind",
     "seek_relative",
     "seek",
 ]
@@ -53,11 +52,6 @@ def get_length():
 
 def is_end():
     return bool(cepton_sdk.c.c_capture_replay_is_end())
-
-
-def rewind():
-    cepton_sdk.c.c_capture_replay_rewind()
-    cepton_sdk.listener.clear_cache()
 
 
 def seek(t):

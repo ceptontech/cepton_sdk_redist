@@ -11,7 +11,6 @@ PCAP capture file replay. Source code can be found in the `source` folder. Funct
 .. doxygenfunction:: cepton_sdk::capture_replay::get_position
 .. doxygenfunction:: cepton_sdk::capture_replay::get_length
 .. doxygenfunction:: cepton_sdk::capture_replay::is_end
-.. doxygenfunction:: cepton_sdk::capture_replay::rewind
 .. doxygenfunction:: cepton_sdk::capture_replay::seek
 
 .. doxygenfunction:: cepton_sdk::capture_replay::set_enable_loop

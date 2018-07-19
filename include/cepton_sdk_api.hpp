@@ -22,7 +22,7 @@ static bool is_end() { return (is_live()) ? false : capture_replay::is_end(); }
 
 /// Returns capture replay time or live time.
 static uint64_t get_time() {
-  return (is_live()) ? get_timestamp_usec() : capture_replay::get_time();
+  return (is_live()) ? util::get_timestamp_usec() : capture_replay::get_time();
 }
 
 /// Sleeps or resumes capture replay for duration.
@@ -55,9 +55,9 @@ struct SensorError : public std::runtime_error {
  *
  * This is for sample code; production code should handle errors properly.
  */
-static void check_error_code(SensorErrorCode error_code,
-                             const std::string &msg = "") {
-  if (!error_code) return;
+static SensorErrorCode check_error_code(SensorErrorCode error_code,
+                                        const std::string &msg = "") {
+  if (!error_code) return error_code;
   std::string error_code_name = get_error_code_name(error_code);
   char error_msg[100];
   if (msg.empty()) {
@@ -71,6 +71,7 @@ static void check_error_code(SensorErrorCode error_code,
   } else {
     std::fprintf(stderr, "%s", error_msg);
   }
+  return error_code;
 }
 
 /// Basic SDK error callback.

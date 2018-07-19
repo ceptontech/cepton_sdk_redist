@@ -4,12 +4,11 @@ import enum
 import warnings
 
 import cepton_sdk.c
-from cepton_sdk.common import *
 
 __all__ = [
     "ControlFlag",
-    "FrameMode",
     "deinitialize",
+    "FrameMode",
     "get_control_flags",
     "get_frame_length",
     "get_frame_mode",

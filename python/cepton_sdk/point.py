@@ -1,6 +1,6 @@
 import cepton_sdk.c
 import numpy
-from cepton_sdk.common import *
+from cepton_sdk.common.mixin import *
 
 __all__ = [
     "ImagePoints",
@@ -22,6 +22,7 @@ class Points(StructureOfArrays):
     def __init__(self, n=0):
         super().__init__(n)
         self.timestamps = numpy.zeros([n])
+        self.timestamps_usec = numpy.zeros([n], dtype=numpy.int64)
         self.positions = numpy.zeros([n, 3])
         self.intensities = numpy.zeros([n])
         self.return_numbers = numpy.zeros([n], dtype=numpy.uint8)
@@ -31,8 +32,8 @@ class Points(StructureOfArrays):
 
     @classmethod
     def _get_array_member_names(cls):
-        return ["timestamps", "positions", "intensities", "return_numbers",
-                "valid", "saturated"]
+        return ["timestamps_usec", "timestamps", "positions", "intensities",
+                "return_numbers", "valid", "saturated"]
 
 
 class ImagePoints(StructureOfArrays, ToCMixin):
@@ -49,6 +50,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
 
     def __init__(self, n=0):
         super().__init__(n)
+        self.timestamps_usec = numpy.zeros([n], dtype=numpy.int64)
         self.timestamps = numpy.zeros([n])
         self.positions = numpy.zeros([n, 2])
         self.distances = numpy.zeros([n])
@@ -64,8 +66,9 @@ class ImagePoints(StructureOfArrays, ToCMixin):
 
     @classmethod
     def _get_array_member_names(cls):
-        return ["timestamps", "positions", "distances", "intensities",
-                "return_numbers", "valid", "saturated"]
+        return ["timestamps_usec", "timestamps", "positions",
+                "distances", "intensities", "return_numbers", "valid",
+                "saturated"]
 
     @classmethod
     def from_c(cls, n_points, c_image_points):
@@ -74,6 +77,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
                 c_image_points, n_points, cls._get_c_class())
 
         image_points = cls(n_points)
+        image_points.timestamps_usec[:] = data["timestamp"]
         image_points.timestamps[:] = 1e-6 * data["timestamp"].astype(float)
         image_points.positions[:, 0] = data["image_x"]
         image_points.positions[:, 1] = data["image_z"]
@@ -90,7 +94,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
 
         dtype = numpy.dtype(c_type)
         data = numpy.zeros(len(self), dtype=dtype)
-        data["timestamp"][:] = (1e6 * self.timestamps).astype(numpy.uint64)
+        data["timestamp"][:] = self.timestamps_usec
         data["image_x"][:] = self.positions[:, 0]
         data["image_z"][:] = self.positions[:, 1]
         data["distance"][:] = self.distances
@@ -109,6 +113,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         assert issubclass(cls, Points)
 
         points = cls(len(self))
+        points.timestamps_usec[:] = self.timestamps_usec
         points.timestamps[:] = self.timestamps
         points.intensities[:] = self.intensities
         points.return_numbers[:] = self.return_numbers
@@ -131,6 +136,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         assert isinstance(points, Points)
 
         image_points = cls(len(points))
+        image_points.timestamps_usec[:] = points.timestamps_usec
         image_points.timestamps[:] = points.timestamps
         image_points.intensities[:] = points.intensities
         image_points.return_numbers[:] = points.return_numbers

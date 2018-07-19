@@ -60,7 +60,7 @@ void open_file() {
   } else {
     strncpy(current_file_name, fname, sizeof(current_file_name));
   }
-  //printf("Opening file: %s\n", current_file_name);
+  // printf("Opening file: %s\n", current_file_name);
   FILE *fh = fopen(current_file_name, "w+b");  // This will truncate the file
   if (file_mode == FILE_MODE_JSON) {
     fprintf(fh, "[\n");
@@ -83,7 +83,7 @@ void close_file() {
 
 void write_points(struct CeptonSensorImagePoint const *points,
                   size_t n_points) {
-  //printf("Writing %d points to file\n", (int)n_points);
+  // printf("Writing %d points to file\n", (int)n_points);
   FILE *fh = fopen(current_file_name, "ab");
   switch (file_mode) {
     case FILE_MODE_BIN:
@@ -94,15 +94,14 @@ void write_points(struct CeptonSensorImagePoint const *points,
         CeptonSensorImagePoint const &p = points[i];
         if (convert) {
           float wx, wy, wz;  // For converting
-          cepton_sdk::convert_image_point_to_point(p.image_x, p.image_z,
-                                                   p.distance, wx, wy, wz);
-          fprintf(fh, "%.6f,%f,%f,%f,%f,%d,%d\n",
-                  (double)p.timestamp/1e6, wx, wy, wz, p.intensity,
-                  (int)p.return_number, (int)p.valid);
+          cepton_sdk::util::convert_image_point_to_point(
+              p.image_x, p.image_z, p.distance, wx, wy, wz);
+          fprintf(fh, "%.6f,%f,%f,%f,%f,%d,%d\n", (double)p.timestamp / 1e6, wx,
+                  wy, wz, p.intensity, (int)p.return_number, (int)p.valid);
         } else {
-          fprintf(fh, "%.6f,%f,%f,%f,%f,%d,%d\n",
-                  (double)p.timestamp/1e6, p.image_x, p.distance,
-                  p.image_z, p.intensity, (int)p.return_number, (int)p.valid);
+          fprintf(fh, "%.6f,%f,%f,%f,%f,%d,%d\n", (double)p.timestamp / 1e6,
+                  p.image_x, p.distance, p.image_z, p.intensity,
+                  (int)p.return_number, (int)p.valid);
         }
       }
       break;
@@ -111,20 +110,20 @@ void write_points(struct CeptonSensorImagePoint const *points,
         CeptonSensorImagePoint const &p = points[i];
         if (convert) {
           float wx, wy, wz;  // For converting
-          cepton_sdk::convert_image_point_to_point(p.image_x, p.image_z,
-                                                   p.distance, wx, wy, wz);
+          cepton_sdk::util::convert_image_point_to_point(
+              p.image_x, p.image_z, p.distance, wx, wy, wz);
           fprintf(fh,
                   "{\"timestamp\":%.6f,\"x\":%f,\"y\":%f,\"z\":%f,"
                   "\"intensity\":%f,\"return_number\":%d,\"valid\":%d},\n",
-                  (double)p.timestamp/1e6, wx, wy, wz, p.intensity,
+                  (double)p.timestamp / 1e6, wx, wy, wz, p.intensity,
                   (int)p.return_number, (int)p.valid);
         } else {
           fprintf(fh,
                   "{\"timestamp\":%.6f,\"image_x\":%f,\"distance\":%f,\"image_"
                   "z\":%f,"
                   "\"intensity\":%f,\"return_number\":%d,\"valid\":%d},\n",
-                  (double)p.timestamp/1e6, p.image_x, p.distance,
-                  p.image_z, p.intensity, (int)p.return_number, (int)p.valid);
+                  (double)p.timestamp / 1e6, p.image_x, p.distance, p.image_z,
+                  p.intensity, (int)p.return_number, (int)p.valid);
         }
       }
   }
@@ -273,7 +272,7 @@ int main(int argc, char **argv) {
   open_file();  // Make sure open file before start listening
 
   cepton_sdk::Options opts = cepton_sdk::create_options();
-  opts.frame.mode = CEPTON_SDK_FRAME_COVER; // Each cover is a frame
+  opts.frame.mode = CEPTON_SDK_FRAME_COVER;  // Each cover is a frame
   cepton_sdk::api::check_error_code(
       cepton_sdk::api::initialize(opts, replay_file));
 

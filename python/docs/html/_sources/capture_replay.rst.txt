@@ -9,6 +9,5 @@ To open/close capture files, use :any:`cepton_sdk.initialize` and :any:`cepton_s
 .. autofunction:: cepton_sdk.capture_replay.get_time
 .. autofunction:: cepton_sdk.capture_replay.is_end
 .. autofunction:: cepton_sdk.capture_replay.is_open
-.. autofunction:: cepton_sdk.capture_replay.rewind
 .. autofunction:: cepton_sdk.capture_replay.seek
 .. autofunction:: cepton_sdk.capture_replay.seek_relative

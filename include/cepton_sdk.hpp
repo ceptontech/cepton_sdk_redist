@@ -301,9 +301,6 @@ static float get_length() { return cepton_sdk_capture_replay_get_length(); }
  */
 static bool is_end() { return (bool)cepton_sdk_capture_replay_is_end(); }
 
-/// Seek to start of capture file.
-static SensorErrorCode rewind() { return cepton_sdk_capture_replay_rewind(); }
-
 /// Seek to capture file position [seconds].
 /**
  * Position must be in range [0.0, capture length).

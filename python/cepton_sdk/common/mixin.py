@@ -1,28 +1,8 @@
 import copy
 import ctypes
-import functools
 
 import numpy
 
-def static_vars(**kwargs):
-    """Add static variables to function.
-    """
-    def decorate(func):
-        for k in kwargs:
-            setattr(func, k, kwargs[k])
-        return func
-    return decorate
-
-class single_cache(object):
-    def __init__(self, func):
-        self.func = func
-        self.result = None
-        functools.update_wrapper(self, func)
-
-    def __call__(self, *args, **kwargs):
-        if self.result is None:
-            self.result = self.func(*args, **kwargs)
-        return copy.deepcopy(self.result)
 
 class ToDictMixin(object):
     @classmethod
@@ -68,6 +48,7 @@ class ToDictMixin(object):
             d[member_name] = dict_value
         return d
 
+
 class C_Field(object):
     def __init__(self, field_name, field_type, field_width=None):
         self.name = field_name
@@ -81,11 +62,12 @@ class C_Field(object):
         else:
             return cls(descr[0], descr[1])
 
-def get_c_members(c_cls):
+
+def _get_c_members(c_cls):
     return {x[0]: C_Field.from_description(x) for x in c_cls._fields_ if x[0]}
 
 
-def get_c_member_names(c_cls):
+def _get_c_member_names(c_cls):
     return [x[0] for x in c_cls._fields_ if x[0]]
 
 
@@ -124,7 +106,7 @@ class ToCMixin(object):
 
     @classmethod
     def __get_c_members(cls):
-        return get_c_members(cls._get_c_class())
+        return _get_c_members(cls._get_c_class())
 
     @classmethod
     def _get_c_member_names(cls):
@@ -269,45 +251,3 @@ class StructureOfArrays(object):
                 combined_value = numpy.concatenate(value_list, axis=0)
             setattr(combined_obj, name, combined_value)
         return combined_obj
-
-    # def _get_dtype(self, member_names=None):
-    #     if member_names is None:
-    #         member_names = self._get_array_member_names()
-    #
-    #     # TODO: deal with nested StructureOfArrays
-    #     descr = []
-    #     for name in member_names:
-    #         value = numpy.array(getattr(self, name))
-    #         assert (len(value.dtype.descr) == 1)
-    #         assert (value.dtype.ndim) == 0
-    #         shape_tmp = numpy.array(value.shape)[1:]
-    #         if len(shape_tmp) == 0:
-    #             shape_tmp = 1
-    #         descr.append((name, value.dtype.name, shape_tmp))
-    #     dtype = numpy.dtype(descr)
-    #     return dtype
-    #
-    # def to_structured_array(self, member_names=None):
-    #     if member_names is None:
-    #         member_names = self._get_array_member_names()
-    #
-    #     dtype = self._get_dtype(member_names=member_names)
-    #     data = numpy.zeros([len(self)], dtype=dtype)
-    #     for name in member_names:
-    #         data[name][...] = getattr(self, name)
-    #     return data
-    #
-    # def update_from_structured_array(self, data, member_names=None):
-    #     if member_names is None:
-    #         member_names = data.dtype.names
-    #
-    #     dtype = self._get_dtype(member_names=member_names)
-    #     for name in member_names:
-    #         getattr(self, name)[...] = data[name]
-    #     return self
-    #
-    # @classmethod
-    # def from_structured_array(cls, data, member_names=None):
-    #     obj = cls(data.size)
-    #     obj.update_from_structured_array(data, member_names=member_names)
-    #     return obj

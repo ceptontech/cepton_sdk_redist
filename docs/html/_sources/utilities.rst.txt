@@ -6,24 +6,24 @@ Utility functions and classes for prototyping (`cepton_sdk_util.hpp`).
 Common
 ------
 
-.. doxygenfunction:: cepton_sdk::get_timestamp_usec
+.. doxygenfunction:: cepton_sdk::util::get_timestamp_usec
 
 Points
 ------
 
-.. doxygenfunction:: cepton_sdk::convert_image_point_to_point
+.. doxygenfunction:: cepton_sdk::util::convert_image_point_to_point
 
-.. doxygenstruct:: cepton_sdk::SensorPoint
+.. doxygenstruct:: cepton_sdk::util::SensorPoint
   :members:
   :undoc-members:
 
-.. doxygenfunction:: cepton_sdk::convert_sensor_image_point_to_point
+.. doxygenfunction:: cepton_sdk::util::convert_sensor_image_point_to_point
 
 Transform
 ---------
 
 .. See :doc:`samples/transform`.
 
-.. doxygenclass:: cepton_sdk::CompiledTransform
+.. doxygenclass:: cepton_sdk::util::CompiledTransform
   :members:
   :undoc-members:

@@ -24,6 +24,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Export SORA" href="export_sora.html" />
     <link rel="prev" title="Single Live Sensor" href="single_live_sensor.html" /> 
   </head>
   <body>
@@ -33,6 +34,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="export_sora.html" title="Export SORA"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="single_live_sensor.html" title="Single Live Sensor"
              accesskey="P">previous</a> |</li>
@@ -118,7 +122,30 @@
 66
 67
 68
-69</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Sample script to export frames to files. Can be modified to export to any</span>
 <span class="sd">file format.</span>
@@ -144,45 +171,68 @@
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--capture_seek&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
     <span class="n">all_file_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">PointsFileType</span><span class="p">]</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--format&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;LAS&quot;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">all_file_types</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--t_length&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Maximum export time.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--combine&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Combine points into single file per sensor.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--t_length&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Maximum export time.&quot;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">fix_path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
-    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">file_type</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">PointsFileType</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+    <span class="n">t_length</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">t_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">t_length</span> <span class="o">=</span> <span class="n">parse_time_hms</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">t_length</span><span class="p">)</span>
 
-    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;capture_path&quot;</span><span class="p">:</span> <span class="n">fix_path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">capture_path</span><span class="p">),</span>
-    <span class="p">}</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">fix_path</span><span class="p">(</span><span class="n">remove_extension</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">))</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">ignore_errors</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+
+    <span class="c1"># Initialize</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">capture_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s2">&quot;capture_path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fix_path</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">capture_path</span><span class="p">)</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">capture_seek</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">capture_seek</span><span class="p">)</span>
 
-    <span class="n">file_type</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">PointsFileType</span><span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">combine</span><span class="p">:</span>
+        <span class="n">image_points_dict</span> <span class="o">=</span> \
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_image_points</span><span class="p">(</span><span class="n">t_length</span><span class="p">,</span> <span class="n">return_partial</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">image_points</span> <span class="ow">in</span> <span class="n">image_points_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">is_valid</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">distances</span> <span class="o">&lt;</span> <span class="mf">1e4</span>
+            <span class="n">image_points</span> <span class="o">=</span> <span class="n">image_points</span><span class="p">[</span><span class="n">is_valid</span><span class="p">]</span>
 
-    <span class="n">t_0</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
-    <span class="n">i_frame</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">t_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">args</span><span class="o">.</span><span class="n">t_length</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">serial_number</span><span class="p">))</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
+
+            <span class="c1"># Save</span>
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">save_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">file_type</span><span class="o">=</span><span class="n">file_type</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">t_0</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
+        <span class="n">i_frame</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">t_length</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_image_frames</span><span class="p">()</span>
+            <span class="k">except</span><span class="p">:</span>
                 <span class="k">break</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_image_frames</span><span class="p">()</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="k">break</span>
-        <span class="k">for</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">image_points_list</span> <span class="ow">in</span> <span class="n">image_points_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">sensor_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">serial_number</span><span class="p">))</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">sensor_dir</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">sensor_dir</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">image_points</span> <span class="ow">in</span> <span class="n">image_points_list</span><span class="p">:</span>
-                <span class="n">i_frame_tmp</span> <span class="o">=</span> <span class="n">i_frame</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span>
-                <span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
-                <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sensor_dir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i_frame_tmp</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">image_points_list</span> <span class="ow">in</span> <span class="n">image_points_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">sensor_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">serial_number</span><span class="p">))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">sensor_dir</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">sensor_dir</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">image_points</span> <span class="ow">in</span> <span class="n">image_points_list</span><span class="p">:</span>
+                    <span class="n">is_valid</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">distances</span> <span class="o">&lt;</span> <span class="mf">1e4</span>
+                    <span class="n">image_points</span> <span class="o">=</span> <span class="n">image_points</span><span class="p">[</span><span class="n">is_valid</span><span class="p">]</span>
 
-                <span class="c1"># Export to file</span>
-                <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">save_points</span><span class="p">(</span>
-                    <span class="n">points</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">file_type</span><span class="o">=</span><span class="n">file_type</span><span class="p">)</span>
+                    <span class="n">i_frame_tmp</span> <span class="o">=</span> <span class="n">i_frame</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sensor_dir</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i_frame_tmp</span><span class="p">))</span>
+                    <span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
 
-                <span class="n">i_frame</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="c1"># Save</span>
+                    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">export</span><span class="o">.</span><span class="n">save_points</span><span class="p">(</span>
+                        <span class="n">points</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">file_type</span><span class="o">=</span><span class="n">file_type</span><span class="p">)</span>
+
+                    <span class="n">i_frame</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
 
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
@@ -201,6 +251,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="single_live_sensor.html"
                         title="previous chapter">Single Live Sensor</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="export_sora.html"
+                        title="next chapter">Export SORA</a></p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -221,6 +274,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="export_sora.html" title="Export SORA"
+             >next</a> |</li>
         <li class="right" >
           <a href="single_live_sensor.html" title="Single Live Sensor"
              >previous</a> |</li>

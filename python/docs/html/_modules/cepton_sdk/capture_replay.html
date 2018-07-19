@@ -56,7 +56,6 @@
     <span class="s2">&quot;get_time&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_end&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_open&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;rewind&quot;</span><span class="p">,</span>
     <span class="s2">&quot;seek_relative&quot;</span><span class="p">,</span>
     <span class="s2">&quot;seek&quot;</span><span class="p">,</span>
 <span class="p">]</span>
@@ -98,11 +97,6 @@
 
 <div class="viewcode-block" id="is_end"><a class="viewcode-back" href="../../capture_replay.html#cepton_sdk.capture_replay.is_end">[docs]</a><span class="k">def</span> <span class="nf">is_end</span><span class="p">():</span>
     <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_capture_replay_is_end</span><span class="p">())</span></div>
-
-
-<div class="viewcode-block" id="rewind"><a class="viewcode-back" href="../../capture_replay.html#cepton_sdk.capture_replay.rewind">[docs]</a><span class="k">def</span> <span class="nf">rewind</span><span class="p">():</span>
-    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_capture_replay_rewind</span><span class="p">()</span>
-    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">listener</span><span class="o">.</span><span class="n">clear_cache</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="seek"><a class="viewcode-back" href="../../capture_replay.html#cepton_sdk.capture_replay.seek">[docs]</a><span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>

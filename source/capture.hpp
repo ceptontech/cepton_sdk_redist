@@ -67,14 +67,11 @@ class Capture {
                                     const uint8_t **data);
 
   /*
-    Reset file reading.
-  */
-  void rewind() { read_file_header(); }
-
-  /*
     Append packet to file.
   */
   bool append_packet(const PacketHeader *header, const uint8_t *data);
+
+  void rewind() { read_file_header(); }
 
  private:
   void build_read_index();

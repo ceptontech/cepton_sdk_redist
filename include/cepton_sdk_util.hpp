@@ -7,13 +7,16 @@
 
 #include "cepton_sdk.hpp"
 
+#include <cassert>
 #include <cmath>
 #include <cstdio>
 
 #include <array>
 #include <chrono>
+#include <map>
 
 namespace cepton_sdk {
+namespace util {
 
 //------------------------------------------------------------------------------
 // Common
@@ -37,8 +40,8 @@ static uint64_t get_timestamp_usec() {
 //------------------------------------------------------------------------------
 /// Convert image point to 3d point.
 inline static void convert_image_point_to_point(float image_x, float image_z,
-                                         float distance, float &x, float &y,
-                                         float &z) {
+                                                float distance, float &x,
+                                                float &y, float &z) {
   float hypotenuse_small = std::sqrt(square(image_x) + square(image_z) + 1.0f);
   float ratio = distance / hypotenuse_small;
   x = -image_x * ratio;
@@ -85,7 +88,7 @@ class CompiledTransform {
   /**
    * @param translation Cartesian (x, y, z)
    * @param rotation Quaternion (x, y, z, w)
-  */
+   */
   static CompiledTransform create(const float *const translation,
                                   const float *const rotation) {
     CompiledTransform compiled_transform;
@@ -151,4 +154,101 @@ class CompiledTransform {
   float rotation_m21 = 0.0f;
   float rotation_m22 = 1.0f;
 };
-}  // cepton_sdk
+
+// -----------------------------------------------------------------------------
+// Callback
+// -----------------------------------------------------------------------------
+/// Expands SDK callback functionality.
+/**
+ * Allows for multiple callbacks to be registered.
+ * Allow for registering lambdas and member functions.
+ */
+template <typename... TArgs>
+class CallbackManagerBase {
+ public:
+  using function_type = std::function<void(TArgs...)>;
+
+ public:
+  /// Registers as SDK listener function.
+  /**
+   * Returns error if SDK is not initialized.
+   */
+  virtual cepton_sdk::SensorErrorCode initialize() = 0;
+  virtual cepton_sdk::SensorErrorCode deinitialize() = 0;
+
+  /// Register std::function
+  void listen(uint64_t id, const function_type &func) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    assert(!m_functions.count(id));
+    m_functions[id] = func;
+  }
+  void unlisten(uint64_t id) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    m_functions.erase(id);
+  }
+
+  /// Register global function
+  void listen(void (*func)(TArgs...), uint64_t id = 0) {
+    if (!id) id = (uint64_t)func;
+    listen(id, func);
+  }
+  void unlisten(void (*func)(TArgs...), uint64_t id = 0) {
+    if (!id) id = (uint64_t)func;
+    unlisten(id);
+  }
+
+  /// Register member function
+  template <typename T>
+  void listen(T *const instance, void (T::*func)(TArgs...), uint64_t id = 0) {
+    if (!id) id = (uint64_t)instance;
+    listen(id, [instance, func](TArgs... args) { (instance->*func)(args...); });
+  }
+  template <typename T>
+  void unlisten(T *const instance, void (T::*func)(TArgs...), uint64_t id = 0) {
+    if (!id) id = (uint64_t)instance;
+    unlisten(id);
+  }
+
+  static void global_on_callback(TArgs... args, void *const instance) {
+    ((CallbackManagerBase *)instance)->on_callback(args...);
+  }
+
+ private:
+  void on_callback(TArgs... args) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    for (auto &iter : m_functions) {
+      auto &func = iter.second;
+      func(args...);
+    }
+  }
+
+ private:
+  std::mutex m_mutex;
+  std::map<uint64_t, function_type> m_functions;
+};
+
+/// Callback manager for image frames.
+class SensorImageFramesCallbackManager
+
+    : public CallbackManagerBase<SensorHandle, std::size_t,
+                                 const SensorImagePoint *> {
+ public:
+  ~SensorImageFramesCallbackManager() { deinitialize(); }
+  SensorErrorCode initialize() override {
+    return listen_image_frames(global_on_callback, this);
+  }
+  SensorErrorCode deinitialize() override { return unlisten_image_frames(); }
+};
+
+/// Callback manager for network packets.
+class NetworkPacketsCallbackManager
+    : public CallbackManagerBase<SensorHandle, uint8_t const *, std::size_t> {
+ public:
+  ~NetworkPacketsCallbackManager() { deinitialize(); }
+  SensorErrorCode initialize() override {
+    return listen_network_packets(global_on_callback, this);
+  }
+  SensorErrorCode deinitialize() override { return unlisten_network_packets(); }
+};
+}  // namespace util
+}  // namespace cepton_sdk

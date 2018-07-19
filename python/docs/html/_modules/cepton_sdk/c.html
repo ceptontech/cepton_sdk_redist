@@ -43,110 +43,15 @@
           <div class="body" role="main">
             
   <h1>Source code for cepton_sdk.c</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">ctypes.util</span>
 <span class="kn">import</span> <span class="nn">enum</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">os.path</span>
-<span class="kn">import</span> <span class="nn">platform</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">ctypes</span> <span class="k">import</span> <span class="o">*</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">cepton_sdk.common.c</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">SDK_VERSION</span> <span class="o">=</span> <span class="mi">13</span>
 
-<span class="c1"># ------------------------------------------------------------------------------</span>
-<span class="c1"># Load library</span>
-<span class="c1"># ------------------------------------------------------------------------------</span>
-
-
-<span class="k">def</span> <span class="nf">_load_c_library</span><span class="p">():</span>
-    <span class="n">module_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;linux&quot;</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;armv&quot;</span><span class="p">):</span>
-            <span class="n">os_name</span> <span class="o">=</span> <span class="s2">&quot;linux-arm&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">os_name</span> <span class="o">=</span> <span class="s2">&quot;linux-{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">())</span>
-        <span class="n">lib_name</span> <span class="o">=</span> <span class="s2">&quot;libcepton_sdk.so&quot;</span>
-    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;darwin&quot;</span><span class="p">):</span>
-        <span class="n">os_name</span> <span class="o">=</span> <span class="s2">&quot;osx&quot;</span>
-        <span class="n">lib_name</span> <span class="o">=</span> <span class="s2">&quot;libcepton_sdk.dylib&quot;</span>
-    <span class="k">elif</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;win&quot;</span><span class="p">):</span>
-        <span class="n">os_name</span> <span class="o">=</span> <span class="s2">&quot;win64&quot;</span>
-        <span class="n">lib_name</span> <span class="o">=</span> <span class="s2">&quot;cepton_sdk.dll&quot;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Platform not supported!&quot;</span><span class="p">)</span>
-    <span class="n">lib_dir</span> <span class="o">=</span> <span class="s2">&quot;lib/{}/&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os_name</span><span class="p">)</span>
-
-    <span class="c1"># Try local and global search paths</span>
-    <span class="n">module_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="n">lib_dir</span><span class="p">,</span> <span class="n">lib_name</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">module_file</span><span class="p">):</span>
-        <span class="n">module_file</span> <span class="o">=</span> <span class="n">lib_name</span>
-    <span class="k">return</span> <span class="n">CDLL</span><span class="p">(</span><span class="n">module_file</span><span class="p">)</span>
-
-
-<span class="n">libcepton_sdk</span> <span class="o">=</span> <span class="n">_load_c_library</span><span class="p">()</span>
-
-<span class="c1"># ------------------------------------------------------------------------------</span>
-<span class="c1"># Arrays</span>
-<span class="c1"># ------------------------------------------------------------------------------</span>
-<span class="n">_C_NDARRAY_REQUIREMENTS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;C_CONTIGUOUS&quot;</span><span class="p">,</span> <span class="s2">&quot;ALIGNED&quot;</span><span class="p">,</span> <span class="s2">&quot;WRITEABLE&quot;</span><span class="p">,</span> <span class="s2">&quot;OWNDATA&quot;</span><span class="p">]</span>
-
-
-<span class="k">def</span> <span class="nf">get_c_ndpointer_type</span><span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ctypeslib</span><span class="o">.</span><span class="n">ndpointer</span><span class="p">(</span>
-        <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">ndim</span><span class="o">=</span><span class="n">ndim</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">_C_NDARRAY_REQUIREMENTS</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">get_c_ndarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">require</span><span class="p">(</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="n">_C_NDARRAY_REQUIREMENTS</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">create_c_ndarray</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">get_c_ndarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">convert_bytes_to_ndarray</span><span class="p">(</span><span class="n">a_bytes</span><span class="p">,</span> <span class="n">c_type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert bytes array to structured array&quot;&quot;&quot;</span>
-    <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">c_type</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="n">c_type</span><span class="p">)</span> <span class="o">==</span> <span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span><span class="p">)</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">a_bytes</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_bytes</span><span class="p">)</span> <span class="o">/</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">c_type</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">a</span>
-
-
-<span class="k">def</span> <span class="nf">convert_ndarray_to_bytes</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert structured array to bytes array&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">convert_c_array_to_ndarray</span><span class="p">(</span><span class="n">c_a</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">c_type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert ctypes array to structured array&quot;&quot;&quot;</span>
-    <span class="n">n_bytes</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">c_type</span><span class="p">)</span>
-    <span class="n">a_bytes</span> <span class="o">=</span> \
-        <span class="n">numpy</span><span class="o">.</span><span class="n">ctypeslib</span><span class="o">.</span><span class="n">as_array</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="n">c_a</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_byte</span><span class="p">)),</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n_bytes</span><span class="p">,))</span>
-    <span class="k">return</span> <span class="n">convert_bytes_to_ndarray</span><span class="p">(</span><span class="n">a_bytes</span><span class="p">,</span> <span class="n">c_type</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">convert_ndarray_to_c_array</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c_type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert structured array to ctypes array&quot;&quot;&quot;</span>
-    <span class="n">a_bytes</span> <span class="o">=</span> <span class="n">convert_ndarray_to_bytes</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a_bytes</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">c_type</span><span class="p">))</span>
-    <span class="n">c_a_bytes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ctypeslib</span><span class="o">.</span><span class="n">as_ctypes</span><span class="p">(</span><span class="n">a_bytes</span><span class="p">)</span>
-    <span class="n">c_a</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">c_a_bytes</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_type</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">c_a</span>
-
-
-<span class="k">def</span> <span class="nf">unpackbits</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
-    <span class="n">bits</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
-    <span class="n">bits</span> <span class="o">=</span> <span class="n">bits</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
-    <span class="n">bits</span> <span class="o">=</span> <span class="n">bits</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">bits</span> <span class="o">=</span> <span class="n">bits</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">bits</span>
-
+<span class="n">_module_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+<span class="n">libcepton_sdk</span> <span class="o">=</span> <span class="n">load_c_library</span><span class="p">(</span><span class="n">_module_dir</span><span class="p">,</span> <span class="s2">&quot;cepton_sdk&quot;</span><span class="p">)</span>
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="c1"># General</span>

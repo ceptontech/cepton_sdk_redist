@@ -9,6 +9,12 @@ import numpy
 
 import cepton_sdk.point
 
+__all__ = [
+    "load_points",
+    "PointsFileType",
+    "save_points",
+]
+
 
 def save_points_las(points, path):
     """Save points to LAS file.
@@ -72,7 +78,7 @@ def save_points_ply(points, path):
 
     dtype = numpy.dtype(PlyPoint)
     data = numpy.zeros([n], dtype=dtype)
-    data["position"] = points.positions
+    data["position"][:, :] = points.positions
     with open(path, "ab") as f:
         f.write(data.tobytes())
 
@@ -121,7 +127,7 @@ def save_points_pcd(points, path):
 
     dtype = numpy.dtype(PcdPoint)
     data = numpy.zeros([n], dtype=dtype)
-    data["position"] = points.positions
+    data["position"][:, :] = points.positions
     with open(path, "ab") as f:
         f.write(data.tobytes())
 
@@ -151,6 +157,10 @@ def get_points_file_type_extension(file_type):
 
 
 def save_points(points, path, file_type=PointsFileType.LAS):
+    """Save points to file.
+
+    Sets file extension based on type.
+    """
     ext = get_points_file_type_extension(file_type)
     path = os.path.splitext(path)[0] + ext
     if file_type == PointsFileType.LAS:
@@ -164,6 +174,10 @@ def save_points(points, path, file_type=PointsFileType.LAS):
 
 
 def load_points(path, file_type=None):
+    """Load points from file.
+
+    File type is inferred from extension.
+    """
     if file_type == None:
         ext = os.path.splitext(path)[1]
         file_type = get_points_file_type(ext)

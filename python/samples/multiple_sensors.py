@@ -3,7 +3,7 @@
 import pprint
 
 import cepton_sdk
-import cepton_sdk.plot.
+import cepton_sdk.plot
 import common
 
 if __name__ == "__main__":

@@ -8,3 +8,4 @@ Samples
   samples/multiple_sensors
   samples/single_live_sensor
   samples/export
+  samples/export_sora

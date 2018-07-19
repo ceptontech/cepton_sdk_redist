@@ -38,7 +38,8 @@ void NetworkSocket::handle_receive(const asio::error_code &error,
                                 error.message().c_str(), &m_last_error);
     return;
   }
-  callback_manager.emit_network(addr, sensor_socket_buffer, bytes_transferred);
+  callback_manager.network_cb.emit(addr, sensor_socket_buffer,
+                                   bytes_transferred);
   sensor_manager.handle_network_receive(addr, sensor_socket_buffer,
                                         bytes_transferred);
 
@@ -93,8 +94,7 @@ void NetworkManager::deinitialize() {
     m_io_service_thread_ptr.reset();
   }
   // Don't delete socket until join() is successful
-  if (m_sensor_socket_ptr)
-    m_sensor_socket_ptr.reset();
+  if (m_sensor_socket_ptr) m_sensor_socket_ptr.reset();
 
   if (m_io_service_ptr) {
     m_io_service_ptr.reset();

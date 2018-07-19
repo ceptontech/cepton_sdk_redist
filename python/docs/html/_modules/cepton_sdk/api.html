@@ -51,7 +51,7 @@
 <span class="kn">import</span> <span class="nn">cepton_sdk.core</span>
 <span class="kn">import</span> <span class="nn">cepton_sdk.listener</span>
 <span class="kn">import</span> <span class="nn">cepton_sdk.sensor</span>
-<span class="kn">from</span> <span class="nn">cepton_sdk.common</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">cepton_sdk.common.function</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;clear_cache&quot;</span><span class="p">,</span>
@@ -141,7 +141,6 @@
     <span class="n">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">capture_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
-    <span class="c1"># print(keys(get_sensors()))</span>
 
 
 <span class="k">def</span> <span class="nf">clear_cache</span><span class="p">():</span>

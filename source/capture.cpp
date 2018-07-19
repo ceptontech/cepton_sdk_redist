@@ -386,7 +386,7 @@ bool Capture::append_packet(const Capture::PacketHeader *hdr,
   h.udp_hdr.uh_ulen = swap_uint16((uint16_t)(data_len + 8));
 
   if (hdr->tv_usec == 0) {
-    auto timestamp_usec = get_timestamp_usec();
+    auto timestamp_usec = util::get_timestamp_usec();
     h.rec_hdr.ts_sec = (uint32_t)(timestamp_usec / 1000000LL);
     h.rec_hdr.ts_usec = (uint32_t)(timestamp_usec % 1000000LL);
   }

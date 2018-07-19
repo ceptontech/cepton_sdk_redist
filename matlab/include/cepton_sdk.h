@@ -73,6 +73,7 @@ enum _CeptonSensorModel {
   SORA_200 = 4,
   VISTA_860 = 5,
   HR80T_R2 = 6,
+  CEPTON_SENSOR_MODEL_MAX = 6,
 };
 
 struct EXPORT CeptonSensorInformation {
@@ -111,16 +112,16 @@ EXPORT extern const size_t cepton_sensor_information_size;
 /// Point in image coordinates (focal length = 1).
 /**
  * To convert to 3d point, refer to `cepton_sdk_util.hpp`.
-*/
+ */
 struct EXPORT CeptonSensorImagePoint {
-  int64_t timestamp;  ///< unix time [microseconds]
-  float image_x;       ///< x image coordinate
-  float distance;      ///< distance [meters]
-  float image_z;       ///< z image coordinate
-  float intensity;     ///< 0-1 scaled intensity
-  uint8_t return_number; ///< 0=first return, 1=second return
-  uint8_t valid;       ///< 1=valid; 0=clipped/invalid
-  uint8_t saturated;   ///< If saturated, intensity cannot be trusted
+  int64_t timestamp;      ///< unix time [microseconds]
+  float image_x;          ///< x image coordinate
+  float distance;         ///< distance [meters]
+  float image_z;          ///< z image coordinate
+  float intensity;        ///< 0-1 scaled intensity
+  uint8_t return_number;  ///< 0=first return, 1=second return
+  uint8_t valid;          ///< 1=valid; 0=clipped/invalid
+  uint8_t saturated;      ///< If saturated, intensity cannot be trusted
   uint8_t reserved;
 };
 EXPORT extern const size_t cepton_sensor_image_point_size;
@@ -272,7 +273,7 @@ EXPORT int64_t cepton_sdk_capture_replay_get_start_time();
 EXPORT float cepton_sdk_capture_replay_get_position();
 EXPORT float cepton_sdk_capture_replay_get_length();
 EXPORT int cepton_sdk_capture_replay_is_end();
-EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_rewind();
+EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_rewind();  // DEPRECATED
 EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_seek(float position);
 
 EXPORT CeptonSensorErrorCode
