@@ -4,28 +4,19 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>cepton_sdk.api &#8212; cepton_sdk  documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -43,7 +34,7 @@
           <div class="body" role="main">
             
   <h1>Source code for cepton_sdk.api</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">datetime</span>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">cepton_sdk.c</span>
@@ -234,9 +225,9 @@
         <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_get_sensor_listener</span><span class="p">(</span><span class="n">listeners</span><span class="p">,</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_sensor_listener</span><span class="p">(</span><span class="n">listeners</span><span class="p">,</span> <span class="n">serial_number</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">serial_number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">listeners</span><span class="p">:</span>
-        <span class="n">listeners</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">serial_number</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">listeners</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">serial_number</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">listeners</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span>
 
 
@@ -315,22 +306,22 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">information</span><span class="o">.</span><span class="n">model</span>  <span class="c1"># This is SensorModel enum</span>
 
 <div class="viewcode-block" id="Sensor.create_by_index"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.create_by_index">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create_by_index</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">sensor_index</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_by_index</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sensor_index</span><span class="p">):</span>
         <span class="n">sensor_info</span> <span class="o">=</span> \
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information_by_index</span><span class="p">(</span><span class="n">sensor_index</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sensor.create_by_handle"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.create_by_handle">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create_by_handle</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">sensor_handle</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create_by_handle</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sensor_handle</span><span class="p">):</span>
         <span class="n">sensor_info</span> <span class="o">=</span> \
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information_by_handle</span><span class="p">(</span><span class="n">sensor_handle</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sensor.create"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.create">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">sensor_serial_number</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">sensor_serial_number</span><span class="p">):</span>
         <span class="n">sensor_info</span> <span class="o">=</span> \
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information</span><span class="p">(</span><span class="n">sensor_serial_number</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sensor.update"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Update sensor information.</span>
@@ -368,7 +359,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">==</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">SensorModel</span><span class="o">.</span><span class="n">VISTA_860</span></div></div>
 
 
-<div class="viewcode-block" id="get_sensors"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.get_sensors">[docs]</a><span class="k">def</span> <span class="nf">get_sensors</span><span class="p">(</span><span class="n">cls</span><span class="o">=</span><span class="n">Sensor</span><span class="p">):</span>
+<div class="viewcode-block" id="get_sensors"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.get_sensors">[docs]</a><span class="k">def</span> <span class="nf">get_sensors</span><span class="p">(</span><span class="bp">cls</span><span class="o">=</span><span class="n">Sensor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns attached sensors.</span>
 
 <span class="sd">    Returns:</span>
@@ -376,7 +367,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sensors_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">i_sensor</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_n_sensors</span><span class="p">()):</span>
-        <span class="n">sensor</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">create_by_index</span><span class="p">(</span><span class="n">i_sensor</span><span class="p">)</span>
+        <span class="n">sensor</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create_by_index</span><span class="p">(</span><span class="n">i_sensor</span><span class="p">)</span>
         <span class="n">sensors_dict</span><span class="p">[</span><span class="n">sensor</span><span class="o">.</span><span class="n">serial_number</span><span class="p">]</span> <span class="o">=</span> <span class="n">sensor</span>
     <span class="k">return</span> <span class="n">sensors_dict</span></div>
 </pre></div>
@@ -388,12 +379,14 @@
         <div class="sphinxsidebarwrapper">
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -412,7 +405,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

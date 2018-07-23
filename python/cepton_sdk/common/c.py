@@ -50,6 +50,19 @@ def set_c_fields_from_dict(c_obj, d):
         raise AttributeError("invalid keys")
 
 
+def from_bytes(c_type, buffer):
+    assert (sizeof(c_type) <= len(buffer))
+    c_value = c_type()
+    memmove(addressof(c_value), buffer, sizeof(c_value))
+    return c_value
+
+
+def to_bytes(c_value):
+    buffer = create_string_buffer(sizeof(c_value))
+    memmove(buffer, addressof(c_value), sizeof(c_value))
+    return buffer
+
+
 # ------------------------------------------------------------------------------
 # Arrays
 # ------------------------------------------------------------------------------
@@ -103,6 +116,7 @@ def convert_ndarray_to_c_array(a, c_type):
 
 
 def unpackbits(a):
+    """Convert array of integers to array of bool"""
     bits = numpy.unpackbits(a.flatten().view(numpy.uint8)).astype(bool)
     bits = bits.reshape([a.size, -1, 8])
     bits = bits[:, :, ::-1]

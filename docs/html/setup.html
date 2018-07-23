@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
-        <link rel="next" title="Sensors" href="sensors.html"/>
-        <link rel="prev" title="Errors" href="errors.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sensors" href="sensors.html" />
+    <link rel="prev" title="Errors" href="errors.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -112,7 +104,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -120,9 +112,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -178,8 +171,8 @@
 <div class="section" id="types">
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <dl class="type">
-<dt id="_CPPv2N10cepton_sdk7ControlE">
-<span id="cepton_sdk::Control"></span><span class="target" id="cepton__sdk_8hpp_1a01f879a94b8e07dd0c9a4105a7db5733"></span><em class="property">typedef </em>CeptonSDKControl <code class="descclassname">cepton_sdk::</code><code class="descname">Control</code><a class="headerlink" href="#_CPPv2N10cepton_sdk7ControlE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk7ControlE">
+<span id="_CPPv2N10cepton_sdk7ControlE"></span><span id="cepton_sdk::Control"></span><span class="target" id="cepton__sdk_8hpp_1a01f879a94b8e07dd0c9a4105a7db5733"></span><em class="property">typedef </em>CeptonSDKControl <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">Control</code><a class="headerlink" href="#_CPPv3N10cepton_sdk7ControlE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>SDK control flags. </p>
 </dd></dl>
 
@@ -191,13 +184,13 @@
 <dl class="enum">
 <dt id="c._CeptonSDKControl">
 <span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2"></span><em class="property">enum </em><code class="descname">_CeptonSDKControl</code><a class="headerlink" href="#c._CeptonSDKControl" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="docutils literal"><span class="pre">CeptonSDKControl</span></code> implementation. </p>
+<dd><p><code class="docutils literal notranslate"><span class="pre">CeptonSDKControl</span></code> implementation. </p>
 <p><em>Values:</em></p>
 <dl class="enumvalue">
 <dt id="c.CEPTON_SDK_CONTROL_DISABLE_NETWORK">
 <span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a0ca7e8297c80150611c3fd84f799d6fa"></span><code class="descname">CEPTON_SDK_CONTROL_DISABLE_NETWORK</code> = 1 &lt;&lt; 1<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_DISABLE_NETWORK" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable networking operations. </p>
-<p>Useful for running multiple instances of sdk in different processes. Must pass packets manually to <code class="docutils literal"><span class="pre">cepton_sdk::mock_network_receive</span></code>. </p>
+<p>Useful for running multiple instances of sdk in different processes. Must pass packets manually to <code class="docutils literal notranslate"><span class="pre">cepton_sdk::mock_network_receive</span></code>. </p>
 </dd></dl>
 
 <dl class="enumvalue">
@@ -218,14 +211,14 @@
 <dt id="c.CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS">
 <span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a9c43c7a84fdf28caaff6f70529c7b6cc"></span><code class="descname">CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS</code> = 1 &lt;&lt; 4<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable multiple returns. </p>
-<p>When set, <code class="docutils literal"><span class="pre">cepton_sdk::SensorInformation::return_count</span></code> will indicate the number of returns per laser. Can only be set at sdk initialization. </p>
+<p>When set, <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorInformation::return_count</span></code> will indicate the number of returns per laser. Can only be set at sdk initialization. </p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="type">
-<dt id="_CPPv2N10cepton_sdk9FrameModeE">
-<span id="cepton_sdk::FrameMode"></span><span class="target" id="cepton__sdk_8hpp_1a5d5c2c83c02db0462793aeee5dea896c"></span><em class="property">typedef </em>CeptonSDKFrameMode <code class="descclassname">cepton_sdk::</code><code class="descname">FrameMode</code><a class="headerlink" href="#_CPPv2N10cepton_sdk9FrameModeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk9FrameModeE">
+<span id="_CPPv2N10cepton_sdk9FrameModeE"></span><span id="cepton_sdk::FrameMode"></span><span class="target" id="cepton__sdk_8hpp_1a5d5c2c83c02db0462793aeee5dea896c"></span><em class="property">typedef </em>CeptonSDKFrameMode <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">FrameMode</code><a class="headerlink" href="#_CPPv3N10cepton_sdk9FrameModeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Controls frequency of points being reported. </p>
 </dd></dl>
 
@@ -237,7 +230,7 @@
 <dl class="enum">
 <dt id="c._CeptonSDKFrameMode">
 <span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8"></span><em class="property">enum </em><code class="descname">_CeptonSDKFrameMode</code><a class="headerlink" href="#c._CeptonSDKFrameMode" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="docutils literal"><span class="pre">CeptonSDKFrameMode</span></code> implementation. </p>
+<dd><p><code class="docutils literal notranslate"><span class="pre">CeptonSDKFrameMode</span></code> implementation. </p>
 <p><em>Values:</em></p>
 <dl class="enumvalue">
 <dt id="c.CEPTON_SDK_FRAME_STREAMING">
@@ -250,7 +243,7 @@
 <dt id="c.CEPTON_SDK_FRAME_TIMED">
 <span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8aad85a803e8773a818616bef34bf0ffd0"></span><code class="descname">CEPTON_SDK_FRAME_TIMED</code> = 1<a class="headerlink" href="#c.CEPTON_SDK_FRAME_TIMED" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report points at fixed time intervals. </p>
-<p>Interval controlled by <code class="docutils literal"><span class="pre">CeptonSDKFrameOptions::frame_length</span></code>. </p>
+<p>Interval controlled by <code class="docutils literal notranslate"><span class="pre">CeptonSDKFrameOptions::frame_length</span></code>. </p>
 </dd></dl>
 
 <dl class="enumvalue">
@@ -273,8 +266,8 @@
 </dd></dl>
 
 <dl class="type">
-<dt id="_CPPv2N10cepton_sdk12FrameOptionsE">
-<span id="cepton_sdk::FrameOptions"></span><span class="target" id="cepton__sdk_8hpp_1a82c94fc150cb519ef925183f2c119aa5"></span><em class="property">typedef </em>CeptonSDKFrameOptions <code class="descclassname">cepton_sdk::</code><code class="descname">FrameOptions</code><a class="headerlink" href="#_CPPv2N10cepton_sdk12FrameOptionsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk12FrameOptionsE">
+<span id="_CPPv2N10cepton_sdk12FrameOptionsE"></span><span id="cepton_sdk::FrameOptions"></span><span class="target" id="cepton__sdk_8hpp_1a82c94fc150cb519ef925183f2c119aa5"></span><em class="property">typedef </em>CeptonSDKFrameOptions <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">FrameOptions</code><a class="headerlink" href="#_CPPv3N10cepton_sdk12FrameOptionsE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="struct">
@@ -301,14 +294,14 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk20create_frame_optionsEv">
-<span id="cepton_sdk::create_frame_options"></span><span class="target" id="cepton__sdk_8hpp_1a36986396eb98cc9579ccf70e11fda42a"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv2N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> <code class="descclassname">cepton_sdk::</code><code class="descname">create_frame_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk20create_frame_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk20create_frame_optionsEv">
+<span id="_CPPv2N10cepton_sdk20create_frame_optionsEv"></span><span id="cepton_sdk::create_frame_options"></span><span class="target" id="cepton__sdk_8hpp_1a36986396eb98cc9579ccf70e11fda42a"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">create_frame_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk20create_frame_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create default frame options. </p>
 </dd></dl>
 
 <dl class="type">
-<dt id="_CPPv2N10cepton_sdk7OptionsE">
-<span id="cepton_sdk::Options"></span><span class="target" id="cepton__sdk_8hpp_1ac4aba4e83f7e2a064e63bcea3dd4e9bd"></span><em class="property">typedef </em>CeptonSDKOptions <code class="descclassname">cepton_sdk::</code><code class="descname">Options</code><a class="headerlink" href="#_CPPv2N10cepton_sdk7OptionsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk7OptionsE">
+<span id="_CPPv2N10cepton_sdk7OptionsE"></span><span id="cepton_sdk::Options"></span><span class="target" id="cepton__sdk_8hpp_1ac4aba4e83f7e2a064e63bcea3dd4e9bd"></span><em class="property">typedef </em>CeptonSDKOptions <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">Options</code><a class="headerlink" href="#_CPPv3N10cepton_sdk7OptionsE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>SDK initialization options. </p>
 </dd></dl>
 
@@ -341,14 +334,14 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk14create_optionsEv">
-<span id="cepton_sdk::create_options"></span><span class="target" id="cepton__sdk_8hpp_1a2c25109156b295a804b155ee9c25a762"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv2N10cepton_sdk7OptionsE" title="cepton_sdk::Options">Options</a> <code class="descclassname">cepton_sdk::</code><code class="descname">create_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14create_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk14create_optionsEv">
+<span id="_CPPv2N10cepton_sdk14create_optionsEv"></span><span id="cepton_sdk::create_options"></span><span class="target" id="cepton__sdk_8hpp_1a2c25109156b295a804b155ee9c25a762"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv3N10cepton_sdk7OptionsE" title="cepton_sdk::Options">Options</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">create_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14create_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create default options. </p>
 </dd></dl>
 
 <dl class="type">
-<dt id="_CPPv2N10cepton_sdk21FpSensorErrorCallbackE">
-<span id="cepton_sdk::FpSensorErrorCallback"></span><span class="target" id="cepton__sdk_8hpp_1a13932ba8fb50ab12949a570281486812"></span><em class="property">typedef </em>void (*<code class="descclassname">cepton_sdk::</code><code class="descname">FpSensorErrorCallback</code>)<span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv2N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> handle, <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> error_code, <em class="property">const</em> char *error_msg, <em class="property">const</em> void *error_data, size_t error_data_size, void *user_data<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk21FpSensorErrorCallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk21FpSensorErrorCallbackE">
+<span id="_CPPv2N10cepton_sdk21FpSensorErrorCallbackE"></span><span id="cepton_sdk::FpSensorErrorCallback"></span><span class="target" id="cepton__sdk_8hpp_1a13932ba8fb50ab12949a570281486812"></span><em class="property">typedef </em>void (*<code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">FpSensorErrorCallback</code>)<span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> handle, <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> error_code, <em class="property">const</em> char *error_msg, <em class="property">const</em> void *error_data, size_t error_data_size, void *user_data<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk21FpSensorErrorCallbackE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback for receiving sdk and sensor errors. </p>
 <p>Currently, error_data is not used. </p>
 </dd></dl>
@@ -357,59 +350,59 @@
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk10initializeEiRK7OptionsRK21FpSensorErrorCallbackPCv">
-<span id="cepton_sdk::initialize__i.OptionsCR.FpSensorErrorCallbackCR.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1ad1588ca611b93766ae38cba51926e2d2"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">initialize</code><span class="sig-paren">(</span>int <em>version</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv2N10cepton_sdk7OptionsE" title="cepton_sdk::Options">Options</a> &amp;<em>options</em> = create_options(), <em class="property">const</em> <a class="reference internal" href="#_CPPv2N10cepton_sdk21FpSensorErrorCallbackE" title="cepton_sdk::FpSensorErrorCallback">FpSensorErrorCallback</a> &amp;<em>cb</em> = nullptr, void *<em class="property">const</em> <em>user_data</em> = nullptr<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk10initializeEiRK7OptionsRK21FpSensorErrorCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk10initializeEiRK7OptionsRK21FpSensorErrorCallbackPCv">
+<span id="_CPPv2N10cepton_sdk10initializeEiRK7OptionsRK21FpSensorErrorCallbackPCv"></span><span id="cepton_sdk::initialize__i.OptionsCR.FpSensorErrorCallbackCR.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1ad1588ca611b93766ae38cba51926e2d2"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">initialize</code><span class="sig-paren">(</span>int <em>version</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv3N10cepton_sdk7OptionsE" title="cepton_sdk::Options">Options</a> &amp;<em>options</em> = <a class="reference internal" href="#_CPPv3N10cepton_sdk14create_optionsEv" title="cepton_sdk::create_options">create_options</a>(), <em class="property">const</em> <a class="reference internal" href="#_CPPv3N10cepton_sdk21FpSensorErrorCallbackE" title="cepton_sdk::FpSensorErrorCallback">FpSensorErrorCallback</a> &amp;<em>cb</em> = nullptr, void *<em class="property">const</em> <em>user_data</em> = nullptr<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk10initializeEiRK7OptionsRK21FpSensorErrorCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Initializes settings and networking. </p>
 <p>Must be called before any other sdk function listed below. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk12deinitializeEv">
-<span id="cepton_sdk::deinitialize"></span><span class="target" id="cepton__sdk_8hpp_1a5aeaf0b79f059d655e75200241cf3182"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">deinitialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk12deinitializeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk12deinitializeEv">
+<span id="_CPPv2N10cepton_sdk12deinitializeEv"></span><span id="cepton_sdk::deinitialize"></span><span class="target" id="cepton__sdk_8hpp_1a5aeaf0b79f059d655e75200241cf3182"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">deinitialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk12deinitializeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Resets everything and deallocates memory. </p>
 <p>Called automatically on program exit. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk17set_control_flagsE7Control7Control">
-<span id="cepton_sdk::set_control_flags__Control.Control"></span><span class="target" id="cepton__sdk_8hpp_1acf71300b018092c5a5bb87d1725878c5"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">set_control_flags</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk7ControlE" title="cepton_sdk::Control">Control</a> <em>mask</em>, <a class="reference internal" href="#_CPPv2N10cepton_sdk7ControlE" title="cepton_sdk::Control">Control</a> <em>flags</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk17set_control_flagsE7Control7Control" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk17set_control_flagsE7Control7Control">
+<span id="_CPPv2N10cepton_sdk17set_control_flagsE7Control7Control"></span><span id="cepton_sdk::set_control_flags__Control.Control"></span><span class="target" id="cepton__sdk_8hpp_1acf71300b018092c5a5bb87d1725878c5"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">set_control_flags</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk7ControlE" title="cepton_sdk::Control">Control</a> <em>mask</em>, <a class="reference internal" href="#_CPPv3N10cepton_sdk7ControlE" title="cepton_sdk::Control">Control</a> <em>flags</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk17set_control_flagsE7Control7Control" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk17get_control_flagsEv">
-<span id="cepton_sdk::get_control_flags"></span><span class="target" id="cepton__sdk_8hpp_1a0e1f6ebb602e036f9a22cfd29f4f63ae"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv2N10cepton_sdk7ControlE" title="cepton_sdk::Control">Control</a> <code class="descclassname">cepton_sdk::</code><code class="descname">get_control_flags</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk17get_control_flagsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk17get_control_flagsEv">
+<span id="_CPPv2N10cepton_sdk17get_control_flagsEv"></span><span id="cepton_sdk::get_control_flags"></span><span class="target" id="cepton__sdk_8hpp_1a0e1f6ebb602e036f9a22cfd29f4f63ae"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv3N10cepton_sdk7ControlE" title="cepton_sdk::Control">Control</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_control_flags</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk17get_control_flagsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk16has_control_flagE7Control">
-<span id="cepton_sdk::has_control_flag__Control"></span><span class="target" id="cepton__sdk_8hpp_1af1ec08661e5b00606246d9941c319d12"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::</code><code class="descname">has_control_flag</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk7ControlE" title="cepton_sdk::Control">Control</a> <em>flag</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk16has_control_flagE7Control" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk16has_control_flagE7Control">
+<span id="_CPPv2N10cepton_sdk16has_control_flagE7Control"></span><span id="cepton_sdk::has_control_flag__Control"></span><span class="target" id="cepton__sdk_8hpp_1af1ec08661e5b00606246d9941c319d12"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">has_control_flag</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk7ControlE" title="cepton_sdk::Control">Control</a> <em>flag</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk16has_control_flagE7Control" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk8get_portEv">
-<span id="cepton_sdk::get_port"></span><span class="target" id="cepton__sdk_8hpp_1a671b82ba097ded534e5eefae9164f87c"></span><em class="property">static</em> uint16_t <code class="descclassname">cepton_sdk::</code><code class="descname">get_port</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk8get_portEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk8get_portEv">
+<span id="_CPPv2N10cepton_sdk8get_portEv"></span><span id="cepton_sdk::get_port"></span><span class="target" id="cepton__sdk_8hpp_1a671b82ba097ded534e5eefae9164f87c"></span><em class="property">static</em> uint16_t <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_port</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk8get_portEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk8set_portE8uint16_t">
-<span id="cepton_sdk::set_port__uint16_t"></span><span class="target" id="cepton__sdk_8hpp_1a72710e2edf24e73fb6d82fe941f37bc6"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">set_port</code><span class="sig-paren">(</span>uint16_t <em>port</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk8set_portE8uint16_t" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk8set_portE8uint16_t">
+<span id="_CPPv2N10cepton_sdk8set_portE8uint16_t"></span><span id="cepton_sdk::set_port__uint16_t"></span><span class="target" id="cepton__sdk_8hpp_1a72710e2edf24e73fb6d82fe941f37bc6"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">set_port</code><span class="sig-paren">(</span>uint16_t <em>port</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk8set_portE8uint16_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets network listen port. </p>
 <p>Default: 8808. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk17set_frame_optionsERK21CeptonSDKFrameOptions">
-<span id="cepton_sdk::set_frame_options__CeptonSDKFrameOptionsCR"></span><span class="target" id="cepton__sdk_8hpp_1a60ffbde63e8788f612cfc54330b257eb"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">set_frame_options</code><span class="sig-paren">(</span><em class="property">const</em> CeptonSDKFrameOptions &amp;<em>options</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk17set_frame_optionsERK21CeptonSDKFrameOptions" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk17set_frame_optionsERK21CeptonSDKFrameOptions">
+<span id="_CPPv2N10cepton_sdk17set_frame_optionsERK21CeptonSDKFrameOptions"></span><span id="cepton_sdk::set_frame_options__CeptonSDKFrameOptionsCR"></span><span class="target" id="cepton__sdk_8hpp_1a60ffbde63e8788f612cfc54330b257eb"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">set_frame_options</code><span class="sig-paren">(</span><em class="property">const</em> CeptonSDKFrameOptions &amp;<em>options</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk17set_frame_optionsERK21CeptonSDKFrameOptions" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk14get_frame_modeEv">
-<span id="cepton_sdk::get_frame_mode"></span><span class="target" id="cepton__sdk_8hpp_1ae421f90615191ae33dd562e6ded9e4f4"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv2N10cepton_sdk9FrameModeE" title="cepton_sdk::FrameMode">FrameMode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">get_frame_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk14get_frame_modeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk14get_frame_modeEv">
+<span id="_CPPv2N10cepton_sdk14get_frame_modeEv"></span><span id="cepton_sdk::get_frame_mode"></span><span class="target" id="cepton__sdk_8hpp_1ae421f90615191ae33dd562e6ded9e4f4"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv3N10cepton_sdk9FrameModeE" title="cepton_sdk::FrameMode">FrameMode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_frame_mode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14get_frame_modeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk16get_frame_lengthEv">
-<span id="cepton_sdk::get_frame_length"></span><span class="target" id="cepton__sdk_8hpp_1af3a48b5bee6fb1359264a77cd477c828"></span><em class="property">static</em> float <code class="descclassname">cepton_sdk::</code><code class="descname">get_frame_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk16get_frame_lengthEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk16get_frame_lengthEv">
+<span id="_CPPv2N10cepton_sdk16get_frame_lengthEv"></span><span id="cepton_sdk::get_frame_length"></span><span class="target" id="cepton__sdk_8hpp_1af3a48b5bee6fb1359264a77cd477c828"></span><em class="property">static</em> float <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_frame_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk16get_frame_lengthEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -417,9 +410,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -441,7 +432,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -460,6 +451,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -473,19 +465,13 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

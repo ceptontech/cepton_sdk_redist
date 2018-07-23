@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
-        <link rel="next" title="Setup" href="setup.html"/>
-        <link rel="prev" title="Overview" href="overview.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setup" href="setup.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -112,7 +104,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -120,9 +112,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -178,8 +171,8 @@
 <div class="section" id="types">
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <dl class="type">
-<dt id="_CPPv2N10cepton_sdk15SensorErrorCodeE">
-<span id="cepton_sdk::SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1a2d89666c1731ab7c94f3f5c0c141e202"></span><em class="property">typedef </em>CeptonSensorErrorCode <code class="descclassname">cepton_sdk::</code><code class="descname">SensorErrorCode</code><a class="headerlink" href="#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk15SensorErrorCodeE">
+<span id="_CPPv2N10cepton_sdk15SensorErrorCodeE"></span><span id="cepton_sdk::SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1a2d89666c1731ab7c94f3f5c0c141e202"></span><em class="property">typedef </em>CeptonSensorErrorCode <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">SensorErrorCode</code><a class="headerlink" href="#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Error code returned by most sdk functions. </p>
 <p>Most getter functions do not return an error, because they cannot fail. </p>
 </dd></dl>
@@ -192,7 +185,7 @@
 <dl class="enum">
 <dt id="c._CeptonSensorErrorCode">
 <span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8"></span><em class="property">enum </em><code class="descname">_CeptonSensorErrorCode</code><a class="headerlink" href="#c._CeptonSensorErrorCode" title="Permalink to this definition">¶</a></dt>
-<dd><p><code class="docutils literal"><span class="pre">CeptonSensorErrorCode</span></code> implementation. </p>
+<dd><p><code class="docutils literal notranslate"><span class="pre">CeptonSensorErrorCode</span></code> implementation. </p>
 <p><em>Values:</em></p>
 <dl class="enumvalue">
 <dt id="c.CEPTON_SUCCESS">
@@ -325,20 +318,20 @@
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk19get_error_code_nameE15SensorErrorCode">
-<span id="cepton_sdk::get_error_code_name__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1a6053fbd96beeea7b8197fc1773c78fc1"></span><em class="property">static</em> std::string <code class="descclassname">cepton_sdk::</code><code class="descname">get_error_code_name</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk19get_error_code_nameE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk19get_error_code_nameE15SensorErrorCode">
+<span id="_CPPv2N10cepton_sdk19get_error_code_nameE15SensorErrorCode"></span><span id="cepton_sdk::get_error_code_name__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1a6053fbd96beeea7b8197fc1773c78fc1"></span><em class="property">static</em> std::string <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_error_code_name</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk19get_error_code_nameE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns string name of error code. </p>
 <p>Returns empty string if error code is invalid. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk13is_error_codeE15SensorErrorCode">
-<span id="cepton_sdk::is_error_code__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1aa961511a37cbf20743354b386b2330d7"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::</code><code class="descname">is_error_code</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk13is_error_codeE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk13is_error_codeE15SensorErrorCode">
+<span id="_CPPv2N10cepton_sdk13is_error_codeE15SensorErrorCode"></span><span id="cepton_sdk::is_error_code__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1aa961511a37cbf20743354b386b2330d7"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">is_error_code</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk13is_error_codeE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk13is_fault_codeE15SensorErrorCode">
-<span id="cepton_sdk::is_fault_code__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1acf6991d09f7013a474f3e014dad3dd56"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk::</code><code class="descname">is_fault_code</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk13is_fault_codeE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk13is_fault_codeE15SensorErrorCode">
+<span id="_CPPv2N10cepton_sdk13is_fault_codeE15SensorErrorCode"></span><span id="cepton_sdk::is_fault_code__SensorErrorCode"></span><span class="target" id="cepton__sdk_8hpp_1acf6991d09f7013a474f3e014dad3dd56"></span><em class="property">static</em> bool <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">is_fault_code</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk13is_fault_codeE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -346,9 +339,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -370,7 +361,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -389,6 +380,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -402,19 +394,13 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

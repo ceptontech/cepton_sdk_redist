@@ -108,6 +108,30 @@ inline static SensorErrorCode initialize(Options options = create_options(),
   return wait(1.0f);
 }
 
+/// Callback for image frames.
+class SensorImageFramesCallback
+
+    : public util::Callback<SensorHandle, std::size_t,
+                            const SensorImagePoint *> {
+ public:
+  ~SensorImageFramesCallback() { deinitialize(); }
+  SensorErrorCode initialize() {
+    return listen_image_frames(global_on_callback, this);
+  }
+  SensorErrorCode deinitialize() { return unlisten_image_frames(); }
+};
+
+/// Callback for network packets.
+class NetworkPacketsCallback
+    : public util::Callback<SensorHandle, uint8_t const *, std::size_t> {
+ public:
+  ~NetworkPacketsCallback() { deinitialize(); }
+  SensorErrorCode initialize() {
+    return listen_network_packets(global_on_callback, this);
+  }
+  SensorErrorCode deinitialize() { return unlisten_network_packets(); }
+};
+
 // -----------------------------------------------------------------------------
 // Sensors
 // -----------------------------------------------------------------------------

@@ -6,7 +6,7 @@ from cepton_sdk.common.c import *
 SDK_VERSION = 13
 
 _module_dir = os.path.dirname(os.path.abspath(__file__))
-libcepton_sdk = load_c_library(_module_dir, "cepton_sdk")
+lib = load_c_library(_module_dir, "cepton_sdk")
 
 # ------------------------------------------------------------------------------
 # General
@@ -42,15 +42,15 @@ class C_ErrorCode(enum.IntEnum):
     CEPTON_FAULT_DETECTOR_MALFUNCTION = -1008
 
 
-c_get_error_code_name = libcepton_sdk.cepton_get_error_code_name
+c_get_error_code_name = lib.cepton_get_error_code_name
 c_get_error_code_name.argtypes = [c_int]
 c_get_error_code_name.restype = c_char_p
 
-c_is_error_code = libcepton_sdk.cepton_is_error_code
+c_is_error_code = lib.cepton_is_error_code
 c_is_error_code.argtypes = [c_int]
 c_is_error_code.restype = c_int
 
-c_is_fault_code = libcepton_sdk.cepton_is_fault_code
+c_is_fault_code = lib.cepton_is_fault_code
 c_is_fault_code.argtypes = [c_int]
 c_is_fault_code.restype = c_int
 
@@ -103,7 +103,7 @@ def _c_error_check(error_code, func, args):
     check_error_code(error_code)
 
 
-def _add_c_error_check(c_func):
+def add_c_error_check(c_func):
     c_func.restype = c_int
     c_func.errcheck = _c_error_check
 
@@ -119,7 +119,7 @@ class C_FrameOptions(Structure):
     ]
 
 
-c_create_frame_options = libcepton_sdk.cepton_sdk_create_frame_options
+c_create_frame_options = lib.cepton_sdk_create_frame_options
 c_create_frame_options.restype = C_FrameOptions
 
 
@@ -132,55 +132,56 @@ class C_Options(Structure):
     ]
 
 
-c_create_options = libcepton_sdk.cepton_sdk_create_options
+c_create_options = lib.cepton_sdk_create_options
 c_create_options.restype = C_Options
 
-C_SensorErrorCallback = CFUNCTYPE(
-    None, C_SensorHandle, c_int, c_char_p, c_void_p, c_size_t, c_void_p)
+C_SensorErrorCallback = \
+    CFUNCTYPE(None,
+              C_SensorHandle, c_int, c_char_p, c_void_p, c_size_t, c_void_p)
 
-c_is_initialized = libcepton_sdk.cepton_sdk_is_initialized
+c_is_initialized = lib.cepton_sdk_is_initialized
 c_is_initialized.restype = c_int
 
-c_initialize = libcepton_sdk.cepton_sdk_initialize
+c_initialize = lib.cepton_sdk_initialize
 c_initialize.argtypes = \
     [c_int, POINTER(C_Options), C_SensorErrorCallback, c_void_p]
-_add_c_error_check(c_initialize)
+add_c_error_check(c_initialize)
 
-c_deinitialize = libcepton_sdk.cepton_sdk_deinitialize
+c_deinitialize = lib.cepton_sdk_deinitialize
 c_deinitialize.argtypes = []
-_add_c_error_check(c_deinitialize)
+add_c_error_check(c_deinitialize)
 
-c_set_control_flags = libcepton_sdk.cepton_sdk_set_control_flags
+c_set_control_flags = lib.cepton_sdk_set_control_flags
 c_set_control_flags.argtypes = [c_uint32, c_uint32]
-_add_c_error_check(c_set_control_flags)
+add_c_error_check(c_set_control_flags)
 
-c_get_control_flags = libcepton_sdk.cepton_sdk_get_control_flags
+c_get_control_flags = lib.cepton_sdk_get_control_flags
 c_get_control_flags.argtypes = []
 c_get_control_flags.restype = c_uint32
 
-c_has_control_flag = libcepton_sdk.cepton_sdk_has_control_flag
+c_has_control_flag = lib.cepton_sdk_has_control_flag
 c_has_control_flag.argtypes = [c_uint32]
 c_has_control_flag.restype = c_int
 
-c_get_port = libcepton_sdk.cepton_sdk_get_port
+c_get_port = lib.cepton_sdk_get_port
 c_get_port.restype = c_uint16
 
-c_set_port = libcepton_sdk.cepton_sdk_set_port
+c_set_port = lib.cepton_sdk_set_port
 c_set_port.argtypes = [c_uint16]
-_add_c_error_check(c_set_port)
+add_c_error_check(c_set_port)
 
-c_set_frame_options = libcepton_sdk.cepton_sdk_set_frame_options
+c_set_frame_options = lib.cepton_sdk_set_frame_options
 c_set_frame_options.argtypes = [POINTER(C_FrameOptions)]
-_add_c_error_check(c_set_frame_options)
+add_c_error_check(c_set_frame_options)
 
-c_get_frame_mode = libcepton_sdk.cepton_sdk_get_frame_mode
+c_get_frame_mode = lib.cepton_sdk_get_frame_mode
 c_get_frame_mode.restype = c_uint32
 
-c_get_frame_length = libcepton_sdk.cepton_sdk_get_frame_length
+c_get_frame_length = lib.cepton_sdk_get_frame_length
 c_get_frame_length.restype = c_float
 
-c_clear_cache = libcepton_sdk.cepton_sdk_clear_cache
-_add_c_error_check(c_clear_cache)
+c_clear_cache = lib.cepton_sdk_clear_cache
+add_c_error_check(c_clear_cache)
 
 # ------------------------------------------------------------------------------
 # Sensors
@@ -221,28 +222,28 @@ class C_SensorInformation(Structure):
 
 
 c_cepton_sensor_information_size = \
-    c_size_t.in_dll(libcepton_sdk, "cepton_sensor_information_size").value
+    c_size_t.in_dll(lib, "cepton_sensor_information_size").value
 assert (sizeof(C_SensorInformation) == c_cepton_sensor_information_size)
 
-c_get_n_sensors = libcepton_sdk.cepton_sdk_get_n_sensors
+c_get_n_sensors = lib.cepton_sdk_get_n_sensors
 c_get_n_sensors.restype = c_size_t
 
 c_get_sensor_handle_by_serial_number = \
-    libcepton_sdk.cepton_sdk_get_sensor_handle_by_serial_number
+    lib.cepton_sdk_get_sensor_handle_by_serial_number
 c_get_sensor_handle_by_serial_number.argtypes = \
     [c_uint64, POINTER(C_SensorHandle)]
-_add_c_error_check(c_get_sensor_handle_by_serial_number)
+add_c_error_check(c_get_sensor_handle_by_serial_number)
 
-c_get_sensor_information = libcepton_sdk.cepton_sdk_get_sensor_information
+c_get_sensor_information = lib.cepton_sdk_get_sensor_information
 c_get_sensor_information.argtypes = \
     [C_SensorHandle, POINTER(C_SensorInformation)]
-_add_c_error_check(c_get_sensor_information)
+add_c_error_check(c_get_sensor_information)
 
 c_get_sensor_information_by_index = \
-    libcepton_sdk.cepton_sdk_get_sensor_information_by_index
+    lib.cepton_sdk_get_sensor_information_by_index
 c_get_sensor_information_by_index.argtypes = \
     [c_size_t, POINTER(C_SensorInformation)]
-_add_c_error_check(c_get_sensor_information_by_index)
+add_c_error_check(c_get_sensor_information_by_index)
 
 # ------------------------------------------------------------------------------
 # Points
@@ -264,7 +265,7 @@ class C_SensorImagePoint(Structure):
 
 
 c_cepton_sensor_image_point_size = \
-    c_size_t.in_dll(libcepton_sdk, "cepton_sensor_image_point_size").value
+    c_size_t.in_dll(lib, "cepton_sensor_image_point_size").value
 assert (sizeof(C_SensorImagePoint) == c_cepton_sensor_image_point_size)
 
 # ------------------------------------------------------------------------------
@@ -274,84 +275,72 @@ C_SensorImageDataCallback = \
     CFUNCTYPE(None,
               C_SensorHandle, c_size_t, POINTER(C_SensorImagePoint), c_void_p)
 
-c_listen_image_frames = libcepton_sdk.cepton_sdk_listen_image_frames
+c_listen_image_frames = lib.cepton_sdk_listen_image_frames
 c_listen_image_frames.argtypes = [C_SensorImageDataCallback, c_void_p]
-_add_c_error_check(c_listen_image_frames)
+add_c_error_check(c_listen_image_frames)
 
-c_unlisten_image_frames = libcepton_sdk.cepton_sdk_unlisten_image_frames
-_add_c_error_check(c_unlisten_image_frames)
+c_unlisten_image_frames = lib.cepton_sdk_unlisten_image_frames
+add_c_error_check(c_unlisten_image_frames)
 
 # ------------------------------------------------------------------------------
 # Capture
 # ------------------------------------------------------------------------------
-c_capture_replay_is_open = libcepton_sdk.cepton_sdk_capture_replay_is_open
+c_capture_replay_is_open = lib.cepton_sdk_capture_replay_is_open
 c_capture_replay_is_open.restype = c_int
 
-c_capture_replay_open = libcepton_sdk.cepton_sdk_capture_replay_open
+c_capture_replay_open = lib.cepton_sdk_capture_replay_open
 c_capture_replay_open.argtypes = [c_char_p]
-_add_c_error_check(c_capture_replay_open)
+add_c_error_check(c_capture_replay_open)
 
-c_capture_replay_close = libcepton_sdk.cepton_sdk_capture_replay_close
-_add_c_error_check(c_capture_replay_close)
+c_capture_replay_close = lib.cepton_sdk_capture_replay_close
+add_c_error_check(c_capture_replay_close)
 
-c_capture_replay_get_start_time = \
-    libcepton_sdk.cepton_sdk_capture_replay_get_start_time
+c_capture_replay_get_start_time = lib.cepton_sdk_capture_replay_get_start_time
 c_capture_replay_get_start_time.restype = c_int64
 
-c_capture_replay_get_position = \
-    libcepton_sdk.cepton_sdk_capture_replay_get_position
+c_capture_replay_get_position = lib.cepton_sdk_capture_replay_get_position
 c_capture_replay_get_position.restype = c_float
 
-c_capture_replay_get_length = \
-    libcepton_sdk.cepton_sdk_capture_replay_get_length
+c_capture_replay_get_length = lib.cepton_sdk_capture_replay_get_length
 c_capture_replay_get_length.restype = c_float
 
-c_capture_replay_is_end = \
-    libcepton_sdk.cepton_sdk_capture_replay_is_end
+c_capture_replay_is_end = lib.cepton_sdk_capture_replay_is_end
 c_capture_replay_is_end.restype = c_int
 
-c_capture_replay_rewind = \
-    libcepton_sdk.cepton_sdk_capture_replay_rewind
-_add_c_error_check(c_capture_replay_rewind)
+c_capture_replay_rewind = lib.cepton_sdk_capture_replay_rewind
+add_c_error_check(c_capture_replay_rewind)
 
-c_capture_replay_seek = \
-    libcepton_sdk.cepton_sdk_capture_replay_seek
+c_capture_replay_seek = lib.cepton_sdk_capture_replay_seek
 c_capture_replay_seek.argtypes = [c_float]
-_add_c_error_check(c_capture_replay_seek)
+add_c_error_check(c_capture_replay_seek)
 
-c_capture_replay_get_enable_loop = \
-    libcepton_sdk.cepton_sdk_capture_replay_get_enable_loop
+c_capture_replay_get_enable_loop = lib.cepton_sdk_capture_replay_get_enable_loop
 c_capture_replay_get_enable_loop.restype = c_int
 
-c_capture_replay_set_enable_loop = \
-    libcepton_sdk.cepton_sdk_capture_replay_set_enable_loop
+c_capture_replay_set_enable_loop = lib.cepton_sdk_capture_replay_set_enable_loop
 c_capture_replay_set_enable_loop.argtypes = [c_bool]
-_add_c_error_check(c_capture_replay_set_enable_loop)
+add_c_error_check(c_capture_replay_set_enable_loop)
 
-c_capture_replay_get_speed = \
-    libcepton_sdk.cepton_sdk_capture_replay_get_speed
+c_capture_replay_get_speed = lib.cepton_sdk_capture_replay_get_speed
 c_capture_replay_get_speed.restype = c_float
 
-c_capture_replay_set_speed = \
-    libcepton_sdk.cepton_sdk_capture_replay_set_speed
+c_capture_replay_set_speed = lib.cepton_sdk_capture_replay_set_speed
 c_capture_replay_set_speed.argtypes = [c_float]
-_add_c_error_check(c_capture_replay_set_speed)
+add_c_error_check(c_capture_replay_set_speed)
 
 c_capture_replay_resume_blocking_once = \
-    libcepton_sdk.cepton_sdk_capture_replay_resume_blocking_once
-_add_c_error_check(c_capture_replay_resume_blocking_once)
+    lib.cepton_sdk_capture_replay_resume_blocking_once
+add_c_error_check(c_capture_replay_resume_blocking_once)
 
-c_capture_replay_resume_blocking = \
-    libcepton_sdk.cepton_sdk_capture_replay_resume_blocking
+c_capture_replay_resume_blocking = lib.cepton_sdk_capture_replay_resume_blocking
 c_capture_replay_resume_blocking.argtypes = [c_float]
-_add_c_error_check(c_capture_replay_resume_blocking)
+add_c_error_check(c_capture_replay_resume_blocking)
 
-c_capture_replay_is_running = \
-    libcepton_sdk.cepton_sdk_capture_replay_is_running
+c_capture_replay_is_running = lib.cepton_sdk_capture_replay_is_running
 c_capture_replay_is_running.restype = c_int
 
-c_capture_replay_resume = libcepton_sdk.cepton_sdk_capture_replay_resume
-_add_c_error_check(c_capture_replay_resume)
+c_capture_replay_resume = lib.cepton_sdk_capture_replay_resume
+add_c_error_check(c_capture_replay_resume)
 
-c_capture_replay_pause = libcepton_sdk.cepton_sdk_capture_replay_pause
-_add_c_error_check(c_capture_replay_pause)
+c_capture_replay_pause = lib.cepton_sdk_capture_replay_pause
+add_c_error_check(c_capture_replay_pause)

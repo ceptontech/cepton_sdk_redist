@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
-        <link rel="next" title="Networking" href="networking.html"/>
-        <link rel="prev" title="Sensors" href="sensors.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Networking" href="networking.html" />
+    <link rel="prev" title="Sensors" href="sensors.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -112,7 +104,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -120,9 +112,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -178,15 +171,15 @@
 <div class="section" id="types">
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <dl class="type">
-<dt id="_CPPv2N10cepton_sdk16SensorImagePointE">
-<span id="cepton_sdk::SensorImagePoint"></span><span class="target" id="cepton__sdk_8hpp_1afe2b75c999741f7c6d3424fc7febfe9d"></span><em class="property">typedef </em>CeptonSensorImagePoint <code class="descclassname">cepton_sdk::</code><code class="descname">SensorImagePoint</code><a class="headerlink" href="#_CPPv2N10cepton_sdk16SensorImagePointE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk16SensorImagePointE">
+<span id="_CPPv2N10cepton_sdk16SensorImagePointE"></span><span id="cepton_sdk::SensorImagePoint"></span><span class="target" id="cepton__sdk_8hpp_1afe2b75c999741f7c6d3424fc7febfe9d"></span><em class="property">typedef </em>CeptonSensorImagePoint <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">SensorImagePoint</code><a class="headerlink" href="#_CPPv3N10cepton_sdk16SensorImagePointE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="struct">
 <dt id="c.CeptonSensorImagePoint">
 <span class="target" id="structCeptonSensorImagePoint"></span><em class="property">struct </em><code class="descname">CeptonSensorImagePoint</code><a class="headerlink" href="#c.CeptonSensorImagePoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Point in image coordinates (focal length = 1). </p>
-<p>To convert to 3d point, refer to <code class="docutils literal"><span class="pre">cepton_sdk_util.hpp</span></code>. </p>
+<p>To convert to 3d point, refer to <code class="docutils literal notranslate"><span class="pre">cepton_sdk_util.hpp</span></code>. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Members</p>
 <dl class="variable">
@@ -249,8 +242,8 @@
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk11clear_cacheEv">
-<span id="cepton_sdk::clear_cache"></span><span class="target" id="cepton__sdk_8hpp_1adfa24cd58f1e03ccc6bb7c65c3248057"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">clear_cache</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk11clear_cacheEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk11clear_cacheEv">
+<span id="_CPPv2N10cepton_sdk11clear_cacheEv"></span><span id="cepton_sdk::clear_cache"></span><span class="target" id="cepton__sdk_8hpp_1adfa24cd58f1e03ccc6bb7c65c3248057"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">clear_cache</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk11clear_cacheEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Reset frame caches. </p>
 <p>Used when seeking in a capture file. </p>
 </dd></dl>
@@ -261,15 +254,15 @@
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv">
-<span id="cepton_sdk::listen_image_frames__FpSensorImageDataCallback.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1a728a20a894ba53a9945967cfb1aeae7b"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">listen_image_frames</code><span class="sig-paren">(</span>FpSensorImageDataCallback <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv">
+<span id="_CPPv2N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv"></span><span id="cepton_sdk::listen_image_frames__FpSensorImageDataCallback.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1a728a20a894ba53a9945967cfb1aeae7b"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">listen_image_frames</code><span class="sig-paren">(</span>FpSensorImageDataCallback <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets image frames callback. </p>
 <p>Returns error if callback already registered. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv2N10cepton_sdk21unlisten_image_framesEv">
-<span id="cepton_sdk::unlisten_image_frames"></span><span class="target" id="cepton__sdk_8hpp_1a7369f09c5331dd27516fd916563a038f"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv2N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::</code><code class="descname">unlisten_image_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv2N10cepton_sdk21unlisten_image_framesEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv3N10cepton_sdk21unlisten_image_framesEv">
+<span id="_CPPv2N10cepton_sdk21unlisten_image_framesEv"></span><span id="cepton_sdk::unlisten_image_frames"></span><span class="target" id="cepton__sdk_8hpp_1a7369f09c5331dd27516fd916563a038f"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">unlisten_image_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk21unlisten_image_framesEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -277,9 +270,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -301,7 +292,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -320,6 +311,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -333,19 +325,13 @@
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

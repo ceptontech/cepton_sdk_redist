@@ -1,3 +1,6 @@
+/**
+ * Sample code for transforming 3d points.
+ */
 #include "cepton_sdk_api.hpp"
 
 int main() {

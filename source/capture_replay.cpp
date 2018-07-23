@@ -70,9 +70,7 @@ float CaptureReplay::get_length() const {
 CeptonSensorErrorCode CaptureReplay::seek(float sec) {
   if (!is_open()) return CEPTON_ERROR_NOT_OPEN;
 
-  return run_paused([&]() -> CeptonSensorErrorCode {
-    return seek_impl(int64_t(1e6f * sec));
-  });
+  return run_paused([&]() { return seek_impl(int64_t(1e6f * sec)); });
 }
 
 CeptonSensorErrorCode CaptureReplay::seek_impl(int64_t usec) {
@@ -84,14 +82,6 @@ CeptonSensorErrorCode CaptureReplay::seek_impl(int64_t usec) {
   }
   m_is_end = false;
   return CEPTON_SUCCESS;
-}
-
-CeptonSensorErrorCode CaptureReplay::modify_setting(
-    const std::function<void()> &func) {
-  return run_paused([&]() -> CeptonSensorErrorCode {
-    func();
-    return CEPTON_SUCCESS;
-  });
 }
 
 CeptonSensorErrorCode CaptureReplay::run_paused(
@@ -110,13 +100,19 @@ CeptonSensorErrorCode CaptureReplay::run_paused(
 }
 
 CeptonSensorErrorCode CaptureReplay::set_enable_loop(bool enable_loop) {
-  return modify_setting([&]() { m_enable_loop = enable_loop; });
+  return run_paused([&]() {
+    m_enable_loop = enable_loop;
+    return CEPTON_SUCCESS;
+  });
 }
 
 CeptonSensorErrorCode CaptureReplay::set_speed(float speed) {
   if ((speed < 1e-6f) || speed > 5.0f) return CEPTON_ERROR_INVALID_ARGUMENTS;
 
-  return modify_setting([&]() { m_speed = speed; });
+  return run_paused([&]() {
+    m_speed = speed;
+    return CEPTON_SUCCESS;
+  });
 }
 
 CeptonSensorErrorCode CaptureReplay::resume_blocking_once() {

@@ -93,10 +93,10 @@ class _FramesListener(_FramesListenerBase):
     def initialize(self):
         self._c_on_points = \
             cepton_sdk.c.C_SensorImageDataCallback(
-                lambda *args: self._on_image_points(*args))
+                lambda *args: self._on_image_points(*args[:-1]))
         cepton_sdk.c.c_listen_image_frames(self._c_on_points, None)
 
-    def _on_image_points(self, sensor_handle, n_points, c_image_points_ptr, c_user_data_ptr):
+    def _on_image_points(self, sensor_handle, n_points, c_image_points_ptr):
         image_points = \
             cepton_sdk.point.ImagePoints.from_c(n_points, c_image_points_ptr)
         self._add_points(sensor_handle, image_points)

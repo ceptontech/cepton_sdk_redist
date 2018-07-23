@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Points &#8212; cepton_sdk  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -26,8 +18,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Capture Replay" href="capture_replay.html" />
     <link rel="prev" title="Sensors" href="sensors.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -140,23 +131,23 @@
 </dd></dl>
 
 <p>All sdk methods return image points, but they can easily be converted to 3d points:</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
 <p>All point array classes support numpy indexing and assignment as if they were 1-d arrays:</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_points_1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_points_1</span><span class="p">)</span>
 <span class="n">image_points_2</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_points_1</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </td></tr></table></div>
 <p>Multiple point arrays can also be combined:</p>
-<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">image_points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImagePoints</span><span class="o">.</span><span class="n">combine</span><span class="p">([</span><span class="n">image_points_1</span><span class="p">,</span> <span class="n">image_points_2</span><span class="p">])</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">image_points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImagePoints</span><span class="o">.</span><span class="n">combine</span><span class="p">([</span><span class="n">image_points_1</span><span class="p">,</span> <span class="n">image_points_2</span><span class="p">])</span>
 </pre></div>
 </td></tr></table></div>
 </div>
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
-<p>There are multiple methods for getting points, but only one method should be used at a time. For example, don’t call <a class="reference internal" href="#cepton_sdk.get_sensor_image_frames" title="cepton_sdk.get_sensor_image_frames"><code class="xref any py py-func docutils literal"><span class="pre">cepton_sdk.get_sensor_image_frames</span></code></a> for multiple sensors. Instead, call <a class="reference internal" href="#cepton_sdk.get_image_frames" title="cepton_sdk.get_image_frames"><code class="xref any py py-func docutils literal"><span class="pre">cepton_sdk.get_image_frames</span></code></a>.</p>
+<p>There are multiple methods for getting points, but only one method should be used at a time. For example, don’t call <a class="reference internal" href="#cepton_sdk.get_sensor_image_frames" title="cepton_sdk.get_sensor_image_frames"><code class="xref any py py-func docutils literal notranslate"><span class="pre">cepton_sdk.get_sensor_image_frames</span></code></a> for multiple sensors. Instead, call <a class="reference internal" href="#cepton_sdk.get_image_frames" title="cepton_sdk.get_image_frames"><code class="xref any py py-func docutils literal notranslate"><span class="pre">cepton_sdk.get_image_frames</span></code></a>.</p>
 <div class="section" id="get-by-frame">
 <h3>Get by Frame<a class="headerlink" href="#get-by-frame" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
@@ -287,12 +278,14 @@ points in capture file.</p>
                         title="next chapter">Capture Replay</a></p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -316,7 +309,7 @@ points in capture file.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
     </div>
   </body>
 </html>

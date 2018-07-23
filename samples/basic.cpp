@@ -1,3 +1,6 @@
+/**
+ * Sample code for general sdk usage.
+ */
 #include <cstdio>
 #include <cstdlib>
 
@@ -6,8 +9,6 @@
 #include <vector>
 
 #include <cepton_sdk_api.hpp>
-
-cepton_sdk::util::SensorImageFramesCallbackManager callback_manager;
 
 void on_image_frame(cepton_sdk::SensorHandle handle, std::size_t n_points,
                     const cepton_sdk::SensorImagePoint *c_image_points) {}
@@ -42,7 +43,6 @@ int main(int argc, char **argv) {
   // Initialize
   cepton_sdk::api::check_error_code(
       cepton_sdk::api::initialize(cepton_sdk::create_options(), capture_path));
-  cepton_sdk::api::check_error_code(callback_manager.initialize());
 
   // Get sensor
   std::printf("Waiting for sensor to connect...\n");
@@ -55,18 +55,19 @@ int main(int argc, char **argv) {
 
   // Listen for frames
   std::printf("Listening for frames...\n");
+  cepton_sdk::api::SensorImageFramesCallback callback;
+  cepton_sdk::api::check_error_code(callback.initialize());
 
   // Listen lambda
-  callback_manager.listen(
-      [](cepton_sdk::SensorHandle handle, std::size_t n_points,
-         const cepton_sdk::SensorImagePoint *c_image_points) {});
+  callback.listen([](cepton_sdk::SensorHandle handle, std::size_t n_points,
+                     const cepton_sdk::SensorImagePoint *c_image_points) {});
 
   // Listen global function
-  callback_manager.listen(on_image_frame);
+  callback.listen(on_image_frame);
 
   // Listen member function
   FramesListener frames_listener;
-  callback_manager.listen(&frames_listener, &FramesListener::on_image_frame);
+  callback.listen(&frames_listener, &FramesListener::on_image_frame);
 
   cepton_sdk::api::check_error_code(cepton_sdk::api::wait(5.0f));
 

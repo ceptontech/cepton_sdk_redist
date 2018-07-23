@@ -275,8 +275,8 @@ bool Capture::seek(int64_t usec) {
   return true;
 }
 
-CeptonSensorErrorCode Capture::next_packet(const PacketHeader **pkt_header,
-                                           const uint8_t **pkt_data) {
+int Capture::next_packet(const PacketHeader **pkt_header,
+                         const uint8_t **pkt_data) {
   if (!is_open_for_read()) {
     m_error_code = CEPTON_ERROR_NOT_OPEN;
     return 0;
@@ -289,11 +289,8 @@ l_try_again:
   fseek(m_fh, (long)m_read_pointer, SEEK_SET);
   size_t hdrlen = fread(&hdr, sizeof(hdr), 1, m_fh);
 
-  // Failed to read
-  if (hdrlen == 0) {
-    m_error_code = CEPTON_ERROR_FILE_IO;
-    return 0;
-  }
+  // EOF
+  if (hdrlen == 0) return 0;
 
   // Skip if protocol is not IPV4
   if (hdr.udp_hdr.protocol_type != PROTOCOL_V4) {

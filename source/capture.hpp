@@ -63,8 +63,7 @@ class Capture {
     If data length <= 0, then no data is returned.
     This happens at end of file, and if file is not open for reading.
   */
-  CeptonSensorErrorCode next_packet(const PacketHeader **header,
-                                    const uint8_t **data);
+  int next_packet(const PacketHeader **header, const uint8_t **data);
 
   /*
     Append packet to file.

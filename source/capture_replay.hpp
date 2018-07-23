@@ -3,6 +3,7 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
+#include <functional>
 
 #include "cepton_sdk.h"
 #include "cepton_sdk/capture.hpp"
@@ -41,11 +42,10 @@ class CaptureReplay {
   virtual bool is_running() const { return m_is_running; }
   virtual CeptonSensorErrorCode resume();
   virtual CeptonSensorErrorCode pause();
+  virtual CeptonSensorErrorCode run_paused(
+      const std::function<CeptonSensorErrorCode()>& func);
 
  private:
-  CeptonSensorErrorCode modify_setting(const std::function<void()>& func);
-  CeptonSensorErrorCode run_paused(
-      const std::function<CeptonSensorErrorCode()>& func);
   CeptonSensorErrorCode seek_impl(int64_t usec);
   void reset_time();
   void sleep_once();

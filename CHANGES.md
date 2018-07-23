@@ -1,6 +1,12 @@
 # Cepton SDK Release Notes
 
-## Version 1.2 2018-07-09
+### Version 1.3 2018-07-23
+* Support more accurate HR80W calibrations
+* Improved self-diagnosis and fault reporting
+* Improvements to python SDK
+* Bugfixes
+
+### Version 1.2 2018-07-09
 * Add support for latest VISTA_860 revision.
 * Change CeptonViewer point colormaps.
 * Change timestamps from uint64_t to int64_t.
@@ -13,7 +19,7 @@
 * Renamed data_exporter to cepton_data_exporter
 * Bugfixes and improvements
 
-## Version 1.0 2018-05-01
+### Version 1.0 2018-05-01
 * Added API documentation.
 * Major C interface changes.
 * Removed CeptonSensorPoint. All functions return CeptonSensorImagePoint.

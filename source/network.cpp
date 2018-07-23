@@ -3,16 +3,18 @@
 #include "cepton_sdk/core.hpp"
 #include "cepton_sdk/sensor.hpp"
 
+using asio::ip::udp;
+
 namespace cepton_sdk {
 
 NetworkManager network_manager;
 
 NetworkSocket::NetworkSocket(asio::io_service &io, uint16_t port)
-    : asio::ip::udp::socket(io) {
+    : udp::socket(io) {
   asio::error_code error;
-  open(asio::ip::udp::v4());
+  open(udp::v4());
   set_option(asio::socket_base::reuse_address(true));
-  bind(asio::ip::udp::endpoint(asio::ip::address_v4::any(), port), error);
+  bind(udp::endpoint(asio::ip::address_v4::any(), port), error);
   if (error) abort();
 
   listen();
@@ -77,7 +79,7 @@ void NetworkManager::deinitialize() {
 
   if (m_sensor_socket_ptr) {
     try {
-      m_sensor_socket_ptr->shutdown(asio::ip::udp::socket::shutdown_both);
+      m_sensor_socket_ptr->shutdown(udp::socket::shutdown_both);
       m_sensor_socket_ptr->close();
     } catch (std::system_error) {
       // On OSX we will get system_error: shutdown: Socket is not connected

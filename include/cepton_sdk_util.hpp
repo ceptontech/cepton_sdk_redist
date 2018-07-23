@@ -164,44 +164,44 @@ class CompiledTransform {
  * Allow for registering lambdas and member functions.
  */
 template <typename... TArgs>
-class CallbackManagerBase {
+class Callback {
  public:
-  using function_type = std::function<void(TArgs...)>;
-
- public:
-  /// Registers as SDK listener function.
-  /**
-   * Returns error if SDK is not initialized.
-   */
-  virtual cepton_sdk::SensorErrorCode initialize() = 0;
-  virtual cepton_sdk::SensorErrorCode deinitialize() = 0;
-
-  /// Register std::function
-  void listen(uint64_t id, const function_type &func) {
+  void clear() {
     std::lock_guard<std::mutex> lock(m_mutex);
-    assert(!m_functions.count(id));
+    m_functions.clear();
+  }
+
+  /// Register std::function.
+  cepton_sdk::SensorErrorCode listen(
+      uint64_t id, const std::function<void(TArgs...)> &func) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    if (m_functions.count(id)) return CEPTON_ERROR_TOO_MANY_CALLBACKS;
     m_functions[id] = func;
+    return CEPTON_SUCCESS;
   }
   void unlisten(uint64_t id) {
     std::lock_guard<std::mutex> lock(m_mutex);
     m_functions.erase(id);
   }
 
-  /// Register global function
-  void listen(void (*func)(TArgs...), uint64_t id = 0) {
+  /// Register global function.
+  cepton_sdk::SensorErrorCode listen(void (*func)(TArgs...), uint64_t id = 0) {
     if (!id) id = (uint64_t)func;
-    listen(id, func);
+    return listen(id, func);
   }
   void unlisten(void (*func)(TArgs...), uint64_t id = 0) {
     if (!id) id = (uint64_t)func;
     unlisten(id);
   }
 
-  /// Register member function
+  /// Register instance member function.
   template <typename T>
-  void listen(T *const instance, void (T::*func)(TArgs...), uint64_t id = 0) {
+  cepton_sdk::SensorErrorCode listen(T *const instance,
+                                     void (T::*func)(TArgs...),
+                                     uint64_t id = 0) {
     if (!id) id = (uint64_t)instance;
-    listen(id, [instance, func](TArgs... args) { (instance->*func)(args...); });
+    return listen(
+        id, [instance, func](TArgs... args) { (instance->*func)(args...); });
   }
   template <typename T>
   void unlisten(T *const instance, void (T::*func)(TArgs...), uint64_t id = 0) {
@@ -209,12 +209,8 @@ class CallbackManagerBase {
     unlisten(id);
   }
 
-  static void global_on_callback(TArgs... args, void *const instance) {
-    ((CallbackManagerBase *)instance)->on_callback(args...);
-  }
-
- private:
-  void on_callback(TArgs... args) {
+  /// Emit callback.
+  void operator()(TArgs... args) {
     std::lock_guard<std::mutex> lock(m_mutex);
     for (auto &iter : m_functions) {
       auto &func = iter.second;
@@ -222,33 +218,14 @@ class CallbackManagerBase {
     }
   }
 
+  /// Used for registering as c callback.
+  static void global_on_callback(TArgs... args, void *const instance) {
+    (*(Callback *)instance)(args...);
+  }
+
  private:
   std::mutex m_mutex;
-  std::map<uint64_t, function_type> m_functions;
-};
-
-/// Callback manager for image frames.
-class SensorImageFramesCallbackManager
-
-    : public CallbackManagerBase<SensorHandle, std::size_t,
-                                 const SensorImagePoint *> {
- public:
-  ~SensorImageFramesCallbackManager() { deinitialize(); }
-  SensorErrorCode initialize() override {
-    return listen_image_frames(global_on_callback, this);
-  }
-  SensorErrorCode deinitialize() override { return unlisten_image_frames(); }
-};
-
-/// Callback manager for network packets.
-class NetworkPacketsCallbackManager
-    : public CallbackManagerBase<SensorHandle, uint8_t const *, std::size_t> {
- public:
-  ~NetworkPacketsCallbackManager() { deinitialize(); }
-  SensorErrorCode initialize() override {
-    return listen_network_packets(global_on_callback, this);
-  }
-  SensorErrorCode deinitialize() override { return unlisten_network_packets(); }
+  std::map<uint64_t, std::function<void(TArgs...)>> m_functions;
 };
 }  // namespace util
 }  // namespace cepton_sdk
