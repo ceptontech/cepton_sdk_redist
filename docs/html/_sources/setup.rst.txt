@@ -4,24 +4,24 @@ Setup
 Types
 -----
 
+.. doxygenenum:: _CeptonSDKControl
 .. doxygentypedef:: cepton_sdk::Control
 .. doxygentypedef:: CeptonSDKControl
-.. doxygenenum:: _CeptonSDKControl
 
+.. doxygenenum:: _CeptonSDKFrameMode
 .. doxygentypedef:: cepton_sdk::FrameMode
 .. doxygentypedef:: CeptonSDKFrameMode
-.. doxygenenum:: _CeptonSDKFrameMode
 
-.. doxygentypedef:: cepton_sdk::FrameOptions
 .. doxygenstruct:: CeptonSDKFrameOptions
   :members:
   :undoc-members:
+.. doxygentypedef:: cepton_sdk::FrameOptions
 .. doxygenfunction:: cepton_sdk::create_frame_options
 
-.. doxygentypedef:: cepton_sdk::Options
 .. doxygenstruct:: CeptonSDKOptions
   :members:
   :undoc-members:
+.. doxygentypedef:: cepton_sdk::Options
 .. doxygenfunction:: cepton_sdk::create_options
 
 .. doxygentypedef:: FpSensorErrorCallback

@@ -15,14 +15,12 @@ extern "C" {
 
 #include "cepton_export.h"
 
-#define CEPTON_SDK_VERSION 13
+#define CEPTON_SDK_VERSION 14
 
 //------------------------------------------------------------------------------
 // Errors
 //------------------------------------------------------------------------------
-typedef int CeptonSensorErrorCode;
 
-/// `CeptonSensorErrorCode` implementation.
 enum _CeptonSensorErrorCode {
   CEPTON_SUCCESS = 0,
   CEPTON_ERROR_GENERIC = -1,
@@ -51,10 +49,17 @@ enum _CeptonSensorErrorCode {
   CEPTON_FAULT_LASER_MALFUNCTION = -1007,
   CEPTON_FAULT_DETECTOR_MALFUNCTION = -1008,
 };
-
+typedef int CeptonSensorErrorCode;
 EXPORT const char *cepton_get_error_code_name(CeptonSensorErrorCode error_code);
 EXPORT int cepton_is_error_code(CeptonSensorErrorCode error_code);
 EXPORT int cepton_is_fault_code(CeptonSensorErrorCode error_code);
+
+/// Returns and clears last sdk error.
+/**
+ * `error_msg` is owned by the SDK, and is valid until the next call in the
+ * current thread.
+ */
+EXPORT CeptonSensorErrorCode cepton_sdk_get_error(const char **error_msg);
 
 //------------------------------------------------------------------------------
 // Types
@@ -63,9 +68,6 @@ typedef uint64_t CeptonSensorHandle;
 static const CeptonSensorHandle CEPTON_NULL_HANDLE = 0LL;
 static const CeptonSensorHandle CEPTON_SENSOR_HANDLE_FLAG_MOCK = 0x100000000LL;
 
-typedef uint32_t CeptonSensorModel;
-
-/// `CeptonSensorModel` implementation.
 enum _CeptonSensorModel {
   HR80T = 1,
   HR80M = 2,
@@ -75,6 +77,7 @@ enum _CeptonSensorModel {
   HR80T_R2 = 6,
   CEPTON_SENSOR_MODEL_MAX = 6,
 };
+typedef uint32_t CeptonSensorModel;
 
 struct EXPORT CeptonSensorInformation {
   CeptonSensorHandle handle;
@@ -86,9 +89,10 @@ struct EXPORT CeptonSensorInformation {
   float last_reported_temperature;  ///< [celsius]
   float last_reported_humidity;     ///< [%]
   float last_reported_age;          ///< [hours]
-  float padding;
 
-  int64_t ptp_ts;
+  float measurement_period;  ///< Time between measurements [microseconds]
+
+  int64_t ptp_ts;  /// [microseconds]
 
   uint8_t gps_ts_year;   ///< 0-99 (2017 -> 17)
   uint8_t gps_ts_month;  ///< 1-12
@@ -98,31 +102,55 @@ struct EXPORT CeptonSensorInformation {
   uint8_t gps_ts_sec;    ///< 0-59
 
   uint8_t return_count;
-  uint8_t reserved;
+  uint8_t segment_count;  ///< Number of image segments
 
-  // Flags
-  uint32_t is_mocked : 1;          ///< Created by capture replay
-  uint32_t is_pps_connected : 1;   ///< GPS PPS is available
-  uint32_t is_nmea_connected : 1;  ///< GPS NMEA is available
-  uint32_t is_ptp_connected : 1;   ///< PTP is available
-  uint32_t is_calibrated : 1;
+#ifdef SIMPLE
+  uint32_t flags;
+#else
+  union {
+    uint32_t flags;
+    struct {
+      uint32_t is_mocked : 1;          ///< Created by capture replay
+      uint32_t is_pps_connected : 1;   ///< GPS PPS is available
+      uint32_t is_nmea_connected : 1;  ///< GPS NMEA is available
+      uint32_t is_ptp_connected : 1;   ///< PTP is available
+      uint32_t is_calibrated : 1;
+    };
+  };
+#endif
 };
 EXPORT extern const size_t cepton_sensor_information_size;
+
+enum _CeptonSensorReturnType {
+  CEPTON_RETURN_STRONGEST = 1 << 0,
+  CEPTON_RETURN_FARTHEST = 1 << 1,
+};
+typedef uint8_t CeptonSensorReturnType;
 
 /// Point in image coordinates (focal length = 1).
 /**
  * To convert to 3d point, refer to `cepton_sdk_util.hpp`.
  */
 struct EXPORT CeptonSensorImagePoint {
-  int64_t timestamp;      ///< unix time [microseconds]
-  float image_x;          ///< x image coordinate
-  float distance;         ///< distance [meters]
-  float image_z;          ///< z image coordinate
-  float intensity;        ///< 0-1 scaled intensity
-  uint8_t return_number;  ///< 0=first return, 1=second return
-  uint8_t valid;          ///< 1=valid; 0=clipped/invalid
-  uint8_t saturated;      ///< If saturated, intensity cannot be trusted
-  uint8_t reserved;
+  int64_t timestamp;  ///< unix time [microseconds]
+  float image_x;      ///< x image coordinate
+  float distance;     ///< distance [meters]
+  float image_z;      ///< z image coordinate
+  float intensity;    ///< 0-1 scaled intensity
+  CeptonSensorReturnType return_type;
+
+#ifdef SIMPLE
+  uint8_t flags;
+#else
+  union {
+    uint8_t flags;
+    struct {
+      uint8_t valid : 1;
+      uint8_t saturated : 1;
+    };
+  };
+#endif
+  uint8_t reserved[2];
 };
 EXPORT extern const size_t cepton_sensor_image_point_size;
 
@@ -131,7 +159,7 @@ EXPORT extern const size_t cepton_sensor_image_point_size;
 //------------------------------------------------------------------------------
 typedef uint32_t CeptonSDKControl;
 
-/// `CeptonSDKControl` implementation.
+/// SDK control flags.
 enum _CeptonSDKControl {
   /// Disable networking operations.
   /**
@@ -159,38 +187,51 @@ enum _CeptonSDKControl {
 
 typedef uint32_t CeptonSDKFrameMode;
 
-/// `CeptonSDKFrameMode` implementation.
+/// Controls frequency of points being reported.
 enum _CeptonSDKFrameMode {
-  /// Report points immediately.
-  /**
-   * This is the default.
-   */
+  /// Report points by packet.
   CEPTON_SDK_FRAME_STREAMING = 0,
   /// Report points at fixed time intervals.
   /**
-   * Interval controlled by `CeptonSDKFrameOptions::frame_length`.
+   * Interval controlled by `CeptonSDKFrameOptions::length`.
    */
   CEPTON_SDK_FRAME_TIMED = 1,
   /// Report points when the field of view is covered once.
+  /**
+   * - For HR80 series, detects half scan cycle (left-to-right or
+   * right-to-left).
+   */
   CEPTON_SDK_FRAME_COVER = 2,
   /// Report points when the scan pattern goes through a full cycle.
+  /**
+   * Typically 2x longer frame than COVER mode.
+   * - For HR80 series, detects full scan cycle (left-to-right-to-left).
+   * - For VISTA series, internally uses TIMED mode.
+   */
   CEPTON_SDK_FRAME_CYCLE = 3,
 
   CEPTON_SDK_FRAME_MODE_MAX = 3
 };
 
 struct EXPORT CeptonSDKFrameOptions {
-  size_t signature;
+  size_t signature;  ///< Internal use only.
+  /// Default: CEPTON_SDK_FRAME_STREAMING.
   CeptonSDKFrameMode mode;
+  /// Frame length [seconds].
+  /**
+   * Default: 0.05.
+   * Only used if mode=CEPTON_SDK_FRAME_TIMED.
+   */
   float length;
 };
 EXPORT struct CeptonSDKFrameOptions cepton_sdk_create_frame_options();
 
+/// SDK initialization options.
 struct EXPORT CeptonSDKOptions {
-  size_t signature;
-  CeptonSDKControl control_flags;
+  size_t signature;                ///< Internal use only.
+  CeptonSDKControl control_flags;  ///< Default: 0.
   struct CeptonSDKFrameOptions frame;
-  uint16_t port;
+  uint16_t port;  ///< Default: 8808.
 };
 EXPORT struct CeptonSDKOptions cepton_sdk_create_options();
 
@@ -220,7 +261,7 @@ cepton_sdk_set_frame_options(const struct CeptonSDKFrameOptions *const options);
 EXPORT CeptonSDKFrameMode cepton_sdk_get_frame_mode();
 EXPORT float cepton_sdk_get_frame_length();
 
-EXPORT CeptonSensorErrorCode cepton_sdk_clear_cache();
+EXPORT CeptonSensorErrorCode cepton_sdk_clear();
 
 //------------------------------------------------------------------------------
 // Points
@@ -248,6 +289,7 @@ EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_information(
 // Networking
 //------------------------------------------------------------------------------
 typedef void (*FpCeptonNetworkReceiveCallback)(CeptonSensorHandle handle,
+                                               int64_t timestamp,
                                                uint8_t const *buffer,
                                                size_t buffer_size,
                                                void *user_data);
@@ -256,10 +298,9 @@ EXPORT CeptonSensorErrorCode cepton_sdk_listen_network_packet(
     FpCeptonNetworkReceiveCallback cb, void *const user_data);
 EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_network_packet();
 
-EXPORT CeptonSensorErrorCode cepton_sdk_set_mock_time_base(int64_t time_base);
-
 EXPORT CeptonSensorErrorCode cepton_sdk_mock_network_receive(
-    CeptonSensorHandle handle, const uint8_t *const buffer, size_t buffer_size);
+    CeptonSensorHandle handle, int64_t timestamp, const uint8_t *const buffer,
+    size_t buffer_size);
 
 //------------------------------------------------------------------------------
 // Capture Replay

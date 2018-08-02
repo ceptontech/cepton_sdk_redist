@@ -16,7 +16,7 @@ __all__ = [
 ]
 
 
-class SensorModel(enum.Enum):
+class SensorModel(enum.IntEnum):
     HR80T = 1
     HR80M = 2
     HR80W = 3

@@ -6,8 +6,8 @@ Types
 
 .. doxygentypedef:: cepton_sdk::SensorHandle
 
-.. doxygentypedef:: cepton_sdk::SensorModel
 .. doxygenenum:: _CeptonSensorModel
+.. doxygentypedef:: cepton_sdk::SensorModel
 
 .. doxygentypedef:: cepton_sdk::SensorInformation
 .. doxygenstruct:: CeptonSensorInformation

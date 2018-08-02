@@ -24,19 +24,27 @@
 
   
 
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Utilities" href="utilities.html" />
-    <link rel="prev" title="Capture Replay" href="capture_replay.html" /> 
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
+        <link rel="next" title="Utilities" href="utilities.html"/>
+        <link rel="prev" title="Capture Replay" href="capture_replay.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -105,7 +113,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -113,10 +121,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -195,23 +202,17 @@
 
 <div class="section" id="errors">
 <h2>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="_CPPv3N10cepton_sdk3api11SensorErrorE">
-<span id="_CPPv2N10cepton_sdk3api11SensorErrorE"></span><span id="cepton_sdk::api::SensorError"></span><span class="target" id="structcepton__sdk_1_1api_1_1SensorError"></span><em class="property">struct </em><code class="descname">SensorError</code> : <em class="property">public</em> runtime_error<a class="headerlink" href="#_CPPv3N10cepton_sdk3api11SensorErrorE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>SensorErrorCode exception. </p>
+<dl class="function">
+<dt id="_CPPv3N10cepton_sdk3api11check_errorERK11SensorError">
+<span id="_CPPv2N10cepton_sdk3api11check_errorERK11SensorError"></span><span id="cepton_sdk::api::check_error__SensorErrorCR"></span><span class="target" id="cepton__sdk__api_8hpp_1ace99571b7d74ca37a1b36d5c90950351"></span><em class="property">static</em> <em class="property">const</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">check_error</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<em>error</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api11check_errorERK11SensorError" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Handles error. </p>
+<p>If error, raises exception. Otherwise, prints error. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk3api16check_error_codeE15SensorErrorCodeRKNSt6stringE">
-<span id="_CPPv2N10cepton_sdk3api16check_error_codeE15SensorErrorCodeRKNSt6stringE"></span><span id="cepton_sdk::api::check_error_code__SensorErrorCode.ssCR"></span><span class="target" id="cepton__sdk__api_8hpp_1aa765a4161745668ecc9924bb67d2540c"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">check_error_code</code><span class="sig-paren">(</span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em>, <em class="property">const</em> std::string &amp;<em>msg</em> = &quot;&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api16check_error_codeE15SensorErrorCodeRKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Handles error code. </p>
-<p><ul class="simple">
-<li>If error, raises <code class="docutils literal notranslate"><a class="reference internal" href="#structcepton__sdk_1_1api_1_1SensorError"><span class="std std-ref"><span class="pre">cepton_sdk::api::SensorError</span></span></a></code> exception.</li>
-<li>If fault, prints message.</li>
-<li>Otherwise, does nothing.</li>
-</ul>
-</p>
-<p>This is for sample code; production code should handle errors properly. </p>
+<dt id="_CPPv3N10cepton_sdk3api9log_errorERK11SensorError">
+<span id="_CPPv2N10cepton_sdk3api9log_errorERK11SensorError"></span><span id="cepton_sdk::api::log_error__SensorErrorCR"></span><span class="target" id="cepton__sdk__api_8hpp_1a92c7134fe010b87829056a3fa379a672"></span><em class="property">static</em> <em class="property">const</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">log_error</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<em>error</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api9log_errorERK11SensorError" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Prints error. </p>
 </dd></dl>
 
 <dl class="function">
@@ -226,8 +227,75 @@
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk3api10initializeE7OptionsRKNSt6stringE">
-<span id="_CPPv2N10cepton_sdk3api10initializeE7OptionsRKNSt6stringE"></span><span id="cepton_sdk::api::initialize__Options.ssCR"></span><span class="target" id="cepton__sdk__api_8hpp_1a6e5e8fc10c059d909d96565c6bf03f4a"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">initialize</code><span class="sig-paren">(</span><a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk7OptionsE" title="cepton_sdk::Options">Options</a> <em>options</em> = <a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk14create_optionsEv" title="cepton_sdk::create_options">create_options</a>(), <em class="property">const</em> std::string &amp;<em>capture_path</em> = &quot;&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api10initializeE7OptionsRKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk3api10initializeE7OptionsRKNSt6stringE"></span><span id="cepton_sdk::api::initialize__Options.ssCR"></span><span class="target" id="cepton__sdk__api_8hpp_1af41fb43ae890e8dd71e38c3ff2bef117"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">initialize</code><span class="sig-paren">(</span><a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk7OptionsE" title="cepton_sdk::Options">Options</a> <em>options</em> = <a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk14create_optionsEv" title="cepton_sdk::create_options">create_options</a>(), <em class="property">const</em> std::string &amp;<em>capture_path</em> = &quot;&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api10initializeE7OptionsRKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Initialize SDK and optionally starts capture replay. </p>
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv3N10cepton_sdk3api19SensorErrorCallbackE">
+<span id="_CPPv2N10cepton_sdk3api19SensorErrorCallbackE"></span><span id="cepton_sdk::api::SensorErrorCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorErrorCallback"></span><em class="property">class </em><code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">SensorErrorCallback</code><a class="headerlink" href="#_CPPv3N10cepton_sdk3api19SensorErrorCallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback for sensor errors. </p>
+<p>Inherits from <a class="reference internal" href="utilities.html#classcepton__sdk_1_1util_1_1Callback"><span class="std std-ref">cepton_sdk::util::Callback&lt; SensorHandle, const SensorError &amp; &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
+<dl class="function">
+<dt id="_CPPv3N10cepton_sdk3api19SensorErrorCallback18global_on_callbackE12SensorHandle15SensorErrorCodePKcPCKv6size_tPCv">
+<span id="_CPPv2N10cepton_sdk3api19SensorErrorCallback18global_on_callbackE12SensorHandle15SensorErrorCodePKcPCKv6size_tPCv"></span><span id="cepton_sdk::api::SensorErrorCallback::global_on_callback__SensorHandle.SensorErrorCode.cCP.voidCPC.s.voidPC"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorErrorCallback_1ac11a54e790a53686c52fc1f5a07458e4"></span><em class="property">static</em> void <code class="descname">global_on_callback</code><span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> <em>handle</em>, <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>error_code</em>, <em class="property">const</em> char *<em>error_msg</em>, <em class="property">const</em> void *<em class="property">const</em> <em>error_data</em>, size_t <em>error_data_size</em>, void *<em class="property">const</em> <em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api19SensorErrorCallback18global_on_callbackE12SensorHandle15SensorErrorCodePKcPCKv6size_tPCv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv3N10cepton_sdk3api24SensorImageFrameCallbackE">
+<span id="_CPPv2N10cepton_sdk3api24SensorImageFrameCallbackE"></span><span id="cepton_sdk::api::SensorImageFrameCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorImageFrameCallback"></span><em class="property">class </em><code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">SensorImageFrameCallback</code><a class="headerlink" href="#_CPPv3N10cepton_sdk3api24SensorImageFrameCallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback for image frames. </p>
+<p>Must call <code class="docutils literal notranslate"><span class="pre">initialize</span></code> before use. </p>
+<p>Inherits from <a class="reference internal" href="utilities.html#classcepton__sdk_1_1util_1_1Callback"><span class="std std-ref">cepton_sdk::util::Callback&lt; SensorHandle, std::size_t, const SensorImagePoint * &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N10cepton_sdk3api24SensorImageFrameCallbackD0Ev">
+<span id="_CPPv2N10cepton_sdk3api24SensorImageFrameCallbackD0Ev"></span><span id="cepton_sdk::api::SensorImageFrameCallback::~SensorImageFrameCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorImageFrameCallback_1ae89a986bbd4cdfc19f4db1985538ac3e"></span><code class="descname">~SensorImageFrameCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api24SensorImageFrameCallbackD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N10cepton_sdk3api24SensorImageFrameCallback10initializeEv">
+<span id="_CPPv2N10cepton_sdk3api24SensorImageFrameCallback10initializeEv"></span><span id="cepton_sdk::api::SensorImageFrameCallback::initialize"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorImageFrameCallback_1a5a82edfc29ddcc4c72548af82144cb21"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api24SensorImageFrameCallback10initializeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N10cepton_sdk3api24SensorImageFrameCallback12deinitializeEv">
+<span id="_CPPv2N10cepton_sdk3api24SensorImageFrameCallback12deinitializeEv"></span><span id="cepton_sdk::api::SensorImageFrameCallback::deinitialize"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorImageFrameCallback_1a4d205069acebcce898f748a627c223db"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descname">deinitialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api24SensorImageFrameCallback12deinitializeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv3N10cepton_sdk3api21NetworkPacketCallbackE">
+<span id="_CPPv2N10cepton_sdk3api21NetworkPacketCallbackE"></span><span id="cepton_sdk::api::NetworkPacketCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1NetworkPacketCallback"></span><em class="property">class </em><code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">NetworkPacketCallback</code><a class="headerlink" href="#_CPPv3N10cepton_sdk3api21NetworkPacketCallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback for network packets. </p>
+<p>Must call <code class="docutils literal notranslate"><span class="pre">initialize</span></code> before use. </p>
+<p>Inherits from <a class="reference internal" href="utilities.html#classcepton__sdk_1_1util_1_1Callback"><span class="std std-ref">cepton_sdk::util::Callback&lt; SensorHandle, int64_t, uint8_t const *, std::size_t &gt;</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv3N10cepton_sdk3api21NetworkPacketCallbackD0Ev">
+<span id="_CPPv2N10cepton_sdk3api21NetworkPacketCallbackD0Ev"></span><span id="cepton_sdk::api::NetworkPacketCallback::~NetworkPacketCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1NetworkPacketCallback_1a46f8da9b05da266d58c0868767f193cb"></span><code class="descname">~NetworkPacketCallback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api21NetworkPacketCallbackD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N10cepton_sdk3api21NetworkPacketCallback10initializeEv">
+<span id="_CPPv2N10cepton_sdk3api21NetworkPacketCallback10initializeEv"></span><span id="cepton_sdk::api::NetworkPacketCallback::initialize"></span><span class="target" id="classcepton__sdk_1_1api_1_1NetworkPacketCallback_1a984ed4ae4268ee78377b9774689d70bc"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api21NetworkPacketCallback10initializeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv3N10cepton_sdk3api21NetworkPacketCallback12deinitializeEv">
+<span id="_CPPv2N10cepton_sdk3api21NetworkPacketCallback12deinitializeEv"></span><span id="cepton_sdk::api::NetworkPacketCallback::deinitialize"></span><span class="target" id="classcepton__sdk_1_1api_1_1NetworkPacketCallback_1ad44a284fff15780fe7c5dc61e2f44569"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descname">deinitialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api21NetworkPacketCallback12deinitializeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
 </dd></dl>
 
 </div>
@@ -235,20 +303,24 @@
 <h2>Sensors<a class="headerlink" href="#sensors" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk3api39get_sensor_information_by_serial_numberE8uint64_tR17SensorInformation">
-<span id="_CPPv2N10cepton_sdk3api39get_sensor_information_by_serial_numberE8uint64_tR17SensorInformation"></span><span id="cepton_sdk::api::get_sensor_information_by_serial_number__uint64_t.SensorInformationR"></span><span class="target" id="cepton__sdk__api_8hpp_1a15a3d291b7f332406ed729678fd477c7"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">get_sensor_information_by_serial_number</code><span class="sig-paren">(</span>uint64_t <em>serial_number</em>, <a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api39get_sensor_information_by_serial_numberE8uint64_tR17SensorInformation" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<span id="_CPPv2N10cepton_sdk3api39get_sensor_information_by_serial_numberE8uint64_tR17SensorInformation"></span><span id="cepton_sdk::api::get_sensor_information_by_serial_number__uint64_t.SensorInformationR"></span><span class="target" id="cepton__sdk__api_8hpp_1af7222504a4afd83cdc5ada9c0cf1fbb7"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">get_sensor_information_by_serial_number</code><span class="sig-paren">(</span>uint64_t <em>serial_number</em>, <a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api39get_sensor_information_by_serial_numberE8uint64_tR17SensorInformation" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns error if sensor not found. </p>
+</dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk3api25get_sensor_serial_numbersEv">
 <span id="_CPPv2N10cepton_sdk3api25get_sensor_serial_numbersEv"></span><span id="cepton_sdk::api::get_sensor_serial_numbers"></span><span class="target" id="cepton__sdk__api_8hpp_1afbc64fd4036490be98e1c547ab5801b3"></span><em class="property">static</em> std::vector&lt;uint64_t&gt; <code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">get_sensor_serial_numbers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk3api25get_sensor_serial_numbersEv" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Returns serial numbers for all sensors. </p>
+</dd></dl>
 
 </div>
 </div>
 
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -270,7 +342,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -289,7 +361,6 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'',
-            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -303,13 +374,19 @@
 
   
 
-  <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

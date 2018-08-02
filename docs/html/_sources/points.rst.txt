@@ -12,8 +12,6 @@ Types
 Methods
 -------
 
-.. doxygenfunction:: cepton_sdk::clear_cache
-
 .. doxygentypedef:: FpCeptonSensorImageDataCallback
 .. doxygenfunction:: cepton_sdk::listen_image_frames
 .. doxygenfunction:: cepton_sdk::unlisten_image_frames

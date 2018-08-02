@@ -99,7 +99,6 @@ def initialize(capture_path=None, control_flags=0, error_callback=None, port=Non
 
 
 def clear_cache():
-    cepton_sdk.c.c_clear_cache()
     cepton_sdk.listener.clear_cache()
 
 
@@ -111,13 +110,13 @@ def _get_points_wait(wait_func, return_partial=False, timeout=None):
     if wait_func():
         return
     if is_end():
-        error_code = cepton_sdk.c.C_ErrorCode.CEPTON_ERROR_EOF
-        raise cepton_sdk.c.C_Error.create(error_code)
+        error_code = cepton_sdk.C_ErrorCode.CEPTON_ERROR_EOF
+        raise cepton_sdk.c.C_Error(error_code)
     try:
         _wait_on_func(wait_func, timeout=timeout)
     except cepton_sdk.c.C_Error as e:
         if return_partial:
-            if e.error_code == cepton_sdk.c.C_ErrorCode.CEPTON_ERROR_EOF:
+            if e.code == cepton_sdk.C_ErrorCode.CEPTON_ERROR_EOF:
                 return
         raise
 

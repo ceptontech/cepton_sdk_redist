@@ -6,7 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "cepton_sdk.h"
+#include "cepton_sdk.hpp"
+#include "cepton_sdk_internal.h"
 
 namespace cepton_sdk {
 
@@ -27,8 +28,11 @@ class Capture {
  public:
   ~Capture();
 
-  void clear_error_code() { m_error_code = CEPTON_SUCCESS; }
-  CeptonSensorErrorCode error_code() const { return m_error_code; }
+  SensorError get_error() {
+    const auto error = m_error;
+    m_error = SensorError();
+    return error;
+  }
 
   std::string filename() const { return m_filename; }
   bool is_open() const { return m_fh != nullptr; }
@@ -80,7 +84,7 @@ class Capture {
   bool read_file_header();
 
  private:
-  CeptonSensorErrorCode m_error_code = CEPTON_SUCCESS;
+  SensorError m_error;
   FILE *m_fh = nullptr;
   std::string m_filename;
   bool m_is_read_mode;

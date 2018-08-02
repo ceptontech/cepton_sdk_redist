@@ -4,7 +4,7 @@ import pprint
 
 import cepton_sdk
 import cepton_sdk.plot
-import common
+from common import *
 
 if __name__ == "__main__":
     # Variables

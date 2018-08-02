@@ -89,8 +89,8 @@ CeptonSensorErrorCode cepton_sdk_matlab_get_image_points(
 
 CeptonSensorErrorCode cepton_sdk_matlab_get_image_points_data(
     uint64_t *const timestamps, float *const image_x, float *const distances,
-    float *const image_z, float *const intensities,
-    uint8_t *const return_numbers, uint8_t *const valid) {
+    float *const image_z, float *const intensities, uint8_t *const return_types,
+    uint8_t *const flags) {
   auto frame = cepton_sdk_matlab::frames_listener.get_queued_frame();
   cepton_sdk_matlab::frames_listener.clear_queued_frame();
   if (!frame) return CEPTON_ERROR_GENERIC;
@@ -103,8 +103,8 @@ CeptonSensorErrorCode cepton_sdk_matlab_get_image_points_data(
     distances[i] = image_point.distance;
     image_z[i] = image_point.image_z;
     intensities[i] = image_point.intensity;
-    return_numbers[i] = image_point.return_number;
-    valid[i] = image_point.valid;
+    return_types[i] = image_point.return_type;
+    flags[i] = image_point.flags;
   }
   return CEPTON_SUCCESS;
 }

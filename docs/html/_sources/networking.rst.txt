@@ -12,5 +12,4 @@ Methods
 .. doxygenfunction:: cepton_sdk::listen_network_packets
 .. doxygenfunction:: cepton_sdk::unlisten_network_packets
 
-.. doxygenfunction:: cepton_sdk::set_mock_time_base
-.. doxygenfunction:: cepton_sdk::mock_network_receive
+.. doxygenfunction:: cepton_sdk::clear

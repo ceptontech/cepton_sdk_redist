@@ -3,7 +3,7 @@ import warnings
 
 from cepton_sdk.common.c import *
 
-SDK_VERSION = 13
+SDK_VERSION = 14
 
 _module_dir = os.path.dirname(os.path.abspath(__file__))
 lib = load_c_library(_module_dir, "cepton_sdk")
@@ -72,35 +72,62 @@ class C_Error(Exception):
     """Error thrown by most sdk functions.
 
     Attributes:
-        error_code: `cepton_sdk.C_ErrorCode`
+        code: `cepton_sdk.C_ErrorCode`
     """
 
-    def __init__(self, message, error_code):
-        super().__init__(message)
-        self.error_code = error_code
+    def __init__(self, code, msg=None):
+        if msg is None:
+            msg = get_error_code_name(code)
+        super().__init__(msg)
+        self.code = code
 
-    @classmethod
-    def create(cls, error_code):
-        message = get_error_code_name(error_code)
-        return cls(message, error_code)
+    def __bool__(self):
+        return self.code != C_ErrorCode.CEPTON_SUCCESS
+
+    def __int__(self):
+        return self.code
+
+    @property
+    def name(self):
+        return get_error_code_name(self.code)
+
+    def is_error(self):
+        return is_error_code(self.code)
+
+    def is_fault(self):
+        return is_fault_code(self.code)
 
 
 class C_Warning(Warning):
     pass
 
 
-def check_error_code(error_code, warning=False):
-    if not error_code:
+c_get_error = lib.cepton_sdk_get_error
+c_get_error.argtypes = [POINTER(c_char_p)]
+c_get_error.restype = c_int
+
+
+def get_error():
+    error_msg = c_char_p()
+    error_code = c_get_error(byref(error_msg))
+    return C_Error(error_code, error_msg)
+
+
+def check_error(error):
+    if not error:
         return
-    if is_error_code(error_code) and (not warning):
-        raise C_Error.create(error_code)
+    if error.is_error():
+        raise error
     else:
-        message = get_error_code_name(error_code)
-        warnings.warn(message, C_Warning, stacklevel=2)
+        warnings.warn(str(error), C_Warning, stacklevel=2)
+
+
+def log_error(error):
+    warnings.warn(str(error), C_Warning, stacklevel=2)
 
 
 def _c_error_check(error_code, func, args):
-    check_error_code(error_code)
+    check_error(get_error())
 
 
 def add_c_error_check(c_func):
@@ -180,9 +207,6 @@ c_get_frame_mode.restype = c_uint32
 c_get_frame_length = lib.cepton_sdk_get_frame_length
 c_get_frame_length.restype = c_float
 
-c_clear_cache = lib.cepton_sdk_clear_cache
-add_c_error_check(c_clear_cache)
-
 # ------------------------------------------------------------------------------
 # Sensors
 # ------------------------------------------------------------------------------
@@ -199,7 +223,8 @@ class C_SensorInformation(Structure):
         ("last_reported_temperature", c_float),
         ("last_reported_humidity", c_float),
         ("last_reported_age", c_float),
-        ("", c_float),
+
+        ("measurement_period", c_float),
 
         ("ptp_ts", c_int64),
 
@@ -211,7 +236,7 @@ class C_SensorInformation(Structure):
         ("gps_ts_sec", c_uint8),
 
         ("return_count", c_uint8),
-        ("", c_uint8),
+        ("segment_count", c_uint8),
 
         ("is_mocked", c_uint32, 1),
         ("is_pps_connected", c_uint32, 1),
@@ -250,6 +275,11 @@ add_c_error_check(c_get_sensor_information_by_index)
 # ------------------------------------------------------------------------------
 
 
+class C_ReturnType(enum.IntEnum):
+    STRONGEST = 1 << 0
+    FARTHEST = 1 << 1
+
+
 class C_SensorImagePoint(Structure):
     _fields_ = [
         ("timestamp", c_int64),
@@ -257,10 +287,9 @@ class C_SensorImagePoint(Structure):
         ("distance", c_float),
         ("image_z", c_float),
         ("intensity", c_float),
-        ("return_number", c_uint8),
-        ("valid", c_uint8),
-        ("saturated", c_uint8),
-        ("reserved", c_uint8)
+        ("return_type", c_uint8),
+        ("flags", c_uint8),
+        ("reserved", 2 * c_uint8)
     ]
 
 

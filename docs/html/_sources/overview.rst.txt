@@ -1,15 +1,25 @@
 Overview
 ========
 
+The SDK parses sensor packets and computes calibrated measurements from raw sensor data. For prototyping purposes, it can optionally handle networking, frame accumulation, and capture replay.
+
+For prototyping, it is recommended to start with the high level methods in :doc:`api` and :doc:`utilities`.
+
 Timestamps
 ----------
 
-All timestamps are microseconds since the Unix epoch (UTC). If a GPS is connected to the sensor, point timestamps are based on the GPS clock, otherwise they are based on the host computer's clock.
+All :code:`int64` timestamps are microseconds since the Unix epoch (UTC). Point timestamps are based on one of the following sources (the first valid source is used):
+
+1. GPS (NMEA + PPS)
+2. PTP
+3. Host PC
+
+All :code:`float` and :code:`int64` time differences are seconds (measurement period, replay time, frame length, etc.).
 
 Multiple Returns
 ----------------
 
-To enable multiple returns, pass the :any:`cepton_sdk::CONTROL_ENABLE_MULTIPLE_RETURNS` flag during initialization.
+To enable multiple returns, pass the :any:`CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS` flag during initialization.
 
 The returns are as follows:
 
@@ -19,8 +29,14 @@ The returns are as follows:
 Concurrency
 -----------
 
-To disable networking, pass the :any:`cepton_sdk::CONTROL_DISABLE_NETWORK`.
-
-- If networking is enabled, the sdk creates 1 thread for networking. All callbacks occur in this networking thread.
+- If networking is enabled, the sdk creates 2 threads for networking. All callbacks occur in these networking threads.
 - If networking is disabled, the sdk does not create any threads. All callbacks occur in the main thread.
 - All sdk getter functions are thread safe, and can be called from callbacks. Other sdk functions are not guarunteed to be thread safe, and can cause deadlock if called from callbacks.
+
+Minimal SDK
+-----------
+
+If desired, the following SDK features can be disabled in the SDK and performed manually by the user:
+
+- Networking: see :doc:`samples/network`.
+- Frame Accumulation: see :doc:`samples/frame`.

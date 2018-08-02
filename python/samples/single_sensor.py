@@ -4,24 +4,24 @@ import pprint
 
 import cepton_sdk
 import cepton_sdk.plot
-import common
+from common import *
 
 if __name__ == "__main__":
     # Variables
-    capture_path = common.get_sample_capture_path()
-    sensor_serial_number = 4165
+    capture_path = get_sample_capture_path()
     frame_length = 0.1
 
     # Initialize
     cepton_sdk.initialize(capture_path=capture_path)
 
     # Get sensor
-    sensor = cepton_sdk.Sensor.create(sensor_serial_number)
+    sensors_dict = cepton_sdk.get_sensors()
+    sensor = next(iter(sensors_dict.values()))
     pprint.pprint(sensor.information.to_dict())
 
     # Get points
     image_points = \
-        cepton_sdk.get_sensor_image_points(sensor_serial_number, frame_length)
+        cepton_sdk.get_sensor_image_points(sensor.serial_number, frame_length)
     points = image_points.to_points()
 
     # Plot

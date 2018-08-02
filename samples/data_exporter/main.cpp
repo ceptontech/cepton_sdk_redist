@@ -96,12 +96,12 @@ void write_points(struct CeptonSensorImagePoint const *points,
           float wx, wy, wz;  // For converting
           cepton_sdk::util::convert_image_point_to_point(
               p.image_x, p.image_z, p.distance, wx, wy, wz);
-          fprintf(fh, "%.6f,%f,%f,%f,%f,%d,%d\n", (double)p.timestamp / 1e6, wx,
-                  wy, wz, p.intensity, (int)p.return_number, (int)p.valid);
+          fprintf(fh, "%.6f,%f,%f,%f,%f,%i,%i\n", (double)p.timestamp / 1e6,
+                  wx, wy, wz, p.intensity, (int)p.return_type, (int)p.flags);
         } else {
-          fprintf(fh, "%.6f,%f,%f,%f,%f,%d,%d\n", (double)p.timestamp / 1e6,
-                  p.image_x, p.distance, p.image_z, p.intensity,
-                  (int)p.return_number, (int)p.valid);
+          fprintf(fh, "%.6f,%f,%f,%f,%f,%i,%i\n", (double)p.timestamp / 1e6,
+                  p.image_x, p.distance, p.image_z, (int)p.intensity, (int)p.return_type,
+                  p.flags);
         }
       }
       break;
@@ -114,16 +114,16 @@ void write_points(struct CeptonSensorImagePoint const *points,
               p.image_x, p.image_z, p.distance, wx, wy, wz);
           fprintf(fh,
                   "{\"timestamp\":%.6f,\"x\":%f,\"y\":%f,\"z\":%f,"
-                  "\"intensity\":%f,\"return_number\":%d,\"valid\":%d},\n",
+                  "\"intensity\":%f,\"return_type\":%hu,\"flags\":%hu},\n",
                   (double)p.timestamp / 1e6, wx, wy, wz, p.intensity,
-                  (int)p.return_number, (int)p.valid);
+                  p.return_type, p.flags);
         } else {
           fprintf(fh,
                   "{\"timestamp\":%.6f,\"image_x\":%f,\"distance\":%f,\"image_"
                   "z\":%f,"
-                  "\"intensity\":%f,\"return_number\":%d,\"valid\":%d},\n",
+                  "\"intensity\":%f,\"return_type\":%hu,\"flags\":%hu},\n",
                   (double)p.timestamp / 1e6, p.image_x, p.distance, p.image_z,
-                  p.intensity, (int)p.return_number, (int)p.valid);
+                  p.intensity, p.return_type, p.flags);
         }
       }
   }

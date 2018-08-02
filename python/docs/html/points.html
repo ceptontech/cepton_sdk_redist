@@ -73,13 +73,18 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.return_numbers">
-<code class="descname">return_numbers</code><a class="headerlink" href="#cepton_sdk.ImagePoints.return_numbers" title="Permalink to this definition">¶</a></dt>
+<dt id="cepton_sdk.ImagePoints.return_types">
+<code class="descname">return_types</code><a class="headerlink" href="#cepton_sdk.ImagePoints.return_types" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="cepton_sdk.ImagePoints.valid">
 <code class="descname">valid</code><a class="headerlink" href="#cepton_sdk.ImagePoints.valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.ImagePoints.saturated">
+<code class="descname">saturated</code><a class="headerlink" href="#cepton_sdk.ImagePoints.saturated" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">
@@ -119,8 +124,8 @@
 </dd></dl>
 
 <dl class="attribute">
-<dt id="cepton_sdk.Points.return_numbers">
-<code class="descname">return_numbers</code><a class="headerlink" href="#cepton_sdk.Points.return_numbers" title="Permalink to this definition">¶</a></dt>
+<dt id="cepton_sdk.Points.return_types">
+<code class="descname">return_types</code><a class="headerlink" href="#cepton_sdk.Points.return_types" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -128,20 +133,25 @@
 <code class="descname">valid</code><a class="headerlink" href="#cepton_sdk.Points.valid" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="cepton_sdk.Points.saturated">
+<code class="descname">saturated</code><a class="headerlink" href="#cepton_sdk.Points.saturated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <p>All sdk methods return image points, but they can easily be converted to 3d points:</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
 <p>All point array classes support numpy indexing and assignment as if they were 1-d arrays:</p>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_points_1</span><span class="p">)</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_points_1</span><span class="p">)</span>
 <span class="n">image_points_2</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_points_1</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </td></tr></table></div>
 <p>Multiple point arrays can also be combined:</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">image_points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImagePoints</span><span class="o">.</span><span class="n">combine</span><span class="p">([</span><span class="n">image_points_1</span><span class="p">,</span> <span class="n">image_points_2</span><span class="p">])</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">image_points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImagePoints</span><span class="o">.</span><span class="n">combine</span><span class="p">([</span><span class="n">image_points_1</span><span class="p">,</span> <span class="n">image_points_2</span><span class="p">])</span>
 </pre></div>
 </td></tr></table></div>
 </div>

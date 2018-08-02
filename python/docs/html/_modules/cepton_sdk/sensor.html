@@ -34,7 +34,7 @@
           <div class="body" role="main">
             
   <h1>Source code for cepton_sdk.sensor</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">import</span> <span class="nn">ctypes</span>
 <span class="kn">import</span> <span class="nn">enum</span>
 
 <span class="kn">import</span> <span class="nn">cepton_sdk.c</span>
@@ -52,7 +52,7 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="SensorModel"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.SensorModel">[docs]</a><span class="k">class</span> <span class="nc">SensorModel</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<div class="viewcode-block" id="SensorModel"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.SensorModel">[docs]</a><span class="k">class</span> <span class="nc">SensorModel</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="n">HR80T</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">HR80M</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">HR80W</span> <span class="o">=</span> <span class="mi">3</span>
@@ -86,12 +86,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_c_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_c_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_SensorInformation</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_dict_member_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_c_member_names</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_get_dict_member_names</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_c_member_names</span><span class="p">()</span>
 
     <span class="n">__from_c_value_functions</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
@@ -105,9 +105,9 @@
     <span class="p">}</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_c_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">c_value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__from_c_value_functions</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__from_c_value_functions</span><span class="p">[</span><span class="n">member_name</span><span class="p">](</span><span class="n">c_value</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_from_c_value</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">c_value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">__from_c_value_functions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">__from_c_value_functions</span><span class="p">[</span><span class="n">member_name</span><span class="p">](</span><span class="n">c_value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_from_c_value</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">c_value</span><span class="p">)</span></div>
 

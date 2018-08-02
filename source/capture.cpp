@@ -100,12 +100,12 @@ bool Capture::open_for_read(std::string const &fname) {
   m_filename = fname;
   if (!m_fh) {
     close();
-    m_error_code = CEPTON_ERROR_FILE_IO;
+    m_error = CEPTON_ERROR_FILE_IO;
     return false;
   }
   if (!read_file_header()) {
     close();
-    m_error_code = CEPTON_ERROR_FILE_IO;
+    m_error = CEPTON_ERROR_FILE_IO;
     return false;
   }
   m_is_read_mode = true;
@@ -136,7 +136,7 @@ bool Capture::open_for_write(std::string const &fname, bool append) {
   m_filename = fname;
   if (!m_fh) {
     close();
-    m_error_code = CEPTON_ERROR_FILE_IO;
+    m_error = CEPTON_ERROR_FILE_IO;
     return false;
   }
   if (append) {
@@ -181,11 +181,11 @@ bool Capture::read_file_header() {
   fseek(m_fh, 0, SEEK_SET);
   pcap_file_header hdr;
   if (fread(&hdr, sizeof(hdr), 1, m_fh) != 1) {
-    m_error_code = CEPTON_ERROR_INVALID_FILE_TYPE;
+    m_error = CEPTON_ERROR_INVALID_FILE_TYPE;
     return false;
   }
   if (hdr.magic != PCAP_MAGIC) {
-    m_error_code = CEPTON_ERROR_INVALID_FILE_TYPE;
+    m_error = CEPTON_ERROR_INVALID_FILE_TYPE;
     return false;
   }
 
@@ -249,12 +249,12 @@ void Capture::save_read_index(std::ofstream &f) const {
 
 bool Capture::seek(int64_t usec) {
   if (!is_open()) {
-    m_error_code = CEPTON_ERROR_NOT_OPEN;
+    m_error = CEPTON_ERROR_NOT_OPEN;
     return false;
   }
 
   if ((usec < 0) || (usec >= m_total_usec)) {
-    m_error_code = CEPTON_ERROR_EOF;
+    m_error = CEPTON_ERROR_EOF;
     return false;
   }
 
@@ -265,7 +265,7 @@ bool Capture::seek(int64_t usec) {
                                  return a.time_usec < b.time_usec;
                                });
   if (iter == m_read_index.end()) {
-    m_error_code = CEPTON_ERROR_EOF;
+    m_error = CEPTON_ERROR_EOF;
     return false;
   }
 
@@ -278,7 +278,7 @@ bool Capture::seek(int64_t usec) {
 int Capture::next_packet(const PacketHeader **pkt_header,
                          const uint8_t **pkt_data) {
   if (!is_open_for_read()) {
-    m_error_code = CEPTON_ERROR_NOT_OPEN;
+    m_error = CEPTON_ERROR_NOT_OPEN;
     return 0;
   }
 
@@ -314,14 +314,14 @@ l_try_again:
 
   unsigned len = swap_uint16(hdr.udp_hdr.uh_ulen);
   if (hdr.rec_hdr.incl_len <= sizeof(eth_ip_udp_header)) {
-    m_error_code = CEPTON_ERROR_CORRUPT_FILE;
+    m_error = CEPTON_ERROR_CORRUPT_FILE;
     return 0;  // len includes this
   }
 
   // Sanity check
   // 8 is the UDP header size
   if (hdr.rec_hdr.incl_len - sizeof(eth_ip_udp_header) != len - 8) {
-    m_error_code = CEPTON_ERROR_CORRUPT_FILE;
+    m_error = CEPTON_ERROR_CORRUPT_FILE;
     return 0;
   }
   len -= 8;
@@ -346,7 +346,7 @@ l_try_again:
   m_buffer.resize(len);
   size_t readlen = fread(m_buffer.data(), len, 1, m_fh);
   if (readlen < 1) {
-    m_error_code = CEPTON_ERROR_CORRUPT_FILE;
+    m_error = CEPTON_ERROR_CORRUPT_FILE;
     return 0;  // Failed to get the whole packet
   }
 
@@ -360,7 +360,7 @@ l_try_again:
 bool Capture::append_packet(const Capture::PacketHeader *hdr,
                             const uint8_t *data) {
   if (!is_open_for_write()) {
-    m_error_code = CEPTON_ERROR_NOT_OPEN;
+    m_error = CEPTON_ERROR_NOT_OPEN;
     return false;
   }
 

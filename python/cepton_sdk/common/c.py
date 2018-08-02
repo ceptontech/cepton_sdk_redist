@@ -115,10 +115,23 @@ def convert_ndarray_to_c_array(a, c_type):
     return c_a
 
 
-def unpackbits(a):
+def unpack_bits(a):
     """Convert array of integers to array of bool"""
+    if a.size == 0:
+        return numpy.zeros(list(a.shape) + [a.dtype.itemsize * 8], dtype=bool)
     bits = numpy.unpackbits(a.flatten().view(numpy.uint8)).astype(bool)
     bits = bits.reshape([a.size, -1, 8])
     bits = bits[:, :, ::-1]
     bits = bits.reshape(list(a.shape) + [-1])
     return bits
+
+
+def pack_bits(bits, c_type):
+    dtype = numpy.dtype(c_type)
+    if bits.size == 0:
+        return numpy.zeros(bits.shape[:-1], dtype=dtype)
+    bits_tmp = bits.reshape([-1, bits.shape[-1] / 8, 8])
+    bits_tmp = bits_tmp[:, :, ::-1]
+    a = numpy.packbits(bits_tmp.flatten()).view(dtype)
+    a = numpy.reshape([bits.shape[:-1]])
+    return a

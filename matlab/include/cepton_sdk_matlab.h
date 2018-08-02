@@ -16,9 +16,9 @@ struct EXPORT CeptonMatlabSensorInformation {
   uint32_t model;
   char firmware_version[32];
 
-  float last_reported_temperature;  ///< [celsius]
-  float last_reported_humidity;     ///< [%]
-  float last_reported_age;          ///< [hours]
+  float last_reported_temperature;
+  float last_reported_humidity;
+  float last_reported_age;
   float padding;
 
   uint64_t ptp_ts;

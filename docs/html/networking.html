@@ -24,19 +24,27 @@
 
   
 
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Capture Replay" href="capture_replay.html" />
-    <link rel="prev" title="Points" href="points.html" /> 
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
+        <link rel="next" title="Capture Replay" href="capture_replay.html"/>
+        <link rel="prev" title="Points" href="points.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -104,7 +112,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -112,10 +120,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -172,7 +179,7 @@
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <dl class="type">
 <dt id="_CPPv3N10cepton_sdk24FpNetworkReceiveCallbackE">
-<span id="_CPPv2N10cepton_sdk24FpNetworkReceiveCallbackE"></span><span id="cepton_sdk::FpNetworkReceiveCallback"></span><span class="target" id="cepton__sdk_8hpp_1a32fb6d5641d328e7c887a46d609aa52e"></span><em class="property">typedef </em>void (*<code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">FpNetworkReceiveCallback</code>)<span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> handle, uint8_t <em class="property">const</em> *buffer, size_t buffer_size, void *user_data<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk24FpNetworkReceiveCallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk24FpNetworkReceiveCallbackE"></span><span id="cepton_sdk::FpNetworkReceiveCallback"></span><span class="target" id="cepton__sdk_8hpp_1ac240ec13f6b0858165365bf5b7b11006"></span><em class="property">typedef </em>void (*<code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">FpNetworkReceiveCallback</code>)<span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> handle, int64_t timestamp, uint8_t <em class="property">const</em> *buffer, size_t buffer_size, void *user_data<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk24FpNetworkReceiveCallbackE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback for receiving network packets. </p>
 <p><dl class="docutils">
 <dt><strong>Parameters</strong></dt>
@@ -189,28 +196,21 @@
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk22listen_network_packetsE24FpNetworkReceiveCallbackPCv">
-<span id="_CPPv2N10cepton_sdk22listen_network_packetsE24FpNetworkReceiveCallbackPCv"></span><span id="cepton_sdk::listen_network_packets__FpNetworkReceiveCallback.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1ae0cc26c41b569d3e9b1fdb6f8cefe8db"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">listen_network_packets</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk24FpNetworkReceiveCallbackE" title="cepton_sdk::FpNetworkReceiveCallback">FpNetworkReceiveCallback</a> <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk22listen_network_packetsE24FpNetworkReceiveCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk22listen_network_packetsE24FpNetworkReceiveCallbackPCv"></span><span id="cepton_sdk::listen_network_packets__FpNetworkReceiveCallback.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1a804a4abc3b8ba135467f11ae8b427bd6"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">listen_network_packets</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk24FpNetworkReceiveCallbackE" title="cepton_sdk::FpNetworkReceiveCallback">FpNetworkReceiveCallback</a> <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk22listen_network_packetsE24FpNetworkReceiveCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets network packets callback. </p>
 <p>Only 1 callback can be registered. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk24unlisten_network_packetsEv">
-<span id="_CPPv2N10cepton_sdk24unlisten_network_packetsEv"></span><span id="cepton_sdk::unlisten_network_packets"></span><span class="target" id="cepton__sdk_8hpp_1a17549a8366eda06ee762776b85de0374"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">unlisten_network_packets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk24unlisten_network_packetsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk24unlisten_network_packetsEv"></span><span id="cepton_sdk::unlisten_network_packets"></span><span class="target" id="cepton__sdk_8hpp_1aa31c3f66c46940f0ad712e3635f491c0"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">unlisten_network_packets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk24unlisten_network_packetsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk18set_mock_time_baseE7int64_t">
-<span id="_CPPv2N10cepton_sdk18set_mock_time_baseE7int64_t"></span><span id="cepton_sdk::set_mock_time_base__int64_t"></span><span class="target" id="cepton__sdk_8hpp_1a13eb1b55dad5b29ceedb07548612ca4b"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">set_mock_time_base</code><span class="sig-paren">(</span>int64_t <em>time_base</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk18set_mock_time_baseE7int64_t" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Sets current sdk time used for mocked sensors (unix time [microseconds]). </p>
-<p>If 0, uses pc clock. Set automatically by capture replay. </p>
-</dd></dl>
-
-<dl class="function">
-<dt id="_CPPv3N10cepton_sdk20mock_network_receiveE12SensorHandlePCK7uint8_tNSt6size_tE">
-<span id="_CPPv2N10cepton_sdk20mock_network_receiveE12SensorHandlePCK7uint8_tNSt6size_tE"></span><span id="cepton_sdk::mock_network_receive__SensorHandle.uint8_tCPC.std::s"></span><span class="target" id="cepton__sdk_8hpp_1ad57266e0a840b2e0aa976a941caefb5a"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">mock_network_receive</code><span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> <em>handle</em>, <em class="property">const</em> uint8_t *<em class="property">const</em> <em>buffer</em>, std::size_t <em>buffer_size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk20mock_network_receiveE12SensorHandlePCK7uint8_tNSt6size_tE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Manually passes packets to sdk. </p>
-<p>Blocks while processing, and calls listener callbacks synchronously before returning. </p>
+<dt id="_CPPv3N10cepton_sdk5clearEv">
+<span id="_CPPv2N10cepton_sdk5clearEv"></span><span id="cepton_sdk::clear"></span><span class="target" id="cepton__sdk_8hpp_1ad09474e986ca3a086f29bfb2a971e4c0"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk5clearEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clears sensors. </p>
+<p>Use when loading/unloading capture file. </p>
 </dd></dl>
 
 </div>
@@ -218,7 +218,9 @@
 
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -240,7 +242,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -259,7 +261,6 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'',
-            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -273,13 +274,19 @@
 
   
 
-  <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

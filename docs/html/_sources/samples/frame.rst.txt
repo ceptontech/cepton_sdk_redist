@@ -1,0 +1,7 @@
+Frame
+=====
+
+.. literalinclude:: ../../../samples/frame.cpp
+  :language: c
+  :linenos:
+  :caption: samples/frame.cpp

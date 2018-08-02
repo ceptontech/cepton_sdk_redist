@@ -1,5 +1,13 @@
 # Cepton SDK Release Notes
 
+### Version 1.4 2018-08-02
+* Improve point timestamps.
+* Combine `set_mock_time_base` and `mock_network_receive`.
+* Improve errors.
+* Add return type.
+* Add more sample code.
+* Bugfixes.
+
 ### Version 1.3 2018-07-23
 * Support more accurate HR80W calibrations
 * Improved self-diagnosis and fault reporting

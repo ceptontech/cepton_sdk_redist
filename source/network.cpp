@@ -2,119 +2,130 @@
 
 #include "cepton_sdk/core.hpp"
 #include "cepton_sdk/sensor.hpp"
+#include "cepton_sdk_util.hpp"
 
 using asio::ip::udp;
 
 namespace cepton_sdk {
 
-NetworkManager network_manager;
-
-NetworkSocket::NetworkSocket(asio::io_service &io, uint16_t port)
-    : udp::socket(io) {
-  asio::error_code error;
-  open(udp::v4());
-  set_option(asio::socket_base::reuse_address(true));
-  bind(udp::endpoint(asio::ip::address_v4::any(), port), error);
-  if (error) abort();
-
-  listen();
+// -----------------------------------------------------------------------------
+// SocketListener
+// -----------------------------------------------------------------------------
+SocketListener::SocketListener(uint16_t port)
+    : m_socket(m_io_service, udp::v4()) {
+  m_socket.set_option(asio::socket_base::reuse_address(true));
+  m_socket.bind(udp::endpoint(udp::v4(), port));
 }
 
-void NetworkSocket::listen() {
-  async_receive_from(
-      asio::buffer(sensor_socket_buffer), end_point,
-      [this](const asio::error_code &error, std::size_t bytes_transferred) {
-        handle_receive(error, bytes_transferred);
+SocketListener::~SocketListener() {
+  stop();
+}
+
+void SocketListener::run() {
+  stop();
+  listen();
+  m_io_service.run();
+}
+
+void SocketListener::stop() {
+  std::lock_guard<std::mutex> lock(m_mutex);
+  m_socket.cancel();
+  m_io_service.stop();
+  m_io_service.reset();
+}
+
+void SocketListener::listen() {
+  std::lock_guard<std::mutex> lock(m_mutex);
+  m_socket.async_receive_from(
+      asio::buffer(m_buffer), m_end_point,
+      [this](const asio::error_code &error, std::size_t buffer_size) {
+        if (buffer_size == 0) return;
+        if (error == asio::error::operation_aborted) return;
+        const CeptonSensorHandle handle =
+            m_end_point.address().to_v4().to_ulong();
+        callback(error, handle, buffer_size, m_buffer.data());
+        listen();
       });
 }
 
-void NetworkSocket::handle_receive(const asio::error_code &error,
-                                   std::size_t bytes_transferred) {
-  if (error == asio::error::operation_aborted) return;
-
-  uint64_t addr = end_point.address().to_v4().to_ulong();
-  if (error.value()) {
-    m_last_error =
-        error.value();  // This value will not survive the emit_error call
-    callback_manager.emit_error(CEPTON_NULL_HANDLE, CEPTON_ERROR_COMMUNICATION,
-                                error.message().c_str(), &m_last_error);
-    return;
-  }
-  callback_manager.network_cb.emit(addr, sensor_socket_buffer,
-                                   bytes_transferred);
-  sensor_manager.handle_network_receive(addr, sensor_socket_buffer,
-                                        bytes_transferred);
-
-  listen();
-}
+// -----------------------------------------------------------------------------
+// NetworkManager
+// -----------------------------------------------------------------------------
+NetworkManager network_manager;
 
 void NetworkManager::initialize() {
   deinitialize();
   if (sdk_manager.has_control_flag(CEPTON_SDK_CONTROL_DISABLE_NETWORK)) return;
+  // return;
 
-  std::lock_guard<std::mutex> lock(m_mutex);
+  m_is_running = true;
 
-  m_io_service_ptr.reset(new asio::io_service());
-
-  m_sensor_socket_ptr =
-      std::make_shared<NetworkSocket>(*m_io_service_ptr, m_port);
-
-  m_io_service_thread_ptr.reset(new std::thread([this]() {
-    std::shared_ptr<asio::io_service> local_io_service_ptr;
-    {
-      std::lock_guard<std::mutex> lock(m_mutex);
-      if (!m_io_service_ptr) return;
-      local_io_service_ptr = m_io_service_ptr;
+  m_listener.reset(new SocketListener(m_port));
+  m_listener->callback.listen(0, [&](const asio::error_code &error,
+                                     CeptonSensorHandle handle, int buffer_size,
+                                     const uint8_t *const buffer) {
+    if (error.value()) {
+      callback_manager.emit_error(CEPTON_NULL_HANDLE,
+                                  CEPTON_ERROR_COMMUNICATION,
+                                  error.message().c_str(), &error);
+      return;
     }
-    try {
-      local_io_service_ptr->run();
-    } catch (const std::exception &) {
-      // std::cerr << e.what() << "\n";
+
+    thread_local auto packet_pool = std::make_shared<LargeObjectPool<Packet>>();
+    auto packet = packet_pool->get();
+    packet->handle = handle;
+    packet->timestamp = util::get_timestamp_usec();
+    packet->buffer.clear();
+    packet->buffer.reserve(buffer_size);
+    packet->buffer.insert(packet->buffer.end(), buffer, buffer + buffer_size);
+    m_packets.push(packet);
+  });
+  m_listener_thread.reset(new std::thread([&]() { m_listener->run(); }));
+
+  m_worker_thread.reset(new std::thread([&]() {
+    while (true) {
+      const auto packet = m_packets.pop(int64_t(0.01 * 1e6));
+      if (!m_is_running) break;
+      if (!packet) continue;
+      callback_manager.network_cb.emit(packet->handle, packet->timestamp,
+                                       packet->buffer.data(),
+                                       packet->buffer.size());
+      sensor_manager.handle_network_receive(packet->handle, packet->timestamp,
+                                            packet->buffer.size(),
+                                            packet->buffer.data());
     }
   }));
+
+  m_is_initialized = true;
 }
 
 void NetworkManager::deinitialize() {
-  std::lock_guard<std::mutex> lock(m_mutex);
+  if (!m_is_initialized) return;
 
-  if (m_sensor_socket_ptr) {
-    try {
-      m_sensor_socket_ptr->shutdown(udp::socket::shutdown_both);
-      m_sensor_socket_ptr->close();
-    } catch (std::system_error) {
-      // On OSX we will get system_error: shutdown: Socket is not connected
-      // This is safe to ignore
-    }
+  m_is_running = false;
+  m_listener->stop();
+  if (m_listener_thread) {
+    m_listener_thread->join();
+    m_listener_thread.reset();
+  }
+  if (m_listener) {
+    m_listener.reset();
+  }
+  if (m_worker_thread) {
+    m_worker_thread->join();
+    m_worker_thread.reset();
   }
 
-  if (m_io_service_ptr) {
-    m_io_service_ptr->stop();
-  }
-
-  if (m_io_service_thread_ptr) {
-    m_io_service_thread_ptr->join();
-    m_io_service_thread_ptr.reset();
-  }
-  // Don't delete socket until join() is successful
-  if (m_sensor_socket_ptr) m_sensor_socket_ptr.reset();
-
-  if (m_io_service_ptr) {
-    m_io_service_ptr.reset();
-  }
+  m_is_initialized = false;
 }
 
-uint16_t NetworkManager::get_port() const {
-  std::lock_guard<std::mutex> lock(m_mutex);
-  return m_port;
-}
+uint16_t NetworkManager::get_port() const { return m_port; }
 
-CeptonSensorErrorCode NetworkManager::set_port(uint16_t port) {
+SensorError NetworkManager::set_port(uint16_t port) {
+  const bool is_initialized = m_is_initialized;
   deinitialize();
-  {
-    std::lock_guard<std::mutex> lock(m_mutex);
-    m_port = port;
-  }
-  if (sdk_manager.is_initialized()) initialize();
+  m_port = port;
+  if (is_initialized) initialize();
   return CEPTON_SUCCESS;
 }
 

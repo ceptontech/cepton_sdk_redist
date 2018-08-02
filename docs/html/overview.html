@@ -24,19 +24,27 @@
 
   
 
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Errors" href="errors.html" />
-    <link rel="prev" title="Cepton SDK" href="index.html" /> 
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
+        <link rel="next" title="Errors" href="errors.html"/>
+        <link rel="prev" title="Cepton SDK" href="index.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
    
   <div class="wy-grid-for-nav">
@@ -83,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#timestamps">Timestamps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#multiple-returns">Multiple Returns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#concurrency">Concurrency</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#minimal-sdk">Minimal SDK</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
@@ -105,7 +114,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -113,10 +122,9 @@
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
           
 
 
@@ -169,13 +177,21 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>The SDK parses sensor packets and computes calibrated measurements from raw sensor data. For prototyping purposes, it can optionally handle networking, frame accumulation, and capture replay.</p>
+<p>For prototyping, it is recommended to start with the high level methods in <a class="reference internal" href="api.html"><span class="doc">API</span></a> and <a class="reference internal" href="utilities.html"><span class="doc">Utilities</span></a>.</p>
 <div class="section" id="timestamps">
 <h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h2>
-<p>All timestamps are microseconds since the Unix epoch (UTC). If a GPS is connected to the sensor, point timestamps are based on the GPS clock, otherwise they are based on the host computer’s clock.</p>
+<p>All <code class="code docutils literal notranslate"><span class="pre">int64</span></code> timestamps are microseconds since the Unix epoch (UTC). Point timestamps are based on one of the following sources (the first valid source is used):</p>
+<ol class="arabic simple">
+<li>GPS (NMEA + PPS)</li>
+<li>PTP</li>
+<li>Host PC</li>
+</ol>
+<p>All <code class="code docutils literal notranslate"><span class="pre">float</span></code> and <code class="code docutils literal notranslate"><span class="pre">int64</span></code> time differences are seconds (measurement period, replay time, frame length, etc.).</p>
 </div>
 <div class="section" id="multiple-returns">
 <h2>Multiple Returns<a class="headerlink" href="#multiple-returns" title="Permalink to this headline">¶</a></h2>
-<p>To enable multiple returns, pass the <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk::CONTROL_ENABLE_MULTIPLE_RETURNS</span></code> flag during initialization.</p>
+<p>To enable multiple returns, pass the <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS</span></code> flag during initialization.</p>
 <p>The returns are as follows:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -186,18 +202,27 @@
 </div>
 <div class="section" id="concurrency">
 <h2>Concurrency<a class="headerlink" href="#concurrency" title="Permalink to this headline">¶</a></h2>
-<p>To disable networking, pass the <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk::CONTROL_DISABLE_NETWORK</span></code>.</p>
 <ul class="simple">
-<li>If networking is enabled, the sdk creates 1 thread for networking. All callbacks occur in this networking thread.</li>
+<li>If networking is enabled, the sdk creates 2 threads for networking. All callbacks occur in these networking threads.</li>
 <li>If networking is disabled, the sdk does not create any threads. All callbacks occur in the main thread.</li>
 <li>All sdk getter functions are thread safe, and can be called from callbacks. Other sdk functions are not guarunteed to be thread safe, and can cause deadlock if called from callbacks.</li>
+</ul>
+</div>
+<div class="section" id="minimal-sdk">
+<h2>Minimal SDK<a class="headerlink" href="#minimal-sdk" title="Permalink to this headline">¶</a></h2>
+<p>If desired, the following SDK features can be disabled in the SDK and performed manually by the user:</p>
+<ul class="simple">
+<li>Networking: see <a class="reference internal" href="samples/network.html"><span class="doc">Network</span></a>.</li>
+<li>Frame Accumulation: see <a class="reference internal" href="samples/frame.html"><span class="doc">Frame</span></a>.</li>
 </ul>
 </div>
 </div>
 
 
            </div>
-           
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -219,7 +244,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -238,7 +263,6 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'',
-            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -252,13 +276,19 @@
 
   
 
-  <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
 
+  
+  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
+  </script>
+   
 
 </body>
 </html>

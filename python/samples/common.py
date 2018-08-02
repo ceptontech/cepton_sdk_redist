@@ -1,8 +1,6 @@
 import os.path
 
 import numpy
-import vispy.app
-import vispy.scene
 
 from cepton_util.common import *
 

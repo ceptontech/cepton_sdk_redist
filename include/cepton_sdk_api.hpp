@@ -39,25 +39,12 @@ static SensorErrorCode wait(float t_length = 0.1f) {
 // -----------------------------------------------------------------------------
 // Errors
 // -----------------------------------------------------------------------------
-/// SensorErrorCode exception.
-struct SensorError : public std::runtime_error {
-  SensorErrorCode error_code;
+namespace internal {
+static SensorError create_error(SensorErrorCode error_code,
 
-  SensorError(const char *const msg, SensorErrorCode error_code_)
-      : std::runtime_error(msg), error_code(error_code_) {}
-};
+                                const std::string &msg = "") {
+  if (!error_code) return SensorError();
 
-/// Handles error code.
-/**
- * - If error, raises `cepton_sdk::api::SensorError` exception.
- * - If fault, prints message.
- * - Otherwise, does nothing.
- *
- * This is for sample code; production code should handle errors properly.
- */
-static SensorErrorCode check_error_code(SensorErrorCode error_code,
-                                        const std::string &msg = "") {
-  if (!error_code) return error_code;
   std::string error_code_name = get_error_code_name(error_code);
   char error_msg[100];
   if (msg.empty()) {
@@ -66,12 +53,56 @@ static SensorErrorCode check_error_code(SensorErrorCode error_code,
     std::snprintf(error_msg, 100, "%s: %s!\n", msg.c_str(),
                   error_code_name.c_str());
   }
-  if (cepton_sdk::is_error_code(error_code)) {
-    throw SensorError(error_msg, error_code);
+  return SensorError(error_code, error_msg);
+}
+}  // namespace internal
+
+/// DEPRICATED: use `cepton_sdk::api::check_error`.
+static SensorError check_error_code(SensorErrorCode error_code,
+                                    const std::string &msg = "") {
+  const auto error = internal::create_error(error_code, msg);
+  if (!error) return error;
+
+  if (error.is_error()) {
+    throw error;
   } else {
-    std::fprintf(stderr, "%s", error_msg);
+    std::fprintf(stderr, "%s\n", error.what());
   }
-  return error_code;
+  return error;
+}
+
+/// DEPRICATED: use `cepton_sdk::api::log_error`.
+static SensorError log_error_code(SensorErrorCode error_code,
+                                  const std::string &msg = "") {
+  const auto error = internal::create_error(error_code, msg);
+  if (!error) return error;
+
+  std::fprintf(stderr, "%s\n", error.what());
+  return error;
+}
+
+/// Handles error.
+/**
+ * If error, raises exception.
+ * Otherwise, prints error.
+ */
+static const SensorError &check_error(const SensorError &error) {
+  if (!error) return error;
+
+  if (error.is_error()) {
+    throw error;
+  } else {
+    std::fprintf(stderr, "%s\n", error.what());
+  }
+  return error;
+}
+
+/// Prints error.
+static const SensorError &log_error(const SensorError &error) {
+  if (!error) return error;
+
+  std::fprintf(stderr, "%s\n", error.what());
+  return error;
 }
 
 /// Basic SDK error callback.
@@ -83,76 +114,108 @@ static void default_on_error(SensorHandle h, SensorErrorCode error_code,
                              const void *const error_data,
                              std::size_t error_data_size,
                              void *const instance) {
-  check_error_code(error_code, error_msg);
+  check_error(SensorError(error_code, error_msg));
 }
 
 // -----------------------------------------------------------------------------
 // Setup
 // -----------------------------------------------------------------------------
 /// Initialize SDK and optionally starts capture replay.
-inline static SensorErrorCode initialize(Options options = create_options(),
-                                         const std::string &capture_path = "") {
+inline static SensorError initialize(Options options = create_options(),
+                                     const std::string &capture_path = "") {
   // Initialize
   if (!capture_path.empty())
     options.control_flags |= CEPTON_SDK_CONTROL_DISABLE_NETWORK;
-  auto error_code =
+  util::ErrorAccumulator error =
       ::cepton_sdk::initialize(CEPTON_SDK_VERSION, options, default_on_error);
-  if (error_code) return error_code;
+  if (error) return error;
 
   // Open capture replay
   if (!capture_path.empty()) {
-    error_code = capture_replay::open(capture_path);
-    if (error_code) return error_code;
+    error = capture_replay::open(capture_path);
+    if (error) return error;
   }
 
-  return wait(1.0f);
+  error = wait(1.0f);
+  if (!capture_path.empty()) error = capture_replay::seek(0.0f);
+  return error;
 }
 
+/// Callback for sensor errors.
+class SensorErrorCallback
+    : public util::Callback<SensorHandle, const SensorError &> {
+ public:
+  static void global_on_callback(SensorHandle handle,
+                                 SensorErrorCode error_code,
+                                 const char *error_msg,
+                                 const void *const error_data,
+                                 size_t error_data_size, void *const instance) {
+    ((const SensorErrorCallback *)instance)
+        ->emit(handle, SensorError(error_code, error_msg));
+  }
+};
+
 /// Callback for image frames.
-class SensorImageFramesCallback
+/**
+ * Must call `initialize` before use.
+ */
+class SensorImageFrameCallback
 
     : public util::Callback<SensorHandle, std::size_t,
                             const SensorImagePoint *> {
  public:
-  ~SensorImageFramesCallback() { deinitialize(); }
-  SensorErrorCode initialize() {
+  ~SensorImageFrameCallback() { deinitialize(); }
+  SensorError initialize() {
     return listen_image_frames(global_on_callback, this);
   }
-  SensorErrorCode deinitialize() { return unlisten_image_frames(); }
+  SensorError deinitialize() {
+    if (!is_initialized()) return CEPTON_SUCCESS;
+    return unlisten_image_frames();
+  }
 };
 
 /// Callback for network packets.
-class NetworkPacketsCallback
-    : public util::Callback<SensorHandle, uint8_t const *, std::size_t> {
+/**
+ * Must call `initialize` before use.
+ */
+class NetworkPacketCallback
+    : public util::Callback<SensorHandle, int64_t, uint8_t const *,
+                            std::size_t> {
  public:
-  ~NetworkPacketsCallback() { deinitialize(); }
-  SensorErrorCode initialize() {
+  ~NetworkPacketCallback() { deinitialize(); }
+  SensorError initialize() {
     return listen_network_packets(global_on_callback, this);
   }
-  SensorErrorCode deinitialize() { return unlisten_network_packets(); }
+  SensorError deinitialize() {
+    if (!is_initialized()) return CEPTON_SUCCESS;
+    return unlisten_network_packets();
+  }
 };
 
 // -----------------------------------------------------------------------------
 // Sensors
 // -----------------------------------------------------------------------------
-static SensorErrorCode get_sensor_information_by_serial_number(
+/**
+ * Returns error if sensor not found.
+ */
+static SensorError get_sensor_information_by_serial_number(
     uint64_t serial_number, SensorInformation &info) {
   CeptonSensorHandle handle;
-  SensorErrorCode error_code =
-      get_sensor_handle_by_serial_number(serial_number, handle);
-  if (error_code) return error_code;
+  SensorError error = get_sensor_handle_by_serial_number(serial_number, handle);
+  if (error) return error;
   return get_sensor_information(handle, info);
 }
 
+/// Returns serial numbers for all sensors.
 static std::vector<uint64_t> get_sensor_serial_numbers() {
-  const std::size_t n_sensors = get_n_sensors();
+  const int n_sensors = get_n_sensors();
   std::vector<uint64_t> serial_numbers;
   serial_numbers.reserve(n_sensors);
-  for (std::size_t i = 0; i < n_sensors; ++i) {
+  for (int i = 0; i < n_sensors; ++i) {
     SensorInformation sensor_info;
-    SensorErrorCode error_code =
-        get_sensor_information_by_index(i, sensor_info);
-    check_error_code(error_code);
+    SensorError error = get_sensor_information_by_index(i, sensor_info);
+    log_error(error);
+    if (error) continue;
     serial_numbers.push_back(sensor_info.serial_number);
   }
   std::sort(serial_numbers.begin(), serial_numbers.end());
