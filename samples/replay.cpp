@@ -61,7 +61,7 @@ int main(int argc, char** argv) {
   cepton_sdk::api::check_error(callback.initialize());
   callback.listen([](cepton_sdk::SensorHandle handle, std::size_t n_points,
                      const cepton_sdk::SensorImagePoint* c_image_points) {
-    std::printf("Received %i points from %llu\n", (int)n_points, handle);
+    std::printf("Received %i points from %i\n", (int)n_points, (int)handle);
   });
 
   CaptureReplay replay(capture_path);

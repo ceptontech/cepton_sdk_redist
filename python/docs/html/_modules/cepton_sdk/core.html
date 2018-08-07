@@ -37,6 +37,7 @@
 <span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">atexit</span>
 <span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">cepton_sdk.c</span>
@@ -79,8 +80,8 @@
 
 <span class="k">class</span> <span class="nc">_Manager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">_error_callback</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="n">_c_on_error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">control_flags</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">error_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                    <span class="n">frame_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">frame_length</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -109,25 +110,23 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_callback</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">set_error_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_callback</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="o">=</span> <span class="n">error_callback</span>
-
-    <span class="k">def</span> <span class="nf">clear_error_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="o">=</span> <span class="kc">None</span>
-
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_global_on_error</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="n">_manager</span><span class="o">.</span><span class="n">_on_error</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_on_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_handle</span><span class="p">,</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">error_data</span><span class="p">,</span> <span class="n">error_data_size</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">check_error_code</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">error_code</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">error</span> <span class="o">=</span> <span class="n">SensorError</span><span class="p">(</span>
-                <span class="n">error_code</span><span class="o">=</span><span class="n">error_code</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span> <span class="n">error_data</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span><span class="p">(</span><span class="n">sensor_handle</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_on_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_handle</span><span class="p">,</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">error_msg</span><span class="p">,</span> <span class="n">error_data</span><span class="p">,</span> <span class="n">error_data_size</span><span class="p">,</span> <span class="n">user_data</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="n">error_code_name</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_error_code_name</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">error_msg</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">error_code_name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;{}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">error_code_name</span><span class="p">,</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_Error</span><span class="p">(</span><span class="n">error_code</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">log_error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_error_callback</span><span class="p">(</span><span class="n">sensor_handle</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
 
 
 <span class="n">_manager</span> <span class="o">=</span> <span class="n">_Manager</span><span class="p">()</span>
@@ -138,9 +137,6 @@
 
 
 <span class="n">deinitialize</span> <span class="o">=</span> <span class="n">_manager</span><span class="o">.</span><span class="n">deinitialize</span>
-
-<span class="n">set_error_callback</span> <span class="o">=</span> <span class="n">_manager</span><span class="o">.</span><span class="n">set_error_callback</span>
-<span class="n">clear_error_callback</span> <span class="o">=</span> <span class="n">_manager</span><span class="o">.</span><span class="n">clear_error_callback</span>
 
 
 <span class="k">def</span> <span class="nf">get_control_flags</span><span class="p">():</span>

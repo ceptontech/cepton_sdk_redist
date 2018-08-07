@@ -96,12 +96,12 @@ void write_points(struct CeptonSensorImagePoint const *points,
           float wx, wy, wz;  // For converting
           cepton_sdk::util::convert_image_point_to_point(
               p.image_x, p.image_z, p.distance, wx, wy, wz);
-          fprintf(fh, "%.6f,%f,%f,%f,%f,%i,%i\n", (double)p.timestamp / 1e6,
-                  wx, wy, wz, p.intensity, (int)p.return_type, (int)p.flags);
+          fprintf(fh, "%.6f,%f,%f,%f,%f,%i,%i\n", (double)p.timestamp / 1e6, wx,
+                  wy, wz, p.intensity, (int)p.return_type, (int)p.flags);
         } else {
           fprintf(fh, "%.6f,%f,%f,%f,%f,%i,%i\n", (double)p.timestamp / 1e6,
-                  p.image_x, p.distance, p.image_z, (int)p.intensity, (int)p.return_type,
-                  p.flags);
+                  p.image_x, p.distance, p.image_z, p.intensity,
+                  (int)p.return_type, (int)p.flags);
         }
       }
       break;
@@ -114,16 +114,16 @@ void write_points(struct CeptonSensorImagePoint const *points,
               p.image_x, p.image_z, p.distance, wx, wy, wz);
           fprintf(fh,
                   "{\"timestamp\":%.6f,\"x\":%f,\"y\":%f,\"z\":%f,"
-                  "\"intensity\":%f,\"return_type\":%hu,\"flags\":%hu},\n",
+                  "\"intensity\":%f,\"return_type\":%i,\"flags\":%i},\n",
                   (double)p.timestamp / 1e6, wx, wy, wz, p.intensity,
-                  p.return_type, p.flags);
+                  (int)p.return_type, (int)p.flags);
         } else {
           fprintf(fh,
                   "{\"timestamp\":%.6f,\"image_x\":%f,\"distance\":%f,\"image_"
                   "z\":%f,"
-                  "\"intensity\":%f,\"return_type\":%hu,\"flags\":%hu},\n",
+                  "\"intensity\":%f,\"return_type\":%i,\"flags\":%i},\n",
                   (double)p.timestamp / 1e6, p.image_x, p.distance, p.image_z,
-                  p.intensity, p.return_type, p.flags);
+                  p.intensity, (int)p.return_type, (int)p.flags);
         }
       }
   }
@@ -273,19 +273,18 @@ int main(int argc, char **argv) {
 
   cepton_sdk::Options opts = cepton_sdk::create_options();
   opts.frame.mode = CEPTON_SDK_FRAME_COVER;  // Each cover is a frame
-  cepton_sdk::api::check_error_code(
-      cepton_sdk::api::initialize(opts, replay_file));
+  cepton_sdk::api::check_error(cepton_sdk::api::initialize(opts, replay_file));
 
-  cepton_sdk::api::check_error_code(
+  cepton_sdk::api::check_error(
       cepton_sdk::listen_image_frames(on_image_frame, nullptr));
   if (replay_file) {
-    cepton_sdk::api::check_error_code(
+    cepton_sdk::api::check_error(
         cepton_sdk::capture_replay::set_enable_loop(true));
   }
   while (total_frames < required_frames) {
-    cepton_sdk::api::check_error_code(cepton_sdk::api::wait());
+    cepton_sdk::api::check_error(cepton_sdk::api::wait());
   }
-  cepton_sdk::api::check_error_code(cepton_sdk::deinitialize());
+  cepton_sdk::api::check_error(cepton_sdk::deinitialize());
 
   close_file();
 

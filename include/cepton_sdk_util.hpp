@@ -1,8 +1,3 @@
-/*
-  Copyright Cepton Technologies Inc. 2017, All rights reserved.
-
-  Cepton Sensor SDK utilities.
-*/
 #pragma once
 
 #include "cepton_sdk.hpp"
@@ -18,6 +13,8 @@
 
 namespace cepton_sdk {
 namespace util {
+
+#include "cepton_def.h"
 
 //------------------------------------------------------------------------------
 // Common
@@ -477,6 +474,7 @@ class FrameDetector {
             }
             break;
         }
+        break;
       case CEPTON_SDK_FRAME_CYCLE:
         switch (m_sensor_info.model) {
           case VISTA_860:
@@ -490,6 +488,7 @@ class FrameDetector {
             }
             break;
         }
+        break;
     }
 
     switch (m_options.mode) {
@@ -650,5 +649,8 @@ class FrameAccumulator {
   int m_i_frame;
   FrameDetector m_frame_detector;
 };
+
+#include "cepton_undef.h"
+
 }  // namespace util
 }  // namespace cepton_sdk

@@ -75,11 +75,15 @@ class C_Error(Exception):
         code: `cepton_sdk.C_ErrorCode`
     """
 
-    def __init__(self, code, msg=None):
-        if msg is None:
-            msg = get_error_code_name(code)
+    def __init__(self, code=C_ErrorCode.CEPTON_SUCCESS, msg=None, data=None):
+        code_name = get_error_code_name(code)
+        if msg:
+            msg = "{}: {}".format(code_name, msg)
+        else:
+            msg = code_name
         super().__init__(msg)
         self.code = code
+        self.data = data
 
     def __bool__(self):
         return self.code != C_ErrorCode.CEPTON_SUCCESS
@@ -110,20 +114,24 @@ c_get_error.restype = c_int
 def get_error():
     error_msg = c_char_p()
     error_code = c_get_error(byref(error_msg))
-    return C_Error(error_code, error_msg)
+    return C_Error(error_code, error_msg.value.decode("utf-8"))
 
 
 def check_error(error):
     if not error:
-        return
+        return error
     if error.is_error():
         raise error
     else:
         warnings.warn(str(error), C_Warning, stacklevel=2)
+    return error
 
 
 def log_error(error):
+    if not error:
+        return error
     warnings.warn(str(error), C_Warning, stacklevel=2)
+    return error
 
 
 def _c_error_check(error_code, func, args):
@@ -246,9 +254,7 @@ class C_SensorInformation(Structure):
     ]
 
 
-c_cepton_sensor_information_size = \
-    c_size_t.in_dll(lib, "cepton_sensor_information_size").value
-assert (sizeof(C_SensorInformation) == c_cepton_sensor_information_size)
+check_c_size(lib, C_SensorInformation, "cepton_sensor_information_size")
 
 c_get_n_sensors = lib.cepton_sdk_get_n_sensors
 c_get_n_sensors.restype = c_size_t
@@ -293,9 +299,8 @@ class C_SensorImagePoint(Structure):
     ]
 
 
-c_cepton_sensor_image_point_size = \
-    c_size_t.in_dll(lib, "cepton_sensor_image_point_size").value
-assert (sizeof(C_SensorImagePoint) == c_cepton_sensor_image_point_size)
+check_c_size(lib, C_SensorImagePoint, "cepton_sensor_image_point_size")
+
 
 # ------------------------------------------------------------------------------
 # Listen

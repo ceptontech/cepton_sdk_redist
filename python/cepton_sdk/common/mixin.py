@@ -160,29 +160,27 @@ class StructureOfArrays(object):
     """
 
     def __init__(self, n=1):
-        self.__n = n
-        self.__checked_members = None
-        self.__checked_members = \
-            set(self._get_array_member_names()) | set(dir(self))
-
-    def _check_array_members(self):
-        """Check that all members are listed in `_get_array_member_names`.
-        """
-        all_members = set(dir(self))
-        unlisted_members = all_members - self.__checked_members
-        self.__checked_members |= all_members
-        if len(unlisted_members) == 0:
-            return
-        raise RuntimeError(
-            "Members not listed in `_get_array_member_names`: {}".format(
-                unlisted_members))
+        self._n = n
 
     @classmethod
     def _get_array_member_names(cls):
         raise NotImplementedError()
 
     def __len__(self):
-        return self.__n
+        return self._n
+
+    def _setattr(self, name, value):
+        super().__setattr__(name, value)
+
+    def __setattr__(self, name, value):
+        if hasattr(self, name):
+            raise AttributeError("Member already initialized!")
+        if name in ["_n"]:
+            return self._setattr(name, value)
+        if name not in self._get_array_member_names():
+            raise AttributeError(
+                "Member not listed in `_get_array_member_names`!")
+        return self._setattr(name, value)
 
     @classmethod
     def from_parent(cls, other):
@@ -213,7 +211,7 @@ class StructureOfArrays(object):
         for name in self._get_array_member_names():
             data = getattr(self, name)
             selected_data = data[indices, ...]
-            setattr(selected_obj, name, selected_data)
+            selected_obj._setattr(name, selected_data)
         return selected_obj
 
     def __setitem__(self, key, other):
@@ -241,13 +239,13 @@ class StructureOfArrays(object):
         if len(obj_list) == 0:
             return cls(0)
 
-        n_combined_obj = numpy.sum([len(x) for x in obj_list])
-        combined_obj = cls(n_combined_obj)
+        n_combined = numpy.sum([len(x) for x in obj_list])
+        combined_obj = cls(n_combined)
         for name in obj_list[0]._get_array_member_names():
             value_list = [getattr(x, name) for x in obj_list]
             try:
                 combined_value = value_list[0].combine(value_list)
             except AttributeError:
                 combined_value = numpy.concatenate(value_list, axis=0)
-            setattr(combined_obj, name, combined_value)
+            combined_obj._setattr(name, combined_value)
         return combined_obj

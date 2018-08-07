@@ -227,7 +227,12 @@
 <dl class="variable">
 <dt id="c.CeptonSensorImagePoint::flags">
 <span class="target" id="structCeptonSensorImagePoint_1add10d50456111d3fe529c4163d674548"></span>uint8_t <code class="descname">flags</code><a class="headerlink" href="#c.CeptonSensorImagePoint::flags" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">valid</span></code>: If <code class="docutils literal notranslate"><span class="pre">false</span></code>, then the distance and intensity are invalid.</li>
+<li><code class="docutils literal notranslate"><span class="pre">saturated</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, then the intensity is invalid. The distance is valid, but inaccurate. </li>
+</ol>
+</p>
+</dd></dl>
 
 <dl class="variable">
 <dt>
@@ -249,6 +254,12 @@
 <dt id="_CPPv3N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv">
 <span id="_CPPv2N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv"></span><span id="cepton_sdk::listen_image_frames__FpSensorImageDataCallback.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1aea13fe8d0e3ad26b640e849af38a07c3"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">listen_image_frames</code><span class="sig-paren">(</span>FpSensorImageDataCallback <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets image frames callback. </p>
+<p>Returns points at frequency specified by <code class="docutils literal notranslate"><a class="reference internal" href="setup.html#structCeptonSDKFrameOptions_1a8d7f23eb435f258c835cf7050547aa11"><span class="std std-ref"><span class="pre">cepton_sdk::FrameOptions::mode</span></span></a></code>. Each frame contains all possible points (use <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorImagePoint::valid</span></code> to filter points). Points are ordered by measurement, segment, and return:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span class="n">measurement_count</span> <span class="o">=</span> <span class="n">n_points</span> <span class="o">/</span> <span class="p">(</span><span class="n">segment_count</span> <span class="o">*</span> <span class="n">return_count</span><span class="p">)</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="p">((</span><span class="n">i_measurement</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment_count</span> <span class="o">+</span> <span class="n">i_segment</span><span class="p">)</span> <span class="o">*</span> <span class="n">return_count</span> <span class="o">+</span> <span class="n">i_return</span>
+</pre></div>
+</div>
+</p>
 <p>Returns error if callback already registered. </p>
 </dd></dl>
 

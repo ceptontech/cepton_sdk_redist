@@ -13,7 +13,8 @@
 extern "C" {
 #endif
 
-#include "cepton_export.h"
+#define COMPILING CEPTON_SDK_COMPILING
+#include "cepton_def.h"
 
 #define CEPTON_SDK_VERSION 14
 
@@ -140,6 +141,11 @@ struct EXPORT CeptonSensorImagePoint {
   CeptonSensorReturnType return_type;
 
 #ifdef SIMPLE
+  /**
+   * 1. `valid`: If `false`, then the distance and intensity are invalid.
+   * 2. `saturated`: If `true`, then the intensity is invalid. The distance is
+   * valid, but inaccurate.
+   */
   uint8_t flags;
 #else
   union {
@@ -314,7 +320,7 @@ EXPORT int64_t cepton_sdk_capture_replay_get_start_time();
 EXPORT float cepton_sdk_capture_replay_get_position();
 EXPORT float cepton_sdk_capture_replay_get_length();
 EXPORT int cepton_sdk_capture_replay_is_end();
-EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_rewind();  // DEPRECATED
+DEPRECATED EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_rewind();
 EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_seek(float position);
 
 EXPORT CeptonSensorErrorCode
@@ -331,10 +337,10 @@ EXPORT int cepton_sdk_capture_replay_is_running();
 EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_resume();
 EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_pause();
 
+#include "cepton_undef.h"
+
 #ifdef __cplusplus
 }  // extern "C"
 #endif
-
-#undef EXPORT
 
 #endif  // CEPTON_SDK_H

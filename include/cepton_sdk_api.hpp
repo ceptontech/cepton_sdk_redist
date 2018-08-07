@@ -1,8 +1,3 @@
-/*
-  Copyright Cepton Technologies Inc. 2017, All rights reserved.
-
-  Cepton Sensor SDK high level API for prototyping.
-*/
 #pragma once
 
 #include <algorithm>
@@ -14,6 +9,8 @@
 
 namespace cepton_sdk {
 namespace api {
+
+#include "cepton_def.h"
 
 /// Returns false if capture replay is open, true otherwise.
 static bool is_live() { return !capture_replay::is_open(); }
@@ -46,20 +43,20 @@ static SensorError create_error(SensorErrorCode error_code,
   if (!error_code) return SensorError();
 
   std::string error_code_name = get_error_code_name(error_code);
-  char error_msg[100];
+  char error_msg[1024];
   if (msg.empty()) {
-    std::snprintf(error_msg, 100, "SDK Error: %s!\n", error_code_name.c_str());
+    std::snprintf(error_msg, 1024, "SDK Error: %s!\n", error_code_name.c_str());
   } else {
-    std::snprintf(error_msg, 100, "%s: %s!\n", msg.c_str(),
+    std::snprintf(error_msg, 1024, "%s: %s!\n", msg.c_str(),
                   error_code_name.c_str());
   }
   return SensorError(error_code, error_msg);
 }
 }  // namespace internal
 
-/// DEPRICATED: use `cepton_sdk::api::check_error`.
-static SensorError check_error_code(SensorErrorCode error_code,
-                                    const std::string &msg = "") {
+/// DEPRECATED: use `cepton_sdk::api::check_error`.
+DEPRECATED static SensorError check_error_code(SensorErrorCode error_code,
+                                               const std::string &msg = "") {
   const auto error = internal::create_error(error_code, msg);
   if (!error) return error;
 
@@ -71,9 +68,9 @@ static SensorError check_error_code(SensorErrorCode error_code,
   return error;
 }
 
-/// DEPRICATED: use `cepton_sdk::api::log_error`.
-static SensorError log_error_code(SensorErrorCode error_code,
-                                  const std::string &msg = "") {
+/// DEPRECATED: use `cepton_sdk::api::log_error`.
+DEPRECATED static SensorError log_error_code(SensorErrorCode error_code,
+                                             const std::string &msg = "") {
   const auto error = internal::create_error(error_code, msg);
   if (!error) return error;
 
@@ -114,7 +111,7 @@ static void default_on_error(SensorHandle h, SensorErrorCode error_code,
                              const void *const error_data,
                              std::size_t error_data_size,
                              void *const instance) {
-  check_error(SensorError(error_code, error_msg));
+  log_error(SensorError(error_code, error_msg));
 }
 
 // -----------------------------------------------------------------------------
@@ -221,5 +218,8 @@ static std::vector<uint64_t> get_sensor_serial_numbers() {
   std::sort(serial_numbers.begin(), serial_numbers.end());
   return serial_numbers;
 }
+
+#include "cepton_undef.h"
+
 }  // namespace api
 }  // namespace cepton_sdk

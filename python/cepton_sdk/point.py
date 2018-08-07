@@ -68,7 +68,6 @@ class Points(StructureOfArrays):
         self.return_types = numpy.zeros([n], dtype=numpy.uint8)
         self.valid = numpy.zeros([n], dtype=bool)
         self.saturated = numpy.zeros([n], dtype=bool)
-        self._check_array_members()
 
     @classmethod
     def _get_array_member_names(cls):
@@ -99,7 +98,6 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         self.return_types = numpy.zeros([n], dtype=numpy.uint8)
         self.valid = numpy.zeros([n], dtype=bool)
         self.saturated = numpy.zeros([n], dtype=bool)
-        self._check_array_members()
 
     @classmethod
     def _get_c_class(cls):

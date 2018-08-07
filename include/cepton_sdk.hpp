@@ -14,6 +14,8 @@
 
 namespace cepton_sdk {
 
+#include "cepton_def.h"
+
 //------------------------------------------------------------------------------
 // Errors
 //------------------------------------------------------------------------------
@@ -65,9 +67,8 @@ const T *get_error_data(SensorErrorCode error_code, const void *error_data,
 class SensorError : public std::runtime_error {
  public:
   SensorError(SensorErrorCode code_, const char *const msg)
-      : std::runtime_error(msg), code(code_) {}
-  SensorError(SensorErrorCode code)
-      : SensorError(code, get_error_code_name(code)) {}
+      : std::runtime_error(create_message(code_, msg).c_str()), code(code_) {}
+  SensorError(SensorErrorCode code) : SensorError(code, "") {}
   SensorError() : SensorError(CEPTON_SUCCESS) {}
 
   /// Returns `false` if code is `CEPTON_SUCCESS`, true otherwise.
@@ -77,6 +78,20 @@ class SensorError : public std::runtime_error {
   const char *name() const { return get_error_code_name(code); }
   bool is_error() const { return is_error_code(code); }
   bool is_fault() const { return is_fault_code(code); }
+
+ private:
+  static std::string create_message(SensorErrorCode code,
+                                    const char *const msg) {
+    std::array<char, 1024> result;
+    if (msg[0] == '\0') {
+      std::snprintf(result.data(), result.size(), "%s",
+                    get_error_code_name(code));
+    } else {
+      std::snprintf(result.data(), result.size(), "%s: %s",
+                    get_error_code_name(code), msg);
+    }
+    return result.data();
+  }
 
  public:
   SensorErrorCode code;
@@ -204,6 +219,16 @@ typedef void (*FpSensorImageDataCallback)(SensorHandle handle,
 
 /// Sets image frames callback.
 /**
+ * Returns points at frequency specified by `cepton_sdk::FrameOptions::mode`.
+ * Each frame contains all possible points (use
+ * `cepton_sdk::SensorImagePoint::valid` to filter points). Points are ordered
+ * by measurement, segment, and return:
+ *
+ * ```
+ * measurement_count = n_points / (segment_count * return_count)
+ * idx = ((i_measurement) * segment_count + i_segment) * return_count + i_return
+ * ```
+ *
  * Returns error if callback already registered.
  */
 static SensorError listen_image_frames(FpSensorImageDataCallback cb,
@@ -418,6 +443,8 @@ static SensorError pause() {
   cepton_sdk_capture_replay_pause();
   return get_error();
 }
+
+#include "cepton_undef.h"
 
 }  // namespace capture_replay
 }  // namespace cepton_sdk

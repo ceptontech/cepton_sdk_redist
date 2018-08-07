@@ -111,11 +111,15 @@
 <span class="sd">        code: `cepton_sdk.C_ErrorCode`</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">get_error_code_name</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="n">C_ErrorCode</span><span class="o">.</span><span class="n">CEPTON_SUCCESS</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">code_name</span> <span class="o">=</span> <span class="n">get_error_code_name</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;{}: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code_name</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">code_name</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
 
     <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">!=</span> <span class="n">C_ErrorCode</span><span class="o">.</span><span class="n">CEPTON_SUCCESS</span>
@@ -146,20 +150,24 @@
 <span class="k">def</span> <span class="nf">get_error</span><span class="p">():</span>
     <span class="n">error_msg</span> <span class="o">=</span> <span class="n">c_char_p</span><span class="p">()</span>
     <span class="n">error_code</span> <span class="o">=</span> <span class="n">c_get_error</span><span class="p">(</span><span class="n">byref</span><span class="p">(</span><span class="n">error_msg</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">C_Error</span><span class="p">(</span><span class="n">error_code</span><span class="p">,</span> <span class="n">error_msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">C_Error</span><span class="p">(</span><span class="n">error_code</span><span class="p">,</span> <span class="n">error_msg</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
 
 
 <span class="k">def</span> <span class="nf">check_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">error</span><span class="p">:</span>
-        <span class="k">return</span>
+        <span class="k">return</span> <span class="n">error</span>
     <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">is_error</span><span class="p">():</span>
         <span class="k">raise</span> <span class="n">error</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">C_Warning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">error</span>
 
 
 <span class="k">def</span> <span class="nf">log_error</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span>
     <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span> <span class="n">C_Warning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">error</span>
 
 
 <span class="k">def</span> <span class="nf">_c_error_check</span><span class="p">(</span><span class="n">error_code</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
@@ -282,9 +290,7 @@
     <span class="p">]</span>
 
 
-<span class="n">c_cepton_sensor_information_size</span> <span class="o">=</span> \
-    <span class="n">c_size_t</span><span class="o">.</span><span class="n">in_dll</span><span class="p">(</span><span class="n">lib</span><span class="p">,</span> <span class="s2">&quot;cepton_sensor_information_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-<span class="k">assert</span> <span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="n">C_SensorInformation</span><span class="p">)</span> <span class="o">==</span> <span class="n">c_cepton_sensor_information_size</span><span class="p">)</span>
+<span class="n">check_c_size</span><span class="p">(</span><span class="n">lib</span><span class="p">,</span> <span class="n">C_SensorInformation</span><span class="p">,</span> <span class="s2">&quot;cepton_sensor_information_size&quot;</span><span class="p">)</span>
 
 <span class="n">c_get_n_sensors</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cepton_sdk_get_n_sensors</span>
 <span class="n">c_get_n_sensors</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">c_size_t</span>
@@ -329,9 +335,8 @@
     <span class="p">]</span>
 
 
-<span class="n">c_cepton_sensor_image_point_size</span> <span class="o">=</span> \
-    <span class="n">c_size_t</span><span class="o">.</span><span class="n">in_dll</span><span class="p">(</span><span class="n">lib</span><span class="p">,</span> <span class="s2">&quot;cepton_sensor_image_point_size&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-<span class="k">assert</span> <span class="p">(</span><span class="n">sizeof</span><span class="p">(</span><span class="n">C_SensorImagePoint</span><span class="p">)</span> <span class="o">==</span> <span class="n">c_cepton_sensor_image_point_size</span><span class="p">)</span>
+<span class="n">check_c_size</span><span class="p">(</span><span class="n">lib</span><span class="p">,</span> <span class="n">C_SensorImagePoint</span><span class="p">,</span> <span class="s2">&quot;cepton_sensor_image_point_size&quot;</span><span class="p">)</span>
+
 
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="c1"># Listen</span>

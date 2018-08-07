@@ -1,6 +1,7 @@
 import os
 import os.path
 import platform
+import pprint
 import sys
 from ctypes import *
 
@@ -34,20 +35,12 @@ def load_c_library(parent_dir, name):
         path = lib_name
     return CDLL(path)
 
-# ------------------------------------------------------------------------------
-# Structures
-# ------------------------------------------------------------------------------
 
-
-def set_c_fields_from_dict(c_obj, d):
-    # TODO: set arrays properly
-    valid = set([])
-    for name, _ in c_obj._fields_:
-        if name in d:
-            setattr(c_obj, name, d[name])
-            valid.add(name)
-    if valid != set(d.keys()):
-        raise AttributeError("invalid keys")
+def check_c_size(lib, c_type, var_name):
+    expected_size = c_size_t.in_dll(lib, var_name).value
+    if sizeof(c_type) != expected_size:
+        raise RuntimeError("{} has size {} (expected {})!".format(
+            c_type, sizeof(c_type), expected_size))
 
 
 def from_bytes(c_type, buffer):
@@ -61,6 +54,37 @@ def to_bytes(c_value):
     buffer = create_string_buffer(sizeof(c_value))
     memmove(buffer, addressof(c_value), sizeof(c_value))
     return buffer
+
+# ------------------------------------------------------------------------------
+# Structures
+# ------------------------------------------------------------------------------
+
+
+def c_struct_to_dict(c_obj):
+    data = {}
+    for field in c_obj._fields_:
+        name = field[0]
+        data[name] = getattr(c_obj, name)
+    return data
+
+
+def print_c_struct(c_obj):
+    data = c_struct_to_dict(c_obj)
+    pprint.pprint(data)
+
+
+def update_c_struct_from_dict(c_obj, d):
+    valid = set([])
+    for field in c_obj._fields_:
+        name = field[0]
+        if name in d:
+            value = getattr(c_obj, name)
+            assert (not isinstance(value, Array))
+            setattr(c_obj, name, d[name])
+            valid.add(name)
+    invalid = set(d.keys()) - valid
+    if invalid:
+        raise AttributeError("invalid keys: {}".format(invalid))
 
 
 # ------------------------------------------------------------------------------

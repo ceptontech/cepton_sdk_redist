@@ -1,6 +1,7 @@
 import collections
 import atexit
 import enum
+import threading
 import warnings
 
 import cepton_sdk.c
@@ -43,8 +44,8 @@ class FrameMode(enum.IntEnum):
 
 class _Manager(object):
     def __init__(self):
-        _error_callback = None
-        _c_on_error = None
+        self._lock = threading.Lock()
+        self._error_callback = None
 
     def initialize(self, control_flags=None, error_callback=None,
                    frame_mode=None, frame_length=None, port=None):
@@ -73,25 +74,23 @@ class _Manager(object):
 
         self._callback = None
 
-    def set_error_callback(self, error_callback):
-        self._error_callback = error_callback
-
-    def clear_error_callback(self):
-        self._error_callback = None
-
     @staticmethod
     def _global_on_error(*args):
         _manager._on_error(*args)
 
-    def _on_error(self, sensor_handle, error_code, message, error_data, error_data_size, user_data):
-        cepton_sdk.c.check_error_code(error_code)
-        if error_code:
-            return
-
-        if self._error_callback is not None:
-            error = SensorError(
-                error_code=error_code, message=message, error_data=None)
-            self._error_callback(sensor_handle, error)
+    def _on_error(self, sensor_handle, error_code, error_msg, error_data, error_data_size, user_data):
+        with self._lock:
+            error_code_name = cepton_sdk.c.get_error_code_name(error_code)
+            if not error_msg:
+                msg = error_code_name
+            else:
+                msg = "{}: {}".format(
+                    error_code_name, error_msg.decode("utf-8"))
+            error = cepton_sdk.c.C_Error(error_code, msg=msg)
+            if self._error_callback is None:
+                cepton_sdk.c.log_error(error)
+            else:
+                self._error_callback(sensor_handle, error)
 
 
 _manager = _Manager()
@@ -102,9 +101,6 @@ def is_initialized():
 
 
 deinitialize = _manager.deinitialize
-
-set_error_callback = _manager.set_error_callback
-clear_error_callback = _manager.clear_error_callback
 
 
 def get_control_flags():
