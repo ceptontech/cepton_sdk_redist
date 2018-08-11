@@ -201,13 +201,20 @@ class NetworkPacketCallback
 // -----------------------------------------------------------------------------
 // Sensors
 // -----------------------------------------------------------------------------
+static bool has_sensor_by_serial_number(uint64_t serial_number) {
+  SensorHandle handle;
+  auto error = get_sensor_handle_by_serial_number(serial_number, handle);
+  if (error) return false;
+  return true;
+}
+
 /**
  * Returns error if sensor not found.
  */
 static SensorError get_sensor_information_by_serial_number(
     uint64_t serial_number, SensorInformation &info) {
   CeptonSensorHandle handle;
-  SensorError error = get_sensor_handle_by_serial_number(serial_number, handle);
+  auto error = get_sensor_handle_by_serial_number(serial_number, handle);
   if (error) return error;
   return get_sensor_information(handle, info);
 }
@@ -219,7 +226,7 @@ static std::vector<uint64_t> get_sensor_serial_numbers() {
   serial_numbers.reserve(n_sensors);
   for (int i = 0; i < n_sensors; ++i) {
     SensorInformation sensor_info;
-    SensorError error = get_sensor_information_by_index(i, sensor_info);
+    auto error = get_sensor_information_by_index(i, sensor_info);
     log_error(error);
     if (error) continue;
     serial_numbers.push_back(sensor_info.serial_number);

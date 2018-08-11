@@ -32,5 +32,6 @@ Setup
 Sensors
 -------
 
+.. doxygenfunction:: cepton_sdk::api::has_sensor_by_serial_number
 .. doxygenfunction:: cepton_sdk::api::get_sensor_information_by_serial_number
 .. doxygenfunction:: cepton_sdk::api::get_sensor_serial_numbers

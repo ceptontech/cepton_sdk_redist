@@ -13,6 +13,7 @@ __all__ = [
     "get_sensors",
     "get_time",
     "get_timestamp",
+    "has_sensor",
     "ImageFramesListener",
     "initialize",
     "is_end",
@@ -148,9 +149,9 @@ class _FramesListener(_ListenerBase):
         with self._lock:
             self._reset()
 
-    def _on_points(self, serial_number, points):
+    def _on_points(self, sensor_info, points):
         with self._lock:
-            self.points_dict[serial_number].append(points)
+            self.points_dict[sensor_info.serial_number].append(points)
 
     def has_points(self):
         with self._lock:
@@ -180,9 +181,9 @@ class _SensorFramesListener(_ListenerBase):
         with self._lock:
             self._reset()
 
-    def _on_points(self, serial_number, points):
+    def _on_points(self, sensor_info, points):
         with self._lock:
-            if serial_number != self.serial_number:
+            if sensor_info.serial_number != self.serial_number:
                 return
             self.points_list.append(points)
 
@@ -248,9 +249,8 @@ class Sensor:
         return cls(sensor_info)
 
     @classmethod
-    def create(cls, sensor_serial_number):
-        sensor_info = \
-            cepton_sdk.sensor.get_sensor_information(sensor_serial_number)
+    def create(cls, serial_number):
+        sensor_info = cepton_sdk.sensor.get_sensor_information(serial_number)
         return cls(sensor_info)
 
     def update(self):
@@ -261,20 +261,9 @@ class Sensor:
         self.information = \
             cepton_sdk.sensor.get_sensor_information_by_handle(self.handle)
 
-    def get_image_frames(self, *args, **kwargs):
-        """See `cepton_sdk.get_sensor_image_frames`"""
-        return get_sensor_image_frames(self.serial_number, *args, **kwargs)
-
-    def get_image_points(self, *args, **kwargs):
-        """See `cepton_sdk.get_sensor_image_points`"""
-        return get_sensor_image_points(self.serial_number, *args, **kwargs)
-
-    def get_image_points_by_n(self, *args, **kwargs):
-        """See `cepton_sdk.get_sensor_image_points_by_n`"""
-        return get_sensor_image_points_by_n(self.serial_number, *args, **kwargs)
-
 
 def has_sensor(serial_number):
+    """Returns true if sensor is attached"""
     try:
         cepton_sdk.sensor.get_sensor_handle(serial_number)
     except:

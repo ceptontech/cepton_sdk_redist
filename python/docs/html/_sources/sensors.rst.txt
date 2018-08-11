@@ -19,4 +19,5 @@ Types
 Methods
 -------
 
+.. autofunction:: cepton_sdk.has_sensor
 .. autofunction:: cepton_sdk.get_sensors

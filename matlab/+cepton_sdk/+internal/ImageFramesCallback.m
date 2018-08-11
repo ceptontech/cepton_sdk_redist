@@ -47,7 +47,7 @@ methods
             
             for key = keys(self.callbacks)
                 callback = self.callbacks(key{1});
-                callback(sensor_info.serial_number, image_points);
+                callback(sensor_info, image_points);
             end
         end
     end

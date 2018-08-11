@@ -33,13 +33,13 @@ methods
 end
 
 methods (Access = private)
-    function on_points(self, serial_number, image_points)
+    function on_points(self, sensor_info, image_points)
         points_list = {};
-        if isKey(self.points_dict, serial_number)
-            points_list = self.points_dict(serial_number);
+        if isKey(self.points_dict, sensor_info.serial_number)
+            points_list = self.points_dict(sensor_info.serial_number);
         end
         points_list{end + 1} = image_points;
-        self.points_dict(serial_number) = points_list;
+        self.points_dict(sensor_info.serial_number) = points_list;
     end
 
     function points_dict = get_points_impl(self)

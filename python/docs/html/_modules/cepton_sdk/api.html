@@ -46,11 +46,10 @@
 <span class="kn">from</span> <span class="nn">cepton_sdk.common.function</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;get_image_frames&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_sensor_image_frames&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_sensors&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_time&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_timestamp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_sensor&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ImageFramesListener&quot;</span><span class="p">,</span>
     <span class="s2">&quot;initialize&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_end&quot;</span><span class="p">,</span>
@@ -186,9 +185,9 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_on_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_on_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">points_dict</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_dict</span><span class="p">[</span><span class="n">sensor_info</span><span class="o">.</span><span class="n">serial_number</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">has_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
@@ -207,7 +206,6 @@
 
 <span class="k">class</span> <span class="nc">_SensorFramesListener</span><span class="p">(</span><span class="n">_ListenerBase</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serial_number</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">serial_number</span> <span class="o">=</span> <span class="n">serial_number</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">points_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
@@ -219,9 +217,9 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_on_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_on_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">serial_number</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_number</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sensor_info</span><span class="o">.</span><span class="n">serial_number</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_number</span><span class="p">:</span>
                 <span class="k">return</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">points_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
 
@@ -250,28 +248,8 @@
     <span class="k">pass</span></div>
 
 
-<span class="k">def</span> <span class="nf">get_image_frames</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns next frames of points for all sensors.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Dictionary of lists of image points, indexed by serial number.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ImageFramesListener</span><span class="p">()</span><span class="o">.</span><span class="n">get_points</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-
 <div class="viewcode-block" id="SensorImageFramesListener"><a class="viewcode-back" href="../../points.html#cepton_sdk.SensorImageFramesListener">[docs]</a><span class="k">class</span> <span class="nc">SensorImageFramesListener</span><span class="p">(</span><span class="n">_SensorFramesListener</span><span class="p">,</span> <span class="n">_ImageListenerMixin</span><span class="p">):</span>
     <span class="k">pass</span></div>
-
-
-<span class="k">def</span> <span class="nf">get_sensor_image_frames</span><span class="p">(</span><span class="n">serial_number</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns next frames of points for specified sensor.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        serial_number: Sensor serial number.</span>
-<span class="sd">    Returns:</span>
-<span class="sd">        List of image points.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">SensorImageFramesListener</span><span class="p">(</span><span class="n">serial_number</span><span class="p">)</span><span class="o">.</span><span class="n">get_points</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Sensor"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor">[docs]</a><span class="k">class</span> <span class="nc">Sensor</span><span class="p">:</span>
@@ -307,9 +285,8 @@
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sensor.create"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.create">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">sensor_serial_number</span><span class="p">):</span>
-        <span class="n">sensor_info</span> <span class="o">=</span> \
-            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information</span><span class="p">(</span><span class="n">sensor_serial_number</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">serial_number</span><span class="p">):</span>
+        <span class="n">sensor_info</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information</span><span class="p">(</span><span class="n">serial_number</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Sensor.update"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -318,22 +295,11 @@
 <span class="sd">        Should be called often, to pull latest sensor information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">information</span> <span class="o">=</span> \
-            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information_by_handle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Sensor.get_image_frames"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.get_image_frames">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;See `cepton_sdk.get_sensor_image_frames`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">get_sensor_image_frames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_number</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Sensor.get_image_points"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.get_image_points">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;See `cepton_sdk.get_sensor_image_points`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">get_sensor_image_points</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_number</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Sensor.get_image_points_by_n"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.Sensor.get_image_points_by_n">[docs]</a>    <span class="k">def</span> <span class="nf">get_image_points_by_n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;See `cepton_sdk.get_sensor_image_points_by_n`&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">get_sensor_image_points_by_n</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_number</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information_by_handle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">has_sensor</span><span class="p">(</span><span class="n">serial_number</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns true if sensor is attached&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_handle</span><span class="p">(</span><span class="n">serial_number</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>

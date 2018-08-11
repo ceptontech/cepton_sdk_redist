@@ -161,7 +161,7 @@ class _ImageFramesCallback:
             cepton_sdk.point.ImagePoints.from_c(n_points, c_image_points_ptr)
         with self._lock:
             for callback in self._callbacks.values():
-                callback(sensor_info.serial_number, image_points)
+                callback(sensor_info, image_points)
 
     def listen(self, callback, callback_id=None):
         with self._lock:

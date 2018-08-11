@@ -38,8 +38,8 @@ methods
 end
 
 methods (Access = private)
-    function on_points(self, serial_number, image_points)
-        if serial_number ~= self.serial_number
+    function on_points(self, sensor_info, image_points)
+        if sensor_info.serial_number ~= self.serial_number
             return;
         end
         self.points_list{end + 1} = image_points;

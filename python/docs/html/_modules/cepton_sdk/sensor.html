@@ -137,12 +137,12 @@
     <span class="k">return</span> <span class="n">SensorInformation</span><span class="o">.</span><span class="n">from_c</span><span class="p">(</span><span class="n">c_sensor_info</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">has_sensor</span><span class="p">(</span><span class="n">sensor_serial_number</span><span class="p">):</span>
+<div class="viewcode-block" id="has_sensor"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.has_sensor">[docs]</a><span class="k">def</span> <span class="nf">has_sensor</span><span class="p">(</span><span class="n">sensor_serial_number</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">get_sensor_handle</span><span class="p">(</span><span class="n">sensor_serial_number</span><span class="p">)</span>
     <span class="k">except</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <span class="k">def</span> <span class="nf">get_sensor_information</span><span class="p">(</span><span class="n">sensor_serial_number</span><span class="p">):</span>
