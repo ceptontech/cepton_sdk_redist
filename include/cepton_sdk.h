@@ -91,7 +91,7 @@ struct EXPORT CeptonSensorInformation {
   float last_reported_humidity;     ///< [%]
   float last_reported_age;          ///< [hours]
 
-  float measurement_period;  ///< Time between measurements [microseconds]
+  float measurement_period;  ///< Time between measurements [seconds]
 
   int64_t ptp_ts;  /// [microseconds]
 

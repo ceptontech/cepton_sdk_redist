@@ -12,10 +12,19 @@ namespace api {
 
 #include "cepton_def.h"
 
-/// Returns false if capture replay is open, true otherwise.
+/// Returns true if capture replay is not open.
 static bool is_live() { return !capture_replay::is_open(); }
 
-static bool is_end() { return (is_live()) ? false : capture_replay::is_end(); }
+/// Returns true if live or capture replay is running.
+static bool is_realtime() { return is_live() || capture_replay::is_running(); }
+
+static bool is_end() {
+  if (capture_replay::is_open()) {
+    if (capture_replay::get_enable_loop()) return false;
+    return capture_replay::is_end();
+  }
+  return false;
+}
 
 /// Returns capture replay time or live time.
 static uint64_t get_time() {
@@ -23,8 +32,8 @@ static uint64_t get_time() {
 }
 
 /// Sleeps or resumes capture replay for duration.
-static SensorErrorCode wait(float t_length = 0.1f) {
-  if (is_live() || capture_replay::is_running()) {
+static SensorError wait(float t_length = 0.1f) {
+  if (is_realtime()) {
     std::this_thread::sleep_for(
         std::chrono::milliseconds((int)(1e3f * t_length)));
     return CEPTON_SUCCESS;

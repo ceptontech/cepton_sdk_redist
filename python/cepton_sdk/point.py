@@ -4,11 +4,23 @@ import cepton_sdk.common.c
 from cepton_sdk.common.mixin import *
 
 __all__ = [
+    "combine_points",
     "convert_image_points_to_points",
     "convert_points_to_image_points",
     "ImagePoints",
     "Points",
 ]
+
+
+def combine_points(points_list):
+    """Combine list of points (`ImagePoints`, `Points`, etc).
+    
+    List must be nonempty.
+    Returns:
+        combined_points
+    """
+    cls = type(points_list[0])
+    return cls.combine(points_list)
 
 
 def convert_image_points_to_points(image_positions, distances):
@@ -185,191 +197,3 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         image_points.valid[:] = points.valid
         image_points.saturated[:] = points.saturated
         return image_points
-
-
-class NPointsAccumulator(object):
-    """Points accumulator used by internal listeners."""
-
-    def __init__(self, ):
-        self._points = None
-        self.reset()
-
-    def reset(self):
-        if self._points is not None:
-            cls = type(self._points)
-            self._points = cls(0)
-
-    def add_points(self, points):
-        if len(points) == 0:
-            return
-
-        if self._points is None:
-            self._points = points
-        else:
-            self._points = self._points.combine([self._points, points])
-
-    def has_points(self, n):
-        if self._points is None:
-            return False
-        return len(self._points) >= n
-
-    def get_points(self, n):
-        if self._points is None:
-            return None
-        points = self._points[:n]
-        self._points = self._points[n:]
-        return points
-
-
-class _TimePointsAccumulatorBase(object):
-    """Points accumulator used by internal listeners."""
-
-    def __init__(self, t=-numpy.inf):
-        self.reset()
-        self._t = t
-
-    def reset(self):
-        self._t = -numpy.inf
-
-    @property
-    def t(self):
-        return self._t
-
-    def _check_t(self, t):
-        if t <= self._t:
-            raise ValueError("requested times must be increasing")
-
-    def is_empty(self):
-        return numpy.isinf(self._t)
-
-
-class TimePointsAccumulator(_TimePointsAccumulatorBase):
-    """Points accumulator used by internal listeners."""
-
-    def __init__(self, **kwargs):
-        self._points = None
-        super().__init__(**kwargs)
-
-    @property
-    def t_max(self):
-        return self._t_max
-
-    def reset(self):
-        super().reset()
-        self._t_max = -numpy.inf
-        if self._points is not None:
-            cls = type(self._points)
-            self._points = cls(0)
-
-    def add_points(self, points):
-        if len(points) == 0:
-            return
-
-        if numpy.isinf(self._t):
-            self._t = numpy.amin(points.timestamps)
-        else:
-            select = points.timestamps > self._t
-            points = points[select]
-            if len(points) == 0:
-                return
-
-        if self._points is None:
-            self._points = points
-        else:
-            self._points = self._points.combine([self._points, points])
-
-        # Sort
-        sort_indices = numpy.argsort(self._points.timestamps)
-        self._points = self._points[sort_indices]
-
-        self._t_max = self._points.timestamps[-1]
-
-    def has_points_by_t(self, t):
-        if self.is_empty():
-            return False
-        self._check_t(t)
-        return t <= self._t_max
-
-    def has_points(self, t_length):
-        t = self._t + t_length
-        return self.has_points_by_t(t)
-
-    def get_points_by_t(self, t):
-        self._check_t(t)
-        if self._points is None:
-            points = None
-        else:
-            is_valid = self._points.timestamps <= t
-            points = self._points[is_valid]
-
-        self._t = t
-        if self._points is not None:
-            is_valid = self._points.timestamps > self._t
-            self._points = self._points[is_valid]
-
-        return points
-
-    def get_points(self, t_length):
-        t = self._t + t_length
-        return self.get_points_by_t(t)
-
-
-class MultipleTimePointsAccumulator(_TimePointsAccumulatorBase):
-    """Points accumulator used by internal listeners."""
-
-    def __init__(self, t_latency=0, **kwargs):
-        self._t_latency = t_latency
-        super().__init__(**kwargs)
-
-    @property
-    def t_max(self):
-        return max(
-            map(lambda x: x.t_max, self._accumulators.values()),
-            default=-numpy.inf)
-
-    def reset(self):
-        super().reset()
-        self._accumulators = {}
-
-    def add_points(self, serial_number, points):
-        if len(points) == 0:
-            return
-
-        if numpy.isinf(self._t):
-            self._t = numpy.amin(points.timestamps) + self._t_latency
-
-        if serial_number not in self._accumulators:
-            options = {
-                "t": self._t,
-            }
-            self._accumulators[serial_number] = \
-                TimePointsAccumulator(**options)
-        self._accumulators[serial_number].add_points(points)
-
-    def has_points_by_t(self, t):
-        if self.is_empty():
-            return False
-        self._check_t(t)
-        for accumulator in self._accumulators.values():
-            if accumulator.has_points_by_t(t + self._t_latency):
-                return True
-        return False
-
-    def has_points(self, t_length):
-        t = self._t + t_length
-        return self.has_points_by_t(t)
-
-    def get_points_by_t(self, t):
-        self._check_t(t)
-        self._t = t
-        points_dict = {}
-        for serial_number, accumulator in self._accumulators.items():
-            points = accumulator.get_points_by_t(t)
-            if (points is None) or (len(points) == 0):
-                continue
-            points_dict[serial_number] = points
-        return points_dict
-
-    def get_points(self, t_length):
-        t = self._t + t_length
-        return self.get_points_by_t(t)

@@ -1,6 +1,6 @@
-function result = has_sensor(sensor_serial_number)
+function result = has_sensor(serial_number)
     try
-        cepton_sdk.get_sensor_handle(sensor_serial_number);
+        cepton_sdk.get_sensor_handle(serial_number);
     except
         result = false;
         return

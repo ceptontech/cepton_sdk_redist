@@ -250,10 +250,7 @@
 63
 64
 65
-66
-67
-68
-69</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+66</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
 <span class="cm"> * Sample code for custom packet replaying.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -264,8 +261,7 @@
 <span class="n">class</span> <span class="n">CaptureReplay</span> <span class="p">{</span>
  <span class="nl">public</span><span class="p">:</span>
   <span class="n">CaptureReplay</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">m_capture</span><span class="p">.</span><span class="n">open_for_read</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
-    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">m_capture</span><span class="p">.</span><span class="n">get_error</span><span class="p">());</span>
+    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">m_capture</span><span class="p">.</span><span class="n">open_for_read</span><span class="p">(</span><span class="n">path</span><span class="p">));</span>
 
     <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
         <span class="n">cepton_sdk_set_control_flags</span><span class="p">(</span><span class="n">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span><span class="p">,</span>
@@ -282,18 +278,15 @@
 
   <span class="kt">void</span> <span class="n">run</span><span class="p">()</span> <span class="p">{</span>
     <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">const</span> <span class="kt">int64_t</span> <span class="n">timestamp</span> <span class="o">=</span>
-          <span class="n">m_capture</span><span class="p">.</span><span class="n">start_time_usec</span><span class="p">()</span> <span class="o">+</span> <span class="n">m_capture</span><span class="p">.</span><span class="n">current_offset_usec</span><span class="p">();</span>
-      <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">Capture</span><span class="o">::</span><span class="n">PacketHeader</span><span class="o">*</span> <span class="n">header</span><span class="p">;</span>
+      <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">Capture</span><span class="o">::</span><span class="n">PacketHeader</span> <span class="n">header</span><span class="p">;</span>
       <span class="k">const</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span><span class="p">;</span>
-      <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">m_capture</span><span class="p">.</span><span class="n">next_packet</span><span class="p">(</span><span class="o">&amp;</span><span class="n">header</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">data</span><span class="p">);</span>
-      <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+      <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">m_capture</span><span class="p">.</span><span class="n">next_packet</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">data</span><span class="p">));</span>
 
       <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span> <span class="o">=</span>
-          <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span><span class="p">)</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">ip_v4</span> <span class="o">|</span>
+          <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span><span class="p">)</span><span class="n">header</span><span class="p">.</span><span class="n">ip_v4</span> <span class="o">|</span>
           <span class="n">CEPTON_SENSOR_HANDLE_FLAG_MOCK</span><span class="p">;</span>
       <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk_mock_network_receive</span><span class="p">(</span>
-          <span class="n">handle</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="o">-&gt;</span><span class="n">data_size</span><span class="p">));</span>
+          <span class="n">handle</span><span class="p">,</span> <span class="n">header</span><span class="p">.</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">header</span><span class="p">.</span><span class="n">data_size</span><span class="p">));</span>
     <span class="p">}</span>
   <span class="p">}</span>
 
@@ -316,7 +309,8 @@
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
   <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">([](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
                      <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span><span class="o">*</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points from %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">handle</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points from sensor %lli</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">,</span>
+                <span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">handle</span><span class="p">);</span>
   <span class="p">});</span>
 
   <span class="n">CaptureReplay</span> <span class="n">replay</span><span class="p">(</span><span class="n">capture_path</span><span class="p">);</span>

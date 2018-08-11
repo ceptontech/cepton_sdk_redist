@@ -40,11 +40,23 @@
 <span class="kn">from</span> <span class="nn">cepton_sdk.common.mixin</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;combine_points&quot;</span><span class="p">,</span>
     <span class="s2">&quot;convert_image_points_to_points&quot;</span><span class="p">,</span>
     <span class="s2">&quot;convert_points_to_image_points&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ImagePoints&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Points&quot;</span><span class="p">,</span>
 <span class="p">]</span>
+
+
+<div class="viewcode-block" id="combine_points"><a class="viewcode-back" href="../../points.html#cepton_sdk.combine_points">[docs]</a><span class="k">def</span> <span class="nf">combine_points</span><span class="p">(</span><span class="n">points_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Combine list of points (`ImagePoints`, `Points`, etc).</span>
+<span class="sd">    </span>
+<span class="sd">    List must be nonempty.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        combined_points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">points_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">points_list</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">convert_image_points_to_points</span><span class="p">(</span><span class="n">image_positions</span><span class="p">,</span> <span class="n">distances</span><span class="p">):</span>
@@ -221,194 +233,6 @@
         <span class="n">image_points</span><span class="o">.</span><span class="n">valid</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">valid</span>
         <span class="n">image_points</span><span class="o">.</span><span class="n">saturated</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">saturated</span>
         <span class="k">return</span> <span class="n">image_points</span></div></div>
-
-
-<span class="k">class</span> <span class="nc">NPointsAccumulator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Points accumulator used by internal listeners.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">add_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">points</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">combine</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">,</span> <span class="n">points</span><span class="p">])</span>
-
-    <span class="k">def</span> <span class="nf">has_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">n</span>
-
-    <span class="k">def</span> <span class="nf">get_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span>
-        <span class="k">return</span> <span class="n">points</span>
-
-
-<span class="k">class</span> <span class="nc">_TimePointsAccumulatorBase</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Points accumulator used by internal listeners.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">=</span> <span class="n">t</span>
-
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">t</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span>
-
-    <span class="k">def</span> <span class="nf">_check_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;requested times must be increasing&quot;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">is_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_t</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">TimePointsAccumulator</span><span class="p">(</span><span class="n">_TimePointsAccumulatorBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Points accumulator used by internal listeners.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">t_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t_max</span>
-
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t_max</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">add_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_t</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">timestamps</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">select</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span>
-            <span class="n">points</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">select</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">points</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">combine</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">,</span> <span class="n">points</span><span class="p">])</span>
-
-        <span class="c1"># Sort</span>
-        <span class="n">sort_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">timestamps</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[</span><span class="n">sort_indices</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">timestamps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">has_points_by_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t_max</span>
-
-    <span class="k">def</span> <span class="nf">has_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_length</span><span class="p">):</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">+</span> <span class="n">t_length</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_points_by_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_points_by_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">points</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">&lt;=</span> <span class="n">t</span>
-            <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[</span><span class="n">is_valid</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">=</span> <span class="n">t</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">is_valid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[</span><span class="n">is_valid</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">points</span>
-
-    <span class="k">def</span> <span class="nf">get_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_length</span><span class="p">):</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">+</span> <span class="n">t_length</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_points_by_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">MultipleTimePointsAccumulator</span><span class="p">(</span><span class="n">_TimePointsAccumulatorBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Points accumulator used by internal listeners.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_latency</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t_latency</span> <span class="o">=</span> <span class="n">t_latency</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">t_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
-            <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">t_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_accumulators</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
-            <span class="n">default</span><span class="o">=-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accumulators</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="k">def</span> <span class="nf">add_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_t</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">timestamps</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t_latency</span>
-
-        <span class="k">if</span> <span class="n">serial_number</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_accumulators</span><span class="p">:</span>
-            <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;t&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span><span class="p">,</span>
-            <span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_accumulators</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span> <span class="o">=</span> \
-                <span class="n">TimePointsAccumulator</span><span class="p">(</span><span class="o">**</span><span class="n">options</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_accumulators</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span><span class="o">.</span><span class="n">add_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">has_points_by_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">():</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">accumulator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_accumulators</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">accumulator</span><span class="o">.</span><span class="n">has_points_by_t</span><span class="p">(</span><span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t_latency</span><span class="p">):</span>
-                <span class="k">return</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">def</span> <span class="nf">has_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_length</span><span class="p">):</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">+</span> <span class="n">t_length</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_points_by_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">get_points_by_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">=</span> <span class="n">t</span>
-        <span class="n">points_dict</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">for</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">accumulator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_accumulators</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">points</span> <span class="o">=</span> <span class="n">accumulator</span><span class="o">.</span><span class="n">get_points_by_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">points</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="n">points_dict</span><span class="p">[</span><span class="n">serial_number</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span>
-        <span class="k">return</span> <span class="n">points_dict</span>
-
-    <span class="k">def</span> <span class="nf">get_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_length</span><span class="p">):</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t</span> <span class="o">+</span> <span class="n">t_length</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_points_by_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 </pre></div>
 
           </div>

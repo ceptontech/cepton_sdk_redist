@@ -20,36 +20,37 @@ class CaptureReplay {
   CaptureReplay() {}
   ~CaptureReplay() { close(); }
 
-  virtual std::string filename() const;
-  virtual bool is_open() const;
-  virtual SensorError open(std::string const& fname);
-  virtual SensorError close();
+  std::string filename() const;
+  bool is_open() const;
+  SensorError open(const std::string& filename);
+  SensorError close();
 
-  virtual int64_t get_start_time() const;
-  virtual float get_position() const;
-  virtual float get_length() const;
-  virtual bool is_end() const { return m_is_end; }
-  virtual SensorError seek(float sec);
+  int64_t get_start_time() const;
+  float get_position() const;
+  float get_length() const;
+  bool is_end() const { return m_is_end; }
+  SensorError seek(float position);
 
-  virtual SensorError set_enable_loop(bool enable_loop);
-  virtual bool get_enable_loop() const { return m_enable_loop; };
-  virtual SensorError set_speed(float speed);
-  virtual float get_speed() const { return m_speed; }
+  SensorError set_enable_loop(bool enable_loop);
+  bool get_enable_loop() const { return m_enable_loop; };
+  SensorError set_speed(float speed);
+  float get_speed() const { return m_speed; }
 
-  virtual SensorError resume_blocking_once();
-  virtual SensorError resume_blocking(float sec);
+  SensorError resume_blocking_once();
+  SensorError resume_blocking(float duration);
 
-  virtual bool is_running() const { return m_is_running; }
-  virtual SensorError resume();
-  virtual SensorError pause();
-  virtual SensorError run_paused(const std::function<SensorError()>& func);
+  bool is_running() const { return m_is_running; }
+  SensorError resume();
+  SensorError pause();
+  SensorError run_paused(const std::function<SensorError()>& func);
 
  private:
-  SensorError seek_impl(int64_t usec);
+  SensorError open_impl(const std::string& filename);
+  SensorError seek_impl(int64_t duration);
   void reset_time();
   void sleep_once();
-  void feed_pcap_once(bool enable_sleep);
-  void feed_pcap();
+  SensorError feed_pcap_once(bool enable_sleep);
+  SensorError feed_pcap();
 
  private:
   bool m_enable_loop = false;

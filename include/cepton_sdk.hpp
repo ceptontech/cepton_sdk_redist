@@ -7,6 +7,9 @@
 
 #include "cepton_sdk.h"
 
+#include <cassert>
+
+#include <array>
 #include <functional>
 #include <mutex>
 #include <string>

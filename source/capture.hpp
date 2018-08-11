@@ -1,8 +1,6 @@
 #pragma once
 
-#include <stdint.h>
-#include <cstdio>
-
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -19,85 +17,56 @@ namespace cepton_sdk {
 class Capture {
  public:
   struct PacketHeader {
-    uint32_t ip_v4;          // Host endian value, 0xC0A82020 = 192.168.32.32
-    uint64_t serial_number;  // mac address last 3 bytes
-    int64_t tv_usec;         // microseconds
-    std::size_t data_size;
+    uint32_t ip_v4;  // Host endian value, 0xC0A82020 = 192.168.32.32
+    int64_t timestamp;
+    int data_size;
   };
 
  public:
-  ~Capture();
-
-  SensorError get_error() {
-    const auto error = m_error;
-    m_error = SensorError();
-    return error;
-  }
-
   std::string filename() const { return m_filename; }
-  bool is_open() const { return m_fh != nullptr; }
+  bool is_open() const { return m_stream.is_open(); }
   bool is_open_for_read() const { return (is_open() && m_is_read_mode); }
   bool is_open_for_write() const { return (is_open() && !m_is_read_mode); }
-  bool open_for_read(std::string const &fname);
-  bool open_for_write(std::string const &fname, bool append = true);
+  SensorError open_for_read(std::string const &filename);
+  SensorError open_for_write(std::string const &filename, bool append = true);
   void close();
 
-  /*
-    Returns time of start of file in microseconds since epoch.
-  */
-  int64_t start_time_usec() const { return m_start_time + m_timestamp_offset; }
-  /*
-    Returns time offset in microseconds since start of file.
-  */
-  int64_t current_offset_usec() const { return m_read_usec; }
-  /*
-    Returns length of file in microseconds.
-  */
-  int64_t total_offset_usec() const { return m_total_usec; }
+  int64_t start_time() const { return m_start_time + m_timestamp_offset; }
+  int64_t position() const { return m_position; }
+  int64_t length() const { return m_length; }
 
-  /*
-    Seek to position in microseconds since start of file.
+  SensorError seek(int64_t position);
 
-    Returns false if seek position is invalid.
-  */
-  bool seek(int64_t usec);
-
-  /*
-    Get next packet. Returns data length.
-    If data length <= 0, then no data is returned.
-    This happens at end of file, and if file is not open for reading.
-  */
-  int next_packet(const PacketHeader **header, const uint8_t **data);
-
-  /*
-    Append packet to file.
-  */
-  bool append_packet(const PacketHeader *header, const uint8_t *data);
+  SensorError next_packet(PacketHeader &header, const uint8_t *&data);
+  SensorError append_packet(const PacketHeader &header, const uint8_t *data);
 
   void rewind() { read_file_header(); }
 
  private:
-  void build_read_index();
-  bool load_read_index(std::ifstream &f);
-  void save_read_index(std::ofstream &f) const;
-  void write_file_header();
-  bool read_file_header();
+  SensorError open_for_read_impl(const std::string &filename);
+  SensorError open_for_write_impl(const std::string &filename, bool append);
+  SensorError build_read_index();
+  SensorError load_read_index(std::ifstream &f);
+  SensorError save_read_index(std::ofstream &f) const;
+  SensorError write_file_header();
+  SensorError read_file_header();
+
+  SensorError next_packet_impl(bool &success, PacketHeader &header,
+                               const uint8_t *&data);
 
  private:
-  SensorError m_error;
-  FILE *m_fh = nullptr;
+  std::fstream m_stream;
   std::string m_filename;
   bool m_is_read_mode;
-  uint64_t m_read_pointer;
-  uint64_t m_write_pointer;
+  int64_t m_read_ptr;
+  int64_t m_write_ptr;
 
-  PacketHeader m_temp_header;
   std::vector<uint8_t> m_buffer;
 
-  int64_t m_read_usec = 0;
-  int64_t m_total_usec = 0;
+  int64_t m_timestamp_offset = 0;
   int64_t m_start_time = 0;
-  int32_t m_timestamp_offset = 0;
+  int64_t m_position = 0;
+  int64_t m_length = 0;
 
   struct IndexFileHeader {
     std::size_t version = 0;
@@ -106,8 +75,8 @@ class Capture {
   };
 
   struct PacketIndex {
-    int64_t time_usec;
-    uint64_t read_ptr;
+    int64_t position;
+    uint64_t pointer;
   };
   std::vector<PacketIndex> m_read_index;
 };

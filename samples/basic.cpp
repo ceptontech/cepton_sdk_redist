@@ -18,9 +18,8 @@ class FramesListener {
 
     // Print info
     if (i_frame < 5) {
-      std::printf("\n-- Frame --\n");
-      std::printf("Sensor serial number: %d\n", (int)sensor_info.serial_number);
-      std::printf("# Points: %d\n", (int)n_points);
+      std::printf("Received %i points from sensor %i\n", (int)n_points,
+                  (int)sensor_info.serial_number);
     }
     ++i_frame;
   }
@@ -45,7 +44,7 @@ int main(int argc, char **argv) {
   cepton_sdk::SensorInformation sensor_info;
   cepton_sdk::api::check_error(
       cepton_sdk::get_sensor_information_by_index(0, sensor_info));
-  std::printf("Sensor connected: %d\n", (int)sensor_info.serial_number);
+  std::printf("Sensor: %d\n", (int)sensor_info.serial_number);
 
   // Listen for frames
   std::printf("Listening for frames...\n");

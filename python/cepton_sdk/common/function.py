@@ -15,7 +15,7 @@ def static_vars(**kwargs):
     return decorate
 
 
-class single_cache(object):
+class single_cache:
     def __init__(self, func):
         self.func = func
         self.result = None

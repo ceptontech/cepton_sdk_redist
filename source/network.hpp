@@ -20,6 +20,7 @@ class LargeObjectPool
     : public std::enable_shared_from_this<LargeObjectPool<T>> {
  public:
   std::shared_ptr<T> get() {
+    std::lock_guard<std::mutex> lock(m_mutex);
     T *ptr;
     if (m_free.empty()) {
       m_objects.emplace_back();
@@ -28,12 +29,16 @@ class LargeObjectPool
       ptr = m_free.back();
       m_free.pop_back();
     }
-    const auto this_ptr = this->shared_from_this();
-    return std::shared_ptr<T>(
-        ptr, [this_ptr, ptr](T *) { this_ptr->m_free.push_back(ptr); });
+
+    auto this_ptr = this->shared_from_this();
+    return std::shared_ptr<T>(ptr, [this, this_ptr](T *const ptr) {
+      std::lock_guard<std::mutex> lock(m_mutex);
+      m_free.push_back(ptr);
+    });
   }
 
  private:
+  std::mutex m_mutex;
   std::list<T> m_objects;
   std::vector<T *> m_free;
 };

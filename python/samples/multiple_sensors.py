@@ -9,15 +9,19 @@ from common import *
 if __name__ == "__main__":
     # Variables
     capture_path = get_sample_capture_path()
-    frame_length = 0.1
 
     # Initialize
     cepton_sdk.initialize(capture_path=capture_path)
 
+    # Get sensors
+    sensors_dict = cepton_sdk.get_sensors()
+
     # Get points
-    image_points_dict = cepton_sdk.get_image_points(frame_length)
-    image_points = \
-        cepton_sdk.ImagePoints.combine(list(image_points_dict.values()))
+    listener = cepton_sdk.ImageFramesListener()
+    image_points_dict = listener.get_points()
+    del listener
+    image_points_list = next(iter(image_points_dict.values()))
+    image_points = image_points_list[0]
     points = image_points.to_points()
 
     # Plot

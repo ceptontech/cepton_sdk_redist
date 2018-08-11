@@ -3,7 +3,7 @@ import transforms3d.quaternions
 import numpy
 
 
-class Quaternion(object):
+class Quaternion:
     def __init__(self):
         self.s = 0.0
         self.v = numpy.zeros([3])
@@ -42,7 +42,7 @@ class Quaternion(object):
         return numpy.matmul(self.to_matrix(), v.transpose()).transpose()
 
 
-class Transform3d(object):
+class Transform3d:
     def __init__(self):
         self.rotation = Quaternion()
         self.translation = numpy.zeros([3])

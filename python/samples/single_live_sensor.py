@@ -19,8 +19,9 @@ if __name__ == "__main__":
     pprint.pprint(sensor.information.to_dict())
 
     # Get points
-    image_points = \
-        cepton_sdk.get_sensor_image_points(sensor.serial_number, frame_length)
+    listener = cepton_sdk.SensorImageFramesListener(sensor.serial_number)
+    image_points_list = listener.get_points()
+    del listener
     points = image_points.to_points()
 
     # Plot

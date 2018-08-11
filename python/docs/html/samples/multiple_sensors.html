@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Single Live Sensor" href="single_live_sensor.html" />
-    <link rel="prev" title="Single Sensor" href="single_sensor.html" /> 
+    <link rel="prev" title="Listen" href="listen.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,7 +29,7 @@
           <a href="single_live_sensor.html" title="Single Live Sensor"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="single_sensor.html" title="Single Sensor"
+          <a href="listen.html" title="Listen"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">cepton_sdk  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../samples.html" accesskey="U">Samples</a> &#187;</li> 
@@ -68,7 +68,11 @@
 21
 22
 23
-24</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
+24
+25
+26
+27
+28</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="kn">import</span> <span class="nn">pprint</span>
 
@@ -79,15 +83,19 @@
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="c1"># Variables</span>
     <span class="n">capture_path</span> <span class="o">=</span> <span class="n">get_sample_capture_path</span><span class="p">()</span>
-    <span class="n">frame_length</span> <span class="o">=</span> <span class="mf">0.1</span>
 
     <span class="c1"># Initialize</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">capture_path</span><span class="o">=</span><span class="n">capture_path</span><span class="p">)</span>
 
+    <span class="c1"># Get sensors</span>
+    <span class="n">sensors_dict</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_sensors</span><span class="p">()</span>
+
     <span class="c1"># Get points</span>
-    <span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_image_points</span><span class="p">(</span><span class="n">frame_length</span><span class="p">)</span>
-    <span class="n">image_points</span> <span class="o">=</span> \
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImagePoints</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">image_points_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">listener</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImageFramesListener</span><span class="p">()</span>
+    <span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+    <span class="k">del</span> <span class="n">listener</span>
+    <span class="n">image_points_list</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">image_points_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">image_points</span> <span class="o">=</span> <span class="n">image_points_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
 
     <span class="c1"># Plot</span>
@@ -104,8 +112,8 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="single_sensor.html"
-                        title="previous chapter">Single Sensor</a></p>
+  <p class="topless"><a href="listen.html"
+                        title="previous chapter">Listen</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="single_live_sensor.html"
                         title="next chapter">Single Live Sensor</a></p>
@@ -135,7 +143,7 @@
           <a href="single_live_sensor.html" title="Single Live Sensor"
              >next</a> |</li>
         <li class="right" >
-          <a href="single_sensor.html" title="Single Sensor"
+          <a href="listen.html" title="Listen"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">cepton_sdk  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../samples.html" >Samples</a> &#187;</li> 

@@ -17,9 +17,7 @@ SocketListener::SocketListener(uint16_t port)
   m_socket.bind(udp::endpoint(udp::v4(), port));
 }
 
-SocketListener::~SocketListener() {
-  stop();
-}
+SocketListener::~SocketListener() { stop(); }
 
 void SocketListener::run() {
   stop();
@@ -56,7 +54,6 @@ NetworkManager network_manager;
 void NetworkManager::initialize() {
   deinitialize();
   if (sdk_manager.has_control_flag(CEPTON_SDK_CONTROL_DISABLE_NETWORK)) return;
-  // return;
 
   m_is_running = true;
 
@@ -71,7 +68,8 @@ void NetworkManager::initialize() {
       return;
     }
 
-    thread_local auto packet_pool = std::make_shared<LargeObjectPool<Packet>>();
+    thread_local std::shared_ptr<LargeObjectPool<Packet>> packet_pool;
+    if (!packet_pool) packet_pool.reset(new LargeObjectPool<Packet>());
     auto packet = packet_pool->get();
     packet->handle = handle;
     packet->timestamp = util::get_timestamp_usec();

@@ -10,6 +10,8 @@ Types
 .. autoclass:: cepton_sdk.Points
   :members:
 
+.. autofunction:: cepton_sdk.combine_points
+
 All sdk methods return image points, but they can easily be converted to 3d points:
 
 .. code-block:: python
@@ -30,29 +32,25 @@ Multiple point arrays can also be combined:
 .. code-block:: python
   :linenos:
 
-  image_points = cepton_sdk.ImagePoints.combine([image_points_1, image_points_2])
+  image_points = cepton_sdk.combine_points([image_points_1, image_points_2])
 
 Methods
 -------
 
-There are multiple methods for getting points, but only one method should be used at a time. For example, don't call :any:`cepton_sdk.get_sensor_image_frames` for multiple sensors. Instead, call :any:`cepton_sdk.get_image_frames`.
+See :doc:`samples/listen`.
 
-Get by Frame
-~~~~~~~~~~~~
+The following methods return points directly from the C SDK callback.
 
-.. autofunction:: cepton_sdk.get_image_frames
-.. autofunction:: cepton_sdk.get_sensor_image_frames
+.. autofunction:: cepton_sdk.listen_image_frames
+.. autofunction:: cepton_sdk.unlisten_image_frames
 
-Get by Time
-~~~~~~~~~~~
+There are also listener classes that seamlessly handle accumulation and waiting.
 
-.. autofunction:: cepton_sdk.get_image_points
-.. autofunction:: cepton_sdk.get_sensor_image_points
+.. autoclass:: cepton_sdk.ImageFramesListener
+.. autoclass:: cepton_sdk.SensorImageFramesListener
 
 Export
-~~~~~~
-
-The following functions can easily be modified to export points to any binary file format.
+------
 
 .. autofunction:: cepton_sdk.export.save_points_las
 .. autofunction:: cepton_sdk.export.load_points_las

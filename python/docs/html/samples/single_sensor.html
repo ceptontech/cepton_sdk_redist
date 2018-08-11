@@ -16,8 +16,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Multiple Sensors" href="multiple_sensors.html" />
-    <link rel="prev" title="Samples" href="../samples.html" /> 
+    <link rel="prev" title="Single Live Sensor" href="single_live_sensor.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -26,10 +25,7 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="multiple_sensors.html" title="Multiple Sensors"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../samples.html" title="Samples"
+          <a href="single_live_sensor.html" title="Single Live Sensor"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">cepton_sdk  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../samples.html" accesskey="U">Samples</a> &#187;</li> 
@@ -83,7 +79,6 @@
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="c1"># Variables</span>
     <span class="n">capture_path</span> <span class="o">=</span> <span class="n">get_sample_capture_path</span><span class="p">()</span>
-    <span class="n">frame_length</span> <span class="o">=</span> <span class="mf">0.1</span>
 
     <span class="c1"># Initialize</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">capture_path</span><span class="o">=</span><span class="n">capture_path</span><span class="p">)</span>
@@ -94,9 +89,10 @@
     <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">information</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
 
     <span class="c1"># Get points</span>
-    <span class="n">image_points</span> <span class="o">=</span> \
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_sensor_image_points</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">serial_number</span><span class="p">,</span> <span class="n">frame_length</span><span class="p">)</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
+    <span class="n">listener</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">SensorImageFramesListener</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">serial_number</span><span class="p">)</span>
+    <span class="n">image_points_list</span> <span class="o">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+    <span class="k">del</span> <span class="n">listener</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">image_points_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
 
     <span class="c1"># Plot</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
@@ -112,11 +108,8 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="../samples.html"
-                        title="previous chapter">Samples</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="multiple_sensors.html"
-                        title="next chapter">Multiple Sensors</a></p>
+  <p class="topless"><a href="single_live_sensor.html"
+                        title="previous chapter">Single Live Sensor</a></p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -140,10 +133,7 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="multiple_sensors.html" title="Multiple Sensors"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../samples.html" title="Samples"
+          <a href="single_live_sensor.html" title="Single Live Sensor"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">cepton_sdk  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../samples.html" >Samples</a> &#187;</li> 

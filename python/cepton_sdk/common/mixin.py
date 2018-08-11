@@ -4,7 +4,7 @@ import ctypes
 import numpy
 
 
-class ToDictMixin(object):
+class ToDictMixin:
     @classmethod
     def _get_dict_member_names(cls):
         raise NotImplementedError()
@@ -49,7 +49,7 @@ class ToDictMixin(object):
         return d
 
 
-class C_Field(object):
+class C_Field:
     def __init__(self, field_name, field_type, field_width=None):
         self.name = field_name
         self.type = field_type
@@ -71,7 +71,7 @@ def _get_c_member_names(c_cls):
     return [x[0] for x in c_cls._fields_ if x[0]]
 
 
-class ToCMixin(object):
+class ToCMixin:
     @classmethod
     def _get_c_class(cls):
         raise NotImplementedError()
@@ -149,7 +149,7 @@ class ToCMixin(object):
         return c_obj
 
 
-class StructureOfArrays(object):
+class StructureOfArrays:
     """
     Group multiple arrays together and allow operations on all arrays
     simultaneously. Supports numpy operations as if it were a 1-d array.

@@ -1,6 +1,3 @@
 function result = get_sensor_handle(sensor_serial_number)
-    [error_code, result] = ...
-        cepton_sdk.c.call('cepton_sdk_get_sensor_handle_by_serial_number', ...
-            sensor_serial_number, 0);
-    cepton_sdk.c.check_error_code(error_code);
+    result = cepton_sdk.c.call_and_check('cepton_sdk_get_sensor_handle_by_serial_number', sensor_serial_number, 0);
 end

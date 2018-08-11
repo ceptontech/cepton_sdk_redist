@@ -1,7 +1,6 @@
 %%
 % Variables
 capture_path = common.get_sample_capture_path();
-sensor_serial_number = 4165;
 
 % Initialize
 if cepton_sdk.is_initialized()
@@ -11,14 +10,17 @@ options = struct();
 options.capture_path = capture_path;
 cepton_sdk.initialize(options);
 
-%% Get sensor
-sensor = cepton_sdk.Sensor.create(sensor_serial_number);
+% Get sensor
+sensors_dict = cepton_sdk.get_sensors();
+sensors_list = values(sensors_dict);
+sensor = sensors_list{1};
 disp(sensor.information);
 
 %% Get points
-image_points = ...
-    cepton_sdk.get_sensor_image_points(sensor_serial_number);
-points = image_points.to_points();
+listener = cepton_sdk.SensorImageFramesListener(sensor.serial_number);
+image_points_list = listener.get_points();
+delete(listener);
+points = image_points_list{1}.to_points();
 
 % Plot
-common.plot_points(points);
+cepton_sdk.plot_points(points);

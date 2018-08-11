@@ -9,7 +9,6 @@ from common import *
 if __name__ == "__main__":
     # Variables
     capture_path = get_sample_capture_path()
-    frame_length = 0.1
 
     # Initialize
     cepton_sdk.initialize(capture_path=capture_path)
@@ -20,9 +19,10 @@ if __name__ == "__main__":
     pprint.pprint(sensor.information.to_dict())
 
     # Get points
-    image_points = \
-        cepton_sdk.get_sensor_image_points(sensor.serial_number, frame_length)
-    points = image_points.to_points()
+    listener = cepton_sdk.SensorImageFramesListener(sensor.serial_number)
+    image_points_list = listener.get_points()
+    del listener
+    points = image_points_list[0].to_points()
 
     # Plot
     cepton_sdk.plot.plot_points(points)

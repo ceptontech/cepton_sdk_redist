@@ -18,23 +18,34 @@ bool CaptureReplay::is_open() const {
   return m_capture.is_open();
 }
 
-SensorError CaptureReplay::open(std::string const &fname) {
+SensorError CaptureReplay::open(const std::string &filename) {
+  auto error = open_impl(filename);
+  if (error) close();
+  return error;
+}
+
+SensorError CaptureReplay::open_impl(const std::string &filename) {
   close();
+
   {
     std::lock_guard<std::mutex> lock(m_capture_mutex);
-    if (!m_capture.open_for_read(fname)) return m_capture.get_error();
+    const auto error = m_capture.open_for_read(filename);
+    if (error) return error;
   }
-  cepton_sdk_set_control_flags(CEPTON_SDK_CONTROL_DISABLE_NETWORK,
-                               CEPTON_SDK_CONTROL_DISABLE_NETWORK);
-  seek(0);
+  SensorError error;
+  error = cepton_sdk_set_control_flags(CEPTON_SDK_CONTROL_DISABLE_NETWORK,
+                                       CEPTON_SDK_CONTROL_DISABLE_NETWORK);
+  if (error) return error;
+  error = seek(0);
+  if (error) return error;
   return CEPTON_SUCCESS;
 }
 
 SensorError CaptureReplay::close() {
+  m_is_end = true;
+
   util::ErrorAccumulator error = pause();
   m_capture.close();
-  error = m_capture.get_error();
-  m_is_end = true;
   if (sdk_manager.is_initialized()) {
     error = cepton_sdk_clear();
   }
@@ -45,33 +56,34 @@ int64_t CaptureReplay::get_start_time() const {
   if (!is_open()) return 0;
 
   std::lock_guard<std::mutex> lock(m_capture_mutex);
-  return m_capture.start_time_usec();
+  return m_capture.start_time();
 }
 
 float CaptureReplay::get_position() const {
   if (!is_open()) return 0.0f;
 
   std::lock_guard<std::mutex> lock(m_capture_mutex);
-  return 1e-6f * (float)m_capture.current_offset_usec();
+  return 1e-6f * (float)m_capture.position();
 }
 
 float CaptureReplay::get_length() const {
   if (!is_open()) return 0.0f;
 
   std::lock_guard<std::mutex> lock(m_capture_mutex);
-  return 1e-6f * (float)m_capture.total_offset_usec();
+  return 1e-6f * (float)m_capture.length();
 }
 
-SensorError CaptureReplay::seek(float sec) {
+SensorError CaptureReplay::seek(float position) {
   if (!is_open()) return CEPTON_ERROR_NOT_OPEN;
 
-  return run_paused([&]() { return seek_impl(int64_t(1e6f * sec)); });
+  return run_paused([&]() { return seek_impl(int64_t(1e6f * position)); });
 }
 
-SensorError CaptureReplay::seek_impl(int64_t usec) {
+SensorError CaptureReplay::seek_impl(int64_t position) {
   {
     std::lock_guard<std::mutex> lock(m_capture_mutex);
-    if (!m_capture.seek(usec)) return m_capture.get_error();
+    const auto error = m_capture.seek(position);
+    if (error) return error;
   }
   m_is_end = false;
   return CEPTON_SUCCESS;
@@ -110,37 +122,40 @@ SensorError CaptureReplay::resume_blocking_once() {
     return SensorError(CEPTON_ERROR_GENERIC, "Replay already running!");
   if (m_is_end) {
     if (m_enable_loop) {
-      seek_impl(0);
+      auto error = seek_impl(0);
+      if (error) return error;
       m_is_end = false;
     } else {
       return CEPTON_ERROR_EOF;
     }
   }
 
-  feed_pcap_once(false);
-  return CEPTON_SUCCESS;
+  return feed_pcap_once(false);
 }
 
-SensorError CaptureReplay::resume_blocking(float sec) {
-  if (sec < 0) return CEPTON_ERROR_INVALID_ARGUMENTS;
+SensorError CaptureReplay::resume_blocking(float duration) {
+  if (duration < 0)
+    return SensorError(CEPTON_ERROR_INVALID_ARGUMENTS, "Invalid duration!");
   if (!is_open()) return CEPTON_ERROR_NOT_OPEN;
   if (m_is_running)
     return SensorError(CEPTON_ERROR_GENERIC, "Replay already running!");
   if (m_is_end) {
     if (m_enable_loop) {
-      seek_impl(0);
+      auto error = seek_impl(0);
+      if (error) return error;
       m_is_end = false;
     } else {
       return CEPTON_ERROR_EOF;
     }
   }
 
-  float start_sec = get_position();
+  const float start = get_position();
   while (true) {
-    if (m_is_end || ((get_position() - start_sec) > sec)) {
+    if (m_is_end || ((get_position() - start) > duration)) {
       break;
     }
-    feed_pcap_once(false);
+    auto error = feed_pcap_once(false);
+    if (error) return error;
   }
   return CEPTON_SUCCESS;
 }
@@ -148,7 +163,8 @@ SensorError CaptureReplay::resume_blocking(float sec) {
 SensorError CaptureReplay::resume() {
   if (!is_open()) return CEPTON_ERROR_NOT_OPEN;
 
-  pause();
+  auto error = pause();
+  if (error) return error;
   reset_time();
   m_is_running = true;
   m_feeder_thread.reset(new std::thread([this]() { feed_pcap(); }));
@@ -166,36 +182,38 @@ SensorError CaptureReplay::pause() {
   return CEPTON_SUCCESS;
 }
 
-void CaptureReplay::feed_pcap_once(bool enable_sleep) {
-  if (m_is_end) return;
+SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
+  if (m_is_end) return CEPTON_SUCCESS;
 
   int64_t timestamp;
-  const Capture::PacketHeader *pkt_hdr;
-  const uint8_t *pkt_data;
-  int len;
+  Capture::PacketHeader header;
+  const uint8_t *data;
   {
     std::lock_guard<std::mutex> lock(m_capture_mutex);
-    timestamp = m_capture.start_time_usec() + m_capture.current_offset_usec();
-    len = m_capture.next_packet(&pkt_hdr, &pkt_data);
-  }
-  if (len <= 0) {
-    m_is_end = true;
-    return;
+    timestamp = m_capture.start_time() + m_capture.position();
+    const auto error = m_capture.next_packet(header, data);
+    if (error) {
+      if (error.code == CEPTON_ERROR_EOF) {
+        m_is_end = true;
+        return CEPTON_SUCCESS;
+      }
+      return error;
+    }
   }
 
   if (enable_sleep) sleep_once();
 
   const CeptonSensorHandle handle =
-      (CeptonSensorHandle)pkt_hdr->ip_v4 | CEPTON_SENSOR_HANDLE_FLAG_MOCK;
-  cepton_sdk_mock_network_receive(handle, timestamp, pkt_data,
-                                  pkt_hdr->data_size);
+      (CeptonSensorHandle)header.ip_v4 | CEPTON_SENSOR_HANDLE_FLAG_MOCK;
+  return cepton_sdk_mock_network_receive(handle, timestamp, data,
+                                         header.data_size);
 }
 
 void CaptureReplay::reset_time() {
   m_start_ts_usec = util::get_timestamp_usec();
   {
     std::lock_guard<std::mutex> lock(m_capture_mutex);
-    m_start_offset_usec = m_capture.current_offset_usec();
+    m_start_offset_usec = m_capture.position();
   }
 }
 
@@ -204,7 +222,7 @@ void CaptureReplay::sleep_once() {
   int64_t offset_usec;
   {
     std::lock_guard<std::mutex> lock(m_capture_mutex);
-    offset_usec = m_capture.current_offset_usec() - m_start_offset_usec;
+    offset_usec = m_capture.position() - m_start_offset_usec;
   }
   offset_usec = int64_t((float)offset_usec / m_speed);
 
@@ -218,11 +236,13 @@ void CaptureReplay::sleep_once() {
   }
 }
 
-void CaptureReplay::feed_pcap() {
+SensorError CaptureReplay::feed_pcap() {
+  SensorError error;
   while (m_is_running) {
     if (m_is_end) {
       if (m_enable_loop) {
-        seek_impl(0);
+        auto error = seek_impl(0);
+        if (error) break;
         reset_time();
         m_is_end = false;
       } else {
@@ -230,8 +250,10 @@ void CaptureReplay::feed_pcap() {
       }
     }
 
-    feed_pcap_once(true);
+    error = feed_pcap_once(true);
+    if (error) break;
   }
   m_is_running = false;
+  return error;
 }
 }  // namespace cepton_sdk

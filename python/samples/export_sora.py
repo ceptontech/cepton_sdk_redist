@@ -33,8 +33,11 @@ def main():
 
     # Get points
     loader = cepton_sdk.load.Loader.from_arguments(args)
-    image_points_dict = \
-        cepton_sdk.get_image_points(t_length, return_partial=True)
+    listener = cepton_sdk.ImageFramesListener()
+    cepton_sdk.wait(t_length)
+    image_points_dict = listener.get_points()
+    image_points_dict = {key: cepton_sdk.combine_points(value)
+                         for key, value in image_points_dict.items()}
     points = loader.process_points(image_points_dict)
 
     # Apply speed

@@ -19,6 +19,9 @@ namespace util {
 //------------------------------------------------------------------------------
 // Common
 //------------------------------------------------------------------------------
+const int64_t second_usec(1e6);
+const int64_t hour_usec(60.0 * 60.0 * 1e6);
+
 template <typename T>
 inline T square(T x) {
   return x * x;
@@ -29,9 +32,9 @@ inline T square(T x) {
  * This is the timestamp format used by all sdk functions.
  */
 static int64_t get_timestamp_usec() {
-  const auto t_epoch = std::chrono::steady_clock::now().time_since_epoch();
   // const auto t_epoch =
   // std::chrono::high_resolution_clock::now().time_since_epoch();
+  const auto t_epoch = std::chrono::system_clock::now().time_since_epoch();
   return std::chrono::duration_cast<std::chrono::microseconds>(t_epoch).count();
 }
 
@@ -580,7 +583,7 @@ class FrameAccumulator {
  public:
   FrameAccumulator(const SensorInformation &sensor_info)
       : m_sensor_info(sensor_info), m_frame_detector(sensor_info) {
-    m_stride = (int)sensor_info.return_count * (int)sensor_info.segment_count;
+    m_stride = sensor_info.return_count * sensor_info.segment_count;
     clear_impl();
   }
 

@@ -1,9 +1,5 @@
 #include "matlab.hpp"
 
-static_assert(sizeof(CeptonSensorInformation) ==
-                  sizeof(CeptonMatlabSensorInformation),
-              "");
-
 static void global_on_error(CeptonSensorHandle handle,
                             CeptonSensorErrorCode error_code,
                             const char *const error_msg,
@@ -36,24 +32,22 @@ CeptonSensorErrorCode cepton_sdk_matlab_initialize(
 }
 
 CeptonSensorErrorCode cepton_sdk_matlab_get_sensor_information(
-    CeptonSensorHandle handle, CeptonMatlabSensorInformation *const info) {
+    CeptonSensorHandle handle, CeptonSensorInformation *const info) {
   CeptonSensorInformation info_tmp;
   CeptonSensorErrorCode error_code =
       cepton_sdk_get_sensor_information(handle, &info_tmp);
   if (error_code) return error_code;
-  *info =
-      *reinterpret_cast<CeptonMatlabSensorInformation const *const>(&info_tmp);
+  *info = *reinterpret_cast<const CeptonSensorInformation *>(&info_tmp);
   return CEPTON_SUCCESS;
 }
 
 CeptonSensorErrorCode cepton_sdk_matlab_get_sensor_information_by_index(
-    int index, CeptonMatlabSensorInformation *const info) {
+    int index, CeptonSensorInformation *const info) {
   CeptonSensorInformation info_tmp;
   CeptonSensorErrorCode error_code =
       cepton_sdk_get_sensor_information_by_index(index, &info_tmp);
   if (error_code) return error_code;
-  *info =
-      *reinterpret_cast<CeptonMatlabSensorInformation const *const>(&info_tmp);
+  *info = *reinterpret_cast<const CeptonSensorInformation *>(&info_tmp);
   return CEPTON_SUCCESS;
 }
 

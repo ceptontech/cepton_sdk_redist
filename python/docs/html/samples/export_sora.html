@@ -16,6 +16,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Listen" href="listen.html" />
     <link rel="prev" title="Export" href="export.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -24,6 +25,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="listen.html" title="Listen"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="export.html" title="Export"
              accesskey="P">previous</a> |</li>
@@ -89,7 +93,10 @@
 46
 47
 48
-49</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
+49
+50
+51
+52</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Sample script to export SORA point cloud to file. Assumes constant speed</span>
 <span class="sd">in the +Y direction (e.g. mounted to a car).</span>
@@ -124,8 +131,11 @@
 
     <span class="c1"># Get points</span>
     <span class="n">loader</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">load</span><span class="o">.</span><span class="n">Loader</span><span class="o">.</span><span class="n">from_arguments</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
-    <span class="n">image_points_dict</span> <span class="o">=</span> \
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_image_points</span><span class="p">(</span><span class="n">t_length</span><span class="p">,</span> <span class="n">return_partial</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">listener</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImageFramesListener</span><span class="p">()</span>
+    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">t_length</span><span class="p">)</span>
+    <span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+    <span class="n">image_points_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">combine_points</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">image_points_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     <span class="n">points</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">process_points</span><span class="p">(</span><span class="n">image_points_dict</span><span class="p">)</span>
 
     <span class="c1"># Apply speed</span>
@@ -152,6 +162,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="export.html"
                         title="previous chapter">Export</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="listen.html"
+                        title="next chapter">Listen</a></p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -174,6 +187,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="listen.html" title="Listen"
+             >next</a> |</li>
         <li class="right" >
           <a href="export.html" title="Export"
              >previous</a> |</li>

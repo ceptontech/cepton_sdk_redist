@@ -46,10 +46,12 @@ def main():
     if args.capture_seek is not None:
         cepton_sdk.capture_replay.seek(args.capture_seek)
 
+    listener = cepton_sdk.ImageFramesListener()
     if args.combine:
-        image_points_dict = \
-            cepton_sdk.get_image_points(t_length, return_partial=True)
-        for serial_number, image_points in image_points_dict.items():
+        cepton_sdk.wait(t_length)
+        image_points_dict = listener.get_points()
+        for serial_number, image_points_list in image_points_dict.items():
+            image_points = cepton_sdk.combine_points(image_points_list)
             is_valid = image_points.distances < 1e4
             image_points = image_points[is_valid]
 
@@ -66,7 +68,7 @@ def main():
                 if (cepton_sdk.get_time() - t_0) > t_length:
                     break
             try:
-                image_points_dict = cepton_sdk.get_image_frames()
+                image_points_dict = listener.get_points()
             except:
                 break
             for serial_number, image_points_list in image_points_dict.items():

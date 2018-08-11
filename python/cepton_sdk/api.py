@@ -1,43 +1,48 @@
+import collections
 import datetime
+import threading
 import time
 
 import cepton_sdk.c
 import cepton_sdk.capture_replay
 import cepton_sdk.core
-import cepton_sdk.listener
 import cepton_sdk.sensor
 from cepton_sdk.common.function import *
 
 __all__ = [
-    "clear_cache",
-    "get_image_frames",
-    "get_image_points",
-    "get_sensor_image_frames",
-    "get_sensor_image_points_by_n",
-    "get_sensor_image_points",
     "get_sensors",
     "get_time",
-    "initialize",
     "get_timestamp",
+    "ImageFramesListener",
+    "initialize",
     "is_end",
     "is_live",
+    "is_realtime",
+    "listen_image_frames",
     "Sensor",
+    "SensorImageFramesListener",
+    "unlisten_image_frames",
     "wait",
 ]
 
 
 def is_live():
-    """Returns true if capture replay is not open, false otherwise."""
+    """Returns true if capture replay is not open."""
     return not cepton_sdk.capture_replay.is_open()
 
 
+def is_realtime():
+    """Returns true if live or capture replay is running."""
+    return is_live() or cepton_sdk.capture_replay.is_running()
+
+
 def is_end():
-    """Returns true if capture replay is open and at end, false otherwise."""
-    if is_live():
-        return False  # Live sensors never end
-    if cepton_sdk.capture_replay.get_enable_loop():
-        return False  # Looping captures never end
-    return cepton_sdk.capture_replay.is_end()
+    """Returns true if next call to `wait` will throw `CEPTON_ERROR_EOF`"""
+    if cepton_sdk.capture_replay.is_open():
+        if cepton_sdk.capture_replay.get_enable_loop():
+            return False
+        return cepton_sdk.capture_replay.is_end()
+    return False
 
 
 def get_timestamp():
@@ -46,7 +51,7 @@ def get_timestamp():
 
 
 def get_time():
-    """Returns capture replay time or live time"""
+    """Returns capture replay time or live time."""
     if is_live():
         return get_timestamp()
     else:
@@ -55,20 +60,10 @@ def get_time():
 
 def wait(t_length=0.1):
     """Resumes capture replay or sleeps for duration."""
-    if is_live() or cepton_sdk.capture_replay.is_running():
+    if is_realtime():
         time.sleep(t_length)
     else:
         cepton_sdk.capture_replay.resume_blocking(t_length)
-
-
-def _wait_on_func(func, timeout=None):
-    if timeout is not None:
-        t_start = time.time()
-    while not func():
-        wait()
-        if timeout is not None:
-            if (time.time() - t_start) > timeout:
-                raise RuntimeError("timed out")
 
 
 def initialize(capture_path=None, control_flags=0, error_callback=None, port=None, **kwargs):
@@ -89,7 +84,7 @@ def initialize(capture_path=None, control_flags=0, error_callback=None, port=Non
     if port is not None:
         options["port"] = port
     cepton_sdk.core._manager.initialize(**options)
-    cepton_sdk.listener.initialize()
+    cepton_sdk.core._image_frames_callback.initialize()
 
     if capture_path is not None:
         cepton_sdk.capture_replay.open(capture_path)
@@ -98,145 +93,129 @@ def initialize(capture_path=None, control_flags=0, error_callback=None, port=Non
         cepton_sdk.capture_replay.seek(0)
 
 
-def clear_cache():
-    cepton_sdk.listener.clear_cache()
+def listen_image_frames(callback, callback_id=None):
+    """Register image frames callback.
+
+    Throws error if `callback_id` is currently registered.
+
+    Returns:
+        callback_id
+    """
+    return cepton_sdk.core._image_frames_callback.listen(callback, callback_id=None)
 
 
-def _get_points_wait(wait_func, return_partial=False, timeout=None):
-    if not cepton_sdk.core.is_initialized():
-        raise cepton_sdk.c.C_Error(
-            cepton_sdk.c.C_Error.CEPTON_ERROR_NOT_INITIALIZED)
+def unlisten_image_frames(callback_id):
+    """Unregisters image frames callback.
 
-    if wait_func():
-        return
-    if is_end():
-        error_code = cepton_sdk.C_ErrorCode.CEPTON_ERROR_EOF
-        raise cepton_sdk.c.C_Error(error_code)
-    try:
-        _wait_on_func(wait_func, timeout=timeout)
-    except cepton_sdk.c.C_Error as e:
-        if return_partial:
-            if e.code == cepton_sdk.C_ErrorCode.CEPTON_ERROR_EOF:
+    Throws error if `callback_id` is not currently registered.
+    """
+    cepton_sdk.core._image_frames_callback.unlisten(callback_id)
+
+
+def _wait_on_func(func, timeout=None):
+    if timeout is not None:
+        t_start = get_timestamp()
+    while not func():
+        wait()
+        if timeout is not None:
+            if (get_timestamp() - t_start) > timeout:
+                raise RuntimeError("Timed out!")
+
+
+class _ListenerBase:
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._callback_id = self._frames_callback().listen(self._on_points)
+
+    def __del__(self):
+        try:
+            self._frames_callback().unlisten(self._callback_id)
+        except:
+            pass
+
+
+class _FramesListener(_ListenerBase):
+    """Listener for getting all sensor frames."""
+
+    def __init__(self):
+        self.points_dict = collections.defaultdict(list)
+        super().__init__()
+
+    def _reset(self):
+        self.points_dict.clear()
+
+    def reset(self):
+        with self._lock:
+            self._reset()
+
+    def _on_points(self, serial_number, points):
+        with self._lock:
+            self.points_dict[serial_number].append(points)
+
+    def has_points(self):
+        with self._lock:
+            return len(self.points_dict) > 0
+
+    def _get_points(self):
+        with self._lock:
+            points_dict = dict(self.points_dict)
+            self._reset()
+        return points_dict
+
+    def get_points(self, **kwargs):
+        _wait_on_func(self.has_points, **kwargs)
+        return self._get_points()
+
+
+class _SensorFramesListener(_ListenerBase):
+    def __init__(self, serial_number):
+        self.serial_number = serial_number
+        self.points_list = []
+        super().__init__()
+
+    def _reset(self):
+        del self.points_list[:]
+
+    def reset(self):
+        with self._lock:
+            self._reset()
+
+    def _on_points(self, serial_number, points):
+        with self._lock:
+            if serial_number != self.serial_number:
                 return
-        raise
+            self.points_list.append(points)
+
+    def has_points(self):
+        with self._lock:
+            return len(self.points_list) > 0
+
+    def _get_points(self):
+        with self._lock:
+            points_list = copy.copy(self.points_list)
+        self._reset()
+        return points_list
+
+    def get_points(self, **kwargs):
+        _wait_on_func(self.has_points, **kwargs)
+        return self._get_points()
 
 
-def _get_frames(listener, **kwargs):
-    def wait_func(): return listener.has_points()
-    _get_points_wait(wait_func, **kwargs)
-    return listener.get_points()
+class _ImageListenerMixin:
+    @classmethod
+    def _frames_callback(cls):
+        return cepton_sdk.core._image_frames_callback
 
 
-@static_vars(listener=cepton_sdk.listener.PointsListener())
-def get_image_frames(**kwargs):
-    """Returns next frames of points for all sensors.
-
-    Returns:
-        Dictionary of lists of image points, indexed by serial number.
-    """
-    return _get_frames(get_image_frames.listener, **kwargs)
+class ImageFramesListener(_FramesListener, _ImageListenerMixin):
+    pass
 
 
-@static_vars(listeners={})
-def get_sensor_image_frames(serial_number, **kwargs):
-    """Returns next frames of points for specified sensor.
-
-    Args:
-        serial_number: Sensor serial number.
-    Returns:
-        List of image points.
-    """
-    listener = _get_sensor_listener(
-        get_sensor_image_frames.listeners, serial_number,
-        cepton_sdk.listener.SensorPointsListener)
-    return _get_frames(listener, **kwargs)
+class SensorImageFramesListener(_SensorFramesListener, _ImageListenerMixin):
+    pass
 
 
-def _get_points(listener, frame_length, **kwargs):
-    if frame_length is None:
-        if is_live():
-            raise ValueError("must specify frame lenghth for live sensor")
-        kwargs["return_partial"] = True
-
-        def wait_func():
-            listener.update()
-            return False
-    else:
-        def wait_func(): return listener.has_points(frame_length)
-    _get_points_wait(wait_func, **kwargs)
-    if frame_length is None:
-        listener.update()
-        return listener.get_points_by_t(listener.t_max)
-    else:
-        return listener.get_points(frame_length)
-
-
-@static_vars(listener=cepton_sdk.listener.TimeAccumulatedPointsListener(t_latency=0.1))
-def get_image_points(frame_length, return_partial=False, timeout=None):
-    """Returns next chunk of points for all sensors.
-
-    If using capture replay and frame length is None, returns all remaining
-    points in capture file.
-
-    Args:
-        frame_length: length of time chunk [sec].
-    Returns:
-        Dictionary of image points, indexed by serial number.
-    """
-    return _get_points(
-        get_image_points.listener, frame_length, return_partial=return_partial,
-        timeout=timeout)
-
-
-def _get_sensor_listener(listeners, serial_number, cls, *args, **kwargs):
-    if serial_number not in listeners:
-        listeners[serial_number] = cls(serial_number, *args, **kwargs)
-    return listeners[serial_number]
-
-
-@static_vars(listeners={})
-def get_sensor_image_points(serial_number, frame_length, return_partial=False, timeout=None):
-    """Returns next chunk of points for specified sensor.
-
-    If using capture replay and frame length is None, returns all remaining
-    points in capture file.
-
-    Args:
-        serial_number: Sensor serial number.
-        frame_length: Length of time chunk [sec].
-    Returns:
-        Image points.
-    """
-    listener = _get_sensor_listener(
-        get_sensor_image_points.listeners, serial_number,
-        cepton_sdk.listener.TimeAccumulatedSensorPointsListener)
-    return _get_points(
-        listener, frame_length, return_partial=return_partial, timeout=timeout)
-
-
-def _get_points_by_n(listener, n_points, **kwargs):
-    def wait_func(): return listener.has_points(n_points)
-    _get_points_wait(wait_func, **kwargs)
-    return listener.get_points(n_points)
-
-
-@static_vars(listeners={})
-def get_sensor_image_points_by_n(serial_number, n_points, **kwargs):
-    """Returns next chunk of points for specified sensor.
-
-    Args:
-        serial_number: Sensor serial number.
-        n_points: Number of points.
-    Returns:
-        Image points.
-    """
-    listener = _get_sensor_listener(
-        get_sensor_image_points_by_n.listeners, serial_number,
-        cepton_sdk.listener.NAccumulatedSensorPointsListener)
-    return _get_points_by_n(listener, n_points, **kwargs)
-
-
-class Sensor(object):
+class Sensor:
     """
     Attributes:
         information (:class:`cepton_sdk.SensorInformation`)
@@ -255,18 +234,6 @@ class Sensor(object):
     @property
     def serial_number(self):
         return self.information.serial_number
-
-    @property
-    def model_name(self):
-        return self.information.model_name
-
-    @property
-    def firmware_version(self):
-        return self.information.firmware_version
-
-    @property
-    def model(self):
-        return self.information.model  # This is SensorModel enum
 
     @classmethod
     def create_by_index(cls, sensor_index):
@@ -306,20 +273,13 @@ class Sensor(object):
         """See `cepton_sdk.get_sensor_image_points_by_n`"""
         return get_sensor_image_points_by_n(self.serial_number, *args, **kwargs)
 
-    def is_hr80t(self):
-        return self.model == cepton_sdk.sensor.SensorModel.HR80T
 
-    def is_hr80t_r2(self):
-        return self.model == cepton_sdk.sensor.SensorModel.HR80T_R2
-
-    def is_hr80w(self):
-        return self.model == cepton_sdk.sensor.SensorModel.HR80W
-
-    def is_sora(self):
-        return self.model == cepton_sdk.sensor.SensorModel.SORA_200
-
-    def is_vista860(self):
-        return self.model == cepton_sdk.sensor.SensorModel.VISTA_860
+def has_sensor(serial_number):
+    try:
+        cepton_sdk.sensor.get_sensor_handle(serial_number)
+    except:
+        return False
+    return True
 
 
 def get_sensors(cls=Sensor):

@@ -9,8 +9,7 @@
 class CaptureReplay {
  public:
   CaptureReplay(const std::string& path) {
-    m_capture.open_for_read(path);
-    cepton_sdk::api::check_error(m_capture.get_error());
+    cepton_sdk::api::check_error(m_capture.open_for_read(path));
 
     cepton_sdk::api::check_error(
         cepton_sdk_set_control_flags(CEPTON_SDK_CONTROL_DISABLE_NETWORK,
@@ -27,18 +26,15 @@ class CaptureReplay {
 
   void run() {
     while (true) {
-      const int64_t timestamp =
-          m_capture.start_time_usec() + m_capture.current_offset_usec();
-      const cepton_sdk::Capture::PacketHeader* header;
+      cepton_sdk::Capture::PacketHeader header;
       const uint8_t* data;
-      int len = m_capture.next_packet(&header, &data);
-      if (len <= 0) break;
+      cepton_sdk::api::check_error(m_capture.next_packet(header, data));
 
       const cepton_sdk::SensorHandle handle =
-          (cepton_sdk::SensorHandle)header->ip_v4 |
+          (cepton_sdk::SensorHandle)header.ip_v4 |
           CEPTON_SENSOR_HANDLE_FLAG_MOCK;
       cepton_sdk::api::check_error(cepton_sdk_mock_network_receive(
-          handle, timestamp, data, header->data_size));
+          handle, header.timestamp, data, header.data_size));
     }
   }
 
@@ -61,7 +57,8 @@ int main(int argc, char** argv) {
   cepton_sdk::api::check_error(callback.initialize());
   callback.listen([](cepton_sdk::SensorHandle handle, std::size_t n_points,
                      const cepton_sdk::SensorImagePoint* c_image_points) {
-    std::printf("Received %i points from %i\n", (int)n_points, (int)handle);
+    std::printf("Received %i points from sensor %lli\n", (int)n_points,
+                (long long)handle);
   });
 
   CaptureReplay replay(capture_path);

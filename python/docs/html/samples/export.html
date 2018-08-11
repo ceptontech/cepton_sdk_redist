@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Export SORA" href="export_sora.html" />
-    <link rel="prev" title="Single Live Sensor" href="single_live_sensor.html" /> 
+    <link rel="prev" title="Samples" href="../samples.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -29,7 +29,7 @@
           <a href="export_sora.html" title="Export SORA"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="single_live_sensor.html" title="Single Live Sensor"
+          <a href="../samples.html" title="Samples"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">cepton_sdk  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../samples.html" accesskey="U">Samples</a> &#187;</li> 
@@ -136,7 +136,9 @@
 89
 90
 91
-92</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
+92
+93
+94</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Sample script to export frames to files. Can be modified to export to any</span>
 <span class="sd">file format.</span>
@@ -184,10 +186,12 @@
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">capture_seek</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">capture_seek</span><span class="p">)</span>
 
+    <span class="n">listener</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImageFramesListener</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">combine</span><span class="p">:</span>
-        <span class="n">image_points_dict</span> <span class="o">=</span> \
-            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_image_points</span><span class="p">(</span><span class="n">t_length</span><span class="p">,</span> <span class="n">return_partial</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">image_points</span> <span class="ow">in</span> <span class="n">image_points_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">t_length</span><span class="p">)</span>
+        <span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">image_points_list</span> <span class="ow">in</span> <span class="n">image_points_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">image_points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">combine_points</span><span class="p">(</span><span class="n">image_points_list</span><span class="p">)</span>
             <span class="n">is_valid</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">distances</span> <span class="o">&lt;</span> <span class="mf">1e4</span>
             <span class="n">image_points</span> <span class="o">=</span> <span class="n">image_points</span><span class="p">[</span><span class="n">is_valid</span><span class="p">]</span>
 
@@ -204,7 +208,7 @@
                 <span class="k">if</span> <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">t_length</span><span class="p">:</span>
                     <span class="k">break</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_image_frames</span><span class="p">()</span>
+                <span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">break</span>
             <span class="k">for</span> <span class="n">serial_number</span><span class="p">,</span> <span class="n">image_points_list</span> <span class="ow">in</span> <span class="n">image_points_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -240,8 +244,8 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="single_live_sensor.html"
-                        title="previous chapter">Single Live Sensor</a></p>
+  <p class="topless"><a href="../samples.html"
+                        title="previous chapter">Samples</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="export_sora.html"
                         title="next chapter">Export SORA</a></p>
@@ -271,7 +275,7 @@
           <a href="export_sora.html" title="Export SORA"
              >next</a> |</li>
         <li class="right" >
-          <a href="single_live_sensor.html" title="Single Live Sensor"
+          <a href="../samples.html" title="Samples"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">cepton_sdk  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../samples.html" >Samples</a> &#187;</li> 

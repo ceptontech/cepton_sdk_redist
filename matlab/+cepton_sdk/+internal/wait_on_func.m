@@ -4,14 +4,14 @@ function wait_on_func(func, varargin)
     args = cepton_sdk.common.parse_args(default_args, varargin{:});
 
     if ~cepton_sdk.common.is_none(args.timeout)
-        t_start = posixtime(datetime());
+        t_start = cepton_sdk.get_timestamp();
     end
 
     while ~func()
-        cepton_sdk.internal.wait();
+        cepton_sdk.wait();
         if ~cepton_sdk.common.is_none(args.timeout)
-            if posixtime(datetime()) > args.timeout
-                error('timed out');
+            if (cepton_sdk.get_timestamp() - t_start) > args.timeout
+                error('Timed out!');
             end
         end
     end

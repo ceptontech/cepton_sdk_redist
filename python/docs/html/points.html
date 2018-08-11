@@ -140,6 +140,14 @@
 
 </dd></dl>
 
+<dl class="function">
+<dt id="cepton_sdk.combine_points">
+<code class="descclassname">cepton_sdk.</code><code class="descname">combine_points</code><span class="sig-paren">(</span><em>points_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/point.html#combine_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.combine_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine list of points (<cite>ImagePoints</cite>, <cite>Points</cite>, etc).</p>
+<p>List must be nonempty.
+:returns: combined_points</p>
+</dd></dl>
+
 <p>All sdk methods return image points, but they can easily be converted to 3d points:</p>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
 </pre></div>
@@ -151,93 +159,50 @@
 </pre></div>
 </td></tr></table></div>
 <p>Multiple point arrays can also be combined:</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">image_points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">ImagePoints</span><span class="o">.</span><span class="n">combine</span><span class="p">([</span><span class="n">image_points_1</span><span class="p">,</span> <span class="n">image_points_2</span><span class="p">])</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">image_points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">combine_points</span><span class="p">([</span><span class="n">image_points_1</span><span class="p">,</span> <span class="n">image_points_2</span><span class="p">])</span>
 </pre></div>
 </td></tr></table></div>
 </div>
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
-<p>There are multiple methods for getting points, but only one method should be used at a time. For example, don’t call <a class="reference internal" href="#cepton_sdk.get_sensor_image_frames" title="cepton_sdk.get_sensor_image_frames"><code class="xref any py py-func docutils literal notranslate"><span class="pre">cepton_sdk.get_sensor_image_frames</span></code></a> for multiple sensors. Instead, call <a class="reference internal" href="#cepton_sdk.get_image_frames" title="cepton_sdk.get_image_frames"><code class="xref any py py-func docutils literal notranslate"><span class="pre">cepton_sdk.get_image_frames</span></code></a>.</p>
-<div class="section" id="get-by-frame">
-<h3>Get by Frame<a class="headerlink" href="#get-by-frame" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="samples/listen.html"><span class="doc">Listen</span></a>.</p>
+<p>The following methods return points directly from the C SDK callback.</p>
 <dl class="function">
-<dt id="cepton_sdk.get_image_frames">
-<code class="descclassname">cepton_sdk.</code><code class="descname">get_image_frames</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_image_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_image_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns next frames of points for all sensors.</p>
+<dt id="cepton_sdk.listen_image_frames">
+<code class="descclassname">cepton_sdk.</code><code class="descname">listen_image_frames</code><span class="sig-paren">(</span><em>callback</em>, <em>callback_id=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#listen_image_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.listen_image_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register image frames callback.</p>
+<p>Throws error if <cite>callback_id</cite> is currently registered.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of lists of image points, indexed by serial number.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">callback_id</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="function">
-<dt id="cepton_sdk.get_sensor_image_frames">
-<code class="descclassname">cepton_sdk.</code><code class="descname">get_sensor_image_frames</code><span class="sig-paren">(</span><em>serial_number</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_sensor_image_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_sensor_image_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns next frames of points for specified sensor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>serial_number</strong> – Sensor serial number.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of image points.</td>
-</tr>
-</tbody>
-</table>
+<dt id="cepton_sdk.unlisten_image_frames">
+<code class="descclassname">cepton_sdk.</code><code class="descname">unlisten_image_frames</code><span class="sig-paren">(</span><em>callback_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#unlisten_image_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.unlisten_image_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unregisters image frames callback.</p>
+<p>Throws error if <cite>callback_id</cite> is not currently registered.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="get-by-time">
-<h3>Get by Time<a class="headerlink" href="#get-by-time" title="Permalink to this headline">¶</a></h3>
-<dl class="function">
-<dt id="cepton_sdk.get_image_points">
-<code class="descclassname">cepton_sdk.</code><code class="descname">get_image_points</code><span class="sig-paren">(</span><em>frame_length</em>, <em>return_partial=False</em>, <em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_image_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_image_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns next chunk of points for all sensors.</p>
-<p>If using capture replay and frame length is None, returns all remaining
-points in capture file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frame_length</strong> – length of time chunk [sec].</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of image points, indexed by serial number.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<p>There are also listener classes that seamlessly handle accumulation and waiting.</p>
+<dl class="class">
+<dt id="cepton_sdk.ImageFramesListener">
+<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">ImageFramesListener</code><a class="reference internal" href="_modules/cepton_sdk/api.html#ImageFramesListener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.ImageFramesListener" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-<dl class="function">
-<dt id="cepton_sdk.get_sensor_image_points">
-<code class="descclassname">cepton_sdk.</code><code class="descname">get_sensor_image_points</code><span class="sig-paren">(</span><em>serial_number</em>, <em>frame_length</em>, <em>return_partial=False</em>, <em>timeout=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_sensor_image_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_sensor_image_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns next chunk of points for specified sensor.</p>
-<p>If using capture replay and frame length is None, returns all remaining
-points in capture file.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>serial_number</strong> – Sensor serial number.</li>
-<li><strong>frame_length</strong> – Length of time chunk [sec].</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Image points.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<dl class="class">
+<dt id="cepton_sdk.SensorImageFramesListener">
+<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">SensorImageFramesListener</code><span class="sig-paren">(</span><em>serial_number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#SensorImageFramesListener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.SensorImageFramesListener" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="export">
-<h3>Export<a class="headerlink" href="#export" title="Permalink to this headline">¶</a></h3>
-<p>The following functions can easily be modified to export points to any binary file format.</p>
+<h2>Export<a class="headerlink" href="#export" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="cepton_sdk.export.save_points_las">
 <code class="descclassname">cepton_sdk.export.</code><code class="descname">save_points_las</code><span class="sig-paren">(</span><em>points</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/export.html#save_points_las"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.export.save_points_las" title="Permalink to this definition">¶</a></dt>
@@ -270,7 +235,6 @@ points in capture file.</p>
 <dd><p>Save points to PCD file.</p>
 </dd></dl>
 
-</div>
 </div>
 </div>
 

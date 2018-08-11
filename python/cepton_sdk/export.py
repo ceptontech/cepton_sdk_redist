@@ -32,7 +32,6 @@ def save_points_las(points, path):
         f.y = points.positions[:, 1]
         f.z = points.positions[:, 2]
         f.intensity = points.intensities
-        f.return_num = points.return_numbers
 
 
 def load_points_las(load_path, cls=cepton_sdk.point.Points):
@@ -49,7 +48,6 @@ def load_points_las(load_path, cls=cepton_sdk.point.Points):
         points.positions[:, 1] = f.y
         points.positions[:, 2] = f.z
         points.intensities[:] = f.intensity
-        points.return_numbers[:] = f.return_num
     return points, data
 
 

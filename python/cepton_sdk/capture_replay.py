@@ -2,18 +2,6 @@ import ctypes
 import os.path
 
 import cepton_sdk.c
-import cepton_sdk.listener
-
-__all__ = [
-    "get_length",
-    "get_position",
-    "get_start_time",
-    "get_time",
-    "is_end",
-    "is_open",
-    "seek_relative",
-    "seek",
-]
 
 
 def is_open():
@@ -23,7 +11,6 @@ def is_open():
 def open(capture_path):
     capture_path = capture_path.encode("UTF-8")
     cepton_sdk.c.c_capture_replay_open(capture_path)
-    cepton_sdk.listener.clear_cache()
 
 
 def close():
@@ -31,7 +18,6 @@ def close():
         cepton_sdk.c.c_capture_replay_close()
     except IOError as e:
         warnings.warn(e)
-    cepton_sdk.listener.clear_cache()
 
 
 def get_start_time():
@@ -56,7 +42,6 @@ def is_end():
 
 def seek(t):
     cepton_sdk.c.c_capture_replay_seek(t)
-    cepton_sdk.listener.clear_cache()
 
 
 def seek_relative(t):
@@ -70,6 +55,14 @@ def get_enable_loop():
 
 def set_enable_loop(enable_loop):
     cepton_sdk.c.c_capture_replay_set_enable_loop(enable_loop)
+
+
+def get_speed():
+    return float(cepton_sdk.c.c_capture_replay_get_speed())
+
+
+def set_speed(speed):
+    cepton_sdk.c.c_capture_replay_set_speed(speed)
 
 
 def resume_blocking(t_length=None):

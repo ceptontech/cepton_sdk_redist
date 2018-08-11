@@ -1,5 +1,10 @@
 # Cepton SDK Release Notes
 
+### Version 1.5 2018-08-10
+* Fix networking bugs.
+* Refactor capture/replay.
+* Add samples.
+
 ### Version 1.4 2018-08-02
 * Improve point timestamps.
 * Combine `set_mock_time_base` and `mock_network_receive`.

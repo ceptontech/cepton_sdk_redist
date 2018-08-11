@@ -16,7 +16,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Export" href="export.html" />
+    <link rel="next" title="Single Sensor" href="single_sensor.html" />
     <link rel="prev" title="Multiple Sensors" href="multiple_sensors.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -26,7 +26,7 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="export.html" title="Export"
+          <a href="single_sensor.html" title="Single Sensor"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="multiple_sensors.html" title="Multiple Sensors"
@@ -71,7 +71,8 @@
 24
 25
 26
-27</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
+27
+28</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="kn">import</span> <span class="nn">pprint</span>
 
@@ -92,8 +93,9 @@
     <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">information</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
 
     <span class="c1"># Get points</span>
-    <span class="n">image_points</span> <span class="o">=</span> \
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_sensor_image_points</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">serial_number</span><span class="p">,</span> <span class="n">frame_length</span><span class="p">)</span>
+    <span class="n">listener</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">SensorImageFramesListener</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">serial_number</span><span class="p">)</span>
+    <span class="n">image_points_list</span> <span class="o">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+    <span class="k">del</span> <span class="n">listener</span>
     <span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
 
     <span class="c1"># Plot</span>
@@ -113,8 +115,8 @@
   <p class="topless"><a href="multiple_sensors.html"
                         title="previous chapter">Multiple Sensors</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="export.html"
-                        title="next chapter">Export</a></p>
+  <p class="topless"><a href="single_sensor.html"
+                        title="next chapter">Single Sensor</a></p>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -138,7 +140,7 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="export.html" title="Export"
+          <a href="single_sensor.html" title="Single Sensor"
              >next</a> |</li>
         <li class="right" >
           <a href="multiple_sensors.html" title="Multiple Sensors"

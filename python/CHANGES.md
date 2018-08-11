@@ -1,5 +1,11 @@
 # Cepton SDK Python Release Notes
 
+### Version 1.5 2018-08-10
+* Simplify api.
+* Add listen/unlisten methods.
+* Add listeners.
+* Match version to SDK.
+
 ### Version 0.4 (beta) 2018-08-02
 * Update SDK binaries.
 * Update errors.

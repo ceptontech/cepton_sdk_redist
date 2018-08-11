@@ -33,7 +33,7 @@ def _save_pretty_json(d, f):
     f.write(_get_pretty_json(d))
 
 
-class _ManagerBase(object):
+class _ManagerBase:
     def update_from_dict(self, input_dict):
         raise NotImplementedError()
 
@@ -119,7 +119,7 @@ class SensorTransformManager(_ManagerBase):
         return transformed_points
 
 
-class SensorClip(object):
+class SensorClip:
     def __init__(self):
         self.min_distance = -numpy.inf
         self.max_distance = numpy.inf

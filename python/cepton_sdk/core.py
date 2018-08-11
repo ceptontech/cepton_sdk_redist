@@ -42,7 +42,7 @@ class FrameMode(enum.IntEnum):
     CYCLE = 3
 
 
-class _Manager(object):
+class _Manager:
     def __init__(self):
         self._lock = threading.Lock()
         self._error_callback = None
@@ -69,9 +69,8 @@ class _Manager(object):
     def deinitialize(self):
         try:
             cepton_sdk.c.c_deinitialize()
-        except BaseException as e:
-            traceback.print_exc()
-
+        except:
+            pass
         self._callback = None
 
     @staticmethod
@@ -136,3 +135,47 @@ def get_frame_length():
 
 def get_frame_mode():
     return FrameMode(cepton_sdk.c.c_get_frame_mode())
+
+
+class _ImageFramesCallback:
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._callbacks = {}
+        self._i_callback = 0
+
+    def initialize(self):
+        self.deinitialize()
+        self._c_on_points = \
+            cepton_sdk.c.C_SensorImageDataCallback(
+                lambda *args: self._on_image_points(*args[:-1]))
+        cepton_sdk.c.c_listen_image_frames(self._c_on_points, None)
+
+    def deinitialize(self):
+        cepton_sdk.c.c_unlisten_image_frames()
+        self._callbacks.clear()
+
+    def _on_image_points(self, sensor_handle, n_points, c_image_points_ptr):
+        sensor_info = cepton_sdk.sensor.get_sensor_information_by_handle(
+            sensor_handle)
+        image_points = \
+            cepton_sdk.point.ImagePoints.from_c(n_points, c_image_points_ptr)
+        with self._lock:
+            for callback in self._callbacks.values():
+                callback(sensor_info.serial_number, image_points)
+
+    def listen(self, callback, callback_id=None):
+        with self._lock:
+            if callback_id is None:
+                callback_id = self._i_callback
+                self._i_callback += 1
+            if callback_id in self._callbacks:
+                raise RuntimeError("ID already registered!")
+            self._callbacks[callback_id] = callback
+            return callback_id
+
+    def unlisten(self, callback_id):
+        with self._lock:
+            del self._callbacks[callback_id]
+
+
+_image_frames_callback = _ImageFramesCallback()

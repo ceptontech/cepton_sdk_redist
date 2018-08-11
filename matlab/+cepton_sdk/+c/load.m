@@ -6,7 +6,7 @@ function load()
     if ispc()
         os_name = 'win64';
         lib_name = 'cepton_sdk_matlab';
-    else if isunix()
+    elseif isunix()
         if ismac()
             os_name = 'osx';
         else
@@ -18,9 +18,10 @@ function load()
     end
 
     package = what('cepton_sdk');
-    package_dir = fileparts(package.path);
+    package_path = package.path;
+    package_dir = fileparts(package_path);
     include_dir = fullfile(package_dir, 'include');
-    lib_dir = fullfile(package_dir, 'lib', cepton_sdk.c.get_os_name());
+    lib_dir = fullfile(package_dir, 'lib', os_name);
     
     warning('off');
     loadlibrary(fullfile(lib_dir, lib_name), ...

@@ -14,6 +14,8 @@ class Renderer(object):
     def __init__(self, serial_number):
         self.serial_number = serial_number
         self.image_points_list = []
+        self.listener = cepton_sdk.SensorImageFramesListener(
+            self.serial_number)
 
         # Initialize canvas
         options = {
@@ -56,8 +58,11 @@ class Renderer(object):
 
     def update(self):
         while not self.image_points_list:
-            self.image_points_list.extend(
-                cepton_sdk.get_sensor_image_frames(self.serial_number))
+            try:
+                image_points_list = self.listener.get_points()
+            except:
+                return
+            self.image_points_list.extend(image_points_list)
         image_points = self.image_points_list.pop(0)
         points = image_points.to_points()
 
@@ -82,10 +87,7 @@ if __name__ == "__main__":
     parser.add_argument("--sensor", type=int)
     args = parser.parse_args()
 
-    options = {
-        "frame_mode": cepton_sdk.FrameMode.CYCLE,
-        # "frame_length": 0.05,
-    }
+    options = {}
     if args.capture_path is not None:
         options["capture_path"] = args.capture_path
     cepton_sdk.initialize(**options)
@@ -95,8 +97,5 @@ if __name__ == "__main__":
         serial_number = next(iter(sensors_dict.keys()))
     else:
         serial_number = args.sensor
-
-    cepton_sdk.get_sensor_image_points(serial_number, 1)
-    cepton_sdk.clear_cache()
 
     Renderer(serial_number).run()

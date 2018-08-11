@@ -243,8 +243,7 @@
 56
 57
 58
-59
-60</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+59</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
 <span class="cm"> * Sample code for general sdk usage.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -264,9 +263,8 @@
 
     <span class="c1">// Print info</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">i_frame</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">-- Frame --</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sensor serial number: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;# Points: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">);</span>
+      <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points from sensor %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">,</span>
+                  <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
     <span class="p">}</span>
     <span class="o">++</span><span class="n">i_frame</span><span class="p">;</span>
   <span class="p">}</span>
@@ -291,7 +289,7 @@
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorInformation</span> <span class="n">sensor_info</span><span class="p">;</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
       <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_sensor_information_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">));</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sensor connected: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sensor: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
 
   <span class="c1">// Listen for frames</span>
   <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Listening for frames...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
