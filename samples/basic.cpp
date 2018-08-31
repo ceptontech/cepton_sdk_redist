@@ -52,7 +52,9 @@ int main(int argc, char **argv) {
   cepton_sdk::api::check_error(callback.initialize());
   FramesListener frames_listener;
   callback.listen(&frames_listener, &FramesListener::on_image_frame);
-  cepton_sdk::api::check_error(cepton_sdk::api::wait(1.0f));
+
+  // Run
+  cepton_sdk::api::check_error(cepton_sdk::api::wait());
 
   // Deinitialize (optional)
   cepton_sdk::api::check_error(cepton_sdk::deinitialize());

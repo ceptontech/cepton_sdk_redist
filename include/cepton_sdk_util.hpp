@@ -6,10 +6,14 @@
 #include <cmath>
 #include <cstdio>
 
+#include <algorithm>
 #include <array>
 #include <chrono>
+#include <condition_variable>
 #include <iostream>
+#include <list>
 #include <map>
+#include <queue>
 
 namespace cepton_sdk {
 namespace util {
@@ -218,11 +222,12 @@ class Callback {
   }
 
   /// Register std::function.
-  SensorErrorCode listen(uint64_t id,
-                         const std::function<void(TArgs...)> &func) {
+  SensorErrorCode listen(const std::function<void(TArgs...)> &func,
+                         uint64_t *const id = nullptr) {
     std::lock_guard<std::mutex> lock(m_mutex);
-    if (m_functions.count(id)) return CEPTON_ERROR_TOO_MANY_CALLBACKS;
-    m_functions[id] = func;
+    if (id) *id = m_i_callback;
+    m_functions[m_i_callback] = func;
+    ++m_i_callback;
     return CEPTON_SUCCESS;
   }
   void unlisten(uint64_t id) {
@@ -230,29 +235,13 @@ class Callback {
     m_functions.erase(id);
   }
 
-  /// Register global function.
-  SensorErrorCode listen(void (*func)(TArgs...), uint64_t id = 0) {
-    if (!id) id = (uint64_t)func;
-    return listen(id, func);
-  }
-  void unlisten(void (*func)(TArgs...)) {
-    const uint64_t id = (uint64_t)func;
-    unlisten(id);
-  }
-
   /// Register instance member function.
   template <typename TClass>
   SensorErrorCode listen(TClass *const instance,
                          MemberFunction<TClass, TArgs...> func,
-                         uint64_t id = 0) {
-    if (!id) id = (uint64_t)instance;
+                         uint64_t *const id = nullptr) {
     return listen(
-        id, [instance, func](TArgs... args) { (instance->*func)(args...); });
-  }
-  template <typename TClass>
-  void unlisten(TClass *const instance, MemberFunction<TClass, TArgs...> func) {
-    const uint64_t id = (uint64_t)instance;
-    unlisten(id);
+        [instance, func](TArgs... args) { (instance->*func)(args...); }, id);
   }
 
   /// Emit callback.
@@ -274,6 +263,7 @@ class Callback {
 
  private:
   mutable std::mutex m_mutex;
+  int m_i_callback;
   std::map<uint64_t, std::function<void(TArgs...)>> m_functions;
 };
 
@@ -468,12 +458,12 @@ class FrameDetector {
         switch (m_sensor_info.model) {
           case VISTA_860:
             m_options.mode = CEPTON_SDK_FRAME_TIMED;
-            m_options.length = 0.05f;
+            m_options.length = 0.075f;
             break;
           default:
             if (!m_cover_detector.is_model_supported) {
               m_options.mode = CEPTON_SDK_FRAME_TIMED;
-              m_options.length = 0.05f;
+              m_options.length = 0.1f;
             }
             break;
         }
@@ -604,18 +594,18 @@ class FrameAccumulator {
     clear_impl();
   }
 
-  void add_points(int n_points, const SensorImagePoint *const c_image_points) {
+  void add_points(int n_points, const SensorImagePoint *const image_points) {
     std::lock_guard<std::mutex> lock(m_mutex);
 
     if (m_frame_detector.get_options().mode == CEPTON_SDK_FRAME_STREAMING) {
-      callback(n_points, c_image_points);
+      callback(n_points, image_points);
       return;
     }
 
     assert(n_points % m_stride == 0);
     const int i_0 = m_image_points.size();
-    m_image_points.insert(m_image_points.end(), c_image_points,
-                          c_image_points + n_points);
+    m_image_points.insert(m_image_points.end(), image_points,
+                          image_points + n_points);
     for (int i = i_0; i < m_image_points.size(); i += m_stride) {
       const auto &image_point = m_image_points[i];
       if (!m_frame_detector.add_point(image_point)) continue;
@@ -651,6 +641,154 @@ class FrameAccumulator {
 
   int m_i_frame;
   FrameDetector m_frame_detector;
+};
+
+// -----------------------------------------------------------------------------
+// Filter
+// -----------------------------------------------------------------------------
+/// Finds stray points caused by measurement noise.
+/**
+ * Marks point stray if its distance is different from neighbor points.
+ */
+class StrayFilter {
+ public:
+  StrayFilter(int segment_count, int return_count)
+      : m_segment_count(segment_count), m_return_count(return_count) {}
+  StrayFilter(const cepton_sdk::SensorInformation &sensor_info)
+      : StrayFilter(sensor_info.segment_count, sensor_info.return_count) {}
+
+  void run(int n_points, cepton_sdk::SensorImagePoint *const c_image_points) {
+    thread_local std::vector<int> indices;
+    const int stride = m_segment_count * m_return_count;
+    for (int i_segment = 0; i_segment < m_segment_count; ++i_segment) {
+      // Find valid indices for segment
+      indices.clear();
+      const int i_0 = i_segment * m_return_count;
+      for (int i = i_0; i < n_points; i += stride) {
+        const auto &image_point = c_image_points[i];
+        if (!image_point.valid) continue;
+        indices.push_back(i);
+      }
+
+      // Compute stray
+      for (int i = 0; i < indices.size(); ++i) {
+        for (int i_return = 0; i_return < m_return_count; ++i_return) {
+          auto &image_point = c_image_points[indices[i] + i_return];
+          if (!image_point.valid) continue;
+          const int i_start = std::max<int>(i - n_neighbors, 0);
+          const int i_end = std::min<int>(i + n_neighbors + 1, indices.size());
+          bool valid = false;
+          for (int i_neighbor = i_start; i_neighbor < i_end; ++i_neighbor) {
+            if (i_neighbor == i) continue;
+            for (int i_return_neighbor = 0; i_return_neighbor < m_return_count;
+                 ++i_return_neighbor) {
+              const auto &other_point =
+                  c_image_points[indices[i_neighbor] + i_return_neighbor];
+              if (check_impl(image_point, other_point)) {
+                valid = true;
+                break;
+              }
+            }
+          }
+          image_point.valid = valid;
+        }
+      }
+    }
+  }
+
+ private:
+  bool check_impl(const cepton_sdk::SensorImagePoint &image_point,
+                  const cepton_sdk::SensorImagePoint &other_point) {
+    if (!other_point.valid) return false;
+    const float distance_offset =
+        std::abs(image_point.distance - other_point.distance);
+    return (distance_offset < max_distance_offset);
+  }
+
+ public:
+  // Options
+  int n_neighbors = 2;
+  float max_distance_offset = 10.0f;
+
+ private:
+  int m_segment_count;
+  int m_return_count;
+};
+
+// -----------------------------------------------------------------------------
+// Concurrent
+// -----------------------------------------------------------------------------
+/// Object pool for storing large reusable temporary objects.
+template <typename T>
+class LargeObjectPool
+    : public std::enable_shared_from_this<LargeObjectPool<T>> {
+ public:
+  std::shared_ptr<T> get() {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    T *ptr;
+    if (m_free.empty()) {
+      m_objects.emplace_back();
+      ptr = &m_objects.back();
+    } else {
+      ptr = m_free.back();
+      m_free.pop_back();
+    }
+
+    auto this_ptr = this->shared_from_this();
+    return std::shared_ptr<T>(ptr, [this, this_ptr](T *const ptr) {
+      std::lock_guard<std::mutex> lock(m_mutex);
+      m_free.push_back(ptr);
+    });
+  }
+
+ private:
+  std::mutex m_mutex;
+  std::list<T> m_objects;
+  std::vector<T *> m_free;
+};
+
+/// Single consumer concurrent queue
+template <typename T>
+class SimpleConcurrentQueue {
+ public:
+  int size() const {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    return m_queue.size();
+  }
+
+  bool empty() const { return size() == 0; }
+
+  void clear() {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    while (!m_queue.empty()) m_queue.pop();
+  }
+
+  void push(const std::shared_ptr<T> &value) {
+    {
+      std::lock_guard<std::mutex> lock(m_mutex);
+      m_queue.push(value);
+    }
+    m_condition_variable.notify_one();
+  }
+
+  std::shared_ptr<T> pop(int64_t timeout = 0) {
+    std::unique_lock<std::mutex> lock(m_mutex);
+    if (m_queue.empty()) {
+      if (timeout == 0) return std::shared_ptr<T>();
+      m_condition_variable.wait_for(
+          lock, std::chrono::microseconds(timeout),
+          [this]() -> bool { return !m_queue.empty(); });
+    }
+    if (m_queue.empty()) return std::shared_ptr<T>();
+    const std::shared_ptr<T> value = std::move(m_queue.front());
+    m_queue.pop();
+    return value;
+  }
+
+ private:
+  std::queue<std::shared_ptr<T>> m_queue;
+  mutable std::mutex m_mutex;
+  std::condition_variable m_condition_variable;
 };
 
 #include "cepton_undef.h"

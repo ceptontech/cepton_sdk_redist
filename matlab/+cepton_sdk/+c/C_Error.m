@@ -1,4 +1,4 @@
-classdef SensorError < handle
+classdef C_Error < handle
 
 properties (SetAccess = protected)
     code = 0;
@@ -6,7 +6,7 @@ properties (SetAccess = protected)
 end
 
 methods
-    function self = SensorError(code, msg)
+    function self = C_Error(code, msg)
         if nargin >= 1
             self.code = code;
         end

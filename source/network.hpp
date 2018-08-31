@@ -14,79 +14,6 @@
 
 namespace cepton_sdk {
 
-/// Object pool for storing large reusable temporary objects.
-template <typename T>
-class LargeObjectPool
-    : public std::enable_shared_from_this<LargeObjectPool<T>> {
- public:
-  std::shared_ptr<T> get() {
-    std::lock_guard<std::mutex> lock(m_mutex);
-    T *ptr;
-    if (m_free.empty()) {
-      m_objects.emplace_back();
-      ptr = &m_objects.back();
-    } else {
-      ptr = m_free.back();
-      m_free.pop_back();
-    }
-
-    auto this_ptr = this->shared_from_this();
-    return std::shared_ptr<T>(ptr, [this, this_ptr](T *const ptr) {
-      std::lock_guard<std::mutex> lock(m_mutex);
-      m_free.push_back(ptr);
-    });
-  }
-
- private:
-  std::mutex m_mutex;
-  std::list<T> m_objects;
-  std::vector<T *> m_free;
-};
-
-/// Single consumer concurrent queue
-template <typename T>
-class SimpleConcurrentQueue {
- public:
-  int size() const {
-    std::lock_guard<std::mutex> lock(m_mutex);
-    return m_queue.size();
-  }
-
-  bool empty() const { return size() == 0; }
-
-  void clear() {
-    std::lock_guard<std::mutex> lock(m_mutex);
-    while (!m_queue.empty()) m_queue.pop();
-  }
-
-  void push(const std::shared_ptr<T> &value) {
-    {
-      std::lock_guard<std::mutex> lock(m_mutex);
-      m_queue.push(value);
-    }
-    m_condition_variable.notify_one();
-  }
-
-  std::shared_ptr<T> pop(int64_t timeout = 0) {
-    std::unique_lock<std::mutex> lock(m_mutex);
-    if (m_queue.empty()) {
-      if (timeout == 0) return std::shared_ptr<T>();
-      m_condition_variable.wait_for(
-          lock, std::chrono::microseconds(timeout),
-          [this]() -> bool { return !m_queue.empty(); });
-    }
-    if (m_queue.empty()) return std::shared_ptr<T>();
-    const std::shared_ptr<T> value = std::move(m_queue.front());
-    m_queue.pop();
-    return value;
-  }
-
- private:
-  std::queue<std::shared_ptr<T>> m_queue;
-  mutable std::mutex m_mutex;
-  std::condition_variable m_condition_variable;
-};
-
 class SocketListener {
  public:
   SocketListener(uint16_t port);
@@ -131,7 +58,7 @@ class NetworkManager {
   uint16_t m_port = 8808;
 
   bool m_is_initialized = false;
-  SimpleConcurrentQueue<Packet> m_packets;
+  util::SimpleConcurrentQueue<Packet> m_packets;
   std::unique_ptr<SocketListener> m_listener;
 
   std::atomic<bool> m_is_running{false};

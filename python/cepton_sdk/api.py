@@ -16,6 +16,7 @@ __all__ = [
     "has_sensor",
     "ImageFramesListener",
     "initialize",
+    "deinitialize",
     "is_end",
     "is_live",
     "is_realtime",
@@ -59,15 +60,28 @@ def get_time():
         return cepton_sdk.capture_replay.get_time()
 
 
-def wait(t_length=0.1):
-    """Resumes capture replay or sleeps for duration."""
+def _wait(t_length):
     if is_realtime():
         time.sleep(t_length)
     else:
         cepton_sdk.capture_replay.resume_blocking(t_length)
 
 
-def initialize(capture_path=None, control_flags=0, error_callback=None, port=None, **kwargs):
+def wait(t_length=0):
+    """Resumes capture replay or sleeps for duration.
+
+    If `t_length` is `0`, then waits forever.
+    """
+    if t_length == 0:
+        while True:
+            _wait(0.1)
+            if is_end():
+                break
+    else:
+        _wait(t_length)
+
+
+def initialize(capture_path=None, capture_seek=0, control_flags=0, error_callback=None, port=None, **kwargs):
     """Initializes SDK. Optionally starts capture replay.
 
     Arguments:
@@ -91,10 +105,15 @@ def initialize(capture_path=None, control_flags=0, error_callback=None, port=Non
         cepton_sdk.capture_replay.open(capture_path)
     wait(3)
     if capture_path is not None:
-        cepton_sdk.capture_replay.seek(0)
+        cepton_sdk.capture_replay.seek(capture_seek)
 
 
-def listen_image_frames(callback, callback_id=None):
+def deinitialize():
+    cepton_sdk.core._image_frames_callback.deinitialize()
+    cepton_sdk.core._manager.deinitialize()
+
+
+def listen_image_frames(callback):
     """Register image frames callback.
 
     Throws error if `callback_id` is currently registered.
@@ -102,7 +121,7 @@ def listen_image_frames(callback, callback_id=None):
     Returns:
         callback_id
     """
-    return cepton_sdk.core._image_frames_callback.listen(callback, callback_id=None)
+    return cepton_sdk.core._image_frames_callback.listen(callback)
 
 
 def unlisten_image_frames(callback_id):
@@ -117,7 +136,7 @@ def _wait_on_func(func, timeout=None):
     if timeout is not None:
         t_start = get_timestamp()
     while not func():
-        wait()
+        wait(0.001)
         if timeout is not None:
             if (get_timestamp() - t_start) > timeout:
                 raise RuntimeError("Timed out!")
@@ -142,12 +161,9 @@ class _FramesListener(_ListenerBase):
         self.points_dict = collections.defaultdict(list)
         super().__init__()
 
-    def _reset(self):
-        self.points_dict.clear()
-
     def reset(self):
         with self._lock:
-            self._reset()
+            self.points_dict = collections.defaultdict(list)
 
     def _on_points(self, sensor_info, points):
         with self._lock:
@@ -159,8 +175,8 @@ class _FramesListener(_ListenerBase):
 
     def _get_points(self):
         with self._lock:
-            points_dict = dict(self.points_dict)
-            self._reset()
+            points_dict = self.points_dict
+            self.points_dict = collections.defaultdict(list)
         return points_dict
 
     def get_points(self, **kwargs):
@@ -174,12 +190,9 @@ class _SensorFramesListener(_ListenerBase):
         self.points_list = []
         super().__init__()
 
-    def _reset(self):
-        del self.points_list[:]
-
     def reset(self):
         with self._lock:
-            self._reset()
+            self.points_list = []
 
     def _on_points(self, sensor_info, points):
         with self._lock:
@@ -193,8 +206,8 @@ class _SensorFramesListener(_ListenerBase):
 
     def _get_points(self):
         with self._lock:
-            points_list = copy.copy(self.points_list)
-        self._reset()
+            points_list = self.points_list
+            self.points_list = []
         return points_list
 
     def get_points(self, **kwargs):

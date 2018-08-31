@@ -1,5 +1,13 @@
 # Cepton SDK Release Notes
 
+### Version 1.6 2018-08-31
+* Support for intensities for Vista 860
+* New set of APIs for global limits
+* Stray filter (experimental)
+* Minor improvements in API definitions.
+* Change to mock_network_receive to allow accurate timestamping
+* Bug fixes
+
 ### Version 1.5 2018-08-10
 * Fix networking bugs.
 * Refactor capture/replay.

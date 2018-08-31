@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -17,9 +18,45 @@ namespace cepton_sdk {
 class Capture {
  public:
   struct PacketHeader {
-    uint32_t ip_v4;  // Host endian value, 0xC0A82020 = 192.168.32.32
+    uint32_t ip_v4;
     int64_t timestamp;
     int data_size;
+  };
+
+ private:
+  struct IndexFileHeader {
+    std::size_t version = 0;
+    uint64_t start_time;
+    std::size_t n;
+  };
+
+  struct PacketIndex {
+    int64_t position;
+    uint64_t pointer;
+  };
+
+  struct PacketData {
+    int id;
+    bool mf;
+    int off;
+    int len;
+
+    int n_fragments;
+    PacketHeader header;
+    std::vector<uint8_t> buffer;
+
+    PacketData() { reset(); }
+
+    void reset() {
+      id = -1;
+      mf = false;
+      off = 0;
+      len = 0;
+
+      n_fragments = 0;
+      header = {};
+      buffer.clear();
+    }
   };
 
  public:
@@ -60,24 +97,12 @@ class Capture {
   bool m_is_read_mode;
   int64_t m_read_ptr;
   int64_t m_write_ptr;
-
-  std::vector<uint8_t> m_buffer;
-
   int64_t m_timestamp_offset = 0;
   int64_t m_start_time = 0;
   int64_t m_position = 0;
   int64_t m_length = 0;
-
-  struct IndexFileHeader {
-    std::size_t version = 0;
-    uint64_t start_time;
-    std::size_t n;
-  };
-
-  struct PacketIndex {
-    int64_t position;
-    uint64_t pointer;
-  };
   std::vector<PacketIndex> m_read_index;
+
+  std::map<uint32_t, PacketData> m_packets;
 };
 }  // namespace cepton_sdk

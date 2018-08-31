@@ -6,13 +6,13 @@ import setuptools
 if __name__ == "__main__":
     setuptools.setup(
         name="cepton_sdk",
-        version="1.5.1",
+        version="1.6.1",
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
         author="Cepton Technologies",
         classifiers=[
-            "Development Status :: 4 - Beta",
+            "Development Status :: 5 - Production/Stable",
             "Programming Language :: Python :: 3",
         ],
         keywords="cepton sdk",

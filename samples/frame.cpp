@@ -25,22 +25,21 @@ int main(int argc, char **argv) {
 
   // Create accumulator
   auto frame_options = cepton_sdk::create_frame_options();
-//   frame_options.mode = CEPTON_SDK_FRAME_COVER;
   frame_options.mode = CEPTON_SDK_FRAME_TIMED;
   frame_options.length = 0.1f;
   cepton_sdk::util::FrameAccumulator accumulator(sensor_info);
   cepton_sdk::api::check_error(accumulator.set_options(frame_options));
   callback.listen(
-      0, [&](cepton_sdk::SensorHandle handle, std::size_t n_points,
-             const cepton_sdk::SensorImagePoint *const c_image_points) {
+      [&](cepton_sdk::SensorHandle handle, std::size_t n_points,
+          const cepton_sdk::SensorImagePoint *const c_image_points) {
         if (handle != sensor_info.handle) return;
         accumulator.add_points(n_points, c_image_points);
       });
 
   // Listen
   accumulator.callback.listen(
-      0, [&](int n_points,
-             const cepton_sdk::SensorImagePoint *const c_image_points) {
+      [&](int n_points,
+          const cepton_sdk::SensorImagePoint *const c_image_points) {
         std::printf("Received %i points\n", n_points);
       });
 

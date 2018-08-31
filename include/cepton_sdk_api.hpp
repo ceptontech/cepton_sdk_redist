@@ -31,8 +31,8 @@ static uint64_t get_time() {
   return (is_live()) ? util::get_timestamp_usec() : capture_replay::get_time();
 }
 
-/// Sleeps or resumes capture replay for duration.
-static SensorError wait(float t_length = 0.1f) {
+namespace internal {
+static SensorError wait(float t_length) {
   if (is_realtime()) {
     std::this_thread::sleep_for(
         std::chrono::milliseconds((int)(1e3f * t_length)));
@@ -40,6 +40,23 @@ static SensorError wait(float t_length = 0.1f) {
   } else {
     return capture_replay::resume_blocking(t_length);
   }
+}
+}  // namespace internal
+
+/// Sleeps or resumes capture replay for duration.
+/**
+ * If `t_length` is `0`, then waits forever.
+ */
+static SensorError wait(float t_length = 0.0f) {
+  if (t_length) {
+    return internal::wait(t_length);
+  } else {
+    do {
+      const auto error = internal::wait(0.1f);
+      if (error) return error;
+    } while (!is_end());
+  }
+  return CEPTON_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
@@ -63,6 +80,16 @@ static SensorError create_error(SensorErrorCode error_code,
 }
 }  // namespace internal
 
+/// DEPRECATED: use `cepton_sdk::api::log_error`.
+DEPRECATED static SensorError log_error_code(SensorErrorCode error_code,
+                                             const std::string &msg = "") {
+  const auto error = internal::create_error(error_code, msg);
+  if (!error) return error;
+
+  std::fprintf(stderr, "%s\n", error.what());
+  return error;
+}
+
 /// DEPRECATED: use `cepton_sdk::api::check_error`.
 DEPRECATED static SensorError check_error_code(SensorErrorCode error_code,
                                                const std::string &msg = "") {
@@ -77,13 +104,16 @@ DEPRECATED static SensorError check_error_code(SensorErrorCode error_code,
   return error;
 }
 
-/// DEPRECATED: use `cepton_sdk::api::log_error`.
-DEPRECATED static SensorError log_error_code(SensorErrorCode error_code,
-                                             const std::string &msg = "") {
-  const auto error = internal::create_error(error_code, msg);
+/// Prints error.
+static const SensorError &log_error(const SensorError &error,
+                                    const std::string &msg = "") {
   if (!error) return error;
 
-  std::fprintf(stderr, "%s\n", error.what());
+  if (msg.empty()) {
+    std::fprintf(stderr, "%s\n", error.what());
+  } else {
+    std::fprintf(stderr, "%s <%s>\n", msg.c_str(), error.what());
+  }
   return error;
 }
 
@@ -92,22 +122,15 @@ DEPRECATED static SensorError log_error_code(SensorErrorCode error_code,
  * If error, raises exception.
  * Otherwise, prints error.
  */
-static const SensorError &check_error(const SensorError &error) {
+static const SensorError &check_error(const SensorError &error,
+                                      const std::string &msg = "") {
   if (!error) return error;
 
   if (error.is_error()) {
     throw error;
   } else {
-    std::fprintf(stderr, "%s\n", error.what());
+    log_error(error, msg);
   }
-  return error;
-}
-
-/// Prints error.
-static const SensorError &log_error(const SensorError &error) {
-  if (!error) return error;
-
-  std::fprintf(stderr, "%s\n", error.what());
   return error;
 }
 

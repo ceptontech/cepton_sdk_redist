@@ -72,9 +72,14 @@ class Renderer(object):
             plot_handle.antialias = 0
             self.add_plot(plot_name, plot_handle)
         plot_handle = self.plot_handles[plot_name]
+        colors = numpy.ones([len(points), 4])
+        if True:
+            colors[numpy.logical_not(points.valid), :] = [1, 0, 0, 1]
+        else:
+            colors[numpy.logical_not(points.valid), :] = 0
         options = {
             "edge_width": 0,
-            "face_color": "white",
+            "face_color": colors,
             "pos": points.positions,
             "size": 2,
         }
@@ -83,7 +88,7 @@ class Renderer(object):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage='%(prog)s [OPTIONS]')
-    parser.add_argument("--capture_path", default=get_sample_capture_path())
+    parser.add_argument("--capture_path")
     parser.add_argument("--sensor", type=int)
     args = parser.parse_args()
 

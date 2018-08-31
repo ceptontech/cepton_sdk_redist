@@ -50,7 +50,7 @@
 
 <div class="viewcode-block" id="combine_points"><a class="viewcode-back" href="../../points.html#cepton_sdk.combine_points">[docs]</a><span class="k">def</span> <span class="nf">combine_points</span><span class="p">(</span><span class="n">points_list</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Combine list of points (`ImagePoints`, `Points`, etc).</span>
-<span class="sd">    </span>
+
 <span class="sd">    List must be nonempty.</span>
 <span class="sd">    Returns:</span>
 <span class="sd">        combined_points</span>
@@ -109,7 +109,6 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intensities</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">])</span>
@@ -119,8 +118,12 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_array_member_names</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;timestamps_usec&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamps&quot;</span><span class="p">,</span> <span class="s2">&quot;positions&quot;</span><span class="p">,</span> <span class="s2">&quot;intensities&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;return_types&quot;</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="p">,</span> <span class="s2">&quot;saturated&quot;</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;timestamps_usec&quot;</span><span class="p">,</span> <span class="s2">&quot;positions&quot;</span><span class="p">,</span> <span class="s2">&quot;intensities&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;return_types&quot;</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="p">,</span> <span class="s2">&quot;saturated&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">timestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ImagePoints"><a class="viewcode-back" href="../../points.html#cepton_sdk.ImagePoints">[docs]</a><span class="k">class</span> <span class="nc">ImagePoints</span><span class="p">(</span><span class="n">StructureOfArrays</span><span class="p">,</span> <span class="n">ToCMixin</span><span class="p">):</span>
@@ -139,7 +142,6 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distances</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intensities</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">])</span>
@@ -153,13 +155,16 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_array_member_names</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;timestamps_usec&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamps&quot;</span><span class="p">,</span> <span class="s2">&quot;positions&quot;</span><span class="p">,</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;timestamps_usec&quot;</span><span class="p">,</span> <span class="s2">&quot;positions&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;distances&quot;</span><span class="p">,</span> <span class="s2">&quot;intensities&quot;</span><span class="p">,</span> <span class="s2">&quot;return_types&quot;</span><span class="p">,</span> <span class="s2">&quot;valid&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;saturated&quot;</span><span class="p">]</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">timestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_from_c_impl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">timestamps</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;image_x&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;image_z&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
@@ -208,7 +213,6 @@
 
         <span class="n">points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="n">points</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">timestamps</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamps</span>
         <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">convert_image_points_to_points</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">)</span>
         <span class="n">points</span><span class="o">.</span><span class="n">intensities</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intensities</span>
@@ -225,7 +229,6 @@
 
         <span class="n">image_points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
         <span class="n">image_points</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">timestamps_usec</span>
-        <span class="n">image_points</span><span class="o">.</span><span class="n">timestamps</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">timestamps</span>
         <span class="n">image_points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="p">:],</span> <span class="n">image_points</span><span class="o">.</span><span class="n">distances</span><span class="p">[:]</span> <span class="o">=</span> \
             <span class="n">convert_points_to_image_points</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span>
         <span class="n">image_points</span><span class="o">.</span><span class="n">intensities</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">intensities</span>

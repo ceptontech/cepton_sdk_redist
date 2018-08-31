@@ -14,7 +14,7 @@ __all__ = [
 
 def combine_points(points_list):
     """Combine list of points (`ImagePoints`, `Points`, etc).
-    
+
     List must be nonempty.
     Returns:
         combined_points
@@ -73,7 +73,6 @@ class Points(StructureOfArrays):
 
     def __init__(self, n=0):
         super().__init__(n)
-        self.timestamps = numpy.zeros([n])
         self.timestamps_usec = numpy.zeros([n], dtype=numpy.int64)
         self.positions = numpy.zeros([n, 3])
         self.intensities = numpy.zeros([n])
@@ -83,8 +82,12 @@ class Points(StructureOfArrays):
 
     @classmethod
     def _get_array_member_names(cls):
-        return ["timestamps_usec", "timestamps", "positions", "intensities",
+        return ["timestamps_usec", "positions", "intensities",
                 "return_types", "valid", "saturated"]
+
+    @property
+    def timestamps(self):
+        return 1e-6 * self.timestamps_usec.astype(float)
 
 
 class ImagePoints(StructureOfArrays, ToCMixin):
@@ -103,7 +106,6 @@ class ImagePoints(StructureOfArrays, ToCMixin):
     def __init__(self, n=0):
         super().__init__(n)
         self.timestamps_usec = numpy.zeros([n], dtype=numpy.int64)
-        self.timestamps = numpy.zeros([n])
         self.positions = numpy.zeros([n, 2])
         self.distances = numpy.zeros([n])
         self.intensities = numpy.zeros([n])
@@ -117,13 +119,16 @@ class ImagePoints(StructureOfArrays, ToCMixin):
 
     @classmethod
     def _get_array_member_names(cls):
-        return ["timestamps_usec", "timestamps", "positions",
+        return ["timestamps_usec", "positions",
                 "distances", "intensities", "return_types", "valid",
                 "saturated"]
 
+    @property
+    def timestamps(self):
+        return 1e-6 * self.timestamps_usec.astype(float)
+
     def _from_c_impl(self, data):
         self.timestamps_usec[:] = data["timestamp"]
-        self.timestamps[:] = 1e-6 * data["timestamp"].astype(float)
         self.positions[:, 0] = data["image_x"]
         self.positions[:, 1] = data["image_z"]
         self.distances[:] = data["distance"]
@@ -172,7 +177,6 @@ class ImagePoints(StructureOfArrays, ToCMixin):
 
         points = cls(len(self))
         points.timestamps_usec[:] = self.timestamps_usec
-        points.timestamps[:] = self.timestamps
         points.positions[:, :] = convert_image_points_to_points(
             self.positions, self.distances)
         points.intensities[:] = self.intensities
@@ -189,7 +193,6 @@ class ImagePoints(StructureOfArrays, ToCMixin):
 
         image_points = cls(len(points))
         image_points.timestamps_usec[:] = points.timestamps_usec
-        image_points.timestamps[:] = points.timestamps
         image_points.positions[:, :], image_points.distances[:] = \
             convert_points_to_image_points(points.positions)
         image_points.intensities[:] = points.intensities

@@ -3,7 +3,7 @@ import warnings
 
 from cepton_sdk.common.c import *
 
-SDK_VERSION = 14
+SDK_VERSION = 16
 
 _module_dir = os.path.dirname(os.path.abspath(__file__))
 lib = load_c_library(_module_dir, "cepton_sdk")

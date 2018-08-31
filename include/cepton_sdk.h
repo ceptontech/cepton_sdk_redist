@@ -13,10 +13,9 @@
 extern "C" {
 #endif
 
-#define COMPILING CEPTON_SDK_COMPILING
 #include "cepton_def.h"
 
-#define CEPTON_SDK_VERSION 14
+#define CEPTON_SDK_VERSION 16
 
 //------------------------------------------------------------------------------
 // Errors
@@ -137,7 +136,7 @@ struct EXPORT CeptonSensorImagePoint {
   float image_x;      ///< x image coordinate
   float distance;     ///< distance [meters]
   float image_z;      ///< z image coordinate
-  float intensity;    ///< 0-1 scaled intensity
+  float intensity;    ///< diffuse reflectance
   CeptonSensorReturnType return_type;
 
 #ifdef SIMPLE
@@ -159,6 +158,15 @@ struct EXPORT CeptonSensorImagePoint {
   uint8_t reserved[2];
 };
 EXPORT extern const size_t cepton_sensor_image_point_size;
+
+//------------------------------------------------------------------------------
+// Limits to help application to preallocation of buffers
+// (These numbers are guaranteed to be safe for 6 months from SDK release)
+//------------------------------------------------------------------------------
+inline uint32_t cepton_sdk_max_points_per_packet() { return (1500 - 8) / 4; }
+inline uint32_t cepton_sdk_max_points_per_frame() { return 50000; }
+inline uint32_t cepton_sdk_max_points_per_second() { return 1000000; }
+inline uint32_t cepton_sdk_max_frames_per_second() { return 40; }
 
 //------------------------------------------------------------------------------
 // SDK Setup
@@ -189,6 +197,11 @@ enum _CeptonSDKControl {
    * number of returns per laser. Can only be set at sdk initialization.
    */
   CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS = 1 << 4,
+  /// Enable marking stray points as invalid (measurement noise).
+  /**
+   * Does not affect number of points returned.
+   */
+  CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER = 1 << 5,
 };
 
 typedef uint32_t CeptonSDKFrameMode;

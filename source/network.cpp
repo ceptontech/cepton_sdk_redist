@@ -2,6 +2,7 @@
 
 #include "cepton_sdk/core.hpp"
 #include "cepton_sdk/sensor.hpp"
+#include "cepton_sdk_api.hpp"
 #include "cepton_sdk_util.hpp"
 
 using asio::ip::udp;
@@ -20,14 +21,24 @@ SocketListener::SocketListener(uint16_t port)
 SocketListener::~SocketListener() { stop(); }
 
 void SocketListener::run() {
-  stop();
   listen();
   m_io_service.run();
 }
 
 void SocketListener::stop() {
   std::lock_guard<std::mutex> lock(m_mutex);
-  m_socket.cancel();
+  try {
+    // Cancel asio calls (This will throw system error in windows sometimes)
+    m_socket.cancel();
+
+    // Shutdown is required by windows OS, may throw system error in OSX
+    m_socket.shutdown(udp::socket::shutdown_both);
+    m_socket.close();
+  } catch (const std::system_error &) {
+    // Tolerate system error of these types:
+    // OSX: "shutdown: Socket is not connected"
+    // Windows: "cancel: The file handle supplied is not valid."
+  }
   m_io_service.stop();
   m_io_service.reset();
 }
@@ -58,9 +69,9 @@ void NetworkManager::initialize() {
   m_is_running = true;
 
   m_listener.reset(new SocketListener(m_port));
-  m_listener->callback.listen(0, [&](const asio::error_code &error,
-                                     CeptonSensorHandle handle, int buffer_size,
-                                     const uint8_t *const buffer) {
+  m_listener->callback.listen([&](const asio::error_code &error,
+                                  CeptonSensorHandle handle, int buffer_size,
+                                  const uint8_t *const buffer) {
     if (error.value()) {
       callback_manager.emit_error(CEPTON_NULL_HANDLE,
                                   CEPTON_ERROR_COMMUNICATION,
@@ -68,14 +79,22 @@ void NetworkManager::initialize() {
       return;
     }
 
-    thread_local std::shared_ptr<LargeObjectPool<Packet>> packet_pool;
-    if (!packet_pool) packet_pool.reset(new LargeObjectPool<Packet>());
+    thread_local std::shared_ptr<util::LargeObjectPool<Packet>> packet_pool;
+    if (!packet_pool) packet_pool.reset(new util::LargeObjectPool<Packet>());
     auto packet = packet_pool->get();
     packet->handle = handle;
     packet->timestamp = util::get_timestamp_usec();
     packet->buffer.clear();
     packet->buffer.reserve(buffer_size);
     packet->buffer.insert(packet->buffer.end(), buffer, buffer + buffer_size);
+    if (m_packets.size() > 1000) {
+#ifdef CEPTON_INTERNAL
+    // api::log_error(
+    //    SensorError(CEPTON_ERROR_COMMUNICATION, "Packet queue full!"),
+    //    "Network failed!");
+#endif
+      m_packets.clear();
+    }
     m_packets.push(packet);
   });
   m_listener_thread.reset(new std::thread([&]() { m_listener->run(); }));

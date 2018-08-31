@@ -104,6 +104,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Frame</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="replay.html">Replay</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensor.html">Sensor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transform.html">Transform</a></li>
 </ul>
 </li>
@@ -231,8 +232,7 @@
 44
 45
 46
-47
-48</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+47</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
 <span class="cm"> * Sample code for custom frame accumulation.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -259,22 +259,21 @@
 
   <span class="c1">// Create accumulator</span>
   <span class="k">auto</span> <span class="n">frame_options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">create_frame_options</span><span class="p">();</span>
-<span class="c1">//   frame_options.mode = CEPTON_SDK_FRAME_COVER;</span>
   <span class="n">frame_options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CEPTON_SDK_FRAME_TIMED</span><span class="p">;</span>
   <span class="n">frame_options</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="mf">0.1f</span><span class="p">;</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">FrameAccumulator</span> <span class="n">accumulator</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">);</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">accumulator</span><span class="p">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">frame_options</span><span class="p">));</span>
   <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span>
-      <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
-             <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="k">const</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
+          <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="k">const</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">handle</span> <span class="o">!=</span> <span class="n">sensor_info</span><span class="p">.</span><span class="n">handle</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
         <span class="n">accumulator</span><span class="p">.</span><span class="n">add_points</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">c_image_points</span><span class="p">);</span>
       <span class="p">});</span>
 
   <span class="c1">// Listen</span>
   <span class="n">accumulator</span><span class="p">.</span><span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span>
-      <span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">n_points</span><span class="p">,</span>
-             <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="k">const</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">n_points</span><span class="p">,</span>
+          <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="k">const</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">n_points</span><span class="p">);</span>
       <span class="p">});</span>
 

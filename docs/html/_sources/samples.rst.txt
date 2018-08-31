@@ -10,4 +10,5 @@ Samples
   samples/frame
   samples/network
   samples/replay
+  samples/sensor
   samples/transform

@@ -1,1 +1,1 @@
-Copyright Cepton Technologies Inc. 2017, All rights reserved.
+Copyright Cepton Technologies Inc. 2017-2018, All rights reserved.

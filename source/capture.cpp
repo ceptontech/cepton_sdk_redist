@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 
-#include "cepton_sdk_util.hpp"
+#include "cepton_sdk_api.hpp"
 
 namespace cepton_sdk {
 
@@ -50,84 +50,175 @@ std::ostream &write_value(std::ostream &f, const T &value) {
   return write_values(f, &value, 1);
 }
 
-// Internal pcap file formats
-#pragma pack(push, 1)
+template <typename T>
+T swap_endian(const T &value) {
+  if (sizeof(T) == 1) return value;
+
+  // Not super fast, but simple.
+  T result;
+  const uint8_t *const value_bytes = (const uint8_t *)&value;
+  uint8_t *const result_bytes = (uint8_t *)&result;
+  for (int i = 0; i < sizeof(T); ++i) {
+    result_bytes[i] = value_bytes[sizeof(T) - i - 1];
+  }
+  return result;
+}
+
+template <typename T>
+void swap_endian_inplace(T &value) {
+  value = swap_endian(value);
+}
+
+template <int i, typename T>
+T get_bit_mask() {
+  return T(1) << T(i);
+}
+
+template <typename T>
+T get_bit_mask(int i) {
+  return T(1) << T(i);
+}
+
+template <typename T>
+bool get_bit(const T &value, int i) {
+  return value & get_bit_mask<T>(i);
+}
+
+template <int start, int size, typename T>
+T get_bit_field_mask() {
+  return ((T(1) << T(size)) - T(1)) << T(start);
+}
+
+template <int start, int size, typename T>
+T get_bit_field(const T &value) {
+  return (value & get_bit_field_mask<start, size, T>()) >> T(start);
+}
+
+template <typename T>
+std::string get_bit_str(const T &value) {
+  std::string result(8 * sizeof(T), '0');
+  for (int i = 0; i < 8 * sizeof(T); ++i) {
+    if (get_bit(value, i)) result[i] = '1';
+  }
+  return result;
+}
+
+template <typename T>
+std::string get_hex_str(const T &value) {
+  std::string result(2 * sizeof(T), '0');
+  const uint8_t *const value_bytes = (const uint8_t *)&value;
+  for (int i = 0; i < sizeof(T); ++i) {
+    std::sprintf(&result[2 * i], "%02X", value_bytes[i]);
+  }
+  return result;
+}
+
+// -----------------------------------------------------------------------------
+// PCAP
+// -----------------------------------------------------------------------------
+const uint32_t PCAP_MAGIC = 0xA1B2C3D4;
+const uint16_t PCAP_VERSION_MAJOR = 2;
+const uint16_t PCAP_VERSION_MINOR = 4;
+const uint32_t PCAP_LINKTYPE_ETHERNET = 1;
+
+const uint16_t PROTOCOL_V4 = 0x0008;
+
+const uint8_t IP_HL_VER = 0x45;
+const uint8_t IP_PROTOCOL_UDP = 0x11;
+
+#pragma pack(1)
 struct PCAPFileHeader {
-  uint32_t magic;
-  uint16_t version_major;
-  uint16_t version_minor;
-  uint32_t thiszone; /* gmt to local correction */
-  uint32_t sigfigs;  /* accuracy of timestamps */
-  uint32_t snaplen;  /* max length saved portion of each packet */
-  uint32_t linktype; /* data link type (LINKTYPE_*) */
+  uint32_t magic;          // magic number
+  uint16_t version_major;  // major version number
+  uint16_t version_minor;  // minor version number
+  uint32_t thiszone;       // gmt to local correction
+  uint32_t sigfigs;        // accuracy of timestamps
+  uint32_t snaplen;        // max length saved portion of each packet, in octets
+  uint32_t linktype;       // data link type
 };
+const int pcap_file_header_size = sizeof(PCAPFileHeader);
 
+#pragma pack(1)
 struct PCAPRecordHeader {
-  uint32_t ts_sec;
-  uint32_t ts_usec;
-  uint32_t incl_len;
-  uint32_t orig_len;
+  uint32_t ts_sec;    // timestamp seconds
+  uint32_t ts_usec;   // timestamp microseconds
+  uint32_t incl_len;  // number of octets of packet saved in file
+  uint32_t orig_len;  // actual length of packet
+};
+const int pcap_record_header_size = sizeof(PCAPRecordHeader);
+
+enum {
+  IP_FLAG_MF = 1 << 0,  // more fragments
+  IP_FLAG_DF = 1 << 1,  // don't fragment
 };
 
+// Big endian
+#pragma pack(1)
 struct IPHeader {
-  uint8_t ip_hl_v;  // header length + version
-  uint8_t ip_tos;   // type of service
-  uint16_t ip_len;  // total length
+  uint8_t hl_ver;     // header length + version
+  uint8_t tos;        // type of service
+  uint16_t len;       // total length
+  uint16_t id;        // identification
+  uint16_t frag_off;  // flags + fragment offset
+  uint8_t ttl;        // time to live
+  uint8_t p;          // protocol
+  uint16_t sum;       // checksum
+  uint32_t src;       // source address
+  uint32_t dst;       // dest address
 
-  uint16_t ip_id;   // identification
-  uint16_t ip_off;  // fragment offset field
+  void swap_endian() {
+    swap_endian_inplace(len);
+    swap_endian_inplace(id);
+    swap_endian_inplace(frag_off);
+    swap_endian_inplace(sum);
+    swap_endian_inplace(src);
+    swap_endian_inplace(dst);
+  }
 
-  uint8_t ip_ttl;   // time to live
-  uint8_t ip_p;     // protocol
-  uint16_t ip_sum;  // checksum
-
-  uint32_t ip_src, ip_dst;  // source and dest address
+  uint8_t hl() const { return get_bit_field<0, 4>(hl_ver); }
+  uint8_t ver() const { return get_bit_field<4, 4>(hl_ver); }
+  uint16_t off() const { return get_bit_field<0, 13>(frag_off); }
+  uint16_t flags() const { return get_bit_field<13, 3>(frag_off); }
 };
+const int ip_header_size = sizeof(IPHeader);
 
+// Big endian
+#pragma pack(1)
 struct UDPHeader {
+  uint16_t sport;  // source port
+  uint16_t dport;  // destination port
+  uint16_t len;    // udp length
+  uint16_t sum;    // udp checksum
+
+  void swap_endian() {
+    swap_endian_inplace(sport);
+    swap_endian_inplace(dport);
+    swap_endian_inplace(len);
+    swap_endian_inplace(sum);
+  }
+};
+const int udp_header_size = sizeof(UDPHeader);
+
+#pragma pack(1)
+struct RecordHeader {
+  PCAPRecordHeader pcap;
   uint8_t dst_mac[6];
   uint8_t src_mac[6];
   uint16_t protocol_type;
   IPHeader ip;
-
-  uint16_t uh_sport;  // source port (BIG ENDIAN)
-  uint16_t uh_dport;  // destination port (BIG ENDIAN)
-  uint16_t uh_ulen;   // udp length (BIG ENDIAN)
-  uint16_t uh_sum;    // udp checksum
-};
-
-// For ease of writing to files
-struct RecordHeader {
-  PCAPRecordHeader pcap;
   UDPHeader udp;
+
+  void swap_endian() {
+    ip.swap_endian();
+    udp.swap_endian();
+  }
 };
-#pragma pack(pop)
+const int record_header_size = sizeof(RecordHeader);
+const int packet_header_size = record_header_size - pcap_record_header_size;
 
-const uint8_t default_udp_header_data[sizeof(UDPHeader)] = {
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x18, 0x12, 0x12, 0,    0,
-    0,    0x08, 0x00, 0x45, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
-    0x80, 0x11, 0,    0,    0,    0,    0,    0,    0xFF, 0xFF, 0xFF,
-    0xFF, 0x01, 0xBB, 0x09, 0x40, 0x00, 0x00, 0x00, 0x00};
-const UDPHeader default_udp_header =
-    *(const UDPHeader *)default_udp_header_data;
-
-// Constants (copied from various sources)
-const uint32_t LINKTYPE_ETHERNET = 1;
-const uint32_t PCAP_MAGIC = 0xA1B2C3D4;  // low endian
-const uint16_t PCAP_MAJOR = 2;
-const uint16_t PCAP_MINOR = 4;
-
-const uint16_t PROTOCOL_V4 = 0x0008;  // NOTICE this is BIG ENDIAN
-const uint8_t IP_PROTO_UDP = 0x11;
-// const uint8_t IPVER_BYTE = 0x45;  // IPv4 + 20 bytes header
-
-uint16_t swap_uint16(uint16_t val) { return (val >> 8) | (val << 8); }
-
-uint32_t swap_uint32(uint32_t val) {
-  val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
-  return (val << 16) | (val >> 16);
-}
-
+// -----------------------------------------------------------------------------
+// Capture
+// -----------------------------------------------------------------------------
 SensorError Capture::open_for_read(const std::string &filename) {
   const auto error = open_for_read_impl(filename);
   if (error) close();
@@ -194,24 +285,24 @@ SensorError Capture::open_for_write_impl(const std::string &filename,
 void Capture::close() {
   m_stream.close();
   m_filename = "";
-  m_buffer.clear();
   m_timestamp_offset = 0;
   m_start_time = 0;
   m_position = 0;
   m_length = 0;
   m_read_index.clear();
+  m_packets.clear();
 }
 
 SensorError Capture::write_file_header() {
   m_stream.seekp(0);
   PCAPFileHeader file_header;
   file_header.magic = PCAP_MAGIC;
-  file_header.version_major = PCAP_MAJOR;
-  file_header.version_minor = PCAP_MINOR;
+  file_header.version_major = PCAP_VERSION_MAJOR;
+  file_header.version_minor = PCAP_VERSION_MINOR;
   file_header.thiszone = 0;
   file_header.sigfigs = 0;
   file_header.snaplen = 0xFFFF;
-  file_header.linktype = LINKTYPE_ETHERNET;
+  file_header.linktype = PCAP_LINKTYPE_ETHERNET;
   write_value(m_stream, file_header);
   CHECK_FILE(m_stream)
   m_write_ptr = m_stream.tellp();
@@ -236,13 +327,14 @@ SensorError read_record_header(std::istream &f, int64_t pointer,
   if (is_eof(f)) return CEPTON_ERROR_EOF;
   read_value(f, record_header);
   CHECK_FILE(f)
+  record_header.swap_endian();
   return CEPTON_SUCCESS;
 }
 
 SensorError Capture::build_read_index() {
   m_start_time = 0;
   m_read_index.clear();
-  int64_t pointer = sizeof(PCAPFileHeader);
+  int64_t pointer = pcap_file_header_size;
   while (true) {
     RecordHeader record_header;
     auto error = read_record_header(m_stream, pointer, record_header);
@@ -261,7 +353,7 @@ SensorError Capture::build_read_index() {
     m_read_index.push_back(pi);
 
     if (record_header.pcap.incl_len == 0) return CEPTON_ERROR_CORRUPT_FILE;
-    pointer += sizeof(PCAPRecordHeader) + record_header.pcap.incl_len;
+    pointer += pcap_record_header_size + record_header.pcap.incl_len;
   }
   return CEPTON_SUCCESS;
 }
@@ -302,7 +394,7 @@ SensorError Capture::load_read_index(std::ifstream &f) {
                                     record_header);
     if (error) return error;
     const int64_t pointer = m_read_index.back().pointer +
-                            sizeof(PCAPRecordHeader) +
+                            pcap_record_header_size +
                             record_header.pcap.incl_len;
     m_stream.seekg(pointer);
     if (!is_eof(m_stream)) return CEPTON_ERROR_CORRUPT_FILE;
@@ -347,6 +439,7 @@ SensorError Capture::next_packet(PacketHeader &packet_header,
     if (error) return error;
     if (success) break;
   }
+
   return CEPTON_SUCCESS;
 }
 
@@ -358,39 +451,73 @@ SensorError Capture::next_packet_impl(bool &success,
   RecordHeader record_header;
   auto error = read_record_header(m_stream, m_read_ptr, record_header);
   if (error) return error;
+  m_read_ptr += pcap_record_header_size + record_header.pcap.incl_len;
 
   // Skip if invalid protocol
-  if ((record_header.udp.protocol_type != PROTOCOL_V4) ||
-      (record_header.udp.ip.ip_p != IP_PROTO_UDP)) {
-    m_read_ptr += sizeof(PCAPRecordHeader) + record_header.pcap.incl_len;
+  if ((record_header.protocol_type != PROTOCOL_V4) ||
+      (record_header.ip.p != IP_PROTOCOL_UDP))
+    return CEPTON_SUCCESS;
+
+  if (record_header.ip.hl_ver != IP_HL_VER) {
+#ifdef CEPTON_INTERNAL
+    api::log_error(SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid IP header!"),
+                   "Capture failed!");
+#endif
     return CEPTON_SUCCESS;
   }
 
-  int len = swap_uint16(record_header.udp.uh_ulen);
-  if (record_header.pcap.incl_len <= sizeof(UDPHeader))
-    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid record size!");
+  const uint32_t ip_v4 = record_header.ip.src;
+  auto &packet = m_packets[ip_v4];
+  const int fragment_id = record_header.ip.id;
+  const bool is_first_fragment = !record_header.ip.off();
+  if (is_first_fragment) {
+    packet.reset();
+    packet.header.ip_v4 = ip_v4;
+    packet.header.timestamp = record_header.pcap.ts_sec * util::second_usec +
+                              record_header.pcap.ts_usec;
+    packet.id = fragment_id;
+    packet.len = record_header.udp.len;
+    packet.buffer.resize(packet.len);
+  } else {
+    const int fragment_off =
+        8 * (int)record_header.ip.off() - packet.n_fragments * udp_header_size;
+    if ((packet.id != fragment_id) || (packet.off != fragment_off)) {
+#ifdef CEPTON_INTERNAL
+      api::log_error(
+          SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid fragment!"),
+          "Capture failed!");
+#endif
+      return CEPTON_SUCCESS;
+    }
+  }
+  ++packet.n_fragments;
+  packet.mf = record_header.ip.flags() & IP_FLAG_MF;
 
-  // Sanity check
-  // 8 is the UDP header size
-  if ((record_header.pcap.incl_len - sizeof(UDPHeader)) != (len - 8))
-    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid record size!");
-  len -= 8;
-
-  packet_header.ip_v4 = swap_uint32(record_header.udp.ip.ip_src);
-  packet_header.timestamp = record_header.pcap.ts_sec * util::second_usec +
-                            record_header.pcap.ts_usec;
-  packet_header.data_size = len;
-
-  if (m_start_time == 0) m_start_time = packet_header.timestamp;
-  m_position = packet_header.timestamp - m_start_time;
-
-  m_buffer.resize(len);
-  m_stream.read((char *)m_buffer.data(), len);
+  const int fragment_len = record_header.pcap.incl_len - packet_header_size;
+  m_stream.read((char *)packet.buffer.data() + packet.off, fragment_len);
   CHECK_FILE(m_stream)
-  m_read_ptr = m_stream.tellg();
+  packet.off += fragment_len;
+
+  if (packet.mf) return CEPTON_SUCCESS;
+
+  packet.len -= packet.n_fragments * udp_header_size;
+  packet.buffer.resize(packet.len);
+  if (packet.off != packet.len) {
+#ifdef CEPTON_INTERNAL
+    api::log_error(
+        SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid packet size!"),
+        "Capture failed!");
+#endif
+    return CEPTON_SUCCESS;
+  }
+  packet.header.data_size = packet.buffer.size();
+
+  if (m_start_time == 0) m_start_time = packet.header.timestamp;
+  m_position = packet.header.timestamp - m_start_time;
 
   success = true;
-  packet_data = m_buffer.data();
+  packet_header = packet.header;
+  packet_data = packet.buffer.data();
   return CEPTON_SUCCESS;
 }
 
@@ -400,7 +527,9 @@ SensorError Capture::append_packet(const Capture::PacketHeader &packet_header,
 
   const int data_len = packet_header.data_size;
 
-  RecordHeader record_header;
+  RecordHeader record_header = {};
+  record_header.protocol_type = PROTOCOL_V4;
+
   if (packet_header.timestamp) {
     record_header.pcap.ts_sec = packet_header.timestamp / util::second_usec;
     record_header.pcap.ts_usec = packet_header.timestamp % util::second_usec;
@@ -409,12 +538,20 @@ SensorError Capture::append_packet(const Capture::PacketHeader &packet_header,
     record_header.pcap.ts_sec = timestamp / util::second_usec;
     record_header.pcap.ts_usec = timestamp % util::second_usec;
   }
-  record_header.pcap.incl_len = data_len + sizeof(UDPHeader);
-  record_header.pcap.orig_len = data_len + sizeof(UDPHeader);
-  record_header.udp = default_udp_header;
-  record_header.udp.ip.ip_src = swap_uint32(packet_header.ip_v4);
-  record_header.udp.ip.ip_len = swap_uint16(data_len + 28);
-  record_header.udp.uh_ulen = swap_uint16(data_len + 8);
+  record_header.pcap.incl_len = packet_header_size + data_len;
+  record_header.pcap.orig_len = packet_header_size + data_len;
+
+  record_header.ip.hl_ver = IP_HL_VER;
+  record_header.ip.len = ip_header_size + udp_header_size + data_len;
+  record_header.ip.p = IP_PROTOCOL_UDP;
+  record_header.ip.src = packet_header.ip_v4;
+  record_header.ip.dst = 0xFFFFFFFF;
+
+  record_header.udp.sport = 443;
+  record_header.udp.dport = 8808;
+  record_header.udp.len = udp_header_size + data_len;
+
+  record_header.swap_endian();
 
   m_stream.seekp(m_write_ptr);
   write_value(m_stream, record_header);

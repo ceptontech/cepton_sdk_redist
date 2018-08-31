@@ -52,6 +52,7 @@
     <span class="s2">&quot;has_sensor&quot;</span><span class="p">,</span>
     <span class="s2">&quot;ImageFramesListener&quot;</span><span class="p">,</span>
     <span class="s2">&quot;initialize&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;deinitialize&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_end&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_live&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_realtime&quot;</span><span class="p">,</span>
@@ -95,15 +96,28 @@
         <span class="k">return</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="wait"><a class="viewcode-back" href="../../general.html#cepton_sdk.wait">[docs]</a><span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="n">t_length</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Resumes capture replay or sleeps for duration.&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">_wait</span><span class="p">(</span><span class="n">t_length</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">is_realtime</span><span class="p">():</span>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">t_length</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">resume_blocking</span><span class="p">(</span><span class="n">t_length</span><span class="p">)</span></div>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">resume_blocking</span><span class="p">(</span><span class="n">t_length</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="initialize"><a class="viewcode-back" href="../../setup.html#cepton_sdk.initialize">[docs]</a><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">capture_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">control_flags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">error_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="wait"><a class="viewcode-back" href="../../general.html#cepton_sdk.wait">[docs]</a><span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="n">t_length</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Resumes capture replay or sleeps for duration.</span>
+
+<span class="sd">    If `t_length` is `0`, then waits forever.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">t_length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">_wait</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_end</span><span class="p">():</span>
+                <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_wait</span><span class="p">(</span><span class="n">t_length</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="initialize"><a class="viewcode-back" href="../../setup.html#cepton_sdk.initialize">[docs]</a><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">capture_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">capture_seek</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">control_flags</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">error_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Initializes SDK. Optionally starts capture replay.</span>
 
 <span class="sd">    Arguments:</span>
@@ -127,10 +141,15 @@
         <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">capture_path</span><span class="p">)</span>
     <span class="n">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">capture_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">capture_seek</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="listen_image_frames"><a class="viewcode-back" href="../../points.html#cepton_sdk.listen_image_frames">[docs]</a><span class="k">def</span> <span class="nf">listen_image_frames</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="deinitialize"><a class="viewcode-back" href="../../setup.html#cepton_sdk.deinitialize">[docs]</a><span class="k">def</span> <span class="nf">deinitialize</span><span class="p">():</span>
+    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">_image_frames_callback</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span>
+    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="listen_image_frames"><a class="viewcode-back" href="../../points.html#cepton_sdk.listen_image_frames">[docs]</a><span class="k">def</span> <span class="nf">listen_image_frames</span><span class="p">(</span><span class="n">callback</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Register image frames callback.</span>
 
 <span class="sd">    Throws error if `callback_id` is currently registered.</span>
@@ -138,7 +157,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        callback_id</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">_image_frames_callback</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">callback_id</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">_image_frames_callback</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="unlisten_image_frames"><a class="viewcode-back" href="../../points.html#cepton_sdk.unlisten_image_frames">[docs]</a><span class="k">def</span> <span class="nf">unlisten_image_frames</span><span class="p">(</span><span class="n">callback_id</span><span class="p">):</span>
@@ -153,7 +172,7 @@
     <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">t_start</span> <span class="o">=</span> <span class="n">get_timestamp</span><span class="p">()</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">func</span><span class="p">():</span>
-        <span class="n">wait</span><span class="p">()</span>
+        <span class="n">wait</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">get_timestamp</span><span class="p">()</span> <span class="o">-</span> <span class="n">t_start</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Timed out!&quot;</span><span class="p">)</span>
@@ -178,12 +197,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">points_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">points_dict</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_on_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
@@ -195,8 +211,8 @@
 
     <span class="k">def</span> <span class="nf">_get_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="n">points_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_dict</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+            <span class="n">points_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_dict</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">points_dict</span>
 
     <span class="k">def</span> <span class="nf">get_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -210,12 +226,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">points_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_list</span><span class="p">[:]</span>
-
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_list</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">_on_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
@@ -229,8 +242,8 @@
 
     <span class="k">def</span> <span class="nf">_get_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="n">points_list</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points_list</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+            <span class="n">points_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">points_list</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">points_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">return</span> <span class="n">points_list</span>
 
     <span class="k">def</span> <span class="nf">get_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>

@@ -4,7 +4,7 @@
 
 #include "cepton_sdk.hpp"
 #include "cepton_sdk/core.hpp"
-#include "cepton_sdk_util.hpp"
+#include "cepton_sdk_api.hpp"
 
 namespace cepton_sdk {
 
@@ -205,6 +205,7 @@ SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
 
   const CeptonSensorHandle handle =
       (CeptonSensorHandle)header.ip_v4 | CEPTON_SENSOR_HANDLE_FLAG_MOCK;
+  callback_manager.network_cb.emit(handle, timestamp, data, header.data_size);
   return cepton_sdk_mock_network_receive(handle, timestamp, data,
                                          header.data_size);
 }
@@ -251,7 +252,12 @@ SensorError CaptureReplay::feed_pcap() {
     }
 
     error = feed_pcap_once(true);
-    if (error) break;
+    if (error) {
+#ifdef CEPTON_INTERNAL
+      api::log_error(error, "Capture replay failed!");
+#endif
+      break;
+    }
   }
   m_is_running = false;
   return error;

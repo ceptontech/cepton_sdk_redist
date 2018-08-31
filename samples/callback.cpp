@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
   cepton_sdk::api::check_error(callback.initialize());
 
   // Listen lambda
-  callback.listen(0, [](cepton_sdk::SensorHandle handle, std::size_t n_points,
+  callback.listen([](cepton_sdk::SensorHandle handle, std::size_t n_points,
                      const cepton_sdk::SensorImagePoint *c_image_points) {});
 
   // Listen global function

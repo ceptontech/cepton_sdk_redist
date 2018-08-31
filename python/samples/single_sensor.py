@@ -2,6 +2,8 @@
 
 import pprint
 
+import numpy
+
 import cepton_sdk
 import cepton_sdk.plot
 from common import *

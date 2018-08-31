@@ -8,7 +8,6 @@ import cepton_sdk.c
 
 __all__ = [
     "ControlFlag",
-    "deinitialize",
     "FrameMode",
     "get_control_flags",
     "get_frame_length",
@@ -32,6 +31,7 @@ class ControlFlag(enum.IntEnum):
     DISABLE_IMAGE_CLIP = 1 << 2
     DISABLE_DISTANCE_CLIP = 1 << 3
     ENABLE_MULTIPLE_RETURNS = 1 << 4
+    ENABLE_STRAY_FILTER = 1 << 5
 
 
 @enum.unique
@@ -46,6 +46,9 @@ class _Manager:
     def __init__(self):
         self._lock = threading.Lock()
         self._error_callback = None
+
+    def __del__(self):
+        self.deinitialize()
 
     def initialize(self, control_flags=None, error_callback=None,
                    frame_mode=None, frame_length=None, port=None):
@@ -71,7 +74,7 @@ class _Manager:
             cepton_sdk.c.c_deinitialize()
         except:
             pass
-        self._callback = None
+        self._error_callback = None
 
     @staticmethod
     def _global_on_error(*args):
@@ -97,9 +100,6 @@ _manager = _Manager()
 
 def is_initialized():
     return bool(cepton_sdk.c.c_is_initialized())
-
-
-deinitialize = _manager.deinitialize
 
 
 def get_control_flags():
@@ -137,45 +137,50 @@ def get_frame_mode():
     return FrameMode(cepton_sdk.c.c_get_frame_mode())
 
 
-class _ImageFramesCallback:
+class _Callback:
     def __init__(self):
         self._lock = threading.Lock()
         self._callbacks = {}
         self._i_callback = 0
 
-    def initialize(self):
+    def __del__(self):
         self.deinitialize()
-        self._c_on_points = \
-            cepton_sdk.c.C_SensorImageDataCallback(
-                lambda *args: self._on_image_points(*args[:-1]))
-        cepton_sdk.c.c_listen_image_frames(self._c_on_points, None)
 
-    def deinitialize(self):
-        cepton_sdk.c.c_unlisten_image_frames()
-        self._callbacks.clear()
-
-    def _on_image_points(self, sensor_handle, n_points, c_image_points_ptr):
-        sensor_info = cepton_sdk.sensor.get_sensor_information_by_handle(
-            sensor_handle)
-        image_points = \
-            cepton_sdk.point.ImagePoints.from_c(n_points, c_image_points_ptr)
+    def listen(self, callback):
         with self._lock:
-            for callback in self._callbacks.values():
-                callback(sensor_info, image_points)
-
-    def listen(self, callback, callback_id=None):
-        with self._lock:
-            if callback_id is None:
-                callback_id = self._i_callback
-                self._i_callback += 1
-            if callback_id in self._callbacks:
-                raise RuntimeError("ID already registered!")
+            callback_id = self._i_callback
+            self._i_callback += 1
             self._callbacks[callback_id] = callback
             return callback_id
 
     def unlisten(self, callback_id):
         with self._lock:
             del self._callbacks[callback_id]
+
+
+class _ImageFramesCallback(_Callback):
+    def initialize(self):
+        self.deinitialize()
+        self._c_on_callback = \
+            cepton_sdk.c.C_SensorImageDataCallback(
+                lambda *args: self._on_callback(*args[:-1]))
+        cepton_sdk.c.c_listen_image_frames(self._c_on_callback, None)
+
+    def deinitialize(self):
+        try:
+            cepton_sdk.c.c_unlisten_image_frames()
+        except:
+            pass
+        self._callbacks.clear()
+
+    def _on_callback(self, sensor_handle, n_points, c_image_points_ptr):
+        sensor_info = \
+            cepton_sdk.sensor.get_sensor_information_by_handle(sensor_handle)
+        image_points = \
+            cepton_sdk.point.ImagePoints.from_c(n_points, c_image_points_ptr)
+        with self._lock:
+            for callback in self._callbacks.values():
+                callback(sensor_info, image_points)
 
 
 _image_frames_callback = _ImageFramesCallback()

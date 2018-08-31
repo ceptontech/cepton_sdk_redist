@@ -2,6 +2,7 @@ import argparse
 import datetime
 import os
 import os.path
+import shutil
 import signal
 import subprocess
 import sys
@@ -13,21 +14,23 @@ import serial.tools.list_ports
 
 __all__ = [
     "add_execute_command_arguments",
-    "add_output_path_arguments",
+    "add_io_path_arguments",
     "ArgumentParserMixin",
     "create_directory",
     "execute_command",
     "fix_path",
     "get_environment",
-    "get_output_path",
+    "get_io_paths",
     "get_timestamp_str",
     "get_timestamp",
+    "kill_background",
     "modify_path",
     "parse_execute_command_arguments",
     "parse_time_hms",
     "remove_extension",
     "run_background",
     "set_extension",
+    "wait_for_input",
     "wait_on_background",
 ]
 
@@ -77,12 +80,13 @@ class BackgroundProcess(object):
         self.proc = subprocess.Popen(*args, **kwargs)
 
     def __del__(self):
-        self.proc.terminate()
-        for i in range(10):
-            if self.proc.poll() is not None:
-                return
-            time.sleep(0.1)
-        self.proc.kill()
+        try:
+            if os.name == "nt":
+                os.kill(self.proc.pid, signal.CTRL_C_EVENT)
+            else:
+                os.killpg(os.getpgid(self.proc.pid), signal.SIGINT)
+        except:
+            pass
 
 
 class BackgroundThread(object):
@@ -92,17 +96,35 @@ class BackgroundThread(object):
         self.thread = threading.Thread(*args, **kwargs)
 
     def __del__(self):
-        self.shutdown_event.set()
-        self.thread.join(1.0)
+        try:
+            self.shutdown_event.set()
+        except:
+            pass
+        try:
+            self.thread.join(1.0)
+        except:
+            pass
+
+
+def wait_for_input():
+    time.sleep(1)
+    print("Press ENTER to exit...")
+    input()
+    kill_background()
 
 
 def wait_on_background():
     for proc in __local["procs"]:
         proc.proc.wait()
-    __local["procs"] = []
+    del __local["procs"][:]
     for thread in __local["threads"]:
         thread.thread.join()
-    __local["threads"] = []
+    del __local["threads"][:]
+
+
+def kill_background():
+    del __local["procs"][:]
+    del __local["threads"][:]
 
 
 def run_background(func, args=(), kwargs={}):
@@ -173,21 +195,32 @@ def modify_path(path, new_ext=None, prefix="", postfix=""):
     return path
 
 
-def add_output_path_arguments(parser, prefix="", postfix="_processed"):
+def add_io_path_arguments(parser, prefix="", postfix=""):
+    parser.add_argument("input")
     parser.add_argument("-o", "--output")
+    parser.add_argument("--inplace", action="store_true")
     parser.add_argument("--prefix", default=prefix)
     parser.add_argument("--postfix", default=postfix)
 
 
-def get_output_path(input_path, args):
-    if args.output is None:
+def get_io_paths(args, output_ext=None, **kwargs):
+    input_path = fix_path(args.input)
+    if args.inplace:
+        output_path = input_path
+    elif args.output is None:
         options = {
-            "prefix": args.prefix,
             "postfix": args.postfix,
+            "prefix": args.prefix,
         }
-        return modify_path(input_path, **options)
+        output_path = modify_path(input_path, **options)
     else:
-        return fix_path(args.output)
+        output_path = fix_path(args.output)
+    if output_ext is not None:
+        output_path = modify_path(output_path, new_ext=output_ext)
+    if input_path == output_path:
+        input_path = modify_path(input_path, postfix="_old")
+        shutil.move(output_path, input_path)
+    return input_path, output_path
 
 # ------------------------------------------------------------------------------
 # Arguments

@@ -1,0 +1,7 @@
+Sensor
+======
+
+.. literalinclude:: ../../../samples/sensor.cpp
+  :language: c
+  :linenos:
+  :caption: samples/sensor.cpp
