@@ -17,7 +17,7 @@
 
 namespace cepton_sdk {
 
-#include "cepton_def.h"
+#include "cepton_sdk_def.h"
 
 //------------------------------------------------------------------------------
 // Errors
@@ -447,7 +447,7 @@ static SensorError pause() {
   return get_error();
 }
 
-#include "cepton_undef.h"
+#include "cepton_sdk_undef.h"
 
 }  // namespace capture_replay
 }  // namespace cepton_sdk

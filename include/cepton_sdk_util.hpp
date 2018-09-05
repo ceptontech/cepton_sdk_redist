@@ -18,7 +18,7 @@
 namespace cepton_sdk {
 namespace util {
 
-#include "cepton_def.h"
+#include "cepton_sdk_def.h"
 
 //------------------------------------------------------------------------------
 // Common
@@ -652,10 +652,24 @@ class FrameAccumulator {
  */
 class StrayFilter {
  public:
-  StrayFilter(int segment_count, int return_count)
-      : m_segment_count(segment_count), m_return_count(return_count) {}
-  StrayFilter(const cepton_sdk::SensorInformation &sensor_info)
-      : StrayFilter(sensor_info.segment_count, sensor_info.return_count) {}
+  StrayFilter() = default;
+  
+  StrayFilter(int segment_count, int return_count) {
+    init(segment_count, return_count);
+  }
+
+  StrayFilter(const cepton_sdk::SensorInformation &sensor_info) {
+    init(sensor_info);
+  }
+
+  void init(int segment_count, int return_count) {
+    m_segment_count = segment_count;
+    m_return_count = return_count;
+  }
+
+  void init(const cepton_sdk::SensorInformation &sensor_info) {
+    init(sensor_info.segment_count, sensor_info.return_count);
+  }
 
   void run(int n_points, cepton_sdk::SensorImagePoint *const c_image_points) {
     thread_local std::vector<int> indices;
@@ -791,7 +805,7 @@ class SimpleConcurrentQueue {
   std::condition_variable m_condition_variable;
 };
 
-#include "cepton_undef.h"
+#include "cepton_sdk_undef.h"
 
 }  // namespace util
 }  // namespace cepton_sdk

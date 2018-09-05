@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Frame &mdash; cepton_sdk  documentation</title>
+  <title>Stray &mdash; cepton_sdk  documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../search.html"/>
     <link rel="top" title="cepton_sdk  documentation" href="../index.html"/>
         <link rel="up" title="Samples" href="../samples.html"/>
-        <link rel="next" title="Network" href="network.html"/>
-        <link rel="prev" title="Error" href="error.html"/> 
+        <link rel="next" title="Transform" href="transform.html"/>
+        <link rel="prev" title="Sensor" href="sensor.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -102,11 +102,11 @@
 <li class="toctree-l2"><a class="reference internal" href="c_basic.html">C Basic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="callback.html">Callback</a></li>
 <li class="toctree-l2"><a class="reference internal" href="error.html">Error</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Frame</a></li>
+<li class="toctree-l2"><a class="reference internal" href="frame.html">Frame</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="replay.html">Replay</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sensor.html">Sensor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stray.html">Stray</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Stray</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transform.html">Transform</a></li>
 </ul>
 </li>
@@ -156,13 +156,13 @@
         
           <li><a href="../samples.html">Samples</a> &raquo;</li>
         
-      <li>Frame</li>
+      <li>Stray</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/samples/frame.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/samples/stray.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -172,10 +172,10 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="network.html" class="btn btn-neutral float-right" title="Network" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="transform.html" class="btn btn-neutral float-right" title="Transform" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="error.html" class="btn btn-neutral" title="Error" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="sensor.html" class="btn btn-neutral" title="Sensor" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -184,10 +184,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="frame">
-<h1>Frame<a class="headerlink" href="#frame" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="stray">
+<h1>Stray<a class="headerlink" href="#stray" title="Permalink to this headline">¶</a></h1>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">samples/frame.cpp</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">samples/stray.cpp</span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
 <div class="highlight-c notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -226,15 +226,11 @@
 36
 37
 38
-39
-40
-41
-42
-43
-44
-45</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
-<span class="cm"> * Sample code for custom frame accumulation.</span>
+39</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * Sample code for stray filter usage</span>
 <span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+
 <span class="cp">#include</span> <span class="cpf">&lt;cepton_sdk_api.hpp&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
@@ -245,36 +241,28 @@
   <span class="k">auto</span> <span class="n">options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">create_options</span><span class="p">();</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
       <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">capture_path</span><span class="p">));</span>
+
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">SensorImageFrameCallback</span> <span class="n">callback</span><span class="p">;</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
+  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">StrayFilter</span> <span class="n">filter</span><span class="p">;</span>
+  <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
+                      <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Get sensor</span>
+    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorInformation</span> <span class="n">sensor_info</span><span class="p">;</span>
+    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
+        <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_sensor_information</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">));</span>
 
-  <span class="c1">// Get sensor</span>
-  <span class="k">while</span> <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_n_sensors</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">wait</span><span class="p">(</span><span class="mf">0.1f</span><span class="p">));</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorInformation</span> <span class="n">sensor_info</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
-      <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_sensor_information_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">));</span>
+    <span class="c1">// Copy points to buffer</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span><span class="o">&gt;</span> <span class="n">image_points</span><span class="p">;</span>
+    <span class="n">image_points</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">image_points</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c_image_points</span><span class="p">,</span>
+                        <span class="n">c_image_points</span> <span class="o">+</span> <span class="n">n_points</span><span class="p">);</span>
 
-  <span class="c1">// Create accumulator</span>
-  <span class="k">auto</span> <span class="n">frame_options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">create_frame_options</span><span class="p">();</span>
-  <span class="n">frame_options</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CEPTON_SDK_FRAME_TIMED</span><span class="p">;</span>
-  <span class="n">frame_options</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="mf">0.1f</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">FrameAccumulator</span> <span class="n">accumulator</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">);</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">accumulator</span><span class="p">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">frame_options</span><span class="p">));</span>
-  <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span>
-      <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
-          <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="k">const</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">handle</span> <span class="o">!=</span> <span class="n">sensor_info</span><span class="p">.</span><span class="n">handle</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-        <span class="n">accumulator</span><span class="p">.</span><span class="n">add_points</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">c_image_points</span><span class="p">);</span>
-      <span class="p">});</span>
+    <span class="c1">// Filter stray</span>
+    <span class="n">filter</span><span class="p">.</span><span class="n">init</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">);</span>
+    <span class="n">filter</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">image_points</span><span class="p">.</span><span class="n">data</span><span class="p">());</span>
+  <span class="p">});</span>
 
-  <span class="c1">// Listen</span>
-  <span class="n">accumulator</span><span class="p">.</span><span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span>
-      <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="kt">int</span> <span class="n">n_points</span><span class="p">,</span>
-          <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="k">const</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">n_points</span><span class="p">);</span>
-      <span class="p">});</span>
-
+  <span class="c1">// Run</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">wait</span><span class="p">(</span><span class="mf">5.0f</span><span class="p">));</span>
 <span class="p">}</span>
 </pre></div>
@@ -292,10 +280,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="network.html" class="btn btn-neutral float-right" title="Network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="transform.html" class="btn btn-neutral float-right" title="Transform" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="error.html" class="btn btn-neutral" title="Error" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="sensor.html" class="btn btn-neutral" title="Sensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -1,8 +1,6 @@
 /**
  * Sample code for error callback usage.
  */
-#include <iostream>
-
 #include <cepton_sdk_api.hpp>
 
 int main(int argc, char** argv) {

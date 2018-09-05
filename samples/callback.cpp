@@ -1,8 +1,6 @@
 /**
  * Sample code for callback usage.
  */
-#include <iostream>
-
 #include <cepton_sdk_api.hpp>
 
 // Sample global callback.

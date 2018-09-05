@@ -1,9 +1,7 @@
 /**
- * Sample code for sensors.
+ * Sample code for sensor information.
  */
-#include <iostream>
 #include <string>
-#include <vector>
 
 #include <cepton_sdk_api.hpp>
 

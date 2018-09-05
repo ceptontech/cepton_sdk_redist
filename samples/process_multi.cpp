@@ -1,7 +1,6 @@
 /**
  * Sample code for processing multiple sensor data.
  */
-#include <iostream>
 #include <string>
 #include <vector>
 

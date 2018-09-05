@@ -10,7 +10,7 @@
 namespace cepton_sdk {
 namespace api {
 
-#include "cepton_def.h"
+#include "cepton_sdk_def.h"
 
 /// Returns true if capture replay is not open.
 static bool is_live() { return !capture_replay::is_open(); }
@@ -258,7 +258,7 @@ static std::vector<uint64_t> get_sensor_serial_numbers() {
   return serial_numbers;
 }
 
-#include "cepton_undef.h"
+#include "cepton_sdk_undef.h"
 
 }  // namespace api
 }  // namespace cepton_sdk

@@ -1,8 +1,6 @@
 /**
  * Sample code for custom packet replaying.
  */
-#include <iostream>
-
 #include <cepton_sdk/capture.hpp>
 #include <cepton_sdk_api.hpp>
 

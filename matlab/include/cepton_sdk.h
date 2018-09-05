@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#include "cepton_def.h"
+#include "cepton_sdk_def.h"
 
 #define CEPTON_SDK_VERSION 16
 
@@ -90,7 +90,12 @@ struct EXPORT CeptonSensorInformation {
   float last_reported_humidity;     ///< [%]
   float last_reported_age;          ///< [hours]
 
-  float measurement_period;  ///< Time between measurements [microseconds]
+  /**
+   * Time between measurements [microseconds].
+   *
+   * NOTE: will be changed to seconds in the next SDK release for consistency.
+   */
+  float measurement_period;
 
   int64_t ptp_ts;  /// [microseconds]
 
@@ -163,10 +168,10 @@ EXPORT extern const size_t cepton_sensor_image_point_size;
 // Limits to help application to preallocation of buffers
 // (These numbers are guaranteed to be safe for 6 months from SDK release)
 //------------------------------------------------------------------------------
-inline uint32_t cepton_sdk_max_points_per_packet() { return (1500 - 8) / 4; }
-inline uint32_t cepton_sdk_max_points_per_frame() { return 50000; }
-inline uint32_t cepton_sdk_max_points_per_second() { return 1000000; }
-inline uint32_t cepton_sdk_max_frames_per_second() { return 40; }
+inline int cepton_sdk_max_points_per_packet() { return (1500 - 8) / 4; }
+inline int cepton_sdk_max_points_per_frame() { return 50000; }
+inline int cepton_sdk_max_points_per_second() { return 1000000; }
+inline int cepton_sdk_max_frames_per_second() { return 40; }
 
 //------------------------------------------------------------------------------
 // SDK Setup
@@ -199,6 +204,8 @@ enum _CeptonSDKControl {
   CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS = 1 << 4,
   /// Enable marking stray points as invalid (measurement noise).
   /**
+   * Uses `cepton_sdk::util::StrayFilter` to mark points invalid.
+   * 
    * Does not affect number of points returned.
    */
   CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER = 1 << 5,
@@ -350,7 +357,7 @@ EXPORT int cepton_sdk_capture_replay_is_running();
 EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_resume();
 EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_pause();
 
-#include "cepton_undef.h"
+#include "cepton_sdk_undef.h"
 
 #ifdef __cplusplus
 }  // extern "C"

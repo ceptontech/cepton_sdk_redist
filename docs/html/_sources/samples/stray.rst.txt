@@ -1,0 +1,7 @@
+Stray
+=====
+
+.. literalinclude:: ../../../samples/stray.cpp
+  :language: c
+  :linenos:
+  :caption: samples/stray.cpp

@@ -3,13 +3,13 @@
 
 #define SIMPLE
 #include "cepton_sdk.h"
+#undef SIMPLE
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define COMPILING CEPTON_SDK_COMPILING
-#include "cepton_def.h"
+#include "cepton_sdk_def.h"
 
 EXPORT CeptonSensorErrorCode
 cepton_sdk_matlab_initialize(int ver, CeptonSDKControl control_flags);
@@ -33,7 +33,7 @@ EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_image_points_data(
     float *const image_z, float *const intensities,
     uint8_t *const return_types, uint8_t *const flags);
 
-#include "cepton_undef.h"
+#include "cepton_sdk_undef.h"
 
 #ifdef __cplusplus
 }  // extern "C"

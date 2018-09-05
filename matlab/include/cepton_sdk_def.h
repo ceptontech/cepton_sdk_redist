@@ -1,0 +1,2 @@
+#define EXPORT
+#define DEPRECATED

@@ -1,8 +1,6 @@
 /**
  * Sample code for custom networking.
  */
-#include <iostream>
-
 #include <asio.hpp>
 
 #include <cepton_sdk_api.hpp>

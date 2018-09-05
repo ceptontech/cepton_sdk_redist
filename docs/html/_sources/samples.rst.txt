@@ -5,10 +5,12 @@ Samples
   :maxdepth: 1
 
   samples/basic
+  samples/c_basic
   samples/callback
   samples/error
   samples/frame
   samples/network
   samples/replay
   samples/sensor
+  samples/stray
   samples/transform
