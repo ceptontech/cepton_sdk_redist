@@ -31,9 +31,9 @@ methods
                 cepton_sdk.get_sensor_information_by_handle(sensor_handle);
 
             a = zeros([n_points, 1]);
-            [timestamps, image_x, distances, image_z, intensities, return_types, flags] = ...
+            [timestamps, image_x, distances, image_z, intensities, return_types, flags_tmp] = ...
                 cepton_sdk.c.call_and_check('cepton_sdk_matlab_get_image_points_data', a, a, a, a, a, a, a);
-            flags = cepton_sdk.common.unpack_bits(flags);
+            flags = cepton_sdk.common.unpack_bits(flags_tmp, 8);
 
             image_points = cepton_sdk.ImagePoints(n_points);
             image_points.timestamps(:) = 1e-6 * double(timestamps);

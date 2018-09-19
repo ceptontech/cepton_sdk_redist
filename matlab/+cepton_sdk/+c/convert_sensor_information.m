@@ -20,7 +20,7 @@ function sensor_info = convert_sensor_information(c_sensor_info)
     sensor_info.return_count = uint8(c_sensor_info.return_count);
     sensor_info.segment_count = uint8(c_sensor_info.segment_count);
 
-    flags = dec2bin(c_sensor_info.flags, 32) == '1';
+    flags = cepton_sdk.common.unpack_bits(c_sensor_info.flags, 32);;
     sensor_info.is_mocked = flags(1);
     sensor_info.is_pps_connected = flags(2);
     sensor_info.is_nmea_connected = flags(3);
