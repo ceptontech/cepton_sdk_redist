@@ -2,7 +2,6 @@ classdef ImagePoints < handle
 %Image points array.
 
 properties
-    timestamps
     timestamps_usec
     positions
     distances
@@ -12,6 +11,10 @@ properties
     saturated
 end
 
+properties (Dependent)
+    timestamps
+end
+
 properties (SetAccess = protected)
     n
 end
@@ -19,7 +22,6 @@ end
 methods
     function self = ImagePoints(n)
         self.n = n;
-        self.timestamps = zeros([n, 1]);
         self.timestamps_usec = zeros([n, 1], 'int64');
         self.positions = zeros([n, 2]);
         self.distances = zeros([n, 1]);
@@ -29,9 +31,12 @@ methods
         self.saturated = zeros([n, 1], 'logical');
     end
 
+    function result = get.timestamps(self)
+        result = 1e-6 * double(self.timestamps_usec);
+    end
+
     function points = to_points(self)
         points = cepton_sdk.Points(self.n);
-        points.timestamps(:) = self.timestamps;
         points.timestamps_usec(:) = self.timestamps_usec;
         points.intensities(:) = self.intensities;
         points.return_types(:) = self.return_types;
@@ -47,9 +52,9 @@ methods
     end
 
     function image_points = select(self, indices)
-        n = nnz(indices);
+        timestamps_usec = self.timestamps_usec(indices);
+        n = numel(timestamps_usec);
         image_points = cepton_sdk.ImagePoints(n);
-        image_points.timestamps(:) = self.timestamps(indices);
         image_points.timestamps_usec(:) = self.timestamps_usec(indices);
         image_points.positions(:, :) = self.positions(indices, :);
         image_points.distances(:) = self.distances(indices);
@@ -60,7 +65,6 @@ methods
     end
 
     function put(self, indices, other)
-        self.timestamps(indices) = other.timestamps;
         self.timestamps_usec(indices) = other.timestamps_usec;
         self.positions(indices, :) = other.positions;
         self.distances(indices) = other.distances;
@@ -80,17 +84,16 @@ methods
 end
 
 methods (Static)
-    function image_points = combine(varargin)
+    function image_points = combine(image_points_list)
         if nargin == 0
             image_points = cepton_sdk.ImagePoints(0);
             return
         end
 
-        image_points_list = [varargin{:}];
-        timestamps = vertcat(image_points_list.timestamps);
-        n = numel(timestamps);
+        image_points_list = [image_points_list{:}];
+        timestamps_usec = vertcat(image_points_list.timestamps_usec);
+        n = numel(timestamps_usec);
         image_points = cepton_sdk.ImagePoints(n);
-        image_points.timestamps(:) = timestamps;
         image_points.timestamps_usec(:) = timestamps_usec;
         image_points.positions(:, :) = vertcat(image_points_list.positions);
         image_points.distances(:) = vertcat(image_points_list.distances);

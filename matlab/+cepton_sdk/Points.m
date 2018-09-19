@@ -2,13 +2,16 @@ classdef Points < handle
 %3D points array.
 
 properties
-    timestamps
     timestamps_usec
     positions
     intensities
     return_types
     valid
     saturated
+end
+
+properties (Dependent)
+    timestamps
 end
 
 properties (SetAccess = protected)
@@ -18,7 +21,6 @@ end
 methods
     function self = Points(n)
         self.n = n;
-        self.timestamps = zeros([n, 1]);
         self.timestamps_usec = zeros([n, 1], 'int64');
         self.positions = zeros([n, 2]);
         self.intensities = zeros([n, 1]);
@@ -27,11 +29,14 @@ methods
         self.saturated = zeros([n, 1], 'logical');
     end
 
+    function result = get.timestamps(self)
+        result = 1e-6 * double(self.timestamps_usec);
+    end
+
     function points = select(self, indices)
-        timestamps = self.timestamps(indices);
-        n = numel(timestamps);
+        timestamps_usec = self.timestamps(indices);
+        n = numel(timestamps_usec);
         points = cepton_sdk.Points(n);
-        points.timestamps(:) = timestamps;
         points.timestamps_usec(:) = timestamps_usec;
         points.positions(:, :) = self.positions(indices, :);
         points.intensities(:) = self.intensities(indices);
@@ -41,7 +46,6 @@ methods
     end
 
     function put(self, indices, other)
-        self.timestamps(indices) = other.timestamps;
         self.timestamps_usec(indices) = other.timestamps_usec;
         self.positions(indices, :) = other.positions;
         self.intensities(indices) = other.intensities;
@@ -55,23 +59,21 @@ methods
     end
 
     function tf = isempty(self)
-        disp(self.n)
         tf = self.n == 0;
     end
 end
 
 methods (Static)
-    function points = combine(varargin)
+    function points = combine(points_list)
         if nargin == 0
             points = cepton_sdk.Points(0);
             return
         end
 
-        points_list = [varargin{:}];
-        timestamps = vertcat(points_list.timestamps);
-        n = numel(timestamps);
+        points_list = [points_list{:}];
+        timestamps_usec = vertcat(points_list.timestamps_usec);
+        n = numel(timestamps_usec);
         points = cepton_sdk.Points(n);
-        points.timestamps(:) = timestamps;
         points.timestamps_usec(:) = timestamps_usec;
         points.positions(:, :) = vertcat(points_list.positions);
         points.intensities(:) = vertcat(points_list.intensities);

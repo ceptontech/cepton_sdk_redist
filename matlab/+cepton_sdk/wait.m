@@ -5,7 +5,7 @@ function wait(t_length_tmp)
         t_length = 0.1;
     end
 
-    if cepton_sdk.capture_replay.is_end()
+    if cepton_sdk.is_end()
         error('EOF');
     end
 

@@ -31,12 +31,12 @@ methods
                 cepton_sdk.get_sensor_information_by_handle(sensor_handle);
 
             a = zeros([n_points, 1]);
-            [timestamps, image_x, distances, image_z, intensities, return_types, flags_tmp] = ...
+            [timestamps_usec, image_x, distances, image_z, intensities, return_types, flags_tmp] = ...
                 cepton_sdk.c.call_and_check('cepton_sdk_matlab_get_image_points_data', a, a, a, a, a, a, a);
             flags = cepton_sdk.common.unpack_bits(flags_tmp, 8);
 
             image_points = cepton_sdk.ImagePoints(n_points);
-            image_points.timestamps(:) = 1e-6 * double(timestamps);
+            image_points.timestamps_usec(:) = timestamps_usec;
             image_points.positions(:, 1) = image_x;
             image_points.distances(:) = distances;
             image_points.positions(:, 2) = image_z;
