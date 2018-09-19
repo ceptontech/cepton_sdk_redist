@@ -15,7 +15,7 @@ function initialize(varargin)
         control_flags = ...
             bitor(control_flags, cepton_sdk.ControlFlag.DISABLE_NETWORK);
     end
-    cepton_sdk.c.call_and_check('cepton_sdk_matlab_initialize', 14, control_flags);
+    cepton_sdk.c.call_and_check('cepton_sdk_matlab_initialize', 16, control_flags);
 
     if ~cepton_sdk.common.is_none(args.capture_path)
         cepton_sdk.capture_replay.open(args.capture_path);
