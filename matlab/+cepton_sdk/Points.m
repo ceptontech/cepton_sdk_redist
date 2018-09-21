@@ -22,7 +22,7 @@ methods
     function self = Points(n)
         self.n = n;
         self.timestamps_usec = zeros([n, 1], 'int64');
-        self.positions = zeros([n, 2]);
+        self.positions = zeros([n, 3]);
         self.intensities = zeros([n, 1]);
         self.return_types = zeros([n, 1], 'uint8');
         self.valid = zeros([n, 1], 'logical');
@@ -34,10 +34,9 @@ methods
     end
 
     function points = select(self, indices)
-        timestamps_usec = self.timestamps(indices);
-        n = numel(timestamps_usec);
+        n = numel(self.timestamps_usec(indices));
         points = cepton_sdk.Points(n);
-        points.timestamps_usec(:) = timestamps_usec;
+        points.timestamps_usec(:) = self.timestamps_usec(indices);
         points.positions(:, :) = self.positions(indices, :);
         points.intensities(:) = self.intensities(indices);
         points.return_types(:) = self.return_types(indices);
@@ -71,10 +70,9 @@ methods (Static)
         end
 
         points_list = [points_list{:}];
-        timestamps_usec = vertcat(points_list.timestamps_usec);
-        n = numel(timestamps_usec);
+        n = numel(vertcat(points_list.timestamps_usec));
         points = cepton_sdk.Points(n);
-        points.timestamps_usec(:) = timestamps_usec;
+        points.timestamps_usec(:) = vertcat(points_list.timestamps_usec);
         points.positions(:, :) = vertcat(points_list.positions);
         points.intensities(:) = vertcat(points_list.intensities);
         points.return_types(:) = vertcat(points_list.return_types);

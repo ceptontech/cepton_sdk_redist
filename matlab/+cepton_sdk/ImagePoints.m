@@ -52,8 +52,7 @@ methods
     end
 
     function image_points = select(self, indices)
-        timestamps_usec = self.timestamps_usec(indices);
-        n = numel(timestamps_usec);
+        n = numel(self.timestamps_usec(indices));
         image_points = cepton_sdk.ImagePoints(n);
         image_points.timestamps_usec(:) = self.timestamps_usec(indices);
         image_points.positions(:, :) = self.positions(indices, :);
@@ -61,7 +60,7 @@ methods
         image_points.intensities(:) = self.intensities(indices);
         image_points.return_types(:) = self.return_types(indices);
         image_points.valid(:) = self.valid(indices);
-        image_points.saturated(:) = self.valid(saturated)
+        image_points.saturated(:) = self.saturated(indices)
     end
 
     function put(self, indices, other)
@@ -91,10 +90,9 @@ methods (Static)
         end
 
         image_points_list = [image_points_list{:}];
-        timestamps_usec = vertcat(image_points_list.timestamps_usec);
-        n = numel(timestamps_usec);
+        n = numel(vertcat(image_points_list.timestamps_usec));
         image_points = cepton_sdk.ImagePoints(n);
-        image_points.timestamps_usec(:) = timestamps_usec;
+        image_points.timestamps_usec(:) = vertcat(image_points_list.timestamps_usec);
         image_points.positions(:, :) = vertcat(image_points_list.positions);
         image_points.distances(:) = vertcat(image_points_list.distances);
         image_points.intensities(:) = vertcat(image_points_list.intensities);
