@@ -12,6 +12,7 @@ end
 
 methods
     function self = SensorImageFramesListener(serial_number)
+        self.serial_number = serial_number;
         self.points_list = {};
         self.callback_id = cepton_sdk.internal.image_frames_callback().listen(@self.on_points);
     end
