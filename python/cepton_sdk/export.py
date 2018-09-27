@@ -9,12 +9,6 @@ import numpy
 
 import cepton_sdk.point
 
-__all__ = [
-    "load_points",
-    "PointsFileType",
-    "save_points",
-]
-
 
 def save_points_las(points, path):
     """Save points to LAS file.
@@ -139,11 +133,40 @@ def load_points_pcd(points):
     raise NotImplementedError()
 
 
+def save_points_csv(points, path):
+    dtype = [
+        ("timestamp_usec", int),
+        ("x", float),
+        ("y", float),
+        ("z", float),
+        ("intensity", float),
+        ("return_type", int),
+        ("valid", bool),
+        ("saturated", bool),
+    ]
+    data = numpy.zeros(len(points), dtype=dtype)
+    data["timestamp_usec"] = points.timestamps_usec
+    data["x"] = points.positions[:, 0]
+    data["y"] = points.positions[:, 1]
+    data["z"] = points.positions[:, 2]
+    data["intensity"] = points.intensities
+    data["return_type"] = points.return_types
+    data["valid"] = points.valid
+    data["saturated"] = points.saturated
+    options = {
+        "delimiter": ",",
+        "header": "timestamp_usec,x,y,z,intensity,return_type,valid,saturated",
+        "fmt": "%d,%.4e,%.4e,%.4e,%.4e,%i,%i,%i",
+    }
+    numpy.savetxt(path, data, **options)
+
+
 @enum.unique
 class PointsFileType(enum.Enum):
-    LAS = 1
-    PCD = 2
-    PLY = 3
+    CSV = 1
+    LAS = 2
+    PCD = 3
+    PLY = 4
 
 
 def get_points_file_type(ext):
@@ -161,7 +184,9 @@ def save_points(points, path, file_type=PointsFileType.LAS):
     """
     ext = get_points_file_type_extension(file_type)
     path = os.path.splitext(path)[0] + ext
-    if file_type == PointsFileType.LAS:
+    if file_type == PointsFileType.CSV:
+        save_points_csv(points, path)
+    elif file_type == PointsFileType.LAS:
         save_points_las(points, path)
     elif file_type == PointsFileType.PCD:
         save_points_pcd(points, path)
