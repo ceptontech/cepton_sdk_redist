@@ -1,5 +1,15 @@
 # Cepton SDK Release Notes
 
+### Version 1.7 2018-10-02
+* **IMPORTANT:** change `CeptonSensorInformation::measurement_period`: `microseconds` -> `seconds`.
+* **IMPORTANT**: change global limits from inline functions to #define.
+* Add `cepton_sdk::SensorError::msg`.
+* Change `CeptonSensorErrorCode` type: `int` -> `int32`.
+* Change `CeptonSensorModel` type: `int32` ->`int16`.
+* Add `CeptonSensorModel::VISTA_860_GEN2`.
+* Removed `cepton_data_exporter` tool. Use `cepton_export` from Python SDK instead.
+* Removed `cepton_serial_redist.py` tool.
+
 ### Version 1.6 2018-08-31
 * Support for intensities for Vista 860
 * New set of APIs for global limits
