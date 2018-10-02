@@ -185,12 +185,10 @@ SensorError CaptureReplay::pause() {
 SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
   if (m_is_end) return CEPTON_SUCCESS;
 
-  int64_t timestamp;
   Capture::PacketHeader header;
   const uint8_t *data;
   {
     std::lock_guard<std::mutex> lock(m_capture_mutex);
-    timestamp = m_capture.start_time() + m_capture.position();
     const auto error = m_capture.next_packet(header, data);
     if (error) {
       if (error.code == CEPTON_ERROR_EOF) {
@@ -205,8 +203,9 @@ SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
 
   const CeptonSensorHandle handle =
       (CeptonSensorHandle)header.ip_v4 | CEPTON_SENSOR_HANDLE_FLAG_MOCK;
-  callback_manager.network_cb.emit(handle, timestamp, data, header.data_size);
-  return cepton_sdk_mock_network_receive(handle, timestamp, data,
+  callback_manager.network_cb.emit(handle, header.timestamp, data,
+                                   header.data_size);
+  return cepton_sdk_mock_network_receive(handle, header.timestamp, data,
                                          header.data_size);
 }
 

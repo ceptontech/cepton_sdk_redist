@@ -59,59 +59,81 @@ def convert_points_to_image_points(positions):
     return image_positions, distances
 
 
-class Points(StructureOfArrays):
-    """3D points array.
-
-    Attributes:
-        timestamps: time since epoch [microseconds]
-        positions: x, y, z cartesian coordinates
-        intensities: 0-1 scaled intensity
-        return_types
-        valid
-        saturated
-    """
-
+class PointsBase(StructureOfArrays):
     def __init__(self, n=0):
         super().__init__(n)
         self.timestamps_usec = numpy.zeros([n], dtype=numpy.int64)
-        self.positions = numpy.zeros([n, 3])
         self.intensities = numpy.zeros([n])
-        self.return_types = numpy.zeros([n], dtype=numpy.uint8)
-        self.valid = numpy.zeros([n], dtype=bool)
-        self.saturated = numpy.zeros([n], dtype=bool)
+        self.return_types = numpy.zeros([n, 8], dtype=numpy.uint8)
+        self.flags = numpy.zeros([n, 8], dtype=bool)
 
     @classmethod
     def _get_array_member_names(cls):
-        return ["timestamps_usec", "positions", "intensities",
-                "return_types", "valid", "saturated"]
+        return ["timestamps_usec", "intensities", "return_types", "flags"]
 
     @property
     def timestamps(self):
         return 1e-6 * self.timestamps_usec.astype(float)
 
+    @property
+    def return_strongest(self):
+        return self.return_types[:, 0]
 
-class ImagePoints(StructureOfArrays, ToCMixin):
-    """Image points array.
+    @property
+    def return_farthest(self):
+        return self.return_types[:, 1]
+
+    @property
+    def valid(self):
+        return self.flags[:, 0]
+
+    @property
+    def saturated(self):
+        return self.flags[:, 1]
+
+
+class Points(PointsBase):
+    """3D points array.
 
     Attributes:
-        timestamps: time since epoch [microseconds]
-        positions: x, z image coordinates
-        distances: distance [meters]
-        intensities: 0-1 scaled intensity
-        return_types
+        timestamps_usec
+        timestamps
+        positions
+        intensities
+        return_strongest
+        return_farthest
         valid
         saturated
     """
 
     def __init__(self, n=0):
         super().__init__(n)
-        self.timestamps_usec = numpy.zeros([n], dtype=numpy.int64)
+        self.positions = numpy.zeros([n, 3])
+
+    @classmethod
+    def _get_array_member_names(cls):
+        return super()._get_array_member_names() + ["positions"]
+
+
+class ImagePoints(PointsBase, ToCMixin):
+    """Image points array.
+
+    Attributes:
+        timestamps_usec
+        timestamps
+        positions
+        distances
+        intensities
+        return_strongest
+        return_farthest
+        valid
+        saturated
+    """
+
+    def __init__(self, n=0):
+        super().__init__(n)
         self.positions = numpy.zeros([n, 2])
         self.distances = numpy.zeros([n])
-        self.intensities = numpy.zeros([n])
-        self.return_types = numpy.zeros([n], dtype=numpy.uint8)
-        self.valid = numpy.zeros([n], dtype=bool)
-        self.saturated = numpy.zeros([n], dtype=bool)
 
     @classmethod
     def _get_c_class(cls):
@@ -119,13 +141,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
 
     @classmethod
     def _get_array_member_names(cls):
-        return ["timestamps_usec", "positions",
-                "distances", "intensities", "return_types", "valid",
-                "saturated"]
-
-    @property
-    def timestamps(self):
-        return 1e-6 * self.timestamps_usec.astype(float)
+        return super()._get_array_member_names() + ["positions", "distances"]
 
     def _from_c_impl(self, data):
         self.timestamps_usec[:] = data["timestamp"]
@@ -133,10 +149,9 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         self.positions[:, 1] = data["image_z"]
         self.distances[:] = data["distance"]
         self.intensities[:] = data["intensity"]
-        self.return_types[:] = data["return_type"]
-        flags = cepton_sdk.common.c.unpack_bits(data["flags"])
-        self.valid[:] = flags[:, 0]
-        self.saturated[:] = flags[:, 1]
+        self.return_types[:, :] = cepton_sdk.common.c.unpack_bits(
+            data["return_type"])
+        self.flags[:, :] = cepton_sdk.common.c.unpack_bits(data["flags"])
 
     @classmethod
     def from_c(cls, n_points, c_image_points):
@@ -154,10 +169,7 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         data["distance"][:] = self.distances
         data["intensity"][:] = self.intensities
         data["return_type"][:] = self.return_types
-        flags = numpy.zeros([len(self), 8], dtype=bool)
-        flags[:, 0] = self.valid
-        flags[:, 1] = self.saturated
-        data["flags"] = cepton_sdk.common.c.pack_bits(flags)
+        data["flags"] = self.flags
 
     def to_c(self, c_type=None):
         if c_type is None:
@@ -180,9 +192,8 @@ class ImagePoints(StructureOfArrays, ToCMixin):
         points.positions[:, :] = convert_image_points_to_points(
             self.positions, self.distances)
         points.intensities[:] = self.intensities
-        points.return_types[:] = self.return_types
-        points.valid[:] = self.valid
-        points.saturated[:] = self.saturated
+        points.return_types[:, :] = self.return_types
+        points.flags[:, :] = self.flags
         return points
 
     @classmethod
@@ -197,6 +208,5 @@ class ImagePoints(StructureOfArrays, ToCMixin):
             convert_points_to_image_points(points.positions)
         image_points.intensities[:] = points.intensities
         image_points.return_types[:] = points.return_types
-        image_points.valid[:] = points.valid
-        image_points.saturated[:] = points.saturated
+        image_points.flags[:, :] = points.flags
         return image_points

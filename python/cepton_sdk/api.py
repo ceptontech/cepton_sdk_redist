@@ -81,7 +81,8 @@ def wait(t_length=0):
         _wait(t_length)
 
 
-def initialize(capture_path=None, capture_seek=0, control_flags=0, error_callback=None, port=None, **kwargs):
+def initialize(capture_path=None, capture_seek=0, control_flags=0,
+               error_callback=None, port=None, wait_for_sensors=True, **kwargs):
     """Initializes SDK. Optionally starts capture replay.
 
     Arguments:
@@ -103,9 +104,10 @@ def initialize(capture_path=None, capture_seek=0, control_flags=0, error_callbac
 
     if capture_path is not None:
         cepton_sdk.capture_replay.open(capture_path)
-    wait(3)
-    if capture_path is not None:
-        cepton_sdk.capture_replay.seek(capture_seek)
+    if wait_for_sensors:
+        wait(3)
+        if capture_path is not None:
+            cepton_sdk.capture_replay.seek(capture_seek)
 
 
 def deinitialize():
@@ -158,16 +160,20 @@ class _FramesListener(_ListenerBase):
     """Listener for getting all sensor frames."""
 
     def __init__(self):
+        self.i_frame_dict = collections.defaultdict(lambda: 0)
         self.points_dict = collections.defaultdict(list)
         super().__init__()
 
     def reset(self):
         with self._lock:
+            self.i_frame_dict = collections.defaultdict(lambda: 0)
             self.points_dict = collections.defaultdict(list)
 
     def _on_points(self, sensor_info, points):
         with self._lock:
-            self.points_dict[sensor_info.serial_number].append(points)
+            self.i_frame_dict[sensor_info.serial_number] += 1
+            if self.i_frame_dict[sensor_info.serial_number] > 2:
+                self.points_dict[sensor_info.serial_number].append(points)
 
     def has_points(self):
         with self._lock:
@@ -187,18 +193,22 @@ class _FramesListener(_ListenerBase):
 class _SensorFramesListener(_ListenerBase):
     def __init__(self, serial_number):
         self.serial_number = serial_number
+        self.i_frame = 0
         self.points_list = []
         super().__init__()
 
     def reset(self):
         with self._lock:
+            self.i_frame = 0
             self.points_list = []
 
     def _on_points(self, sensor_info, points):
         with self._lock:
             if sensor_info.serial_number != self.serial_number:
                 return
-            self.points_list.append(points)
+            self.i_frame += 1
+            if self.i_frame > 2:
+                self.points_list.append(points)
 
     def has_points(self):
         with self._lock:

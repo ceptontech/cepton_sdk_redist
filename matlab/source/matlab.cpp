@@ -11,6 +11,12 @@ namespace cepton_sdk_matlab {
 // -----------------------------------------------------------------------------
 ErrorsListener errors_listener;
 
+void ErrorsListener::clear() {
+  std::lock_guard<std::mutex> lock(m_mutex);
+  m_errors.clear();
+  m_queued_error.reset();
+}
+
 bool ErrorsListener::is_empty() {
   std::lock_guard<std::mutex> lock(m_mutex);
   return m_errors.empty();
@@ -50,6 +56,12 @@ void ErrorsListener::on_error(CeptonSensorHandle handle,
 // FramesListener
 // -----------------------------------------------------------------------------
 FramesListener frames_listener;
+
+void FramesListener::clear() {
+  std::lock_guard<std::mutex> lock(m_mutex);
+  m_frames.clear();
+  m_queued_frame.reset();
+}
 
 bool FramesListener::is_empty() {
   std::lock_guard<std::mutex> lock(m_mutex);

@@ -13,12 +13,12 @@ namespace api {
 #include "cepton_sdk_def.h"
 
 /// Returns true if capture replay is not open.
-static bool is_live() { return !capture_replay::is_open(); }
+inline bool is_live() { return !capture_replay::is_open(); }
 
 /// Returns true if live or capture replay is running.
-static bool is_realtime() { return is_live() || capture_replay::is_running(); }
+inline bool is_realtime() { return is_live() || capture_replay::is_running(); }
 
-static bool is_end() {
+inline bool is_end() {
   if (capture_replay::is_open()) {
     if (capture_replay::get_enable_loop()) return false;
     return capture_replay::is_end();
@@ -27,12 +27,12 @@ static bool is_end() {
 }
 
 /// Returns capture replay time or live time.
-static uint64_t get_time() {
+inline int64_t get_time() {
   return (is_live()) ? util::get_timestamp_usec() : capture_replay::get_time();
 }
 
 namespace internal {
-static SensorError wait(float t_length) {
+inline SensorError wait(float t_length) {
   if (is_realtime()) {
     std::this_thread::sleep_for(
         std::chrono::milliseconds((int)(1e3f * t_length)));
@@ -47,7 +47,7 @@ static SensorError wait(float t_length) {
 /**
  * If `t_length` is `0`, then waits forever.
  */
-static SensorError wait(float t_length = 0.0f) {
+inline SensorError wait(float t_length = 0.0f) {
   if (t_length) {
     return internal::wait(t_length);
   } else {
@@ -63,7 +63,7 @@ static SensorError wait(float t_length = 0.0f) {
 // Errors
 // -----------------------------------------------------------------------------
 namespace internal {
-static SensorError create_error(SensorErrorCode error_code,
+inline SensorError create_error(SensorErrorCode error_code,
 
                                 const std::string &msg = "") {
   if (!error_code) return SensorError();
@@ -81,7 +81,7 @@ static SensorError create_error(SensorErrorCode error_code,
 }  // namespace internal
 
 /// DEPRECATED: use `cepton_sdk::api::log_error`.
-DEPRECATED static SensorError log_error_code(SensorErrorCode error_code,
+DEPRECATED inline SensorError log_error_code(SensorErrorCode error_code,
                                              const std::string &msg = "") {
   const auto error = internal::create_error(error_code, msg);
   if (!error) return error;
@@ -91,7 +91,7 @@ DEPRECATED static SensorError log_error_code(SensorErrorCode error_code,
 }
 
 /// DEPRECATED: use `cepton_sdk::api::check_error`.
-DEPRECATED static SensorError check_error_code(SensorErrorCode error_code,
+DEPRECATED inline SensorError check_error_code(SensorErrorCode error_code,
                                                const std::string &msg = "") {
   const auto error = internal::create_error(error_code, msg);
   if (!error) return error;
@@ -105,7 +105,7 @@ DEPRECATED static SensorError check_error_code(SensorErrorCode error_code,
 }
 
 /// Prints error.
-static const SensorError &log_error(const SensorError &error,
+inline const SensorError &log_error(const SensorError &error,
                                     const std::string &msg = "") {
   if (!error) return error;
 
@@ -122,7 +122,7 @@ static const SensorError &log_error(const SensorError &error,
  * If error, raises exception.
  * Otherwise, prints error.
  */
-static const SensorError &check_error(const SensorError &error,
+inline const SensorError &check_error(const SensorError &error,
                                       const std::string &msg = "") {
   if (!error) return error;
 
@@ -138,7 +138,7 @@ static const SensorError &check_error(const SensorError &error,
 /**
  * Calls `cepton_sdk::api::check_error_code`.
  */
-static void default_on_error(SensorHandle h, SensorErrorCode error_code,
+inline void default_on_error(SensorHandle h, SensorErrorCode error_code,
                              const char *const error_msg,
                              const void *const error_data,
                              std::size_t error_data_size,
@@ -150,7 +150,7 @@ static void default_on_error(SensorHandle h, SensorErrorCode error_code,
 // Setup
 // -----------------------------------------------------------------------------
 /// Initialize SDK and optionally starts capture replay.
-inline static SensorError initialize(Options options = create_options(),
+inline SensorError initialize(Options options = create_options(),
                                      const std::string &capture_path = "") {
   // Initialize
   if (!capture_path.empty())
@@ -168,6 +168,18 @@ inline static SensorError initialize(Options options = create_options(),
   error = wait(1.0f);
   if (!capture_path.empty()) error = capture_replay::seek(0.0f);
   return error;
+}
+
+inline bool has_control_flags(Control flags) {
+  return (get_control_flags() & flags) == flags;
+}
+
+inline void enable_control_flags(Control flags) {
+  set_control_flags(flags, flags);
+}
+
+inline void disable_control_flags(Control flags) {
+  set_control_flags(flags, 0);
 }
 
 /// Callback for sensor errors.
@@ -224,7 +236,7 @@ class NetworkPacketCallback
 // -----------------------------------------------------------------------------
 // Sensors
 // -----------------------------------------------------------------------------
-static bool has_sensor_by_serial_number(uint64_t serial_number) {
+inline bool has_sensor_by_serial_number(uint64_t serial_number) {
   SensorHandle handle;
   auto error = get_sensor_handle_by_serial_number(serial_number, handle);
   if (error) return false;
@@ -234,7 +246,7 @@ static bool has_sensor_by_serial_number(uint64_t serial_number) {
 /**
  * Returns error if sensor not found.
  */
-static SensorError get_sensor_information_by_serial_number(
+inline SensorError get_sensor_information_by_serial_number(
     uint64_t serial_number, SensorInformation &info) {
   CeptonSensorHandle handle;
   auto error = get_sensor_handle_by_serial_number(serial_number, handle);
@@ -243,7 +255,7 @@ static SensorError get_sensor_information_by_serial_number(
 }
 
 /// Returns serial numbers for all sensors.
-static std::vector<uint64_t> get_sensor_serial_numbers() {
+inline std::vector<uint64_t> get_sensor_serial_numbers() {
   const int n_sensors = get_n_sensors();
   std::vector<uint64_t> serial_numbers;
   serial_numbers.reserve(n_sensors);

@@ -218,8 +218,13 @@
 <dd></dd></dl>
 
 <dl class="enumvalue">
+<dt id="c.VISTA_860_GEN2">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda2014100e77ead04a40b2bed2bf303a19"></span><code class="descname">VISTA_860_GEN2</code> = 7<a class="headerlink" href="#c.VISTA_860_GEN2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
 <dt id="c.CEPTON_SENSOR_MODEL_MAX">
-<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda59264cb8f89e216c464332be5cd75eaf"></span><code class="descname">CEPTON_SENSOR_MODEL_MAX</code> = 6<a class="headerlink" href="#c.CEPTON_SENSOR_MODEL_MAX" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda59264cb8f89e216c464332be5cd75eaf"></span><code class="descname">CEPTON_SENSOR_MODEL_MAX</code> = 7<a class="headerlink" href="#c.CEPTON_SENSOR_MODEL_MAX" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -285,20 +290,19 @@
 <dl class="variable">
 <dt id="c.CeptonSensorInformation::measurement_period">
 <span class="target" id="structCeptonSensorInformation_1a8ec74c5e981030a0a32cb25c45d95daa"></span>float <code class="descname">measurement_period</code><a class="headerlink" href="#c.CeptonSensorInformation::measurement_period" title="Permalink to this definition">¶</a></dt>
-<dd><p>Time between measurements [microseconds].</p>
-<p>NOTE: will be changed to seconds in the next SDK release for consistency. </p>
+<dd><p>Time between measurements [seconds]. </p>
 </dd></dl>
 
 <dl class="variable">
 <dt id="c.CeptonSensorInformation::ptp_ts">
 <span class="target" id="structCeptonSensorInformation_1a828a834e2c747d764e502faf57e84785"></span>int64_t <code class="descname">ptp_ts</code><a class="headerlink" href="#c.CeptonSensorInformation::ptp_ts" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>[microseconds] </p>
+</dd></dl>
 
 <dl class="variable">
 <dt id="c.CeptonSensorInformation::gps_ts_year">
 <span class="target" id="structCeptonSensorInformation_1ac4912b059d949cd0581d31c4c28b665f"></span>uint8_t <code class="descname">gps_ts_year</code><a class="headerlink" href="#c.CeptonSensorInformation::gps_ts_year" title="Permalink to this definition">¶</a></dt>
-<dd><p>[microseconds] </p>
-<p>0-99 (2017 -&gt; 17) </p>
+<dd><p>0-99 (2017 -&gt; 17) </p>
 </dd></dl>
 
 <dl class="variable">
@@ -355,25 +359,25 @@
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk13get_n_sensorsEv">
-<span id="_CPPv2N10cepton_sdk13get_n_sensorsEv"></span><span id="cepton_sdk::get_n_sensors"></span><span class="target" id="cepton__sdk_8hpp_1ac91bb980e255202a4e04c1ea3fae0fd6"></span><em class="property">static</em> std::size_t <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_n_sensors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk13get_n_sensorsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk13get_n_sensorsEv"></span><span id="cepton_sdk::get_n_sensors"></span><span class="target" id="cepton__sdk_8hpp_1a39721fe33c63f42821a5b625ce7e2e1b"></span>std::size_t <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_n_sensors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk13get_n_sensorsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Get number of sensors attached. Use to check for new sensors. Sensors are not deleted until deinitialization. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk34get_sensor_handle_by_serial_numberE8uint64_tR12SensorHandle">
-<span id="_CPPv2N10cepton_sdk34get_sensor_handle_by_serial_numberE8uint64_tR12SensorHandle"></span><span id="cepton_sdk::get_sensor_handle_by_serial_number__uint64_t.SensorHandleR"></span><span class="target" id="cepton__sdk_8hpp_1afd26a3b85858e46e6d8df90713812318"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_sensor_handle_by_serial_number</code><span class="sig-paren">(</span>uint64_t <em>serial_number</em>, <a class="reference internal" href="#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> &amp;<em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk34get_sensor_handle_by_serial_numberE8uint64_tR12SensorHandle" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk34get_sensor_handle_by_serial_numberE8uint64_tR12SensorHandle"></span><span id="cepton_sdk::get_sensor_handle_by_serial_number__uint64_t.SensorHandleR"></span><span class="target" id="cepton__sdk_8hpp_1a69d98a034c9ce570286992af58c6036d"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_sensor_handle_by_serial_number</code><span class="sig-paren">(</span>uint64_t <em>serial_number</em>, <a class="reference internal" href="#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> &amp;<em>handle</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk34get_sensor_handle_by_serial_numberE8uint64_tR12SensorHandle" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns error if sensor not found. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk31get_sensor_information_by_indexENSt6size_tER17SensorInformation">
-<span id="_CPPv2N10cepton_sdk31get_sensor_information_by_indexENSt6size_tER17SensorInformation"></span><span id="cepton_sdk::get_sensor_information_by_index__std::s.SensorInformationR"></span><span class="target" id="cepton__sdk_8hpp_1ada797b455a71224a8a83708d6efc17fd"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_sensor_information_by_index</code><span class="sig-paren">(</span>std::size_t <em>idx</em>, <a class="reference internal" href="#_CPPv3N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk31get_sensor_information_by_indexENSt6size_tER17SensorInformation" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk31get_sensor_information_by_indexENSt6size_tER17SensorInformation"></span><span id="cepton_sdk::get_sensor_information_by_index__std::s.SensorInformationR"></span><span class="target" id="cepton__sdk_8hpp_1a4e7e9256e4fee7778d0042ea86f26349"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_sensor_information_by_index</code><span class="sig-paren">(</span>std::size_t <em>idx</em>, <a class="reference internal" href="#_CPPv3N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk31get_sensor_information_by_indexENSt6size_tER17SensorInformation" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Valid indices are in range [0, n_sensors). Returns error if index invalid. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk22get_sensor_informationE12SensorHandleR17SensorInformation">
-<span id="_CPPv2N10cepton_sdk22get_sensor_informationE12SensorHandleR17SensorInformation"></span><span id="cepton_sdk::get_sensor_information__SensorHandle.SensorInformationR"></span><span class="target" id="cepton__sdk_8hpp_1a2a2165c7213c4f73b49a11c1e2b25cc8"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_sensor_information</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> <em>handle</em>, <a class="reference internal" href="#_CPPv3N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk22get_sensor_informationE12SensorHandleR17SensorInformation" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk22get_sensor_informationE12SensorHandleR17SensorInformation"></span><span id="cepton_sdk::get_sensor_information__SensorHandle.SensorInformationR"></span><span class="target" id="cepton__sdk_8hpp_1a2a2217bd2433c2c556945c6a0bcfbf0d"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">get_sensor_information</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a> <em>handle</em>, <a class="reference internal" href="#_CPPv3N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> &amp;<em>info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk22get_sensor_informationE12SensorHandleR17SensorInformation" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns error if sensor not found. </p>
 </dd></dl>
 

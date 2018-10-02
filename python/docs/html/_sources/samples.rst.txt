@@ -4,8 +4,6 @@ Samples
 .. toctree::
   :maxdepth: 1
 
-  samples/export
-  samples/export_sora
   samples/listen
   samples/multiple_sensors
   samples/single_live_sensor

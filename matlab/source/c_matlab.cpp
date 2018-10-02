@@ -21,7 +21,7 @@ CeptonSensorErrorCode cepton_sdk_matlab_initialize(
   auto options = cepton_sdk_create_options();
   options.control_flags = control_flags;
   options.frame.mode = CEPTON_SDK_FRAME_COVER;
-  CeptonSensorErrorCode error_code =
+  auto error_code =
       cepton_sdk_initialize(ver, &options, global_on_error, nullptr);
   if (error_code) return error_code;
 
@@ -31,11 +31,23 @@ CeptonSensorErrorCode cepton_sdk_matlab_initialize(
   return CEPTON_SUCCESS;
 }
 
+CeptonSensorErrorCode cepton_sdk_matlab_deinitialize() {
+  const auto error_code = cepton_sdk_deinitialize();
+  cepton_sdk_matlab::errors_listener.clear();
+  cepton_sdk_matlab::frames_listener.clear();
+  return error_code;
+}
+
+CeptonSensorErrorCode cepton_sdk_matlab_clear_cache() {
+  cepton_sdk_matlab::errors_listener.clear();
+  cepton_sdk_matlab::frames_listener.clear();
+  return CEPTON_SUCCESS;
+}
+
 CeptonSensorErrorCode cepton_sdk_matlab_get_sensor_information(
     CeptonSensorHandle handle, CeptonSensorInformation *const info) {
   CeptonSensorInformation info_tmp;
-  CeptonSensorErrorCode error_code =
-      cepton_sdk_get_sensor_information(handle, &info_tmp);
+  auto error_code = cepton_sdk_get_sensor_information(handle, &info_tmp);
   if (error_code) return error_code;
   *info = *reinterpret_cast<const CeptonSensorInformation *>(&info_tmp);
   return CEPTON_SUCCESS;

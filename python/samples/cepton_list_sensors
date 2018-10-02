@@ -7,7 +7,7 @@ import cepton_sdk
 from common import *
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(usage='%(prog)s [OPTIONS]')
+    parser = argparse.ArgumentParser(usage="%(prog)s [OPTIONS]")
     parser.add_argument("--capture_path")
     args = parser.parse_args()
 

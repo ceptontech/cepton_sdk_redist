@@ -26,6 +26,9 @@ namespace util {
 const int64_t second_usec(1e6);
 const int64_t hour_usec(60.0 * 60.0 * 1e6);
 
+inline int64_t to_usec(float sec) { return int64_t(sec * 1e6f); }
+inline float from_usec(int64_t usec) { return float(usec) * 1e-6f; }
+
 template <typename T>
 inline T square(T x) {
   return x * x;
@@ -35,7 +38,7 @@ inline T square(T x) {
 /**
  * This is the timestamp format used by all sdk functions.
  */
-static int64_t get_timestamp_usec() {
+inline int64_t get_timestamp_usec() {
   // const auto t_epoch =
   // std::chrono::high_resolution_clock::now().time_since_epoch();
   const auto t_epoch = std::chrono::system_clock::now().time_since_epoch();
@@ -74,9 +77,9 @@ class ErrorAccumulator {
 // Points
 //------------------------------------------------------------------------------
 /// Convert image point to 3d point.
-inline static void convert_image_point_to_point(float image_x, float image_z,
-                                                float distance, float &x,
-                                                float &y, float &z) {
+inline void convert_image_point_to_point(float image_x, float image_z,
+                                         float distance, float &x, float &y,
+                                         float &z) {
   float hypotenuse_small = std::sqrt(square(image_x) + square(image_z) + 1.0f);
   float ratio = distance / hypotenuse_small;
   x = -image_x * ratio;
@@ -109,7 +112,7 @@ struct SensorPoint {
 
 /// Convenience method to convert `CeptonSensorImagePoint` to
 /// `cepton_sdk::SensorPoint`.
-inline static void convert_sensor_image_point_to_point(
+inline void convert_sensor_image_point_to_point(
     const SensorImagePoint &image_point, SensorPoint &point) {
   point.timestamp = image_point.timestamp;
   point.intensity = image_point.intensity;
@@ -218,28 +221,31 @@ class Callback {
   /// Clear all listeners.
   void clear() {
     std::lock_guard<std::mutex> lock(m_mutex);
+    m_i_callback = 0;
     m_functions.clear();
   }
 
   /// Register std::function.
-  SensorErrorCode listen(const std::function<void(TArgs...)> &func,
-                         uint64_t *const id = nullptr) {
+  SensorError listen(const std::function<void(TArgs...)> &func,
+                     uint64_t *const id = nullptr) {
     std::lock_guard<std::mutex> lock(m_mutex);
     if (id) *id = m_i_callback;
     m_functions[m_i_callback] = func;
     ++m_i_callback;
     return CEPTON_SUCCESS;
   }
-  void unlisten(uint64_t id) {
+  SensorError unlisten(uint64_t id) {
     std::lock_guard<std::mutex> lock(m_mutex);
+    if (!m_functions.count(id)) return CEPTON_ERROR_INVALID_ARGUMENTS;
     m_functions.erase(id);
+    return CEPTON_SUCCESS;
   }
 
   /// Register instance member function.
   template <typename TClass>
-  SensorErrorCode listen(TClass *const instance,
-                         MemberFunction<TClass, TArgs...> func,
-                         uint64_t *const id = nullptr) {
+  SensorError listen(TClass *const instance,
+                     MemberFunction<TClass, TArgs...> func,
+                     uint64_t *const id = nullptr) {
     return listen(
         [instance, func](TArgs... args) { (instance->*func)(args...); }, id);
   }
@@ -263,7 +269,7 @@ class Callback {
 
  private:
   mutable std::mutex m_mutex;
-  int m_i_callback;
+  int m_i_callback = 0;
   std::map<uint64_t, std::function<void(TArgs...)>> m_functions;
 };
 
@@ -354,11 +360,15 @@ class CoverFrameDetector {
       case HR80T:
       case HR80T_R2:
         is_model_supported = true;
-        m_finder.min_n_after = 1200 / 4;
+        m_finder.min_n_after = 1200 / 4;  // 1/4 frame
         break;
       case HR80W:
         is_model_supported = true;
-        m_finder.min_n_after = 600 / 4;
+        m_finder.min_n_after = 600 / 4;  // 1/4 frame
+        break;
+      case SORA_200:
+        is_model_supported = true;
+        m_finder.min_n_after = 10;
         break;
       default:
         is_model_supported = false;
@@ -450,13 +460,14 @@ class FrameDetector {
 
   const FrameOptions &get_options() const { return m_options; }
 
-  SensorErrorCode set_options(const FrameOptions &options) {
+  SensorError set_options(const FrameOptions &options) {
     m_options = options;
 
     switch (m_options.mode) {
       case CEPTON_SDK_FRAME_COVER:
         switch (m_sensor_info.model) {
           case VISTA_860:
+          case VISTA_860_GEN2:
             m_options.mode = CEPTON_SDK_FRAME_TIMED;
             m_options.length = 0.075f;
             break;
@@ -471,6 +482,7 @@ class FrameDetector {
       case CEPTON_SDK_FRAME_CYCLE:
         switch (m_sensor_info.model) {
           case VISTA_860:
+          case VISTA_860_GEN2:
             m_options.mode = CEPTON_SDK_FRAME_TIMED;
             m_options.length = 0.1f;
             break;
@@ -582,7 +594,7 @@ class FrameAccumulator {
     return m_frame_detector.get_options();
   }
 
-  SensorErrorCode set_options(const FrameOptions &options) {
+  SensorError set_options(const FrameOptions &options) {
     std::lock_guard<std::mutex> lock(m_mutex);
     auto error_code = m_frame_detector.set_options(options);
     clear_impl();
@@ -653,7 +665,7 @@ class FrameAccumulator {
 class StrayFilter {
  public:
   StrayFilter() = default;
-  
+
   StrayFilter(int segment_count, int return_count) {
     init(segment_count, return_count);
   }

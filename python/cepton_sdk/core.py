@@ -8,12 +8,15 @@ import cepton_sdk.c
 
 __all__ = [
     "ControlFlag",
+    "disable_control_flags",
+    "enable_control_flags",
     "FrameMode",
     "get_control_flags",
     "get_frame_length",
     "get_frame_mode",
     "get_port",
     "has_control_flag",
+    "has_control_flags",
     "is_initialized",
     "SensorError",
     "set_control_flags",
@@ -106,8 +109,20 @@ def get_control_flags():
     return int(cepton_sdk.c.c_get_control_flags())
 
 
+def has_control_flags(mask):
+    return (get_control_flags() & mask) == mask
+
+
 def set_control_flags(mask, flags):
     cepton_sdk.c.c_set_control_flags(mask, flags)
+
+
+def enable_control_flags(flags):
+    set_control_flags(flags, flags)
+
+
+def disable_control_flags(flags):
+    set_control_flags(flags, 0)
 
 
 def has_control_flag(flag):
@@ -143,9 +158,6 @@ class _Callback:
         self._callbacks = {}
         self._i_callback = 0
 
-    def __del__(self):
-        self.deinitialize()
-
     def listen(self, callback):
         with self._lock:
             callback_id = self._i_callback
@@ -159,6 +171,12 @@ class _Callback:
 
 
 class _ImageFramesCallback(_Callback):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def __del__(self):
+        self.deinitialize()
+
     def initialize(self):
         self.deinitialize()
         self._c_on_callback = \
@@ -169,7 +187,7 @@ class _ImageFramesCallback(_Callback):
     def deinitialize(self):
         try:
             cepton_sdk.c.c_unlisten_image_frames()
-        except:
+        except cepton_sdk.c.C_Error:
             pass
         self._callbacks.clear()
 

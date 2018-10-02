@@ -1,7 +1,0 @@
-Export SORA
-===========
-
-.. literalinclude:: ../../../samples/export_sora.py
-  :language: python
-  :linenos:
-  :caption: samples/export_sora.py

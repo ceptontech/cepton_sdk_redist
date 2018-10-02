@@ -13,6 +13,8 @@ extern "C" {
 
 EXPORT CeptonSensorErrorCode
 cepton_sdk_matlab_initialize(int ver, CeptonSDKControl control_flags);
+EXPORT CeptonSensorErrorCode cepton_sdk_matlab_deinitialize();
+EXPORT CeptonSensorErrorCode cepton_sdk_matlab_clear_cache();
 
 EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_sensor_information(
     CeptonSensorHandle sensor_handle,
@@ -30,8 +32,8 @@ EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_image_points(
     CeptonSensorHandle *const sensor_handle, size_t *const n_points);
 EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_image_points_data(
     uint64_t *const timestamps, float *const image_x, float *const distances,
-    float *const image_z, float *const intensities,
-    uint8_t *const return_types, uint8_t *const flags);
+    float *const image_z, float *const intensities, uint8_t *const return_types,
+    uint8_t *const flags);
 
 #include "cepton_sdk_undef.h"
 

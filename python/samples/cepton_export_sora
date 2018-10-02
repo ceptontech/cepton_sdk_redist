@@ -16,7 +16,7 @@ from cepton_util.common import *
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("output")
+    parser.add_argument("output", help="Output directory.")
     cepton_sdk.load.Loader.add_arguments(parser)
     all_file_types = [x.name for x in cepton_sdk.export.PointsFileType]
     parser.add_argument("--format", default="LAS", choices=all_file_types)
@@ -27,9 +27,7 @@ def main():
     file_type = cepton_sdk.export.PointsFileType[args.format.upper()]
     output_path = fix_path(args.output)
     speed = args.speed if (args.speed is not None) else 0
-    t_length = None
-    if args.t_length is not None:
-        t_length = parse_time_hms(args.t_length)
+    t_length = parse_time_hms(args.t_length)
 
     # Get points
     loader = cepton_sdk.load.Loader.from_arguments(args)

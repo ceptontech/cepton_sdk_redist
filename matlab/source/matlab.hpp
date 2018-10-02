@@ -21,6 +21,7 @@ struct Error {
 
 class ErrorsListener {
  public:
+  void clear();
   bool is_empty();
   std::shared_ptr<Error> queue_error();
   void clear_queued_error() { m_queued_error.reset(); }
@@ -45,6 +46,7 @@ struct Frame {
 
 class FramesListener {
  public:
+  void clear();
   bool is_empty();
   std::shared_ptr<Frame> queue_frame();
   void clear_queued_frame() { m_queued_frame.reset(); }

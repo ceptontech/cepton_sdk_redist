@@ -9,11 +9,13 @@
     <title>Points &#8212; cepton_sdk  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Capture Replay" href="capture_replay.html" />
@@ -49,32 +51,38 @@
 <em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">ImagePoints</code><span class="sig-paren">(</span><em>n=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/point.html#ImagePoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.ImagePoints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Image points array.</p>
 <dl class="attribute">
+<dt id="cepton_sdk.ImagePoints.timestamps_usec">
+<code class="descname">timestamps_usec</code><a class="headerlink" href="#cepton_sdk.ImagePoints.timestamps_usec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="cepton_sdk.ImagePoints.timestamps">
 <code class="descname">timestamps</code><a class="headerlink" href="#cepton_sdk.ImagePoints.timestamps" title="Permalink to this definition">¶</a></dt>
-<dd><p>time since epoch [microseconds]</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="cepton_sdk.ImagePoints.positions">
 <code class="descname">positions</code><a class="headerlink" href="#cepton_sdk.ImagePoints.positions" title="Permalink to this definition">¶</a></dt>
-<dd><p>x, z image coordinates</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="cepton_sdk.ImagePoints.distances">
 <code class="descname">distances</code><a class="headerlink" href="#cepton_sdk.ImagePoints.distances" title="Permalink to this definition">¶</a></dt>
-<dd><p>distance [meters]</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="cepton_sdk.ImagePoints.intensities">
 <code class="descname">intensities</code><a class="headerlink" href="#cepton_sdk.ImagePoints.intensities" title="Permalink to this definition">¶</a></dt>
-<dd><p>0-1 scaled intensity</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.return_types">
-<code class="descname">return_types</code><a class="headerlink" href="#cepton_sdk.ImagePoints.return_types" title="Permalink to this definition">¶</a></dt>
+<dt id="cepton_sdk.ImagePoints.return_strongest">
+<code class="descname">return_strongest</code><a class="headerlink" href="#cepton_sdk.ImagePoints.return_strongest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.ImagePoints.return_farthest">
+<code class="descname">return_farthest</code><a class="headerlink" href="#cepton_sdk.ImagePoints.return_farthest" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -106,26 +114,33 @@
 <em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">Points</code><span class="sig-paren">(</span><em>n=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/point.html#Points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Points" title="Permalink to this definition">¶</a></dt>
 <dd><p>3D points array.</p>
 <dl class="attribute">
+<dt id="cepton_sdk.Points.timestamps_usec">
+<code class="descname">timestamps_usec</code><a class="headerlink" href="#cepton_sdk.Points.timestamps_usec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="cepton_sdk.Points.timestamps">
 <code class="descname">timestamps</code><a class="headerlink" href="#cepton_sdk.Points.timestamps" title="Permalink to this definition">¶</a></dt>
-<dd><p>time since epoch [microseconds]</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="cepton_sdk.Points.positions">
 <code class="descname">positions</code><a class="headerlink" href="#cepton_sdk.Points.positions" title="Permalink to this definition">¶</a></dt>
-<dd><p>x, y, z cartesian coordinates</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="cepton_sdk.Points.intensities">
 <code class="descname">intensities</code><a class="headerlink" href="#cepton_sdk.Points.intensities" title="Permalink to this definition">¶</a></dt>
-<dd><p>0-1 scaled intensity</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="attribute">
-<dt id="cepton_sdk.Points.return_types">
-<code class="descname">return_types</code><a class="headerlink" href="#cepton_sdk.Points.return_types" title="Permalink to this definition">¶</a></dt>
+<dt id="cepton_sdk.Points.return_strongest">
+<code class="descname">return_strongest</code><a class="headerlink" href="#cepton_sdk.Points.return_strongest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.Points.return_farthest">
+<code class="descname">return_farthest</code><a class="headerlink" href="#cepton_sdk.Points.return_farthest" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -283,7 +298,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
     </div>
   </body>
 </html>

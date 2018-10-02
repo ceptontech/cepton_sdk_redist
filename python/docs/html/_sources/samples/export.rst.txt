@@ -1,7 +1,0 @@
-Export
-======
-
-.. literalinclude:: ../../../samples/export.py
-  :language: python
-  :linenos:
-  :caption: samples/export.py

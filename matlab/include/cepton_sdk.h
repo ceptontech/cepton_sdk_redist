@@ -15,7 +15,7 @@ extern "C" {
 
 #include "cepton_sdk_def.h"
 
-#define CEPTON_SDK_VERSION 16
+#define CEPTON_SDK_VERSION 17
 
 //------------------------------------------------------------------------------
 // Errors
@@ -49,7 +49,7 @@ enum _CeptonSensorErrorCode {
   CEPTON_FAULT_LASER_MALFUNCTION = -1007,
   CEPTON_FAULT_DETECTOR_MALFUNCTION = -1008,
 };
-typedef int CeptonSensorErrorCode;
+typedef int32_t CeptonSensorErrorCode;
 EXPORT const char *cepton_get_error_code_name(CeptonSensorErrorCode error_code);
 EXPORT int cepton_is_error_code(CeptonSensorErrorCode error_code);
 EXPORT int cepton_is_fault_code(CeptonSensorErrorCode error_code);
@@ -75,29 +75,26 @@ enum _CeptonSensorModel {
   SORA_200 = 4,
   VISTA_860 = 5,
   HR80T_R2 = 6,
-  CEPTON_SENSOR_MODEL_MAX = 6,
+  VISTA_860_GEN2 = 7,
+  CEPTON_SENSOR_MODEL_MAX = 7,
 };
-typedef uint32_t CeptonSensorModel;
+typedef uint16_t CeptonSensorModel;
 
 struct EXPORT CeptonSensorInformation {
   CeptonSensorHandle handle;
   uint64_t serial_number;
   char model_name[28];
   CeptonSensorModel model;
+  uint16_t reserved;
   char firmware_version[32];
 
   float last_reported_temperature;  ///< [celsius]
   float last_reported_humidity;     ///< [%]
   float last_reported_age;          ///< [hours]
 
-  /**
-   * Time between measurements [microseconds].
-   *
-   * NOTE: will be changed to seconds in the next SDK release for consistency.
-   */
-  float measurement_period;
+  float measurement_period;  ///< Time between measurements [seconds].
 
-  int64_t ptp_ts;  /// [microseconds]
+  int64_t ptp_ts;  ///< [microseconds]
 
   uint8_t gps_ts_year;   ///< 0-99 (2017 -> 17)
   uint8_t gps_ts_month;  ///< 1-12
@@ -137,18 +134,19 @@ typedef uint8_t CeptonSensorReturnType;
  * To convert to 3d point, refer to `cepton_sdk_util.hpp`.
  */
 struct EXPORT CeptonSensorImagePoint {
-  int64_t timestamp;  ///< unix time [microseconds]
-  float image_x;      ///< x image coordinate
-  float distance;     ///< distance [meters]
-  float image_z;      ///< z image coordinate
-  float intensity;    ///< diffuse reflectance
+  int64_t timestamp;  ///< Unix time [microseconds].
+  float image_x;      ///< x image coordinate.
+  float distance;     ///< Distance [meters].
+  float image_z;      ///< z image coordinate.
+  float intensity;    ///< Diffuse reflectance.
   CeptonSensorReturnType return_type;
 
 #ifdef SIMPLE
+  /// bit flags
   /**
    * 1. `valid`: If `false`, then the distance and intensity are invalid.
-   * 2. `saturated`: If `true`, then the intensity is invalid. The distance is
-   * valid, but inaccurate.
+   * 2. `saturated`: If `true`, then the intensity is invalid. Also, the
+   * distance is valid, but inaccurate.
    */
   uint8_t flags;
 #else
@@ -168,10 +166,10 @@ EXPORT extern const size_t cepton_sensor_image_point_size;
 // Limits to help application to preallocation of buffers
 // (These numbers are guaranteed to be safe for 6 months from SDK release)
 //------------------------------------------------------------------------------
-inline int cepton_sdk_max_points_per_packet() { return (1500 - 8) / 4; }
-inline int cepton_sdk_max_points_per_frame() { return 50000; }
-inline int cepton_sdk_max_points_per_second() { return 1000000; }
-inline int cepton_sdk_max_frames_per_second() { return 40; }
+#define CEPTON_SDK_MAX_POINTS_PER_PACKET 400
+#define CEPTON_SDK_MAX_POINTS_PER_FRAME 50000
+#define CEPTON_SDK_MAX_POINTS_PER_SECOND 1000000
+#define CEPTON_SDK_MAX_FRAMES_PER_SECOND 40
 
 //------------------------------------------------------------------------------
 // SDK Setup
@@ -205,7 +203,7 @@ enum _CeptonSDKControl {
   /// Enable marking stray points as invalid (measurement noise).
   /**
    * Uses `cepton_sdk::util::StrayFilter` to mark points invalid.
-   * 
+   *
    * Does not affect number of points returned.
    */
   CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER = 1 << 5,
@@ -268,7 +266,7 @@ typedef void (*FpCeptonSensorErrorCallback)(CeptonSensorHandle handle,
                                             size_t error_data_size,
                                             void *user_data);
 
-EXPORT CeptonSensorErrorCode cepton_sdk_is_initialized();
+EXPORT int cepton_sdk_is_initialized();  // 1 for true, 0 for false
 EXPORT CeptonSensorErrorCode
 cepton_sdk_initialize(int ver, const struct CeptonSDKOptions *const options,
                       FpCeptonSensorErrorCallback cb, void *const user_data);

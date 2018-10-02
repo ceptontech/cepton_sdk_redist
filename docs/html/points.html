@@ -192,31 +192,31 @@
 <dl class="variable">
 <dt id="c.CeptonSensorImagePoint::timestamp">
 <span class="target" id="structCeptonSensorImagePoint_1ac59e5893f10251b6c4a745215e1f4e73"></span>int64_t <code class="descname">timestamp</code><a class="headerlink" href="#c.CeptonSensorImagePoint::timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>unix time [microseconds] </p>
+<dd><p>Unix time [microseconds]. </p>
 </dd></dl>
 
 <dl class="variable">
 <dt id="c.CeptonSensorImagePoint::image_x">
 <span class="target" id="structCeptonSensorImagePoint_1a47d41d7dd90343dfeedfdc7e5c3936d1"></span>float <code class="descname">image_x</code><a class="headerlink" href="#c.CeptonSensorImagePoint::image_x" title="Permalink to this definition">¶</a></dt>
-<dd><p>x image coordinate </p>
+<dd><p>x image coordinate. </p>
 </dd></dl>
 
 <dl class="variable">
 <dt id="c.CeptonSensorImagePoint::distance">
 <span class="target" id="structCeptonSensorImagePoint_1a7fa44ce4d2acfd5802516c0e5d8b3bea"></span>float <code class="descname">distance</code><a class="headerlink" href="#c.CeptonSensorImagePoint::distance" title="Permalink to this definition">¶</a></dt>
-<dd><p>distance [meters] </p>
+<dd><p>Distance [meters]. </p>
 </dd></dl>
 
 <dl class="variable">
 <dt id="c.CeptonSensorImagePoint::image_z">
 <span class="target" id="structCeptonSensorImagePoint_1a8f2372e2e00456f674a7f4cd3262506c"></span>float <code class="descname">image_z</code><a class="headerlink" href="#c.CeptonSensorImagePoint::image_z" title="Permalink to this definition">¶</a></dt>
-<dd><p>z image coordinate </p>
+<dd><p>z image coordinate. </p>
 </dd></dl>
 
 <dl class="variable">
 <dt id="c.CeptonSensorImagePoint::intensity">
 <span class="target" id="structCeptonSensorImagePoint_1aacdac6dfdaa7670c64dbfa2bc78d0512"></span>float <code class="descname">intensity</code><a class="headerlink" href="#c.CeptonSensorImagePoint::intensity" title="Permalink to this definition">¶</a></dt>
-<dd><p>diffuse reflectance </p>
+<dd><p>Diffuse reflectance. </p>
 </dd></dl>
 
 <dl class="variable">
@@ -227,17 +227,13 @@
 <dl class="variable">
 <dt id="c.CeptonSensorImagePoint::flags">
 <span class="target" id="structCeptonSensorImagePoint_1add10d50456111d3fe529c4163d674548"></span>uint8_t <code class="descname">flags</code><a class="headerlink" href="#c.CeptonSensorImagePoint::flags" title="Permalink to this definition">¶</a></dt>
-<dd><p><ol class="arabic simple">
+<dd><p>bit flags </p>
+<p><ol class="arabic simple">
 <li><code class="docutils literal notranslate"><span class="pre">valid</span></code>: If <code class="docutils literal notranslate"><span class="pre">false</span></code>, then the distance and intensity are invalid.</li>
-<li><code class="docutils literal notranslate"><span class="pre">saturated</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, then the intensity is invalid. The distance is valid, but inaccurate. </li>
+<li><code class="docutils literal notranslate"><span class="pre">saturated</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, then the intensity is invalid. Also, the distance is valid, but inaccurate. </li>
 </ol>
 </p>
 </dd></dl>
-
-<dl class="variable">
-<dt>
-<span class="target" id="structCeptonSensorImagePoint_1a6ac41e58a3f53e7aa948d8e7580c46f0"></span><code class="descname">uint8_t CeptonSensorImagePoint::reserved[2]</code></dt>
-<dd></dd></dl>
 
 </div>
 </dd></dl>
@@ -252,7 +248,7 @@
 
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv">
-<span id="_CPPv2N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv"></span><span id="cepton_sdk::listen_image_frames__FpSensorImageDataCallback.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1aea13fe8d0e3ad26b640e849af38a07c3"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">listen_image_frames</code><span class="sig-paren">(</span>FpSensorImageDataCallback <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv"></span><span id="cepton_sdk::listen_image_frames__FpSensorImageDataCallback.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1a66137111a7fe3e3adea9c9e38d7677fc"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">listen_image_frames</code><span class="sig-paren">(</span>FpSensorImageDataCallback <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets image frames callback. </p>
 <p>Returns points at frequency specified by <code class="docutils literal notranslate"><a class="reference internal" href="setup.html#structCeptonSDKFrameOptions_1a8d7f23eb435f258c835cf7050547aa11"><span class="std std-ref"><span class="pre">cepton_sdk::FrameOptions::mode</span></span></a></code>. Each frame contains all possible points (use <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorImagePoint::valid</span></code> to filter points). Points are ordered by measurement, segment, and return:</p>
 <p><div class="highlight-default notranslate"><div class="highlight"><pre><span class="n">measurement_count</span> <span class="o">=</span> <span class="n">n_points</span> <span class="o">/</span> <span class="p">(</span><span class="n">segment_count</span> <span class="o">*</span> <span class="n">return_count</span><span class="p">)</span>
@@ -265,7 +261,7 @@
 
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk21unlisten_image_framesEv">
-<span id="_CPPv2N10cepton_sdk21unlisten_image_framesEv"></span><span id="cepton_sdk::unlisten_image_frames"></span><span class="target" id="cepton__sdk_8hpp_1aa991ec1c7e09b66e9d99a812443f3c8f"></span><em class="property">static</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">unlisten_image_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk21unlisten_image_framesEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk21unlisten_image_framesEv"></span><span id="cepton_sdk::unlisten_image_frames"></span><span class="target" id="cepton__sdk_8hpp_1addfae96e9775f583b32ff50eb7f54eba"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">unlisten_image_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk21unlisten_image_framesEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>

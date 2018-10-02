@@ -3,7 +3,7 @@ import warnings
 
 from cepton_sdk.common.c import *
 
-SDK_VERSION = 16
+SDK_VERSION = 17
 
 _module_dir = os.path.dirname(os.path.abspath(__file__))
 lib = load_c_library(_module_dir, "cepton_sdk")
@@ -225,7 +225,8 @@ class C_SensorInformation(Structure):
         ("handle", C_SensorHandle),
         ("serial_number", c_uint64),
         ("model_name", c_char * 28),
-        ("model", c_int32),
+        ("model", c_uint16),
+        ("", c_uint16),
         ("firmware_version", c_char * 32),
 
         ("last_reported_temperature", c_float),

@@ -9,11 +9,13 @@
     <title>Export &#8212; cepton_sdk  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Samples" href="samples.html" />
@@ -48,25 +50,30 @@
 <em class="property">class </em><code class="descclassname">cepton_sdk.export.</code><code class="descname">PointsFileType</code><a class="reference internal" href="_modules/cepton_sdk/export.html#PointsFileType"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.export.PointsFileType" title="Permalink to this definition">¶</a></dt>
 <dd><p>An enumeration.</p>
 <dl class="attribute">
+<dt id="cepton_sdk.export.PointsFileType.CSV">
+<code class="descname">CSV</code><em class="property"> = 1</em><a class="headerlink" href="#cepton_sdk.export.PointsFileType.CSV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="cepton_sdk.export.PointsFileType.LAS">
-<code class="descname">LAS</code><em class="property"> = 1</em><a class="headerlink" href="#cepton_sdk.export.PointsFileType.LAS" title="Permalink to this definition">¶</a></dt>
+<code class="descname">LAS</code><em class="property"> = 2</em><a class="headerlink" href="#cepton_sdk.export.PointsFileType.LAS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="cepton_sdk.export.PointsFileType.PCD">
-<code class="descname">PCD</code><em class="property"> = 2</em><a class="headerlink" href="#cepton_sdk.export.PointsFileType.PCD" title="Permalink to this definition">¶</a></dt>
+<code class="descname">PCD</code><em class="property"> = 3</em><a class="headerlink" href="#cepton_sdk.export.PointsFileType.PCD" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
 <dt id="cepton_sdk.export.PointsFileType.PLY">
-<code class="descname">PLY</code><em class="property"> = 3</em><a class="headerlink" href="#cepton_sdk.export.PointsFileType.PLY" title="Permalink to this definition">¶</a></dt>
+<code class="descname">PLY</code><em class="property"> = 4</em><a class="headerlink" href="#cepton_sdk.export.PointsFileType.PLY" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="cepton_sdk.export.save_points">
-<code class="descclassname">cepton_sdk.export.</code><code class="descname">save_points</code><span class="sig-paren">(</span><em>points</em>, <em>path</em>, <em>file_type=&lt;PointsFileType.LAS: 1&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/export.html#save_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.export.save_points" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cepton_sdk.export.</code><code class="descname">save_points</code><span class="sig-paren">(</span><em>points</em>, <em>path</em>, <em>file_type=&lt;PointsFileType.LAS: 2&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/export.html#save_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.export.save_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save points to file.</p>
 <p>Sets file extension based on type.</p>
 </dd></dl>
@@ -125,7 +132,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
     </div>
   </body>
 </html>

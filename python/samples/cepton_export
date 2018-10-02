@@ -17,24 +17,30 @@ import cepton_sdk.export
 from cepton_util.common import *
 
 
+def process_points(points):
+    # TODO: process points before exporting
+    return points
+
+
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("output", help="Output directory.")
-    parser.add_argument("--capture_path")
-    parser.add_argument("--capture_seek", type=float)
+    parser = argparse.ArgumentParser(
+        usage="%(prog)s [OPTIONS] output_dir",
+        description="Exports Cepton LiDAR points from a sensor or capture file. By default, exports frames to individual files.")
+    parser.add_argument("output_dir", help="Output directory.")
+    parser.add_argument("--capture_path", help="Path to PCAP capture file.")
+    parser.add_argument("--capture_seek", type=float,
+                        help="Capture file start position [seconds].")
     all_file_types = [x.name for x in cepton_sdk.export.PointsFileType]
-    parser.add_argument("--format", default="LAS", choices=all_file_types)
+    parser.add_argument("--format", default="LAS", choices=all_file_types, help="Output file format.")
     parser.add_argument("--combine", action="store_true",
                         help="Combine points into single file per sensor.")
     parser.add_argument("--t_length", default="1", help="Maximum export time.")
     args = parser.parse_args()
 
     file_type = cepton_sdk.export.PointsFileType[args.format.upper()]
-    t_length = None
-    if args.t_length is not None:
-        t_length = parse_time_hms(args.t_length)
+    t_length = parse_time_hms(args.t_length)
 
-    output_dir = fix_path(remove_extension(args.output))
+    output_dir = fix_path(remove_extension(args.output_dir))
     shutil.rmtree(output_dir, ignore_errors=True)
     os.makedirs(output_dir)
 
@@ -57,6 +63,7 @@ def main():
 
             path = os.path.join(output_dir, str(serial_number))
             points = image_points.to_points()
+            points = process_points(points)
 
             # Save
             cepton_sdk.export.save_points(points, path, file_type=file_type)
@@ -64,7 +71,7 @@ def main():
         t_0 = cepton_sdk.get_time()
         i_frame = collections.defaultdict(lambda: 0)
         while True:
-            if t_length is not None:
+            if t_length > 0:
                 if (cepton_sdk.get_time() - t_0) > t_length:
                     break
             try:
@@ -82,6 +89,7 @@ def main():
                     i_frame_tmp = i_frame[serial_number]
                     path = os.path.join(sensor_dir, str(i_frame_tmp))
                     points = image_points.to_points()
+                    points = process_points(points)
 
                     # Save
                     cepton_sdk.export.save_points(

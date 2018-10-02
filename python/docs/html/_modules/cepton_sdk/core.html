@@ -9,11 +9,13 @@
     <title>cepton_sdk.core &#8212; cepton_sdk  documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
@@ -44,12 +46,15 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;ControlFlag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;disable_control_flags&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;enable_control_flags&quot;</span><span class="p">,</span>
     <span class="s2">&quot;FrameMode&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_control_flags&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_frame_length&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_frame_mode&quot;</span><span class="p">,</span>
     <span class="s2">&quot;get_port&quot;</span><span class="p">,</span>
     <span class="s2">&quot;has_control_flag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_control_flags&quot;</span><span class="p">,</span>
     <span class="s2">&quot;is_initialized&quot;</span><span class="p">,</span>
     <span class="s2">&quot;SensorError&quot;</span><span class="p">,</span>
     <span class="s2">&quot;set_control_flags&quot;</span><span class="p">,</span>
@@ -142,8 +147,20 @@
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_get_control_flags</span><span class="p">())</span>
 
 
+<span class="k">def</span> <span class="nf">has_control_flags</span><span class="p">(</span><span class="n">mask</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">get_control_flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="n">mask</span><span class="p">)</span> <span class="o">==</span> <span class="n">mask</span>
+
+
 <span class="k">def</span> <span class="nf">set_control_flags</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">flags</span><span class="p">):</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_set_control_flags</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">enable_control_flags</span><span class="p">(</span><span class="n">flags</span><span class="p">):</span>
+    <span class="n">set_control_flags</span><span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="n">flags</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">disable_control_flags</span><span class="p">(</span><span class="n">flags</span><span class="p">):</span>
+    <span class="n">set_control_flags</span><span class="p">(</span><span class="n">flags</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">has_control_flag</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
@@ -179,9 +196,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_i_callback</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span>
-
     <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="n">callback_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i_callback</span>
@@ -195,6 +209,12 @@
 
 
 <span class="k">class</span> <span class="nc">_ImageFramesCallback</span><span class="p">(</span><span class="n">_Callback</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span>
+
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_c_on_callback</span> <span class="o">=</span> \
@@ -205,7 +225,7 @@
     <span class="k">def</span> <span class="nf">deinitialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_unlisten_image_frames</span><span class="p">()</span>
-        <span class="k">except</span><span class="p">:</span>
+        <span class="k">except</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_Error</span><span class="p">:</span>
             <span class="k">pass</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
@@ -255,7 +275,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
     </div>
   </body>
 </html>

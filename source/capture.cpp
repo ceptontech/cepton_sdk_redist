@@ -255,6 +255,7 @@ SensorError Capture::open_for_read_impl(const std::string &filename) {
     }
   }
   if (!m_read_index.empty()) m_length = m_read_index.back().position;
+
   return CEPTON_SUCCESS;
 }
 
@@ -317,7 +318,7 @@ SensorError Capture::read_file_header() {
   m_read_ptr = m_stream.tellg();
   if (file_header.magic != PCAP_MAGIC) return CEPTON_ERROR_INVALID_FILE_TYPE;
   m_position = 0;
-  m_timestamp_offset = file_header.thiszone;
+  m_timestamp_offset = (int64_t)file_header.thiszone * util::second_usec;
   return CEPTON_SUCCESS;
 }
 
@@ -344,7 +345,7 @@ SensorError Capture::build_read_index() {
     }
 
     const int64_t timestamp = record_header.pcap.ts_sec * util::second_usec +
-                              record_header.pcap.ts_usec;
+                              record_header.pcap.ts_usec + m_timestamp_offset;
     if (!m_start_time) m_start_time = timestamp;
 
     PacketIndex pi;
@@ -383,7 +384,7 @@ SensorError Capture::load_read_index(std::ifstream &f) {
                                     record_header);
     if (error) return error;
     const int64_t timestamp = record_header.pcap.ts_sec * util::second_usec +
-                              record_header.pcap.ts_usec;
+                              record_header.pcap.ts_usec + m_timestamp_offset;
     if (m_start_time != timestamp) return CEPTON_ERROR_CORRUPT_FILE;
   }
 
@@ -474,7 +475,7 @@ SensorError Capture::next_packet_impl(bool &success,
     packet.reset();
     packet.header.ip_v4 = ip_v4;
     packet.header.timestamp = record_header.pcap.ts_sec * util::second_usec +
-                              record_header.pcap.ts_usec;
+                              record_header.pcap.ts_usec + m_timestamp_offset;
     packet.id = fragment_id;
     packet.len = record_header.udp.len;
     packet.buffer.resize(packet.len);
@@ -530,14 +531,11 @@ SensorError Capture::append_packet(const Capture::PacketHeader &packet_header,
   RecordHeader record_header = {};
   record_header.protocol_type = PROTOCOL_V4;
 
-  if (packet_header.timestamp) {
-    record_header.pcap.ts_sec = packet_header.timestamp / util::second_usec;
-    record_header.pcap.ts_usec = packet_header.timestamp % util::second_usec;
-  } else {
-    const auto timestamp = util::get_timestamp_usec();
-    record_header.pcap.ts_sec = timestamp / util::second_usec;
-    record_header.pcap.ts_usec = timestamp % util::second_usec;
-  }
+  int64_t timestamp = (packet_header.timestamp) ? packet_header.timestamp
+                                                : util::get_timestamp_usec();
+  timestamp -= m_timestamp_offset;
+  record_header.pcap.ts_sec = timestamp / util::second_usec;
+  record_header.pcap.ts_usec = timestamp % util::second_usec;
   record_header.pcap.incl_len = packet_header_size + data_len;
   record_header.pcap.orig_len = packet_header_size + data_len;
 

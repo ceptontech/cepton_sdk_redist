@@ -1,5 +1,10 @@
 # Cepton SDK Python Release Notes
 
+### Version 1.7 2018-10-02
+* Fix timestamp jump in first frame.
+* Allow only loading Python only components if shared library is not available.
+* Rename some sample scripts, and make them globally available.
+
 ### Version 1.6 2018-09-04
 * Update SDK.
 

@@ -9,11 +9,13 @@
     <title>cepton_sdk.c &#8212; cepton_sdk  documentation</title>
     <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
@@ -39,7 +41,7 @@
 
 <span class="kn">from</span> <span class="nn">cepton_sdk.common.c</span> <span class="k">import</span> <span class="o">*</span>
 
-<span class="n">SDK_VERSION</span> <span class="o">=</span> <span class="mi">16</span>
+<span class="n">SDK_VERSION</span> <span class="o">=</span> <span class="mi">17</span>
 
 <span class="n">_module_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
 <span class="n">lib</span> <span class="o">=</span> <span class="n">load_c_library</span><span class="p">(</span><span class="n">_module_dir</span><span class="p">,</span> <span class="s2">&quot;cepton_sdk&quot;</span><span class="p">)</span>
@@ -261,7 +263,8 @@
         <span class="p">(</span><span class="s2">&quot;handle&quot;</span><span class="p">,</span> <span class="n">C_SensorHandle</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;serial_number&quot;</span><span class="p">,</span> <span class="n">c_uint64</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="n">c_char</span> <span class="o">*</span> <span class="mi">28</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">c_int32</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">c_uint16</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">c_uint16</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;firmware_version&quot;</span><span class="p">,</span> <span class="n">c_char</span> <span class="o">*</span> <span class="mi">32</span><span class="p">),</span>
 
         <span class="p">(</span><span class="s2">&quot;last_reported_temperature&quot;</span><span class="p">,</span> <span class="n">c_float</span><span class="p">),</span>
@@ -449,7 +452,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
     </div>
   </body>
 </html>

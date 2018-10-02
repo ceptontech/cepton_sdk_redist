@@ -4,8 +4,8 @@ import os.path
 import uuid
 
 import laspy
-import plyfile
 import numpy
+import plyfile
 
 import cepton_sdk.point
 
@@ -25,7 +25,7 @@ def save_points_las(points, path):
         f.x = points.positions[:, 0]
         f.y = points.positions[:, 1]
         f.z = points.positions[:, 2]
-        f.intensity = points.intensities
+        f.intensity = 65536 * numpy.clip(points.intensities, 0, 1)
 
 
 def load_points_las(load_path, cls=cepton_sdk.point.Points):
@@ -41,7 +41,7 @@ def load_points_las(load_path, cls=cepton_sdk.point.Points):
         points.positions[:, 0] = f.x
         points.positions[:, 1] = f.y
         points.positions[:, 2] = f.z
-        points.intensities[:] = f.intensity
+        points.intensities[:] = f.intensity / 65536
     return points, data
 
 

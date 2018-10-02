@@ -1,6 +1,6 @@
+import numpy
 import transforms3d
 import transforms3d.quaternions
-import numpy
 
 
 class Quaternion:

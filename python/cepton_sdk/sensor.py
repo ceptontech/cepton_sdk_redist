@@ -23,6 +23,7 @@ class SensorModel(enum.IntEnum):
     SORA_200 = 4
     VISTA_860 = 5
     HR80T_R2 = 6
+    VISTA_860_GEN2 = 7
 
 
 class SensorInformation(ToCMixin, ToDictMixin):
