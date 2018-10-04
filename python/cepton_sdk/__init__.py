@@ -1,5 +1,5 @@
 __author__ = "Cepton Technologies"
-__version__ = "1.7"
+__version__ = "1.7.1"
 
 try:
     from cepton_sdk.c import C_ErrorCode, C_Error, C_Warning
