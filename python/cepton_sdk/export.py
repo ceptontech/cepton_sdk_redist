@@ -21,7 +21,7 @@ def save_points_las(points, path):
         f.header.guid = uuid.uuid1()
         f.header.scale = [0.001] * 3
 
-        f.gps_time = numpy.remainder(points.timestamps, 1e9)
+        f.gps_time = points.timestamps - 1e9
         f.x = points.positions[:, 0]
         f.y = points.positions[:, 1]
         f.z = points.positions[:, 2]
@@ -37,7 +37,7 @@ def load_points_las(load_path, cls=cepton_sdk.point.Points):
     data = {}
     with laspy.file.File(load_path, mode="r") as f:
         points = cls(len(f.x))
-        points.timestamps[:] = f.gps_time
+        points.timestamps_usec[:] = 1e6 * (f.gps_time + 1e9)
         points.positions[:, 0] = f.x
         points.positions[:, 1] = f.y
         points.positions[:, 2] = f.z
@@ -140,7 +140,8 @@ def save_points_csv(points, path):
         ("y", float),
         ("z", float),
         ("intensity", float),
-        ("return_type", int),
+        ("return_strongest", bool),
+        ("return_farthest", bool),
         ("valid", bool),
         ("saturated", bool),
     ]
@@ -150,13 +151,14 @@ def save_points_csv(points, path):
     data["y"] = points.positions[:, 1]
     data["z"] = points.positions[:, 2]
     data["intensity"] = points.intensities
-    data["return_type"] = points.return_types
+    data["return_strongest"] = points.return_strongest
+    data["return_farthest"] = points.return_farthest
     data["valid"] = points.valid
     data["saturated"] = points.saturated
     options = {
         "delimiter": ",",
-        "header": "timestamp_usec,x,y,z,intensity,return_type,valid,saturated",
-        "fmt": "%d,%.4e,%.4e,%.4e,%.4e,%i,%i,%i",
+        "header": "timestamp_usec,x,y,z,intensity,return_strongest,return_farthest,valid,saturated",
+        "fmt": "%d,%.3f,%.3f,%.3f,%.2f,%i,%i,%i,%i",
     }
     numpy.savetxt(path, data, **options)
 
@@ -170,7 +172,7 @@ class PointsFileType(enum.Enum):
 
 
 def get_points_file_type(ext):
-    return PointsFileType[ext.upper()]
+    return PointsFileType[ext[1:].upper()]
 
 
 def get_points_file_type_extension(file_type):

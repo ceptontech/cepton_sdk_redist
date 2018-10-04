@@ -31,13 +31,14 @@ def main():
     parser.add_argument("--capture_seek", type=float,
                         help="Capture file start position [seconds].")
     all_file_types = [x.name for x in cepton_sdk.export.PointsFileType]
-    parser.add_argument("--format", default="LAS", choices=all_file_types, help="Output file format.")
+    parser.add_argument("--format", default="LAS", choices=all_file_types,
+                        type=str.upper, help="Output file format.")
     parser.add_argument("--combine", action="store_true",
                         help="Combine points into single file per sensor.")
     parser.add_argument("--t_length", default="1", help="Maximum export time.")
     args = parser.parse_args()
 
-    file_type = cepton_sdk.export.PointsFileType[args.format.upper()]
+    file_type = cepton_sdk.export.PointsFileType[args.format]
     t_length = parse_time_hms(args.t_length)
 
     output_dir = fix_path(remove_extension(args.output_dir))
