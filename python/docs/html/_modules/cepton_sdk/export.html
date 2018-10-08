@@ -59,7 +59,7 @@
         <span class="n">f</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">guid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid1</span><span class="p">()</span>
         <span class="n">f</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
 
-        <span class="n">f</span><span class="o">.</span><span class="n">gps_time</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">remainder</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">timestamps</span><span class="p">,</span> <span class="mi">1</span><span class="n">e9</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">gps_time</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">timestamps</span> <span class="o">-</span> <span class="mi">1</span><span class="n">e9</span>
         <span class="n">f</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="n">f</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">f</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
@@ -75,7 +75,7 @@
     <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">with</span> <span class="n">laspy</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">load_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">timestamps</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">gps_time</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">1</span><span class="n">e6</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">gps_time</span> <span class="o">+</span> <span class="mi">1</span><span class="n">e9</span><span class="p">)</span>
         <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">x</span>
         <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">y</span>
         <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">z</span>
@@ -178,7 +178,8 @@
         <span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;intensity&quot;</span><span class="p">,</span> <span class="nb">float</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;return_type&quot;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;return_strongest&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;return_farthest&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;valid&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;saturated&quot;</span><span class="p">,</span> <span class="nb">bool</span><span class="p">),</span>
     <span class="p">]</span>
@@ -188,13 +189,14 @@
     <span class="n">data</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">data</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
     <span class="n">data</span><span class="p">[</span><span class="s2">&quot;intensity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">intensities</span>
-    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;return_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">return_types</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;return_strongest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">return_strongest</span>
+    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;return_farthest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">return_farthest</span>
     <span class="n">data</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">valid</span>
     <span class="n">data</span><span class="p">[</span><span class="s2">&quot;saturated&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">saturated</span>
     <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;delimiter&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="s2">&quot;timestamp_usec,x,y,z,intensity,return_type,valid,saturated&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;fmt&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">,</span><span class="si">%.4e</span><span class="s2">,</span><span class="si">%.4e</span><span class="s2">,</span><span class="si">%.4e</span><span class="s2">,</span><span class="si">%.4e</span><span class="s2">,</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="s2">&quot;timestamp_usec,x,y,z,intensity,return_strongest,return_farthest,valid,saturated&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;fmt&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">,</span><span class="si">%.3f</span><span class="s2">,</span><span class="si">%.3f</span><span class="s2">,</span><span class="si">%.3f</span><span class="s2">,</span><span class="si">%.2f</span><span class="s2">,</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">&quot;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">numpy</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
 
@@ -208,7 +210,7 @@
 
 
 <span class="k">def</span> <span class="nf">get_points_file_type</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">PointsFileType</span><span class="p">[</span><span class="n">ext</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
+    <span class="k">return</span> <span class="n">PointsFileType</span><span class="p">[</span><span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">upper</span><span class="p">()]</span>
 
 
 <span class="k">def</span> <span class="nf">get_points_file_type_extension</span><span class="p">(</span><span class="n">file_type</span><span class="p">):</span>

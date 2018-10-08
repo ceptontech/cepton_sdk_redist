@@ -36,9 +36,11 @@
           <div class="body" role="main">
             
   <h1>Source code for cepton_sdk.point</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">cepton_sdk.c</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">cepton_sdk.c</span>
 <span class="kn">import</span> <span class="nn">cepton_sdk.common.c</span>
+<span class="kn">import</span> <span class="nn">cepton_util.common</span>
 <span class="kn">from</span> <span class="nn">cepton_sdk.common.mixin</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -109,23 +111,23 @@
     <span class="k">def</span> <span class="nf">_get_array_member_names</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;timestamps_usec&quot;</span><span class="p">,</span> <span class="s2">&quot;intensities&quot;</span><span class="p">,</span> <span class="s2">&quot;return_types&quot;</span><span class="p">,</span> <span class="s2">&quot;flags&quot;</span><span class="p">]</span>
 
-    <span class="nd">@property</span>
+    <span class="nd">@numpy_property</span>
     <span class="k">def</span> <span class="nf">timestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cepton_util</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">from_usec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">)</span>
 
-    <span class="nd">@property</span>
+    <span class="nd">@numpy_property</span>
     <span class="k">def</span> <span class="nf">return_strongest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 
-    <span class="nd">@property</span>
+    <span class="nd">@numpy_property</span>
     <span class="k">def</span> <span class="nf">return_farthest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 
-    <span class="nd">@property</span>
+    <span class="nd">@numpy_property</span>
     <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 
-    <span class="nd">@property</span>
+    <span class="nd">@numpy_property</span>
     <span class="k">def</span> <span class="nf">saturated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 

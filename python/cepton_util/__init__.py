@@ -1,4 +1,4 @@
 __author__ = "Cepton Technologies"
-__version__ = "1.7.1"
+__version__ = "1.8"
 
 from cepton_util.common import *

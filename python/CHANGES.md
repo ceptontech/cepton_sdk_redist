@@ -1,5 +1,9 @@
 # Cepton SDK Python Release Notes
 
+### Version 1.8 2018-10-08
+* Update cepton_export.
+* Make numpy properties immutable.
+
 ### Version 1.7 2018-10-02
 * Fix timestamp jump in first frame.
 * Allow only loading Python only components if shared library is not available.

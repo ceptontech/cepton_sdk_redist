@@ -1,5 +1,8 @@
 # Cepton SDK Release Notes
 
+### Version 1.8 2018-10-08
+* Fix calibration loading bug.
+
 ### Version 1.7 2018-10-02
 * **IMPORTANT:** change `CeptonSensorInformation::measurement_period`: `microseconds` -> `seconds`.
 * **IMPORTANT**: change global limits from inline functions to #define.

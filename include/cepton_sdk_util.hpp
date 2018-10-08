@@ -797,12 +797,12 @@ class SimpleConcurrentQueue {
     m_condition_variable.notify_one();
   }
 
-  std::shared_ptr<T> pop(int64_t timeout = 0) {
+  std::shared_ptr<T> pop(float timeout = 0.0f) {
     std::unique_lock<std::mutex> lock(m_mutex);
     if (m_queue.empty()) {
-      if (timeout == 0) return std::shared_ptr<T>();
+      if (!timeout) return std::shared_ptr<T>();
       m_condition_variable.wait_for(
-          lock, std::chrono::microseconds(timeout),
+          lock, std::chrono::microseconds(to_usec(timeout)),
           [this]() -> bool { return !m_queue.empty(); });
     }
     if (m_queue.empty()) return std::shared_ptr<T>();

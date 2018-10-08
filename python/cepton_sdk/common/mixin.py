@@ -4,6 +4,15 @@ import ctypes
 import numpy
 
 
+def numpy_property(func, **kwargs):
+    """Makes returned numpy object immutable to avoid modifying temporary value."""
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        result.flags.writeable = False
+        return result
+    return property(wrapper, **kwargs)
+
+
 class ToDictMixin:
     @classmethod
     def _get_dict_member_names(cls):

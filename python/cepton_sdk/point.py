@@ -1,6 +1,8 @@
-import cepton_sdk.c
 import numpy
+
+import cepton_sdk.c
 import cepton_sdk.common.c
+import cepton_util.common
 from cepton_sdk.common.mixin import *
 
 __all__ = [
@@ -71,23 +73,23 @@ class PointsBase(StructureOfArrays):
     def _get_array_member_names(cls):
         return ["timestamps_usec", "intensities", "return_types", "flags"]
 
-    @property
+    @numpy_property
     def timestamps(self):
-        return 1e-6 * self.timestamps_usec.astype(float)
+        return cepton_util.common.from_usec(self.timestamps_usec)
 
-    @property
+    @numpy_property
     def return_strongest(self):
         return self.return_types[:, 0]
 
-    @property
+    @numpy_property
     def return_farthest(self):
         return self.return_types[:, 1]
 
-    @property
+    @numpy_property
     def valid(self):
         return self.flags[:, 0]
 
-    @property
+    @numpy_property
     def saturated(self):
         return self.flags[:, 1]
 

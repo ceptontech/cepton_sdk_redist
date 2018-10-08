@@ -101,7 +101,7 @@ void NetworkManager::initialize() {
 
   m_worker_thread.reset(new std::thread([&]() {
     while (true) {
-      const auto packet = m_packets.pop(int64_t(0.01 * 1e6));
+      const auto packet = m_packets.pop(0.01f);
       if (!m_is_running) break;
       if (!packet) continue;
       callback_manager.network_cb.emit(packet->handle, packet->timestamp,

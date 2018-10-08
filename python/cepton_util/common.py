@@ -2,6 +2,7 @@ import argparse
 import datetime
 import os
 import os.path
+import re
 import shutil
 import signal
 import subprocess
@@ -24,6 +25,7 @@ __all__ = [
     "find_file_by_name",
     "find_file",
     "fix_path",
+    "from_usec",
     "get_day_str",
     "get_environment",
     "get_io_paths",
@@ -31,9 +33,11 @@ __all__ = [
     "get_simple_io_paths",
     "get_timestamp_str",
     "get_timestamp",
+    "get_timestamp_usec",
     "has_environment",
     "kill_background",
     "modify_path",
+    "parse_enum",
     "parse_execute_command_arguments",
     "parse_list",
     "parse_time_hms",
@@ -41,12 +45,14 @@ __all__ = [
     "remove_extension",
     "run_background",
     "set_extension",
+    "to_usec",
     "wait_for_input",
     "wait_on_background",
 ]
 
 
 def optional_function(func):
+    """Skip function if value is None."""
     def wrapper(x, *args, **kwargs):
         if x is None:
             return None
@@ -54,8 +60,34 @@ def optional_function(func):
     return wrapper
 
 
+def array_function(func):
+    """Convert input to numpy and output to original type."""
+    def wrapper(value, *args, **kwargs):
+        result = func(numpy.array(value), *args, **kwargs)
+        if numpy.isscalar(value):
+            result = numpy.asscalar(result)
+        return result
+    return wrapper
+
+
+@array_function
+def from_usec(timestamps_usec):
+    """Convert microseconds to seconds."""
+    return 1e-6 * timestamps_usec.astype(float)
+
+
+@array_function
+def to_usec(timestamps):
+    """Convert seconds to microseconds."""
+    return (1e6 * timestamps).astype(numpy.int64)
+
+
 def get_timestamp():
     return datetime.datetime.utcnow().timestamp()
+
+
+def get_timestamp_usec():
+    return to_usec(get_timestamp())
 
 
 def get_day_str():

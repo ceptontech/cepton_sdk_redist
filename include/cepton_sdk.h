@@ -76,7 +76,8 @@ enum _CeptonSensorModel {
   VISTA_860 = 5,
   HR80T_R2 = 6,
   VISTA_860_GEN2 = 7,
-  CEPTON_SENSOR_MODEL_MAX = 7,
+  FUSION_790 = 8,
+  CEPTON_SENSOR_MODEL_MAX = 8,
 };
 typedef uint16_t CeptonSensorModel;
 
