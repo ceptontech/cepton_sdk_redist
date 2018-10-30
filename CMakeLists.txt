@@ -1,0 +1,25 @@
+#[[
+To use, add the following to your CMake
+
+```
+add_subdirectory(<cepton_sdk_redist>)
+include_directories(SYSTEM ${CEPTON_SDK_INCLUDE_DIRS})
+add_definitions(${CEPTON_SDK_DEFINITIONS})
+target_link_libraries(<target> ${CEPTON_SDK_LIBRARIES})
+```
+]]
+set(CEPTON_SDK_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}")
+include("${CEPTON_SDK_SOURCE_DIR}/cmake/CommonRedist.cmake")
+
+CREATE_OPTION(BOOL CEPTON_SDK_USE_STATIC TRUE
+    "Use static cepton sdk libraries.")
+
+set(CEPTON_SDK_INCLUDE_DIRS "${CEPTON_SDK_SOURCE_DIR}/include")
+if(CEPTON_SDK_USE_STATIC)
+    CEPTON_GET_STATIC_LIBRARY(CEPTON_SDK_LIBRARIES "${CEPTON_SDK_SOURCE_DIR}" "cepton_sdk")
+    list(APPEND CEPTON_SDK_DEFINITIONS -DCEPTON_SDK_STATIC)
+else()
+    CEPTON_GET_SHARED_LIBRARY(CEPTON_SDK_LIBRARIES "${CEPTON_SDK_SOURCE_DIR}" "cepton_sdk")
+endif()
+
+
