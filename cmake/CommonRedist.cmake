@@ -16,7 +16,7 @@ endmacro()
 
 macro(CEPTON_GET_STATIC_LIBRARY key root lib_name)
     if(WINDOWS)
-        set(${key} "${root}/bin/${OS_NAME}/${lib_name}.lib")
+        set(${key} "${root}/lib/${OS_NAME}/${lib_name}.lib")
     elseif(APPLE OR LINUX)
         set(${key} "${root}/lib/${OS_NAME}/${lib_name}.a")
     endif()

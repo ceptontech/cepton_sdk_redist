@@ -23,11 +23,11 @@ namespace util {
 //------------------------------------------------------------------------------
 // Common
 //------------------------------------------------------------------------------
-const int64_t second_usec(1e6);
-const int64_t hour_usec(60.0 * 60.0 * 1e6);
-
 inline int64_t to_usec(float sec) { return int64_t(sec * 1e6f); }
 inline float from_usec(int64_t usec) { return float(usec) * 1e-6f; }
+
+const int64_t second_usec(to_usec(1e6f));
+const int64_t hour_usec(to_usec(60.0f * 60.0f * 1e6f));
 
 template <typename T>
 inline T square(T x) {
