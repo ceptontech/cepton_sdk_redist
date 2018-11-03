@@ -17,12 +17,11 @@ if __name__ == "__main__":
     sensors_dict = cepton_sdk.get_sensors()
 
     # Get points
-    listener = cepton_sdk.ImageFramesListener()
-    image_points_dict = listener.get_points()
+    listener = cepton_sdk.FramesListener()
+    points_dict = listener.get_points()
     del listener
-    image_points_list = next(iter(image_points_dict.values()))
-    image_points = image_points_list[0]
-    points = image_points.to_points()
+    points_list = next(iter(points_dict.values()))
+    points = points_list[0]
 
     # Plot
     cepton_sdk.plot.plot_points(points)

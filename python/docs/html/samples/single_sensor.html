@@ -71,8 +71,7 @@
 26
 27
 28
-29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
+29</pre></div></td><td class="code"><div class="highlight"><pre><span class="ch">#!/usr/bin/env python3</span>
 
 <span class="kn">import</span> <span class="nn">pprint</span>
 
@@ -90,15 +89,14 @@
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">capture_path</span><span class="o">=</span><span class="n">capture_path</span><span class="p">)</span>
 
     <span class="c1"># Get sensor</span>
-    <span class="n">sensors_dict</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_sensors</span><span class="p">()</span>
-    <span class="n">sensor</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">sensors_dict</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+    <span class="n">sensor</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">Sensor</span><span class="o">.</span><span class="n">create_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">information</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
 
     <span class="c1"># Get points</span>
-    <span class="n">listener</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">SensorImageFramesListener</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">serial_number</span><span class="p">)</span>
-    <span class="n">image_points_list</span> <span class="o">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
+    <span class="n">listener</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">SensorFramesListener</span><span class="p">(</span><span class="n">sensor</span><span class="o">.</span><span class="n">serial_number</span><span class="p">)</span>
+    <span class="n">points_list</span> <span class="o">=</span> <span class="n">listener</span><span class="o">.</span><span class="n">get_points</span><span class="p">()</span>
     <span class="k">del</span> <span class="n">listener</span>
-    <span class="n">points</span> <span class="o">=</span> <span class="n">image_points_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">points_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># Plot</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_points</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>

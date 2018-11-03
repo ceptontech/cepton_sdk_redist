@@ -1,5 +1,15 @@
 # Cepton SDK Release Notes
 
+### Version 1.9 2018-11-02
+* High level API changes.
+* Make `cepton_sdk::api::wait` wait forever if `t_length < 0` (default).
+* Add `CEPTON_SDK_CONTROL_HOST_TIMESTAMPS` control flag.
+* `cepton_sdk::api::initialize` only waits for sensors with capture file.
+* Add `cepton_sdk::api::load_replay`.
+* Make `cepton_sdk::util::SensorPoint` subclass of `cepton_sdk::ImagePoint`.
+* Add `cepton_sdk::get_version_string`, `cepton_sdk::get_version_major`, `cepton_sdk::get_version_minor`.
+* Add `CMakeLists.txt` and `samples/CMakeLists.txt`.
+
 ### Version 1.8 2018-10-08
 * Fix calibration loading bug.
 

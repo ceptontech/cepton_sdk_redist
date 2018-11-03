@@ -13,9 +13,8 @@ import cepton_sdk
 class Renderer(object):
     def __init__(self, serial_number):
         self.serial_number = serial_number
-        self.image_points_list = []
-        self.listener = cepton_sdk.SensorImageFramesListener(
-            self.serial_number)
+        self.points_list = []
+        self.listener = cepton_sdk.SensorFramesListener(self.serial_number)
 
         # Initialize canvas
         options = {
@@ -57,14 +56,13 @@ class Renderer(object):
         vispy.app.run()
 
     def update(self):
-        while not self.image_points_list:
+        while not self.points_list:
             try:
-                image_points_list = self.listener.get_points()
+                points_list = self.listener.get_points()
             except:
                 return
-            self.image_points_list.extend(image_points_list)
-        image_points = self.image_points_list.pop(0)
-        points = image_points.to_points()
+            self.points_list.extend(points_list)
+        points = self.points_list.pop(0)
 
         plot_name = "points"
         if plot_name not in self.plot_handles:

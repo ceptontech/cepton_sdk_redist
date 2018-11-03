@@ -103,11 +103,11 @@
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_capture_replay_set_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">resume_blocking</span><span class="p">(</span><span class="n">t_length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">t_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">resume_blocking</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_capture_replay_resume_blocking_once</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_capture_replay_resume_blocking</span><span class="p">(</span><span class="n">t_length</span><span class="p">)</span>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_capture_replay_resume_blocking</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">is_running</span><span class="p">():</span>

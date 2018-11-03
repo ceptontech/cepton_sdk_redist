@@ -3,6 +3,8 @@ classdef Points < handle
 
 properties
     timestamps_usec
+    image_positions
+    distances
     positions
     intensities
     return_types
@@ -22,6 +24,8 @@ methods
     function self = Points(n)
         self.n = n;
         self.timestamps_usec = zeros([n, 1], 'int64');
+        self.image_positions = zeros([n, 2]);
+        self.distances = zeros([n, 1]);
         self.positions = zeros([n, 3]);
         self.intensities = zeros([n, 1]);
         self.return_types = zeros([n, 1], 'uint8');

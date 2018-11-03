@@ -4,13 +4,13 @@ Cepton Python SDK
 ## Installation
 
 ```sh
-pip install -U cepton_sdk
+pip install cepton_sdk
 ```
 
 To install extra dependencies
 
 ```sh
-pip install -U cepton_sdk[export,plot]
+pip install cepton_sdk[capture,export,plot]
 ```
 
 ## Documentation

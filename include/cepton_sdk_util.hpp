@@ -26,8 +26,8 @@ namespace util {
 inline int64_t to_usec(float sec) { return int64_t(sec * 1e6f); }
 inline float from_usec(int64_t usec) { return float(usec) * 1e-6f; }
 
-const int64_t second_usec(to_usec(1e6f));
-const int64_t hour_usec(to_usec(60.0f * 60.0f * 1e6f));
+const int64_t second_usec(to_usec(1.0f));
+const int64_t hour_usec(to_usec(60.0f * 60.0f));
 
 template <typename T>
 inline T square(T x) {
@@ -88,36 +88,18 @@ inline void convert_image_point_to_point(float image_x, float image_z,
 }
 
 /// 3d point class.
-struct SensorPoint {
-  int64_t timestamp;
+struct SensorPoint : public SensorImagePoint {
   float x;
   float y;
   float z;
-  float intensity;
-  CeptonSensorReturnType return_type;
-
-#ifdef SIMPLE
-  uint8_t flags;
-#else
-  union {
-    uint8_t flags;
-    struct {
-      uint8_t valid : 1;
-      uint8_t saturated : 1;
-    };
-  };
-  uint8_t reserved[2];
-#endif
+  uint8_t reserved;
 };
 
-/// Convenience method to convert `CeptonSensorImagePoint` to
+/// Convenience method to convert `cepton_sdk::SensorImagePoint` to
 /// `cepton_sdk::SensorPoint`.
 inline void convert_sensor_image_point_to_point(
     const SensorImagePoint &image_point, SensorPoint &point) {
-  point.timestamp = image_point.timestamp;
-  point.intensity = image_point.intensity;
-  point.return_type = image_point.return_type;
-  point.flags = image_point.flags;
+  *(SensorImagePoint *)(&point) = image_point;
 
   convert_image_point_to_point(image_point.image_x, image_point.image_z,
                                image_point.distance, point.x, point.y, point.z);
@@ -448,6 +430,57 @@ class TimedFrameDetector {
 };
 }  // namespace internal
 
+// Detects scanlines in streaming data.
+class ScanlineDetector {
+ public:
+  ScanlineDetector(const SensorInformation &sensor_info) {
+    is_model_supported = true;
+    m_finder.min_n_after = 2;
+    reset();
+  }
+
+  void reset() {
+    scanline_found = false;
+    m_n = 0;
+    m_idx_0 = 0;
+    m_finder.reset();
+  }
+
+  bool add_point(const SensorImagePoint &point) {
+    scanline_found = false;
+    scanline_idx = -1;
+
+    ++m_n;
+    if (!m_finder.add_value(point.image_z)) return false;
+
+    scanline_found = true;
+    direction = m_finder.direction;
+    scanline_idx = m_finder.peak_idx + 1;
+    scanline_z = m_finder.peak_value;
+
+    const int idx_0 = m_n - scanline_idx;
+    scanline_idx += m_idx_0;
+    m_idx_0 = idx_0;
+
+    m_n = 0;
+    m_finder.reset();
+    return true;
+  }
+
+ public:
+  // Outputs
+  bool is_model_supported;
+  bool scanline_found;
+  int direction;
+  int scanline_idx;
+  float scanline_z;
+
+ private:
+  int m_n;
+  int m_idx_0;
+  internal::PeakFinder m_finder;
+};
+
 /// Detects frames in streaming sensor data.
 class FrameDetector {
  public:
@@ -545,7 +578,7 @@ class FrameDetector {
         break;
       default:
         assert(false);
-        return false;
+        return true;
     }
 
     if (frame_idx < 0) {
@@ -563,6 +596,7 @@ class FrameDetector {
   }
 
  public:
+  // Outputs
   bool frame_found;
   int frame_idx;  /// Number of points in current frame.
   float frame_x;  /// Sanity check.

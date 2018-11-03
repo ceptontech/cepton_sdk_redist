@@ -19,6 +19,16 @@ namespace cepton_sdk {
 
 #include "cepton_sdk_def.h"
 
+/// Returns library version.
+/**
+ * This is different from `CEPTON_SDK_VERSION`.
+ */
+inline const char *get_version_string() {
+  return cepton_sdk_get_version_string();
+}
+inline int get_version_major() { return cepton_sdk_get_version_major(); }
+inline int get_version_minor() { return cepton_sdk_get_version_minor(); }
+
 //------------------------------------------------------------------------------
 // Errors
 //------------------------------------------------------------------------------

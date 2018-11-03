@@ -143,29 +143,27 @@ class SensorClip:
             self.max_image[1] = d["max_image_z"]
         return self
 
-    def find_points(self, image_points):
-        if len(image_points) == 0:
+    def find_points(self, points):
+        if len(points) == 0:
             return numpy.array([], dtype=bool)
 
         is_clipped_list = []
+        is_clipped_list.append(points.distances < self.min_distance)
+        is_clipped_list.append(points.distances > self.max_distance)
         is_clipped_list.append(
-            image_points.distances < self.min_distance)
+            numpy.any(points.image_positions < self.min_image, axis=-1))
         is_clipped_list.append(
-            image_points.distances > self.max_distance)
-        is_clipped_list.append(
-            numpy.any(image_points.positions < self.min_image, axis=-1))
-        is_clipped_list.append(
-            numpy.any(image_points.positions > self.max_image, axis=-1))
+            numpy.any(points.image_positions > self.max_image, axis=-1))
         is_clipped = numpy.logical_or.reduce(is_clipped_list)
 
         return is_clipped
 
-    def clip_points(self, image_points):
-        if len(image_points) == 0:
-            return image_points
+    def clip_points(self, points):
+        if len(points) == 0:
+            return points
 
-        is_clipped = self.find_points(image_points)
-        return image_points[numpy.logical_not(is_clipped)]
+        is_clipped = self.find_points(points)
+        return points[numpy.logical_not(is_clipped)]
 
 
 class SensorClipManager(_ManagerBase):
@@ -177,11 +175,11 @@ class SensorClipManager(_ManagerBase):
             self.clips[sensor_serial_number] = \
                 SensorClip.from_dict(clips_dict_tmp)
 
-    def process_sensor_points(self, sensor_serial_number, image_points):
+    def process_sensor_points(self, sensor_serial_number, points):
         if sensor_serial_number not in self.clips:
-            return copy.deepcopy(image_points)
-        if len(image_points) == 0:
-            return image_points
+            return copy.deepcopy(points)
+        if len(points) == 0:
+            return points
 
         clip_tmp = self.clips[sensor_serial_number]
-        return clip_tmp.clip_points(image_points)
+        return clip_tmp.clip_points(points)

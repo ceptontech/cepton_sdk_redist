@@ -10,20 +10,22 @@ import cepton_sdk.sensor
 from cepton_sdk.common.function import *
 
 __all__ = [
+    "close_replay",
+    "deinitialize",
     "get_sensors",
     "get_time",
     "get_timestamp",
     "has_sensor",
-    "ImageFramesListener",
+    "FramesListener",
     "initialize",
-    "deinitialize",
     "is_end",
     "is_live",
     "is_realtime",
-    "listen_image_frames",
+    "listen_frames",
+    "open_replay",
     "Sensor",
-    "SensorImageFramesListener",
-    "unlisten_image_frames",
+    "SensorFramesListener",
+    "unlisten_frames",
     "wait",
 ]
 
@@ -60,29 +62,29 @@ def get_time():
         return cepton_sdk.capture_replay.get_time()
 
 
-def _wait(t_length):
+def _wait(duration):
     if is_realtime():
-        time.sleep(t_length)
+        time.sleep(duration)
     else:
-        cepton_sdk.capture_replay.resume_blocking(t_length)
+        cepton_sdk.capture_replay.resume_blocking(duration)
 
 
-def wait(t_length=0):
+def wait(duration=-1):
     """Resumes capture replay or sleeps for duration.
 
-    If `t_length` is `0`, then waits forever.
+    If `duration` is `0`, then waits forever.
     """
-    if t_length == 0:
+    if duration < 0:
         while True:
             _wait(0.1)
             if is_end():
                 break
     else:
-        _wait(t_length)
+        _wait(duration)
 
 
 def initialize(capture_path=None, capture_seek=0, control_flags=0,
-               error_callback=None, port=None, wait_for_sensors=True, **kwargs):
+               error_callback=None, port=None, **kwargs):
     """Initializes SDK. Optionally starts capture replay.
 
     Arguments:
@@ -100,38 +102,46 @@ def initialize(capture_path=None, capture_seek=0, control_flags=0,
     if port is not None:
         options["port"] = port
     cepton_sdk.core._manager.initialize(**options)
-    cepton_sdk.core._image_frames_callback.initialize()
+    cepton_sdk.core._frames_callback.initialize()
 
     if capture_path is not None:
-        cepton_sdk.capture_replay.open(capture_path)
-    if wait_for_sensors:
-        wait(3)
-        if capture_path is not None:
-            cepton_sdk.capture_replay.seek(capture_seek)
+        open_replay(capture_path, capture_seek=capture_seek)
 
 
 def deinitialize():
-    cepton_sdk.core._image_frames_callback.deinitialize()
+    cepton_sdk.core._frames_callback.deinitialize()
     cepton_sdk.core._manager.deinitialize()
 
 
-def listen_image_frames(callback):
-    """Register image frames callback.
+def open_replay(capture_path, capture_seek=0):
+    if cepton_sdk.capture_replay.is_open():
+        cepton_sdk.capture_replay.close()
+    cepton_sdk.capture_replay.open(capture_path)
+
+    cepton_sdk.capture_replay.resume_blocking(10)
+    cepton_sdk.capture_replay.seek(capture_seek)
+
+
+close_replay = cepton_sdk.capture_replay.close
+
+
+def listen_frames(callback):
+    """Register frames callback.
 
     Throws error if `callback_id` is currently registered.
 
     Returns:
         callback_id
     """
-    return cepton_sdk.core._image_frames_callback.listen(callback)
+    return cepton_sdk.core._frames_callback.listen(callback)
 
 
-def unlisten_image_frames(callback_id):
-    """Unregisters image frames callback.
+def unlisten_frames(callback_id):
+    """Unregisters frames callback.
 
     Throws error if `callback_id` is not currently registered.
     """
-    cepton_sdk.core._image_frames_callback.unlisten(callback_id)
+    cepton_sdk.core._frames_callback.unlisten(callback_id)
 
 
 def _wait_on_func(func, timeout=None):
@@ -160,29 +170,29 @@ class _FramesListener(_ListenerBase):
     """Listener for getting all sensor frames."""
 
     def __init__(self):
-        self.i_frame_dict = collections.defaultdict(lambda: 0)
-        self.points_dict = collections.defaultdict(list)
+        self._i_frame_dict = collections.defaultdict(lambda: 0)
+        self._points_dict = collections.defaultdict(list)
         super().__init__()
 
     def reset(self):
         with self._lock:
-            self.i_frame_dict = collections.defaultdict(lambda: 0)
-            self.points_dict = collections.defaultdict(list)
+            self._i_frame_dict = collections.defaultdict(lambda: 0)
+            self._points_dict = collections.defaultdict(list)
 
     def _on_points(self, sensor_info, points):
         with self._lock:
-            self.i_frame_dict[sensor_info.serial_number] += 1
-            if self.i_frame_dict[sensor_info.serial_number] > 2:
-                self.points_dict[sensor_info.serial_number].append(points)
+            self._i_frame_dict[sensor_info.serial_number] += 1
+            if self._i_frame_dict[sensor_info.serial_number] > 2:
+                self._points_dict[sensor_info.serial_number].append(points)
 
     def has_points(self):
         with self._lock:
-            return len(self.points_dict) > 0
+            return len(self._points_dict) > 0
 
     def _get_points(self):
         with self._lock:
-            points_dict = self.points_dict
-            self.points_dict = collections.defaultdict(list)
+            points_dict = self._points_dict
+            self._points_dict = collections.defaultdict(list)
         return points_dict
 
     def get_points(self, **kwargs):
@@ -192,32 +202,32 @@ class _FramesListener(_ListenerBase):
 
 class _SensorFramesListener(_ListenerBase):
     def __init__(self, serial_number):
-        self.serial_number = serial_number
-        self.i_frame = 0
-        self.points_list = []
+        self._serial_number = serial_number
+        self._i_frame = 0
+        self._points_list = []
         super().__init__()
 
     def reset(self):
         with self._lock:
-            self.i_frame = 0
-            self.points_list = []
+            self._i_frame = 0
+            self._points_list = []
 
     def _on_points(self, sensor_info, points):
         with self._lock:
-            if sensor_info.serial_number != self.serial_number:
+            if sensor_info.serial_number != self._serial_number:
                 return
-            self.i_frame += 1
-            if self.i_frame > 2:
-                self.points_list.append(points)
+            self._i_frame += 1
+            if self._i_frame > 2:
+                self._points_list.append(points)
 
     def has_points(self):
         with self._lock:
-            return len(self.points_list) > 0
+            return len(self._points_list) > 0
 
     def _get_points(self):
         with self._lock:
-            points_list = self.points_list
-            self.points_list = []
+            points_list = self._points_list
+            self._points_list = []
         return points_list
 
     def get_points(self, **kwargs):
@@ -225,17 +235,17 @@ class _SensorFramesListener(_ListenerBase):
         return self._get_points()
 
 
-class _ImageListenerMixin:
+class _ListenerMixin:
     @classmethod
     def _frames_callback(cls):
-        return cepton_sdk.core._image_frames_callback
+        return cepton_sdk.core._frames_callback
 
 
-class ImageFramesListener(_FramesListener, _ImageListenerMixin):
+class FramesListener(_FramesListener, _ListenerMixin):
     pass
 
 
-class SensorImageFramesListener(_SensorFramesListener, _ImageListenerMixin):
+class SensorFramesListener(_SensorFramesListener, _ListenerMixin):
     pass
 
 

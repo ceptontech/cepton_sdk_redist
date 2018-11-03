@@ -51,6 +51,32 @@
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="n">C_SensorHandle</span> <span class="o">=</span> <span class="n">c_uint64</span>
 
+<span class="n">c_get_version_string</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cepton_sdk_get_version_string</span>
+<span class="n">c_get_version_string</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">c_char_p</span>
+
+<span class="n">c_get_version_major</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cepton_sdk_get_version_major</span>
+<span class="n">c_get_version_major</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">c_int</span>
+
+<span class="n">c_get_version_minor</span> <span class="o">=</span> <span class="n">lib</span><span class="o">.</span><span class="n">cepton_sdk_get_version_minor</span>
+<span class="n">c_get_version_minor</span><span class="o">.</span><span class="n">restype</span> <span class="o">=</span> <span class="n">c_int</span>
+
+
+<span class="k">def</span> <span class="nf">get_version_string</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">c_get_version_string</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_version_major</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">c_get_version_major</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">get_version_minor</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">c_get_version_minor</span><span class="p">()</span>
+
+
+<span class="c1"># ------------------------------------------------------------------------------</span>
+<span class="c1"># Errors</span>
+<span class="c1"># ------------------------------------------------------------------------------</span>
+
 
 <div class="viewcode-block" id="C_ErrorCode"><a class="viewcode-back" href="../../errors.html#cepton_sdk.C_ErrorCode">[docs]</a><span class="k">class</span> <span class="nc">C_ErrorCode</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
     <span class="n">CEPTON_SUCCESS</span> <span class="o">=</span> <span class="mi">0</span>
@@ -318,11 +344,6 @@
 <span class="c1"># ------------------------------------------------------------------------------</span>
 <span class="c1"># Points</span>
 <span class="c1"># ------------------------------------------------------------------------------</span>
-
-
-<span class="k">class</span> <span class="nc">C_ReturnType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
-    <span class="n">STRONGEST</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span>
-    <span class="n">FARTHEST</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
 
 
 <span class="k">class</span> <span class="nc">C_SensorImagePoint</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>

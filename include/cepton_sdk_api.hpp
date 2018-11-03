@@ -45,10 +45,10 @@ inline SensorError wait(float t_length) {
 
 /// Sleeps or resumes capture replay for duration.
 /**
- * If `t_length` is `0`, then waits forever.
+ * If `t_length < 0`, then waits forever.
  */
-inline SensorError wait(float t_length = 0.0f) {
-  if (t_length) {
+inline SensorError wait(float t_length = -1.0f) {
+  if (t_length >= 0.0f) {
     return internal::wait(t_length);
   } else {
     do {
@@ -149,25 +149,38 @@ inline void default_on_error(SensorHandle h, SensorErrorCode error_code,
 // -----------------------------------------------------------------------------
 // Setup
 // -----------------------------------------------------------------------------
+/// Opens capture replay.
+inline SensorError open_replay(const std::string &capture_path) {
+  SensorError error;
+  if (capture_replay::is_open()) {
+    error = capture_replay::close();
+    if (error) return error;
+  }
+  error = capture_replay::open(capture_path);
+  if (error) return error;
+  error = capture_replay::resume_blocking(10.0f);
+  if (error) return error;
+  error = capture_replay::seek(0.0f);
+  if (error) return error;
+  return CEPTON_SUCCESS;
+}
+
 /// Initialize SDK and optionally starts capture replay.
 inline SensorError initialize(Options options = create_options(),
-                                     const std::string &capture_path = "") {
+                              const std::string &capture_path = "") {
   // Initialize
   if (!capture_path.empty())
     options.control_flags |= CEPTON_SDK_CONTROL_DISABLE_NETWORK;
-  util::ErrorAccumulator error =
+  auto error =
       ::cepton_sdk::initialize(CEPTON_SDK_VERSION, options, default_on_error);
   if (error) return error;
 
   // Open capture replay
   if (!capture_path.empty()) {
-    error = capture_replay::open(capture_path);
+    error = open_replay(capture_path);
     if (error) return error;
   }
-
-  error = wait(1.0f);
-  if (!capture_path.empty()) error = capture_replay::seek(0.0f);
-  return error;
+  return CEPTON_SUCCESS;
 }
 
 inline bool has_control_flags(Control flags) {

@@ -1,18 +1,20 @@
+import datetime
 import ipaddress
 
+import cepton_util.common
 import netifaces
 
-import cepton_util.common
 
-
-def find_interface(addr="192.168.0.0/16"):
+def find_interface(network="192.168.0.0/16"):
+    network = ipaddress.ip_network(network)
     for interface in netifaces.interfaces():
         try:
-            addr = netifaces.ifaddresses(
-                interface)[netifaces.AF_INET][0]["addr"]
+            interface_address = \
+                netifaces.ifaddresses(interface)[netifaces.AF_INET][0]["addr"]
         except:
             continue
-        if ipaddress.ip_address(addr) in ipaddress.ip_network(addr):
+        interface_address = ipaddress.ip_address(interface_address)
+        if interface_address in network:
             return interface
     return None
 
@@ -21,6 +23,10 @@ class CaptureWriter:
     def __init__(self, output_path, interface=None):
         if interface is None:
             interface = find_interface()
+        if interface is None:
+            raise RuntimeError("No network interface found!")
+
+        self.start_time = cepton_util.common.get_timestamp()
 
         cmd_list = [
             "dumpcap",
@@ -39,6 +45,13 @@ class CaptureWriter:
     def __del__(self):
         self.close()
 
+    @property
+    def length(self):
+        return cepton_util.common.get_timestamp() - self.start_time
+
     def close(self):
-        self._proc.close()
+        try:
+            self._proc.close()
+        except:
+            pass
         self._proc = None

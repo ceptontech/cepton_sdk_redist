@@ -12,10 +12,10 @@ sensor = sensors_list{1};
 disp(sensor.information)
 
 %% Get points
-listener = cepton_sdk.SensorImageFramesListener(sensor.serial_number);
-image_points_list = listener.get_points();
+listener = cepton_sdk.SensorFramesListener(sensor.serial_number);
+points_list = listener.get_points();
 delete(listener);
-points = image_points_list{1}.to_points();
+points = points_list{1}.to_points();
 
 % Plot
 cepton_sdk.plot_points(points);

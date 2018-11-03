@@ -36,6 +36,8 @@
           <div class="body" role="main">
             
   <h1>Source code for cepton_sdk.point</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">enum</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="kn">import</span> <span class="nn">cepton_sdk.c</span>
@@ -47,8 +49,9 @@
     <span class="s2">&quot;combine_points&quot;</span><span class="p">,</span>
     <span class="s2">&quot;convert_image_points_to_points&quot;</span><span class="p">,</span>
     <span class="s2">&quot;convert_points_to_image_points&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ImagePoints&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PointFlag&quot;</span><span class="p">,</span>
     <span class="s2">&quot;Points&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ReturnType&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -99,108 +102,72 @@
     <span class="k">return</span> <span class="n">image_positions</span><span class="p">,</span> <span class="n">distances</span>
 
 
-<span class="k">class</span> <span class="nc">PointsBase</span><span class="p">(</span><span class="n">StructureOfArrays</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ReturnType</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="n">STRONGEST</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">FARTHEST</span> <span class="o">=</span> <span class="mi">1</span>
+
+
+<span class="k">class</span> <span class="nc">PointFlag</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
+    <span class="n">VALID</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">SATURATED</span> <span class="o">=</span> <span class="mi">1</span>
+
+
+<div class="viewcode-block" id="Points"><a class="viewcode-back" href="../../points.html#cepton_sdk.Points">[docs]</a><span class="k">class</span> <span class="nc">Points</span><span class="p">(</span><span class="n">StructureOfArrays</span><span class="p">,</span> <span class="n">ToCMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;3D points array.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        timestamps_usec</span>
+<span class="sd">        timestamps</span>
+<span class="sd">        image_positions</span>
+<span class="sd">        distances</span>
+<span class="sd">        positions</span>
+<span class="sd">        intensities</span>
+<span class="sd">        return_strongest</span>
+<span class="sd">        return_farthest</span>
+<span class="sd">        valid</span>
+<span class="sd">        saturated</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_positions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distances</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intensities</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flags</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_array_member_names</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;timestamps_usec&quot;</span><span class="p">,</span> <span class="s2">&quot;intensities&quot;</span><span class="p">,</span> <span class="s2">&quot;return_types&quot;</span><span class="p">,</span> <span class="s2">&quot;flags&quot;</span><span class="p">]</span>
-
-    <span class="nd">@numpy_property</span>
-    <span class="k">def</span> <span class="nf">timestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cepton_util</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">from_usec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">)</span>
-
-    <span class="nd">@numpy_property</span>
-    <span class="k">def</span> <span class="nf">return_strongest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-
-    <span class="nd">@numpy_property</span>
-    <span class="k">def</span> <span class="nf">return_farthest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-
-    <span class="nd">@numpy_property</span>
-    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-
-    <span class="nd">@numpy_property</span>
-    <span class="k">def</span> <span class="nf">saturated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
-
-
-<div class="viewcode-block" id="Points"><a class="viewcode-back" href="../../points.html#cepton_sdk.Points">[docs]</a><span class="k">class</span> <span class="nc">Points</span><span class="p">(</span><span class="n">PointsBase</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;3D points array.</span>
-
-<span class="sd">    Attributes:</span>
-<span class="sd">        timestamps_usec</span>
-<span class="sd">        timestamps</span>
-<span class="sd">        positions</span>
-<span class="sd">        intensities</span>
-<span class="sd">        return_strongest</span>
-<span class="sd">        return_farthest</span>
-<span class="sd">        valid</span>
-<span class="sd">        saturated</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_array_member_names</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_array_member_names</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="ImagePoints"><a class="viewcode-back" href="../../points.html#cepton_sdk.ImagePoints">[docs]</a><span class="k">class</span> <span class="nc">ImagePoints</span><span class="p">(</span><span class="n">PointsBase</span><span class="p">,</span> <span class="n">ToCMixin</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Image points array.</span>
-
-<span class="sd">    Attributes:</span>
-<span class="sd">        timestamps_usec</span>
-<span class="sd">        timestamps</span>
-<span class="sd">        positions</span>
-<span class="sd">        distances</span>
-<span class="sd">        intensities</span>
-<span class="sd">        return_strongest</span>
-<span class="sd">        return_farthest</span>
-<span class="sd">        valid</span>
-<span class="sd">        saturated</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">distances</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">n</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;timestamps_usec&quot;</span><span class="p">,</span> <span class="s2">&quot;image_positions&quot;</span><span class="p">,</span> <span class="s2">&quot;distances&quot;</span><span class="p">,</span> <span class="s2">&quot;positions&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;intensities&quot;</span><span class="p">,</span> <span class="s2">&quot;return_types&quot;</span><span class="p">,</span> <span class="s2">&quot;flags&quot;</span><span class="p">]</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_get_c_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_SensorImagePoint</span>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_array_member_names</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_array_member_names</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;positions&quot;</span><span class="p">,</span> <span class="s2">&quot;distances&quot;</span><span class="p">]</span>
-
     <span class="k">def</span> <span class="nf">_from_c_impl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;image_x&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;image_z&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_positions</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;image_x&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_positions</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;image_z&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;distance&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intensities</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;intensity&quot;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">unpack_bits</span><span class="p">(</span>
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;return_type&quot;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">unpack_bits</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;flags&quot;</span><span class="p">])</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">convert_image_points_to_points</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_positions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">)</span>
+
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_c</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">c_image_points</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> \
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">convert_c_array_to_ndarray</span><span class="p">(</span>
                 <span class="n">c_image_points</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_c_class</span><span class="p">())</span>
-        <span class="n">image_points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-        <span class="n">image_points</span><span class="o">.</span><span class="n">_from_c_impl</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">image_points</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">_from_c_impl</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">points</span>
 
     <span class="k">def</span> <span class="nf">_to_c_impl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">data</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">][:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span>
@@ -222,34 +189,25 @@
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">convert_ndarray_to_c_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">c_type</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">c_image_points_ptr</span>
 
-<div class="viewcode-block" id="ImagePoints.to_points"><a class="viewcode-back" href="../../points.html#cepton_sdk.ImagePoints.to_points">[docs]</a>    <span class="k">def</span> <span class="nf">to_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cls</span><span class="o">=</span><span class="n">Points</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Convert to 3d points.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">Points</span><span class="p">)</span>
+    <span class="nd">@numpy_property</span>
+    <span class="k">def</span> <span class="nf">timestamps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cepton_util</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">from_usec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">)</span>
 
-        <span class="n">points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_usec</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">convert_image_points_to_points</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">distances</span><span class="p">)</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">intensities</span><span class="p">[:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intensities</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span>
-        <span class="n">points</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span>
-        <span class="k">return</span> <span class="n">points</span></div>
+    <span class="nd">@numpy_property</span>
+    <span class="k">def</span> <span class="nf">return_strongest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:,</span> <span class="n">ReturnType</span><span class="o">.</span><span class="n">STRONGEST</span><span class="p">]</span>
 
-<div class="viewcode-block" id="ImagePoints.from_points"><a class="viewcode-back" href="../../points.html#cepton_sdk.ImagePoints.from_points">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_points</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Create from 3d points.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">Points</span><span class="p">)</span>
+    <span class="nd">@numpy_property</span>
+    <span class="k">def</span> <span class="nf">return_farthest</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:,</span> <span class="n">ReturnType</span><span class="o">.</span><span class="n">FARTHEST</span><span class="p">]</span>
 
-        <span class="n">image_points</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
-        <span class="n">image_points</span><span class="o">.</span><span class="n">timestamps_usec</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">timestamps_usec</span>
-        <span class="n">image_points</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="p">:],</span> <span class="n">image_points</span><span class="o">.</span><span class="n">distances</span><span class="p">[:]</span> <span class="o">=</span> \
-            <span class="n">convert_points_to_image_points</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">positions</span><span class="p">)</span>
-        <span class="n">image_points</span><span class="o">.</span><span class="n">intensities</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">intensities</span>
-        <span class="n">image_points</span><span class="o">.</span><span class="n">return_types</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">return_types</span>
-        <span class="n">image_points</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">flags</span>
-        <span class="k">return</span> <span class="n">image_points</span></div></div>
+    <span class="nd">@numpy_property</span>
+    <span class="k">def</span> <span class="nf">valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="n">PointFlag</span><span class="o">.</span><span class="n">VALID</span><span class="p">]</span>
+
+    <span class="nd">@numpy_property</span>
+    <span class="k">def</span> <span class="nf">saturated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flags</span><span class="p">[:,</span> <span class="n">PointFlag</span><span class="o">.</span><span class="n">SATURATED</span><span class="p">]</span></div>
 </pre></div>
 
           </div>

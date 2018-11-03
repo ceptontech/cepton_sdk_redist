@@ -47,69 +47,6 @@
 <div class="section" id="types">
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="cepton_sdk.ImagePoints">
-<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">ImagePoints</code><span class="sig-paren">(</span><em>n=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/point.html#ImagePoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.ImagePoints" title="Permalink to this definition">¶</a></dt>
-<dd><p>Image points array.</p>
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.timestamps_usec">
-<code class="descname">timestamps_usec</code><a class="headerlink" href="#cepton_sdk.ImagePoints.timestamps_usec" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.timestamps">
-<code class="descname">timestamps</code><a class="headerlink" href="#cepton_sdk.ImagePoints.timestamps" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.positions">
-<code class="descname">positions</code><a class="headerlink" href="#cepton_sdk.ImagePoints.positions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.distances">
-<code class="descname">distances</code><a class="headerlink" href="#cepton_sdk.ImagePoints.distances" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.intensities">
-<code class="descname">intensities</code><a class="headerlink" href="#cepton_sdk.ImagePoints.intensities" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.return_strongest">
-<code class="descname">return_strongest</code><a class="headerlink" href="#cepton_sdk.ImagePoints.return_strongest" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.return_farthest">
-<code class="descname">return_farthest</code><a class="headerlink" href="#cepton_sdk.ImagePoints.return_farthest" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.valid">
-<code class="descname">valid</code><a class="headerlink" href="#cepton_sdk.ImagePoints.valid" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="cepton_sdk.ImagePoints.saturated">
-<code class="descname">saturated</code><a class="headerlink" href="#cepton_sdk.ImagePoints.saturated" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="classmethod">
-<dt id="cepton_sdk.ImagePoints.from_points">
-<em class="property">classmethod </em><code class="descname">from_points</code><span class="sig-paren">(</span><em>points</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/point.html#ImagePoints.from_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.ImagePoints.from_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create from 3d points.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="cepton_sdk.ImagePoints.to_points">
-<code class="descname">to_points</code><span class="sig-paren">(</span><em>cls=&lt;class 'cepton_sdk.point.Points'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/point.html#ImagePoints.to_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.ImagePoints.to_points" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert to 3d points.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
 <dt id="cepton_sdk.Points">
 <em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">Points</code><span class="sig-paren">(</span><em>n=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/point.html#Points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.Points" title="Permalink to this definition">¶</a></dt>
 <dd><p>3D points array.</p>
@@ -121,6 +58,16 @@
 <dl class="attribute">
 <dt id="cepton_sdk.Points.timestamps">
 <code class="descname">timestamps</code><a class="headerlink" href="#cepton_sdk.Points.timestamps" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.Points.image_positions">
+<code class="descname">image_positions</code><a class="headerlink" href="#cepton_sdk.Points.image_positions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.Points.distances">
+<code class="descname">distances</code><a class="headerlink" href="#cepton_sdk.Points.distances" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -163,18 +110,14 @@
 :returns: combined_points</p>
 </dd></dl>
 
-<p>All sdk methods return image points, but they can easily be converted to 3d points:</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">to_points</span><span class="p">()</span>
-</pre></div>
-</td></tr></table></div>
 <p>All point array classes support numpy indexing and assignment as if they were 1-d arrays:</p>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_points_1</span><span class="p">)</span>
-<span class="n">image_points_2</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="n">image_points_1</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_1</span><span class="p">)</span>
+<span class="n">points_2</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="n">points_1</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </td></tr></table></div>
 <p>Multiple point arrays can also be combined:</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">image_points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">combine_points</span><span class="p">([</span><span class="n">image_points_1</span><span class="p">,</span> <span class="n">image_points_2</span><span class="p">])</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">combine_points</span><span class="p">([</span><span class="n">points_1</span><span class="p">,</span> <span class="n">points_2</span><span class="p">])</span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -183,9 +126,9 @@
 <p>See <a class="reference internal" href="samples/listen.html"><span class="doc">Listen</span></a>.</p>
 <p>The following methods return points directly from the C SDK callback.</p>
 <dl class="function">
-<dt id="cepton_sdk.listen_image_frames">
-<code class="descclassname">cepton_sdk.</code><code class="descname">listen_image_frames</code><span class="sig-paren">(</span><em>callback</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#listen_image_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.listen_image_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Register image frames callback.</p>
+<dt id="cepton_sdk.listen_frames">
+<code class="descclassname">cepton_sdk.</code><code class="descname">listen_frames</code><span class="sig-paren">(</span><em>callback</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#listen_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.listen_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register frames callback.</p>
 <p>Throws error if <cite>callback_id</cite> is currently registered.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -198,21 +141,21 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="cepton_sdk.unlisten_image_frames">
-<code class="descclassname">cepton_sdk.</code><code class="descname">unlisten_image_frames</code><span class="sig-paren">(</span><em>callback_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#unlisten_image_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.unlisten_image_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Unregisters image frames callback.</p>
+<dt id="cepton_sdk.unlisten_frames">
+<code class="descclassname">cepton_sdk.</code><code class="descname">unlisten_frames</code><span class="sig-paren">(</span><em>callback_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#unlisten_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.unlisten_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unregisters frames callback.</p>
 <p>Throws error if <cite>callback_id</cite> is not currently registered.</p>
 </dd></dl>
 
 <p>There are also listener classes that seamlessly handle accumulation and waiting.</p>
 <dl class="class">
-<dt id="cepton_sdk.ImageFramesListener">
-<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">ImageFramesListener</code><a class="reference internal" href="_modules/cepton_sdk/api.html#ImageFramesListener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.ImageFramesListener" title="Permalink to this definition">¶</a></dt>
+<dt id="cepton_sdk.FramesListener">
+<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">FramesListener</code><a class="reference internal" href="_modules/cepton_sdk/api.html#FramesListener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.FramesListener" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
-<dt id="cepton_sdk.SensorImageFramesListener">
-<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">SensorImageFramesListener</code><span class="sig-paren">(</span><em>serial_number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#SensorImageFramesListener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.SensorImageFramesListener" title="Permalink to this definition">¶</a></dt>
+<dt id="cepton_sdk.SensorFramesListener">
+<em class="property">class </em><code class="descclassname">cepton_sdk.</code><code class="descname">SensorFramesListener</code><span class="sig-paren">(</span><em>serial_number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#SensorFramesListener"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.SensorFramesListener" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -232,7 +175,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Points</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Points, extra_data</td>
 </tr>
 </tbody>
 </table>

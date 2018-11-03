@@ -6,7 +6,7 @@ import setuptools
 if __name__ == "__main__":
     setuptools.setup(
         name="cepton_sdk",
-        version="1.8",
+        version="1.9",
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
@@ -24,9 +24,18 @@ if __name__ == "__main__":
             "pyserial",
         ],
         extras_require={
-            "capture": ["ipaddress", "netifaces"],
-            "export": ["laspy", "uuid", "plyfile"],
-            "plot": ["pyqt5", "vispy"],
+            "capture": [
+                "netifaces",
+            ],
+            "export": [
+                "laspy",
+                "uuid",
+                "plyfile",
+            ],
+            "plot": [
+                "pyqt5",
+                "vispy",
+            ],
         },
         scripts=[
             "samples/cepton_export",

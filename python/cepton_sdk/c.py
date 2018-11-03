@@ -13,6 +13,32 @@ lib = load_c_library(_module_dir, "cepton_sdk")
 # ------------------------------------------------------------------------------
 C_SensorHandle = c_uint64
 
+c_get_version_string = lib.cepton_sdk_get_version_string
+c_get_version_string.restype = c_char_p
+
+c_get_version_major = lib.cepton_sdk_get_version_major
+c_get_version_major.restype = c_int
+
+c_get_version_minor = lib.cepton_sdk_get_version_minor
+c_get_version_minor.restype = c_int
+
+
+def get_version_string():
+    return c_get_version_string().decode("utf-8")
+
+
+def get_version_major():
+    return c_get_version_major()
+
+
+def get_version_minor():
+    return c_get_version_minor()
+
+
+# ------------------------------------------------------------------------------
+# Errors
+# ------------------------------------------------------------------------------
+
 
 class C_ErrorCode(enum.IntEnum):
     CEPTON_SUCCESS = 0
@@ -280,11 +306,6 @@ add_c_error_check(c_get_sensor_information_by_index)
 # ------------------------------------------------------------------------------
 # Points
 # ------------------------------------------------------------------------------
-
-
-class C_ReturnType(enum.IntEnum):
-    STRONGEST = 1 << 0
-    FARTHEST = 1 << 1
 
 
 class C_SensorImagePoint(Structure):

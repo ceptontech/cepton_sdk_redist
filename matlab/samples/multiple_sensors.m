@@ -14,12 +14,12 @@ cepton_sdk.initialize(options);
 sensors_dict = cepton_sdk.get_sensors();
 
 %% Get points
-listener = cepton_sdk.ImageFramesListener();
-image_points_dict = listener.get_points();
+listener = cepton_sdk.FramesListener();
+points_dict = listener.get_points();
 delete(listener);
-image_points_list = values(image_points_dict);
-image_points_list = image_points_list{1};
-points = image_points_list{1}.to_points();
+points_list = values(points_dict);
+points_list = points_list{1};
+points = points_list{1};
 
 % Plot
 cepton_sdk.plot_points(points);

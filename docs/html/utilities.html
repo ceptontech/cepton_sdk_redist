@@ -201,13 +201,9 @@
 <dt id="_CPPv3N10cepton_sdk4util11SensorPointE">
 <span id="_CPPv2N10cepton_sdk4util11SensorPointE"></span><span id="cepton_sdk::util::SensorPoint"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint"></span><em class="property">struct </em><code class="descclassname">cepton_sdk::util<code class="descclassname">::</code></code><code class="descname">SensorPoint</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPointE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>3d point class. </p>
+<p>Inherits from <a class="reference internal" href="points.html#structCeptonSensorImagePoint"><span class="std std-ref">CeptonSensorImagePoint</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Members</p>
-<dl class="member">
-<dt id="_CPPv3N10cepton_sdk4util11SensorPoint9timestampE">
-<span id="_CPPv2N10cepton_sdk4util11SensorPoint9timestampE"></span><span id="cepton_sdk::util::SensorPoint::timestamp__int64_t"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a5b7c80f0609a3e26aeafd864fdf9473e"></span>int64_t <code class="descname">timestamp</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint9timestampE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
 <dl class="member">
 <dt id="_CPPv3N10cepton_sdk4util11SensorPoint1xE">
 <span id="_CPPv2N10cepton_sdk4util11SensorPoint1xE"></span><span id="cepton_sdk::util::SensorPoint::x__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1accfb43965cd459d755282d99ff288f8d"></span>float <code class="descname">x</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint1xE" title="Permalink to this definition">¶</a><br /></dt>
@@ -223,28 +219,13 @@
 <span id="_CPPv2N10cepton_sdk4util11SensorPoint1zE"></span><span id="cepton_sdk::util::SensorPoint::z__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a86f72bc327947b0a20ac7db64c33637c"></span>float <code class="descname">z</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint1zE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="member">
-<dt id="_CPPv3N10cepton_sdk4util11SensorPoint9intensityE">
-<span id="_CPPv2N10cepton_sdk4util11SensorPoint9intensityE"></span><span id="cepton_sdk::util::SensorPoint::intensity__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1acb2151ee7ad184a6be68c1db792bdd83"></span>float <code class="descname">intensity</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint9intensityE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv3N10cepton_sdk4util11SensorPoint11return_typeE">
-<span id="_CPPv2N10cepton_sdk4util11SensorPoint11return_typeE"></span><span id="cepton_sdk::util::SensorPoint::return_type__CeptonSensorReturnType"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1ade7eecff91150195812e05ecdc8770ff"></span>CeptonSensorReturnType <code class="descname">return_type</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint11return_typeE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
-<dl class="member">
-<dt id="_CPPv3N10cepton_sdk4util11SensorPoint5flagsE">
-<span id="_CPPv2N10cepton_sdk4util11SensorPoint5flagsE"></span><span id="cepton_sdk::util::SensorPoint::flags__uint8_t"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1afcded124cae0935101c9905478fb0c3f"></span>uint8_t <code class="descname">flags</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint5flagsE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
-
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk4util35convert_sensor_image_point_to_pointERK16SensorImagePointR11SensorPoint">
 <span id="_CPPv2N10cepton_sdk4util35convert_sensor_image_point_to_pointERK16SensorImagePointR11SensorPoint"></span><span id="cepton_sdk::util::convert_sensor_image_point_to_point__SensorImagePointCR.SensorPointR"></span><span class="target" id="cepton__sdk__util_8hpp_1a32907b1248ff53e4da5818ac796b6c95"></span>void <code class="descclassname">cepton_sdk::util<code class="descclassname">::</code></code><code class="descname">convert_sensor_image_point_to_point</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="points.html#_CPPv3N10cepton_sdk16SensorImagePointE" title="cepton_sdk::SensorImagePoint">SensorImagePoint</a> &amp;<em>image_point</em>, <a class="reference internal" href="#_CPPv3N10cepton_sdk4util11SensorPointE" title="cepton_sdk::util::SensorPoint">SensorPoint</a> &amp;<em>point</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk4util35convert_sensor_image_point_to_pointERK16SensorImagePointR11SensorPoint" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Convenience method to convert <code class="docutils literal notranslate"><a class="reference internal" href="points.html#structCeptonSensorImagePoint"><span class="std std-ref"><span class="pre">CeptonSensorImagePoint</span></span></a></code> to <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorPoint</span></code>. </p>
+<dd><p>Convenience method to convert <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorImagePoint</span></code> to <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorPoint</span></code>. </p>
 </dd></dl>
 
 </div>

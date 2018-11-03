@@ -1,3 +1,5 @@
+import enum
+
 import numpy
 
 import cepton_sdk.c
@@ -9,8 +11,9 @@ __all__ = [
     "combine_points",
     "convert_image_points_to_points",
     "convert_points_to_image_points",
-    "ImagePoints",
+    "PointFlag",
     "Points",
+    "ReturnType",
 ]
 
 
@@ -61,108 +64,72 @@ def convert_points_to_image_points(positions):
     return image_positions, distances
 
 
-class PointsBase(StructureOfArrays):
+class ReturnType(enum.IntEnum):
+    STRONGEST = 0
+    FARTHEST = 1
+
+
+class PointFlag(enum.IntEnum):
+    VALID = 0
+    SATURATED = 1
+
+
+class Points(StructureOfArrays, ToCMixin):
+    """3D points array.
+
+    Attributes:
+        timestamps_usec
+        timestamps
+        image_positions
+        distances
+        positions
+        intensities
+        return_strongest
+        return_farthest
+        valid
+        saturated
+    """
+
     def __init__(self, n=0):
         super().__init__(n)
         self.timestamps_usec = numpy.zeros([n], dtype=numpy.int64)
+        self.image_positions = numpy.zeros([n, 2])
+        self.distances = numpy.zeros([n])
+        self.positions = numpy.zeros([n, 3])
         self.intensities = numpy.zeros([n])
         self.return_types = numpy.zeros([n, 8], dtype=numpy.uint8)
         self.flags = numpy.zeros([n, 8], dtype=bool)
 
     @classmethod
     def _get_array_member_names(cls):
-        return ["timestamps_usec", "intensities", "return_types", "flags"]
-
-    @numpy_property
-    def timestamps(self):
-        return cepton_util.common.from_usec(self.timestamps_usec)
-
-    @numpy_property
-    def return_strongest(self):
-        return self.return_types[:, 0]
-
-    @numpy_property
-    def return_farthest(self):
-        return self.return_types[:, 1]
-
-    @numpy_property
-    def valid(self):
-        return self.flags[:, 0]
-
-    @numpy_property
-    def saturated(self):
-        return self.flags[:, 1]
-
-
-class Points(PointsBase):
-    """3D points array.
-
-    Attributes:
-        timestamps_usec
-        timestamps
-        positions
-        intensities
-        return_strongest
-        return_farthest
-        valid
-        saturated
-    """
-
-    def __init__(self, n=0):
-        super().__init__(n)
-        self.positions = numpy.zeros([n, 3])
-
-    @classmethod
-    def _get_array_member_names(cls):
-        return super()._get_array_member_names() + ["positions"]
-
-
-class ImagePoints(PointsBase, ToCMixin):
-    """Image points array.
-
-    Attributes:
-        timestamps_usec
-        timestamps
-        positions
-        distances
-        intensities
-        return_strongest
-        return_farthest
-        valid
-        saturated
-    """
-
-    def __init__(self, n=0):
-        super().__init__(n)
-        self.positions = numpy.zeros([n, 2])
-        self.distances = numpy.zeros([n])
+        return ["timestamps_usec", "image_positions", "distances", "positions",
+                "intensities", "return_types", "flags"]
 
     @classmethod
     def _get_c_class(cls):
         return cepton_sdk.c.C_SensorImagePoint
 
-    @classmethod
-    def _get_array_member_names(cls):
-        return super()._get_array_member_names() + ["positions", "distances"]
-
     def _from_c_impl(self, data):
         self.timestamps_usec[:] = data["timestamp"]
-        self.positions[:, 0] = data["image_x"]
-        self.positions[:, 1] = data["image_z"]
+        self.image_positions[:, 0] = data["image_x"]
+        self.image_positions[:, 1] = data["image_z"]
         self.distances[:] = data["distance"]
         self.intensities[:] = data["intensity"]
         self.return_types[:, :] = cepton_sdk.common.c.unpack_bits(
             data["return_type"])
         self.flags[:, :] = cepton_sdk.common.c.unpack_bits(data["flags"])
 
+        self.positions[:, :] = convert_image_points_to_points(
+            self.image_positions, self.distances)
+
     @classmethod
     def from_c(cls, n_points, c_image_points):
         data = \
             cepton_sdk.c.convert_c_array_to_ndarray(
                 c_image_points, n_points, cls._get_c_class())
-        image_points = cls(len(data))
-        image_points._from_c_impl(data)
-        return image_points
+        points = cls(len(data))
+        points._from_c_impl(data)
+        return points
 
     def _to_c_impl(self, data):
         data["timestamp"][:] = self.timestamps_usec
@@ -184,31 +151,22 @@ class ImagePoints(PointsBase, ToCMixin):
             cepton_sdk.c.convert_ndarray_to_c_array(data, c_type)
         return c_image_points_ptr
 
-    def to_points(self, cls=Points):
-        """Convert to 3d points.
-        """
-        assert issubclass(cls, Points)
+    @numpy_property
+    def timestamps(self):
+        return cepton_util.common.from_usec(self.timestamps_usec)
 
-        points = cls(len(self))
-        points.timestamps_usec[:] = self.timestamps_usec
-        points.positions[:, :] = convert_image_points_to_points(
-            self.positions, self.distances)
-        points.intensities[:] = self.intensities
-        points.return_types[:, :] = self.return_types
-        points.flags[:, :] = self.flags
-        return points
+    @numpy_property
+    def return_strongest(self):
+        return self.return_types[:, ReturnType.STRONGEST]
 
-    @classmethod
-    def from_points(cls, points):
-        """Create from 3d points.
-        """
-        assert isinstance(points, Points)
+    @numpy_property
+    def return_farthest(self):
+        return self.return_types[:, ReturnType.FARTHEST]
 
-        image_points = cls(len(points))
-        image_points.timestamps_usec[:] = points.timestamps_usec
-        image_points.positions[:, :], image_points.distances[:] = \
-            convert_points_to_image_points(points.positions)
-        image_points.intensities[:] = points.intensities
-        image_points.return_types[:] = points.return_types
-        image_points.flags[:, :] = points.flags
-        return image_points
+    @numpy_property
+    def valid(self):
+        return self.flags[:, PointFlag.VALID]
+
+    @numpy_property
+    def saturated(self):
+        return self.flags[:, PointFlag.SATURATED]

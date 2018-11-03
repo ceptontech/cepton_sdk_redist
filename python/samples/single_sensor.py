@@ -16,15 +16,14 @@ if __name__ == "__main__":
     cepton_sdk.initialize(capture_path=capture_path)
 
     # Get sensor
-    sensors_dict = cepton_sdk.get_sensors()
-    sensor = next(iter(sensors_dict.values()))
+    sensor = cepton_sdk.Sensor.create_by_index(0)
     pprint.pprint(sensor.information.to_dict())
 
     # Get points
-    listener = cepton_sdk.SensorImageFramesListener(sensor.serial_number)
-    image_points_list = listener.get_points()
+    listener = cepton_sdk.SensorFramesListener(sensor.serial_number)
+    points_list = listener.get_points()
     del listener
-    points = image_points_list[0].to_points()
+    points = points_list[0]
 
     # Plot
     cepton_sdk.plot.plot_points(points)

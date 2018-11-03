@@ -35,6 +35,7 @@ class ControlFlag(enum.IntEnum):
     DISABLE_DISTANCE_CLIP = 1 << 3
     ENABLE_MULTIPLE_RETURNS = 1 << 4
     ENABLE_STRAY_FILTER = 1 << 5
+    HOST_TIMESTAMPS = 1 << 6
 
 
 @enum.unique
@@ -158,6 +159,9 @@ class _Callback:
         self._callbacks = {}
         self._i_callback = 0
 
+    def clear(self):
+        self._callbacks = {}
+
     def listen(self, callback):
         with self._lock:
             callback_id = self._i_callback
@@ -169,8 +173,13 @@ class _Callback:
         with self._lock:
             del self._callbacks[callback_id]
 
+    def _on_callback(self, *args, **kwargs):
+        with self._lock:
+            for callback in self._callbacks.values():
+                callback(*args, **kwargs)
 
-class _ImageFramesCallback(_Callback):
+
+class _FramesCallback(_Callback):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -179,26 +188,23 @@ class _ImageFramesCallback(_Callback):
 
     def initialize(self):
         self.deinitialize()
-        self._c_on_callback = \
+        self._c_on_frame = \
             cepton_sdk.c.C_SensorImageDataCallback(
-                lambda *args: self._on_callback(*args[:-1]))
-        cepton_sdk.c.c_listen_image_frames(self._c_on_callback, None)
+                lambda *args: self._on_frame(*args[:-1]))
+        cepton_sdk.c.c_listen_image_frames(self._c_on_frame, None)
 
     def deinitialize(self):
         try:
             cepton_sdk.c.c_unlisten_image_frames()
-        except cepton_sdk.c.C_Error:
+        except:
             pass
-        self._callbacks.clear()
+        self.clear()
 
-    def _on_callback(self, sensor_handle, n_points, c_image_points_ptr):
+    def _on_frame(self, sensor_handle, n_points, c_image_points_ptr):
         sensor_info = \
             cepton_sdk.sensor.get_sensor_information_by_handle(sensor_handle)
-        image_points = \
-            cepton_sdk.point.ImagePoints.from_c(n_points, c_image_points_ptr)
-        with self._lock:
-            for callback in self._callbacks.values():
-                callback(sensor_info, image_points)
+        points = cepton_sdk.point.Points.from_c(n_points, c_image_points_ptr)
+        self._on_callback(sensor_info, points)
 
 
-_image_frames_callback = _ImageFramesCallback()
+_frames_callback = _FramesCallback()

@@ -1,4 +1,4 @@
-classdef ImageFramesCallback < handle
+classdef FramesCallback < handle
 
 properties (Access = private)
     i_callback = uint64(0);
@@ -35,19 +35,21 @@ methods
                 cepton_sdk.c.call_and_check('cepton_sdk_matlab_get_image_points_data', a, a, a, a, a, a, a);
             flags = cepton_sdk.common.unpack_bits(flags_tmp, 8);
 
-            image_points = cepton_sdk.ImagePoints(n_points);
-            image_points.timestamps_usec(:) = timestamps_usec;
-            image_points.positions(:, 1) = image_x;
-            image_points.distances(:) = distances;
-            image_points.positions(:, 2) = image_z;
-            image_points.intensities(:) = intensities;
-            image_points.return_types(:) = return_types;
-            image_points.valid(:) = flags(:, 1);
-            image_points.saturated(:) = flags(:, 2);
+            points = cepton_sdk.Points(n_points);
+            points.timestamps_usec(:) = timestamps_usec;
+            points.distances(:) = distances;
+            points.image_positions(:, 1) = image_x;
+            points.image_positions(:, 2) = image_z;
+            points.intensities(:) = intensities;
+            points.return_types(:) = return_types;
+            points.valid(:) = flags(:, 1);
+            points.saturated(:) = flags(:, 2);
+
+            points.positions = cepton_sdk.internal.convert_image_points_to_points(points.image_positions, points.distances);
             
             for key = keys(self.callbacks)
                 callback = self.callbacks(key{1});
-                callback(sensor_info, image_points);
+                callback(sensor_info, points);
             end
         end
     end

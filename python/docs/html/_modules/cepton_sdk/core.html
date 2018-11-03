@@ -72,7 +72,8 @@
     <span class="n">DISABLE_IMAGE_CLIP</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span>
     <span class="n">DISABLE_DISTANCE_CLIP</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span>
     <span class="n">ENABLE_MULTIPLE_RETURNS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span>
-    <span class="n">ENABLE_STRAY_FILTER</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span></div>
+    <span class="n">ENABLE_STRAY_FILTER</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span>
+    <span class="n">HOST_TIMESTAMPS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span></div>
 
 
 <span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
@@ -196,6 +197,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_i_callback</span> <span class="o">=</span> <span class="mi">0</span>
 
+    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="p">{}</span>
+
     <span class="k">def</span> <span class="nf">listen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="n">callback_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_i_callback</span>
@@ -207,8 +211,13 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span><span class="p">[</span><span class="n">callback_id</span><span class="p">]</span>
 
+    <span class="k">def</span> <span class="nf">_on_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">callback</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">_ImageFramesCallback</span><span class="p">(</span><span class="n">_Callback</span><span class="p">):</span>
+
+<span class="k">class</span> <span class="nc">_FramesCallback</span><span class="p">(</span><span class="n">_Callback</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -217,29 +226,26 @@
 
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_c_on_callback</span> <span class="o">=</span> \
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_on_frame</span> <span class="o">=</span> \
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_SensorImageDataCallback</span><span class="p">(</span>
-                <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_callback</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_listen_image_frames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_on_callback</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_frame</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_listen_image_frames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_on_frame</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">deinitialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_unlisten_image_frames</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_Error</span><span class="p">:</span>
+        <span class="k">except</span><span class="p">:</span>
             <span class="k">pass</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_on_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_handle</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">c_image_points_ptr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_on_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_handle</span><span class="p">,</span> <span class="n">n_points</span><span class="p">,</span> <span class="n">c_image_points_ptr</span><span class="p">):</span>
         <span class="n">sensor_info</span> <span class="o">=</span> \
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information_by_handle</span><span class="p">(</span><span class="n">sensor_handle</span><span class="p">)</span>
-        <span class="n">image_points</span> <span class="o">=</span> \
-            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">ImagePoints</span><span class="o">.</span><span class="n">from_c</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">c_image_points_ptr</span><span class="p">)</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-                <span class="n">callback</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">,</span> <span class="n">image_points</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">point</span><span class="o">.</span><span class="n">Points</span><span class="o">.</span><span class="n">from_c</span><span class="p">(</span><span class="n">n_points</span><span class="p">,</span> <span class="n">c_image_points_ptr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_on_callback</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
 
 
-<span class="n">_image_frames_callback</span> <span class="o">=</span> <span class="n">_ImageFramesCallback</span><span class="p">()</span>
+<span class="n">_frames_callback</span> <span class="o">=</span> <span class="n">_FramesCallback</span><span class="p">()</span>
 </pre></div>
 
           </div>

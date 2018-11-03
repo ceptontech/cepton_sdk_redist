@@ -1,7 +1,9 @@
 import argparse
 import datetime
+import glob
 import os
 import os.path
+import pkgutil
 import re
 import shutil
 import signal
@@ -19,7 +21,9 @@ __all__ = [
     "add_io_path_arguments",
     "add_simple_io_path_arguments",
     "ArgumentParserMixin",
+    "backup_file",
     "create_directory",
+    "delete_directory",
     "execute_command",
     "find_file_by_extension",
     "find_file_by_name",
@@ -29,14 +33,18 @@ __all__ = [
     "get_day_str",
     "get_environment",
     "get_io_paths",
+    "get_package_path",
     "get_sec_str",
     "get_simple_io_paths",
     "get_timestamp_str",
-    "get_timestamp",
     "get_timestamp_usec",
+    "get_timestamp",
     "has_environment",
+    "InputDataDirectory",
     "kill_background",
     "modify_path",
+    "OptionsMixin",
+    "OutputDataDirectory",
     "parse_enum",
     "parse_execute_command_arguments",
     "parse_list",
@@ -51,8 +59,14 @@ __all__ = [
 ]
 
 
+def get_package_path(name):
+    return os.path.dirname(pkgutil.get_loader(name).path)
+
+
 def optional_function(func):
-    """Skip function if value is None."""
+    """Only apply function if input value is not None.
+    Function must be unary.
+    """
     def wrapper(x, *args, **kwargs):
         if x is None:
             return None
@@ -61,7 +75,9 @@ def optional_function(func):
 
 
 def array_function(func):
-    """Convert input to numpy and output to original type."""
+    """Convert input to numpy and output to original type.
+    Function must be unary
+    """
     def wrapper(value, *args, **kwargs):
         result = func(numpy.array(value), *args, **kwargs)
         if numpy.isscalar(value):
@@ -91,7 +107,7 @@ def get_timestamp_usec():
 
 
 def get_day_str():
-    return datetime.datetime.now().strftime("%y%m%d")
+    return datetime.datetime.now().strftime("%Y-%m-%d")
 
 
 def get_sec_str():
@@ -104,7 +120,7 @@ def get_timestamp_str():
 
 @optional_function
 def parse_time_hms(s):
-    """Convert HH:MM:SS to seconds"""
+    """Convert HH:MM:SS to seconds."""
     parts = [float(x) for x in s.split(":")]
     sec = 0
     for i, part in enumerate(reversed(parts)):
@@ -123,6 +139,8 @@ def parse_list(s, **kwargs):
 
 @optional_function
 def parse_enum(s, enum_type):
+    if isinstance(s, int):
+        return enum_type(s)
     return enum_type[s.upper()]
 
 
@@ -158,7 +176,7 @@ __local["procs"] = []
 __local["threads"] = []
 
 
-class BackgroundProcess(object):
+class BackgroundProcess:
     def __init__(self, *args, **kwargs):
         self.proc = subprocess.Popen(*args, **kwargs)
 
@@ -175,7 +193,7 @@ class BackgroundProcess(object):
             pass
 
 
-class BackgroundThread(object):
+class BackgroundThread:
     def __init__(self, *args, **kwargs):
         self.shutdown_event = threading.Event()
         kwargs["kwargs"]["shutdown_event"] = self.shutdown_event
@@ -281,9 +299,17 @@ def find_file_by_extension(ext, **kwargs):
     return find_file(lambda x: x.endswith(ext), **kwargs)
 
 
-def create_directory(path):
+def create_directory(path, overwrite=False):
+    if overwrite:
+        delete_directory(path)
     if not os.path.exists(path):
         os.makedirs(path)
+
+
+def delete_directory(path):
+    if not os.path.isdir(path):
+        return
+    os.rmdir(path)
 
 
 @optional_function
@@ -316,20 +342,30 @@ def modify_path(path, new_ext=None, prefix="", postfix=""):
     return path
 
 
+def backup_file(path):
+    backup_path = modify_path(path, postfix=".orig")
+    shutil.copy2(path, backup_path)
+    return backup_path
+
+
 def add_simple_io_path_arguments(parser):
     parser.add_argument("input")
-    parser.add_argument("--dry_run", action="store_true")
     parser.add_argument("-o", "--output")
 
 
-def get_simple_io_paths(args, output_name):
+def get_simple_io_paths(args, output_name, inplace=False):
     input_path = fix_path(args.input)
     if args.output is not None:
         output_path = fix_path(args.output)
     else:
         dir_path = os.path.dirname(input_path)
         output_path = os.path.join(dir_path, output_name)
-    return input_path, output_path
+    if inplace:
+        if input_path != output_path:
+            shutil.copy2(input_path, output_path)
+        return output_path
+    else:
+        return input_path, output_path
 
 
 def add_io_path_arguments(parser, prefix="", postfix=""):
@@ -339,7 +375,7 @@ def add_io_path_arguments(parser, prefix="", postfix=""):
     parser.add_argument("--postfix", default=postfix)
 
 
-def get_io_paths(args, output_ext=None, output_name=None):
+def get_io_paths(args, inplace=False, output_ext=None, output_name=None):
     input_path = fix_path(args.input)
     if args.output is not None:
         output_path = fix_path(args.output)
@@ -357,24 +393,29 @@ def get_io_paths(args, output_ext=None, output_name=None):
             output_path = os.path.join(dir_path, output_name)
     if output_ext is not None:
         output_path = modify_path(output_path, new_ext=output_ext)
-    if (not args.dry_run) and (input_path == output_path):
-        input_path = modify_path(input_path, postfix="_old")
-        shutil.move(output_path, input_path)
-    return input_path, output_path
+    if inplace:
+        if input_path != output_path:
+            shutil.copy2(input_path, output_path)
+        return output_path
+    else:
+        if input_path == output_path:
+            input_path = backup_file(input_path)
+        return input_path, output_path
 
 # ------------------------------------------------------------------------------
 # Arguments
 # ------------------------------------------------------------------------------
 
 
-class ArgumentParserMixin(object):
+class ArgumentParserMixin:
+    """Mixin for class that has command line arguments."""
     @classmethod
     def add_arguments(cls, parser):
-        raise NotImplementedError()
+        return parser
 
     @classmethod
     def parse_arguments(cls, args):
-        raise NotImplementedError()
+        return {}
 
     @classmethod
     def from_arguments(cls, parser_args, *args, **kwargs):
@@ -385,3 +426,103 @@ class ArgumentParserMixin(object):
 
 def process_options(options):
     return {key: value for key, value in options.items() if value is not None}
+
+
+class OptionsMixin:
+    """Mixin for class that has options (usually from json)."""
+
+    def init_options(self, cls):
+        """Should be called in each `__init__` method."""
+        assert(isinstance(self, cls))
+        if type(self) is not cls:
+            return
+        self.set_options()
+
+    def get_options(self):
+        return {}
+
+    def set_options(self, **kwargs):
+        pass
+
+# ------------------------------------------------------------------------------
+# Capture
+# ------------------------------------------------------------------------------
+
+
+class InputDataDirectory:
+    def __init__(self, path=None):
+        self.path = path
+
+    def _find_file(self, name):
+        if self.path is None:
+            return None
+        return find_file_by_name(name, path=self.path, depth=1)
+
+    @property
+    def pcap_path(self):
+        return self._find_file("lidar.pcap")
+
+    @property
+    def viewer_config_path(self):
+        return self._find_file("cepton_viewer_config.json")
+
+    @property
+    def transforms_path(self):
+        return self._find_file("cepton_transforms.json")
+
+    @property
+    def clips_path(self):
+        return self._find_file("cepton_clips.json")
+
+
+def copy_settings(src, dst):
+    if src == dst:
+        return
+    patterns = ["*.json"]
+    for pattern in patterns:
+        for path in glob.glob(os.path.join(src, pattern)):
+            name = os.path.basename(path)
+            shutil.copy2(path, os.path.join(dst, name))
+
+
+class OutputDataDirectory(ArgumentParserMixin):
+    def __init__(self, path=None, duration=None, name="", postfix="", root_dir="~/Captures"):
+        self.duration = duration
+
+        if path is None:
+            self.name = os.path.join(
+                get_day_str(), name, get_sec_str() + postfix)
+            self.path = fix_path(os.path.join(root_dir, self.name))
+        else:
+            self.name = os.path.basename(path)
+            self.path = path
+        create_directory(self.path)
+
+    @classmethod
+    def add_arguments(cls, parser):
+        parser.add_argument("--duration")
+        parser.add_argument("--name", default="")
+
+    @classmethod
+    def parse_arguments(cls, args):
+        options = {
+            "duration": parse_time_hms(args.duration),
+            "name": args.name,
+        }
+        return process_options(options)
+
+    def copy_settings(self, input_path=None):
+        if input_path is None:
+            input_path = os.getcwd()
+        copy_settings(input_path, self.path)
+
+    @property
+    def serial_numbers(self):
+        return parse_list(get_environment("CEPTON_SENSORS", ""), dtype=int)
+
+    def _get_path(self, name):
+        return os.path.join(self.path, name)
+
+    @property
+    def pcap_path(self):
+        return self._get_path("lidar.pcap")

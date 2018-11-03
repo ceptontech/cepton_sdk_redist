@@ -16,7 +16,9 @@ foreach(name "c_basic")
 endforeach(name)
 
 # C++
-foreach(name "basic" "callback" "error" "frame" "process_single" "process_multi" "sensor" "stray" "transform")
+foreach(name "basic" "callback" "error" "frame" 
+        "network" "process_single" "process_multi" 
+        "replay" "sensor" "stray" "transform")
     add_executable(cepton_sdk_sample_${name}
         "${PROJECT_SOURCE_DIR}/${name}.cpp")
     target_link_libraries(cepton_sdk_sample_${name}

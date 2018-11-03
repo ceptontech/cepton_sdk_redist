@@ -15,7 +15,12 @@ extern "C" {
 
 #include "cepton_sdk_def.h"
 
+/// API version
 #define CEPTON_SDK_VERSION 17
+
+EXPORT const char *cepton_sdk_get_version_string();
+EXPORT int cepton_sdk_get_version_major();
+EXPORT int cepton_sdk_get_version_minor();
 
 //------------------------------------------------------------------------------
 // Errors
@@ -208,6 +213,8 @@ enum _CeptonSDKControl {
    * Does not affect number of points returned.
    */
   CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER = 1 << 5,
+  /// Always use packet timestamps (disable GPS/PTP timestamps).
+  CEPTON_SDK_CONTROL_HOST_TIMESTAMPS = 1 << 6,
 };
 
 typedef uint32_t CeptonSDKFrameMode;

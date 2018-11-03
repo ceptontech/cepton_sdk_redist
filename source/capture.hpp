@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "cepton_sdk.hpp"
-#include "cepton_sdk_internal.h"
 
 namespace cepton_sdk {
 

@@ -32,12 +32,12 @@ def main():
 
     # Get points
     loader = cepton_sdk.load.Loader.from_arguments(args)
-    listener = cepton_sdk.ImageFramesListener()
+    listener = cepton_sdk.FramesListener()
     cepton_sdk.wait(t_length)
-    image_points_dict = listener.get_points()
-    image_points_dict = {key: cepton_sdk.combine_points(value)
-                         for key, value in image_points_dict.items()}
-    points = loader.process_points(image_points_dict)
+    points_dict = listener.get_points()
+    points_dict = {key: cepton_sdk.combine_points(value)
+                   for key, value in points_dict.items()}
+    points = loader.process_points(points_dict)
 
     # Apply speed
     t = points.timestamps - numpy.amin(points.timestamps)

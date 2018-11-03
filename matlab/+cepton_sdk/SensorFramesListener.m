@@ -1,4 +1,4 @@
-classdef SensorImageFramesListener < handle
+classdef SensorFramesListener < handle
 
 properties (SetAccess = private)
     serial_number;
@@ -11,15 +11,15 @@ properties (Access = private)
 end
 
 methods
-    function self = SensorImageFramesListener(serial_number)
+    function self = SensorFramesListener(serial_number)
         self.serial_number = serial_number;
         self.points_list = {};
-        self.callback_id = cepton_sdk.internal.image_frames_callback().listen(@self.on_points);
+        self.callback_id = cepton_sdk.internal.frames_callback().listen(@self.on_points);
     end
 
     function delete(self)
         try
-            cepton_sdk.internal.image_frames_callback().unlisten(self.callback_id);
+            cepton_sdk.internal.frames_callback().unlisten(self.callback_id);
         catch
         end
     end
@@ -32,18 +32,18 @@ methods
         result = ~isempty(self.points_list);
     end
 
-    function image_points_list = get_points(self, varargin)
+    function points_list = get_points(self, varargin)
         cepton_sdk.internal.wait_on_func(@self.has_points, varargin{:});
-        image_points_list = self.get_points_impl();
+        points_list = self.get_points_impl();
     end
 end
 
 methods (Access = private)
-    function on_points(self, sensor_info, image_points)
+    function on_points(self, sensor_info, points)
         if sensor_info.serial_number ~= self.serial_number
             return;
         end
-        self.points_list{end + 1} = image_points;
+        self.points_list{end + 1} = points;
     end
 
     function points_list = get_points_impl(self)

@@ -18,10 +18,6 @@ function initialize(varargin)
     cepton_sdk.c.call_and_check('cepton_sdk_matlab_initialize', 17, control_flags);
 
     if ~cepton_sdk.common.is_none(args.capture_path)
-        cepton_sdk.capture_replay.open(args.capture_path);
-    end
-    cepton_sdk.wait(3);
-    if ~cepton_sdk.common.is_none(args.capture_path)
-        cepton_sdk.capture_replay.seek(0);
+        cepton_sdk.open_replay(args.capture_path);
     end
 end

@@ -14,6 +14,7 @@ def numpy_property(func, **kwargs):
 
 
 class ToDictMixin:
+    """Used for simple JSON and string conversion."""
     @classmethod
     def _get_dict_member_names(cls):
         raise NotImplementedError()
@@ -87,13 +88,6 @@ class ToCMixin:
 
     @classmethod
     def _from_c_value(cls, member_name, c_value):
-        # TODO
-        # c_member = self._get_c_member(member_name)
-        # if issubclass(c_member.type, ctypes.Array):
-        #     if issubclass(c_member.type._type_, c_char):
-        #         value = c_value.decode("utf-8")
-        #     else:
-        #         value = list(c_value)
         value = c_value
         return value
 
@@ -191,19 +185,30 @@ class StructureOfArrays:
                 "Member not listed in `_get_array_member_names`!")
         return self._setattr(name, value)
 
+    def update(self, other, names):
+        for name in names:
+            value = getattr(self, name)
+            other_value = getattr(other, name)
+            value[:] = other_value
+
+    def update_from_parent(self, other):
+        """Copies over all parent member variables.
+        """
+        self.update(other, other._get_array_member_names())
+
+    @classmethod
+    def convert(cls, other, names):
+        obj = cls(len(other))
+        obj.update(other, names)
+        return obj
+
     @classmethod
     def from_parent(cls, other):
         """Cast from parent class to child class.
 
         Copies over all parent member variables.
         """
-        parent_cls = type(other)
-
-        obj = cls(len(other))
-        for name in parent_cls._get_array_member_names():
-            value = getattr(other, name)
-            setattr(obj, name, value)
-        return obj
+        return cls.convert(other, other._get_array_member_names())
 
     def _get_indices(self, key):
         indices = numpy.arange(len(self))[key]

@@ -11,7 +11,6 @@ function wait(t_length_tmp)
 
     t = cepton_sdk.get_time() + t_length;
     while cepton_sdk.get_time() < t
-        
         if cepton_sdk.is_realtime()
             pause(0.1);
         else

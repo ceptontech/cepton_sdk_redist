@@ -65,11 +65,11 @@ def set_speed(speed):
     cepton_sdk.c.c_capture_replay_set_speed(speed)
 
 
-def resume_blocking(t_length=None):
-    if t_length is None:
+def resume_blocking(duration=None):
+    if duration is None:
         cepton_sdk.c.c_capture_replay_resume_blocking_once()
     else:
-        cepton_sdk.c.c_capture_replay_resume_blocking(t_length)
+        cepton_sdk.c.c_capture_replay_resume_blocking(duration)
 
 
 def is_running():

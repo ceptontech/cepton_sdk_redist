@@ -83,6 +83,11 @@ macro(ADD_FLAGS flags)
   ADD_CXX_FLAGS("${flags}")
 endmacro()
 
+macro(ADD_RELEASE_FLAGS flags)
+  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${flags}")
+  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${flags}")
+endmacro()
+
 # ------------------------------------------------------------------------------
 # Variables
 # ------------------------------------------------------------------------------
@@ -164,18 +169,19 @@ message(STATUS "OS name: ${OS_NAME}")
 # Compiler Flags
 # ------------------------------------------------------------------------------
 if(MSVC)
-  ADD_FLAGS("/wd4996")
-  ADD_FLAGS("/wd4100") # Disable unused parameter warning
-  ADD_FLAGS("/wd4800 /wd4267 /wd4244 /wd4018") # Disable conversion warnings
+  add_flags("/wd4996")
+  add_flags("/wd4100") # Disable unused parameter warning
+  add_flags("/wd4800 /wd4267 /wd4244 /wd4018") # Disable conversion warnings
 elseif(GCC OR CLANG)
   ADD_C_FLAGS("-std=c11")
   ADD_CXX_FLAGS("-std=c++11") # C++11
-  ADD_FLAGS("-pthread")
-  ADD_FLAGS("-Wno-sign-compare") # Disable conversion warnings
-  ADD_FLAGS("-Wno-unused-parameter -Wno-unused-function -Wno-attributes") # Disable unused warnings
+  add_flags("-pthread")
+  add_flags("-Wno-sign-compare") # Disable conversion warnings
+  add_flags("-Wno-missing-field-initializers") # Disable struct initialization warning
+  add_flags("-Wno-unused-parameter -Wno-unused-function -Wno-attributes") # Disable unused warnings
   if(CLANG)
-    ADD_FLAGS("-Wno-unused-command-line-argument") # Disable extra arguments warning
-    ADD_FLAGS("-Wno-inconsistent-missing-override")
-    ADD_FLAGS("-Wno-missing-braces") # Bug in clang
+    add_flags("-Wno-unused-command-line-argument") # Disable extra arguments warning
+    add_flags("-Wno-inconsistent-missing-override")
+    add_flags("-Wno-missing-braces") # Bug in clang
   endif()
 endif()

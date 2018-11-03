@@ -449,12 +449,13 @@ SensorError Capture::next_packet_impl(bool &success,
                                       const uint8_t *&packet_data) {
   success = false;
 
+  // Read record header
   RecordHeader record_header;
   auto error = read_record_header(m_stream, m_read_ptr, record_header);
   if (error) return error;
   m_read_ptr += pcap_record_header_size + record_header.pcap.incl_len;
 
-  // Skip if invalid protocol
+  // Checks
   if ((record_header.protocol_type != PROTOCOL_V4) ||
       (record_header.ip.p != IP_PROTOCOL_UDP))
     return CEPTON_SUCCESS;
@@ -467,6 +468,7 @@ SensorError Capture::next_packet_impl(bool &success,
     return CEPTON_SUCCESS;
   }
 
+  // Initialize packet
   const uint32_t ip_v4 = record_header.ip.src;
   auto &packet = m_packets[ip_v4];
   const int fragment_id = record_header.ip.id;
@@ -477,11 +479,9 @@ SensorError Capture::next_packet_impl(bool &success,
     packet.header.timestamp = record_header.pcap.ts_sec * util::second_usec +
                               record_header.pcap.ts_usec + m_timestamp_offset;
     packet.id = fragment_id;
-    packet.len = record_header.udp.len;
-    packet.buffer.resize(packet.len);
+    packet.len = record_header.udp.len - udp_header_size;
   } else {
-    const int fragment_off =
-        8 * (int)record_header.ip.off() - packet.n_fragments * udp_header_size;
+    const int fragment_off = 8 * (int)record_header.ip.off() - udp_header_size;
     if ((packet.id != fragment_id) || (packet.off != fragment_off)) {
 #ifdef CEPTON_INTERNAL
       api::log_error(
@@ -494,16 +494,24 @@ SensorError Capture::next_packet_impl(bool &success,
   ++packet.n_fragments;
   packet.mf = record_header.ip.flags() & IP_FLAG_MF;
 
-  const int fragment_len = record_header.pcap.incl_len - packet_header_size;
+  // Read packet
+  int fragment_len = record_header.pcap.incl_len - packet_header_size;
+  if (!is_first_fragment) {
+    // Fragments do not have udp header
+    m_stream.seekg(-udp_header_size, std::ios_base::cur);
+    CHECK_FILE(m_stream);
+    fragment_len += udp_header_size;
+  }
+  packet.buffer.resize(packet.off + fragment_len);
   m_stream.read((char *)packet.buffer.data() + packet.off, fragment_len);
   CHECK_FILE(m_stream)
   packet.off += fragment_len;
 
+  // More fragments
   if (packet.mf) return CEPTON_SUCCESS;
 
-  packet.len -= packet.n_fragments * udp_header_size;
-  packet.buffer.resize(packet.len);
-  if (packet.off != packet.len) {
+  // Check packet size
+  if (packet.buffer.size() != packet.len) {
 #ifdef CEPTON_INTERNAL
     api::log_error(
         SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid packet size!"),
