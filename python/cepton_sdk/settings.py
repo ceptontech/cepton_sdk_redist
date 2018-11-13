@@ -3,7 +3,10 @@ import json
 
 import numpy
 
-import cepton_sdk.transform
+import cepton_sdk.common.transform
+from cepton_sdk.common import *
+
+_all_builder = AllBuilder(__name__)
 
 
 def _convert_keys_to_int(d, ignore_invalid=False):
@@ -89,12 +92,12 @@ class SensorTransformManager(_ManagerBase):
 
     def update_from_dict(self, transforms_dict):
         for sensor_serial_number, transform_dict in transforms_dict.items():
-            transform = cepton_sdk.transform.Transform3d()
+            transform = cepton_sdk.common.transform.Transform3d()
             transform.translation = \
                 numpy.array(transform_dict["translation"], dtype=float)
             rotation = numpy.array(transform_dict["rotation"], dtype=float)
             transform.rotation = \
-                cepton_sdk.transform.Quaternion.from_vector(rotation)
+                cepton_sdk.common.transform.Quaternion.from_vector(rotation)
             self.transforms[sensor_serial_number] = transform
 
     def to_dict(self):
@@ -183,3 +186,6 @@ class SensorClipManager(_ManagerBase):
 
         clip_tmp = self.clips[sensor_serial_number]
         return clip_tmp.clip_points(points)
+
+
+__all__ = _all_builder.get()

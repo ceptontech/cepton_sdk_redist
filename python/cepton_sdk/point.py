@@ -5,16 +5,9 @@ import numpy
 import cepton_sdk.c
 import cepton_sdk.common.c
 import cepton_util.common
-from cepton_sdk.common.mixin import *
+from cepton_sdk.common import *
 
-__all__ = [
-    "combine_points",
-    "convert_image_points_to_points",
-    "convert_points_to_image_points",
-    "PointFlag",
-    "Points",
-    "ReturnType",
-]
+_all_builder = AllBuilder(__name__)
 
 
 def combine_points(points_list):
@@ -74,7 +67,7 @@ class PointFlag(enum.IntEnum):
     SATURATED = 1
 
 
-class Points(StructureOfArrays, ToCMixin):
+class Points(StructureOfArrays, ToCArrayMixin):
     """3D points array.
 
     Attributes:
@@ -122,15 +115,6 @@ class Points(StructureOfArrays, ToCMixin):
         self.positions[:, :] = convert_image_points_to_points(
             self.image_positions, self.distances)
 
-    @classmethod
-    def from_c(cls, n_points, c_image_points):
-        data = \
-            cepton_sdk.c.convert_c_array_to_ndarray(
-                c_image_points, n_points, cls._get_c_class())
-        points = cls(len(data))
-        points._from_c_impl(data)
-        return points
-
     def _to_c_impl(self, data):
         data["timestamp"][:] = self.timestamps_usec
         data["image_x"][:] = self.positions[:, 0]
@@ -139,17 +123,6 @@ class Points(StructureOfArrays, ToCMixin):
         data["intensity"][:] = self.intensities
         data["return_type"][:] = self.return_types
         data["flags"] = self.flags
-
-    def to_c(self, c_type=None):
-        if c_type is None:
-            c_type = self._get_c_class()
-
-        dtype = numpy.dtype(c_type)
-        data = numpy.zeros(len(self), dtype=dtype)
-        self._to_c_impl(data)
-        c_image_points_ptr = \
-            cepton_sdk.c.convert_ndarray_to_c_array(data, c_type)
-        return c_image_points_ptr
 
     @numpy_property
     def timestamps(self):
@@ -170,3 +143,6 @@ class Points(StructureOfArrays, ToCMixin):
     @numpy_property
     def saturated(self):
         return self.flags[:, PointFlag.SATURATED]
+
+
+__all__ = _all_builder.get()

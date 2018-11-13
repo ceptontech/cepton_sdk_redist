@@ -9,6 +9,9 @@ import plyfile
 
 import cepton_sdk.point
 import cepton_util.common
+from cepton_sdk.common import *
+
+_all_builder = AllBuilder(__name__)
 
 
 def convert_points_to_spherical(points):
@@ -135,37 +138,27 @@ def save_points_pcd(points, path):
 
 
 def save_points_csv(points, path):
+    azimuths, elevations = convert_points_to_spherical(points)
     fields = [
-        ("timestamp_usec", int, "%d"),
-        ("image_x", float, "%.3f"),
-        ("image_z", float, "%.3f"),
-        ("distance", float, "%.3f"),
-        ("x", float, "%.3f"),
-        ("y", float, "%.3f"),
-        ("z", float, "%.3f"),
-        ("azimuth", float, "%.3f"),
-        ("elevation", float, "%.3f"),
-        ("intensity", float, "%.2f"),
-        ("return_strongest", bool, "%i"),
-        ("return_farthest", bool, "%i"),
-        ("valid", bool, "%i"),
-        ("saturated", bool, "%i"),
+        ("timestamp_usec", points.timestamps_usec, "%d"),
+        ("image_x", points.image_positions[:, 0], "%.3f"),
+        ("image_z", points.image_positions[:, 1], "%.3f"),
+        ("distance", points.distances, "%.3f"),
+        ("x", points.positions[:, 0], "%.3f"),
+        ("y", points.positions[:, 1], "%.3f"),
+        ("z", points.positions[:, 2], "%.3f"),
+        ("azimuth", azimuths, "%.3f"),
+        ("elevation", elevations, "%.3f"),
+        ("intensity", points.intensities, "%.2f"),
+        ("return_strongest", points.return_strongest, "%i"),
+        ("return_farthest", points.return_farthest, "%i"),
+        ("valid", points.valid, "%i"),
+        ("saturated", points.saturated, "%i"),
     ]
-    dtype = numpy.dtype([x[:2] for x in fields])
+    dtype = numpy.dtype([(x[0], x[1].dtype) for x in fields])
     data = numpy.zeros(len(points), dtype=dtype)
-    data["timestamp_usec"] = points.timestamps_usec
-    data["image_x"] = points.image_positions[:, 0]
-    data["image_z"] = points.image_positions[:, 1]
-    data["distance"] = points.distances
-    data["x"] = points.positions[:, 0]
-    data["y"] = points.positions[:, 1]
-    data["z"] = points.positions[:, 2]
-    data["azimuth"], data["elevation"] = convert_points_to_spherical(points)
-    data["intensity"] = points.intensities
-    data["return_strongest"] = points.return_strongest
-    data["return_farthest"] = points.return_farthest
-    data["valid"] = points.valid
-    data["saturated"] = points.saturated
+    for field in fields:
+        data[field[0]] = field[1]
     options = {
         "delimiter": ",",
         "header": ",".join([x[0] for x in fields]),
@@ -226,3 +219,6 @@ def load_points(path, file_type=None):
         return load_points_ply(path)
     else:
         raise NotImplementedError()
+
+
+__all__ = _all_builder.get()

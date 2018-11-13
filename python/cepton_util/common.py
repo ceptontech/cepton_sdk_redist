@@ -16,47 +16,25 @@ import numpy
 import serial
 import serial.tools.list_ports
 
-__all__ = [
-    "add_execute_command_arguments",
-    "add_io_path_arguments",
-    "add_simple_io_path_arguments",
-    "ArgumentParserMixin",
-    "backup_file",
-    "create_directory",
-    "delete_directory",
-    "execute_command",
-    "find_file_by_extension",
-    "find_file_by_name",
-    "find_file",
-    "fix_path",
-    "from_usec",
-    "get_day_str",
-    "get_environment",
-    "get_io_paths",
-    "get_package_path",
-    "get_sec_str",
-    "get_simple_io_paths",
-    "get_timestamp_str",
-    "get_timestamp_usec",
-    "get_timestamp",
-    "has_environment",
-    "InputDataDirectory",
-    "kill_background",
-    "modify_path",
-    "OptionsMixin",
-    "OutputDataDirectory",
-    "parse_enum",
-    "parse_execute_command_arguments",
-    "parse_list",
-    "parse_time_hms",
-    "process_options",
-    "remove_extension",
-    "run_background",
-    "set_extension",
-    "to_usec",
-    "wait_for_input",
-    "wait_on_background",
-]
+
+class AllBuilder:
+    def __init__(self, module_name, init=None):
+        if init is None:
+            init = []
+
+        self._module_name = module_name
+        self._init = init
+        self._exclude = set(dir(sys.modules[self._module_name]))
+
+    def get(self):
+        result = \
+            set(dir(sys.modules[self._module_name])) - self._exclude
+        result = [x for x in result if not x.startswith("_")]
+        result.extend(self._init)
+        return result
+
+
+_all_builder = AllBuilder(__name__, init=["AllBuilder"])
 
 
 def get_package_path(name):
@@ -428,15 +406,15 @@ def process_options(options):
     return {key: value for key, value in options.items() if value is not None}
 
 
-class OptionsMixin:
-    """Mixin for class that has options (usually from json)."""
-
-    def init_options(self, cls):
-        """Should be called in each `__init__` method."""
-        assert(isinstance(self, cls))
-        if type(self) is not cls:
-            return
+class _OptionsMixinMeta(type):
+    def __call__(cls, *args, **kwargs):
+        self = super().__call__(*args, **kwargs)
         self.set_options()
+        return self
+
+
+class OptionsMixin(metaclass=_OptionsMixinMeta):
+    """Mixin for class that has options (usually from json)."""
 
     def get_options(self):
         return {}
@@ -526,3 +504,6 @@ class OutputDataDirectory(ArgumentParserMixin):
     @property
     def pcap_path(self):
         return self._get_path("lidar.pcap")
+
+
+__all__ = _all_builder.get()

@@ -1,10 +1,10 @@
 import numpy
 import vispy.app
 import vispy.scene
+import vispy.visuals.transforms
+from cepton_sdk.common import *
 
-__all__ = [
-    "plot_points",
-]
+_all_builder = AllBuilder(__name__)
 
 
 def plot_points(points, show_invalid=False):
@@ -26,9 +26,9 @@ def plot_points(points, show_invalid=False):
     view.camera.scale_factor = 100
 
     # Plot points
-    plot_handle = vispy.scene.visuals.Markers()
-    plot_handle.antialias = 0
-    view.add(plot_handle)
+    points_visual = vispy.scene.visuals.Markers()
+    points_visual.antialias = 0
+    view.add(points_visual)
     colors = numpy.ones([len(points), 4])
     if show_invalid:
         colors[numpy.logical_not(points.valid), :] = [1, 0, 0, 1]
@@ -40,7 +40,10 @@ def plot_points(points, show_invalid=False):
         "pos": points.positions,
         "size": 2,
     }
-    plot_handle.set_data(**options)
+    points_visual.set_data(**options)
 
     # Run
     vispy.app.run()
+
+
+__all__ = _all_builder.get()

@@ -4,7 +4,7 @@ import argparse
 import pprint
 
 import cepton_sdk
-from common import *
+from cepton_util.common import *
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(usage="%(prog)s [OPTIONS]")

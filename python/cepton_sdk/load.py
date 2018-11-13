@@ -4,6 +4,9 @@ import cepton_sdk.api
 import cepton_sdk.point
 import cepton_sdk.settings
 import cepton_util.common
+from cepton_sdk.common import *
+
+_all_builder = AllBuilder(__name__)
 
 
 def load_clips(path=None):
@@ -68,3 +71,6 @@ class Loader(cepton_util.common.ArgumentParserMixin):
         points_dict = self.sensor_transform_manager.process_points(points_dict)
         points = cepton_sdk.point.Points.combine(list(points_dict.values()))
         return points
+
+
+__all__ = _all_builder.get()

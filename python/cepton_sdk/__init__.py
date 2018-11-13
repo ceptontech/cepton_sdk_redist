@@ -1,5 +1,8 @@
-__author__ = "Cepton Technologies"
-__version__ = "1.9"
+from cepton_util import __author__, __version__  # isort:skip
+
+import cepton_sdk.common
+
+_all_builder = cepton_sdk.common.AllBuilder(__name__)
 
 
 def __check_version():
@@ -23,3 +26,5 @@ else:
     import cepton_sdk.capture_replay
 
     __check_version()
+
+__all__ = _all_builder.get()
