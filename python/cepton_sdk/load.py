@@ -67,8 +67,8 @@ class Loader(cepton_util.common.ArgumentParserMixin):
         return cepton_util.common.process_options(options)
 
     def process_points(self, points_dict):
-        points_dict = self.sensor_clip_manager.process_points(points_dict)
-        points_dict = self.sensor_transform_manager.process_points(points_dict)
+        self.sensor_transform_manager.process_points(points_dict)
+        self.sensor_clip_manager.process_points(points_dict)
         points = cepton_sdk.point.Points.combine(list(points_dict.values()))
         return points
 

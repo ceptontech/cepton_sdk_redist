@@ -44,10 +44,7 @@ class _ManagerBase:
         raise NotImplementedError()
 
     def update_from_json(self, input_json):
-        options = {
-            "ignore_invalid": True,
-        }
-        input_dict = _convert_keys_to_int(input_json, **options)
+        input_dict = input_json
         self.update_from_dict(input_dict)
 
     @classmethod
@@ -79,11 +76,8 @@ class _ManagerBase:
         raise NotImplementedError
 
     def process_points(self, points_dict):
-        processed_points_dict = {}
         for sensor_serial_number, points in points_dict.items():
-            processed_points_dict[sensor_serial_number] = \
-                self.process_sensor_points(sensor_serial_number, points)
-        return processed_points_dict
+            self.process_sensor_points(sensor_serial_number, points)
 
 
 class SensorTransformManager(_ManagerBase):
@@ -91,7 +85,11 @@ class SensorTransformManager(_ManagerBase):
         self.transforms = {}
 
     def update_from_dict(self, transforms_dict):
-        for sensor_serial_number, transform_dict in transforms_dict.items():
+        for key, transform_dict in transforms_dict.items():
+            try:
+                sensor_serial_number = int(key)
+            except:
+                continue
             transform = cepton_sdk.common.transform.Transform3d()
             transform.translation = \
                 numpy.array(transform_dict["translation"], dtype=float)
@@ -111,81 +109,138 @@ class SensorTransformManager(_ManagerBase):
 
     def process_sensor_points(self, sensor_serial_number, points):
         if sensor_serial_number not in self.transforms:
-            return copy.deepcopy(points)
+            return
         if len(points) == 0:
-            return points
+            return
 
         transform = self.transforms[sensor_serial_number]
-        transformed_points = copy.deepcopy(points)
-        transformed_points.positions[:, :] = \
-            transform.apply(points.positions)
-        return transformed_points
+        points.positions[:, :] = transform.apply(points.positions)
 
 
 class SensorClip:
     def __init__(self):
-        self.min_distance = -numpy.inf
-        self.max_distance = numpy.inf
-        self.min_image = -numpy.inf * numpy.ones([2])
-        self.max_image = numpy.inf * numpy.ones([2])
+        self.distance_lb = -numpy.inf
+        self.distance_ub = numpy.inf
+        self.image_lb = numpy.full([2], -numpy.inf)
+        self.image_ub = numpy.full([2], numpy.inf)
 
     @classmethod
     def from_dict(cls, d):
         self = cls()
         if "min_distance" in d:
-            self.min_distance = d["min_distance"]
+            self.distance_lb = d["min_distance"]
         if "max_distance" in d:
-            self.max_distance = d["max_distance"]
+            self.distance_ub = d["max_distance"]
         if "min_image_x" in d:
-            self.min_image[0] = d["min_image_x"]
+            self.image_lb[0] = d["min_image_x"]
         if "max_image_x" in d:
-            self.max_image[0] = d["max_image_x"]
+            self.image_ub[0] = d["max_image_x"]
         if "min_image_z" in d:
-            self.min_image[1] = d["min_image_z"]
+            self.image_lb[1] = d["min_image_z"]
         if "max_image_z" in d:
-            self.max_image[1] = d["max_image_z"]
+            self.image_ub[1] = d["max_image_z"]
         return self
 
     def find_points(self, points):
         if len(points) == 0:
             return numpy.array([], dtype=bool)
 
-        is_clipped_list = []
-        is_clipped_list.append(points.distances < self.min_distance)
-        is_clipped_list.append(points.distances > self.max_distance)
-        is_clipped_list.append(
-            numpy.any(points.image_positions < self.min_image, axis=-1))
-        is_clipped_list.append(
-            numpy.any(points.image_positions > self.max_image, axis=-1))
-        is_clipped = numpy.logical_or.reduce(is_clipped_list)
+        return numpy.logical_or.reduce([
+            points.distances <= self.distance_lb,
+            points.distances > self.distance_ub,
+            numpy.any(points.image_positions < self.image_lb, axis=-1),
+            numpy.any(points.image_positions > self.image_ub, axis=-1),
+        ])
 
-        return is_clipped
 
-    def clip_points(self, points):
+class FocusClip:
+    def __init__(self):
+        self.lb = numpy.full([3], -numpy.inf)
+        self.ub = numpy.full([3], numpy.inf)
+
+    @classmethod
+    def from_dict(cls, d):
+        self = cls()
+        if "min_x" in d:
+            self.lb[0] = d["min_x"]
+        if "max_x" in d:
+            self.ub[0] = d["max_x"]
+        if "min_y" in d:
+            self.lb[1] = d["min_y"]
+        if "max_y" in d:
+            self.ub[1] = d["max_y"]
+        if "min_z" in d:
+            self.lb[2] = d["min_z"]
+        if "max_z" in d:
+            self.ub[2] = d["max_z"]
+        return self
+
+    def find_points(self, points):
         if len(points) == 0:
-            return points
+            return numpy.array([], dtype=bool)
 
-        is_clipped = self.find_points(points)
-        return points[numpy.logical_not(is_clipped)]
+        return numpy.logical_or.reduce([
+            numpy.any(points.positions < self.lb, axis=-1),
+            numpy.any(points.positions > self.ub, axis=-1),
+        ])
+
+
+class GroundClip:
+    def __init__(self):
+        self.height = numpy.inf
+        self.distance_ub = 0
+
+    @classmethod
+    def from_dict(cls, d):
+        self = cls()
+        if "height" in d:
+            self.height = d["height"]
+        if "max_distance" in d:
+            self.distance_ub = d["max_distance"]
+        return self
+
+    def find_points(self, points):
+        if len(points) == 0:
+            return numpy.array([], dtype=bool)
+
+        return numpy.logical_and.reduce([
+            points.positions[:, 2] < self.height,
+            points.distances < self.distance_ub,
+        ])
 
 
 class SensorClipManager(_ManagerBase):
     def __init__(self):
+        self.focus_clip = FocusClip()
+        self.ground_clip = GroundClip()
         self.clips = {}
 
-    def update_from_dict(self, clips_dict):
-        for sensor_serial_number, clips_dict_tmp in clips_dict.items():
-            self.clips[sensor_serial_number] = \
-                SensorClip.from_dict(clips_dict_tmp)
+    def update_from_dict(self, d):
+        for key, d_tmp in d.items():
+            if key == "focus":
+                self.focus_clip = FocusClip.from_dict(d_tmp)
+            elif key == "ground":
+                self.ground_clip = GroundClip.from_dict(d_tmp)
+            else:
+                try:
+                    sensor_serial_number = int(key)
+                except:
+                    continue
+                self.clips[sensor_serial_number] = SensorClip.from_dict(d_tmp)        
 
     def process_sensor_points(self, sensor_serial_number, points):
-        if sensor_serial_number not in self.clips:
-            return copy.deepcopy(points)
         if len(points) == 0:
-            return points
+            return
 
-        clip_tmp = self.clips[sensor_serial_number]
-        return clip_tmp.clip_points(points)
+        is_clipped_list = [
+            self.focus_clip.find_points(points),
+            self.ground_clip.find_points(points),
+        ]
+        if sensor_serial_number in self.clips:
+            is_clipped_list.append(
+                self.clips[sensor_serial_number].find_points(points))
+        is_clipped = numpy.logical_or.reduce(is_clipped_list)
+        points.flags[is_clipped, cepton_sdk.PointFlag.VALID] = False
 
 
 __all__ = _all_builder.get()
