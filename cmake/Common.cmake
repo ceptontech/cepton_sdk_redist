@@ -8,16 +8,13 @@ if(IS_BIG_ENDIAN)
   message(FATAL_ERROR "Big endian is not supported!")
 endif()
 
-# Find ccache
-find_program(CCACHE_FOUND ccache)
-if(CCACHE_FOUND)
-  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
-  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
-endif(CCACHE_FOUND)
-
 # ------------------------------------------------------------------------------
 # Macros
 # ------------------------------------------------------------------------------
+macro(FIX_PATH result input)
+  get_filename_component(${result} "${${input}}" ABSOLUTE)
+endmacro()
+
 # Evaluate logical expression
 macro(LOGICAL result predicate)
   # Split into list
@@ -38,25 +35,31 @@ macro(CREATE_OPTION type key init_value docstring #[[predicate default_value]])
   endif()
 
   if(${create_option_enabled})
-    if(DEFINED ${key})
-      set(${key} "${${key}}" CACHE ${type} "${docstring}" FORCE)
+    if(DEFINED ${key}_OPTION)
+      set(${key}_OPTION "${${key}_OPTION}" CACHE ${type} "${docstring}" FORCE)
+    elseif(DEFINED ${key})
+      set(${key}_OPTION "${${key}}" CACHE ${type} "${docstring}" FORCE)
     else()
-      set(${key} "${init_value}" CACHE ${type} "${docstring}" FORCE)
+      set(${key}_OPTION "${init_value}" CACHE ${type} "${docstring}" FORCE)
     endif()
   else()
-    set(${key} "${ARGV5}" CACHE INTERNAL "" FORCE)
+    set(${key}_OPTION "${ARGV5}" CACHE INTERNAL "" FORCE)
   endif()
+
+  # Internally modifiable value
+  set(${key} "${${key}_OPTION}" CACHE INTERNAL "" FORCE)
 endmacro()
 
 # Set cmake option
 macro(SET_OPTION key value)
   set(${key} ${value} CACHE INTERNAL "" FORCE)
+  set(${key}_OPTION ${value} CACHE INTERNAL "" FORCE)
 endmacro()
 
 # Add subdirectory
 macro(ADD_EXTERNAL_SUBDIRECTORY)
   message(STATUS "================================================================================")
-  if(CEPTON_BUILD_TYPE STREQUAL "Release")
+  if(CMAKE_BUILD_TYPE_OPTION STREQUAL "Release")
     set(CMAKE_BUILD_TYPE "Release")
   else()
     set(CMAKE_BUILD_TYPE "RelWithDebInfo")
@@ -65,7 +68,7 @@ macro(ADD_EXTERNAL_SUBDIRECTORY)
   message(STATUS "External: " ${BASENAME})
   message(STATUS "--------------------------------------------------------------------------------")
   add_subdirectory(${ARGN})
-  set(CMAKE_BUILD_TYPE ${CEPTON_BUILD_TYPE})
+  set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE_OPTION})
   message(STATUS "--------------------------------------------------------------------------------")
 endmacro()
 
@@ -91,6 +94,14 @@ endmacro()
 # ------------------------------------------------------------------------------
 # Variables
 # ------------------------------------------------------------------------------
+# Detect subdirectory
+get_directory_property(parent_directory PARENT_DIRECTORY)
+if(parent_directory)
+  set(is_subdirectory TRUE)
+else()
+  set(is_subdirectory FALSE)
+endif()
+
 # Detect architecture
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
   set(ARCH_64 TRUE)
@@ -142,7 +153,7 @@ if(MSVC)
 elseif(CMAKE_COMPILER_IS_GNUCXX)
   set(GCC TRUE)
   add_definitions(-DIS_GCC)
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang$")
   set(CLANG TRUE)
   add_definitions(-DIS_CLANG)
 else()
@@ -163,7 +174,6 @@ create_option(STRING OS_NAME "${DEFAULT_OS_NAME}"
 if(NOT DEFINED OS_NAME)
   set(OS_NAME "${DEFAULT_OS_NAME}")
 endif()
-message(STATUS "OS name: ${OS_NAME}")
 
 # ------------------------------------------------------------------------------
 # Compiler Flags
@@ -173,8 +183,8 @@ if(MSVC)
   add_flags("/wd4100") # Disable unused parameter warning
   add_flags("/wd4800 /wd4267 /wd4244 /wd4018") # Disable conversion warnings
 elseif(GCC OR CLANG)
-  ADD_C_FLAGS("-std=c11")
-  ADD_CXX_FLAGS("-std=c++11") # C++11
+  add_c_flags("-std=c11")
+  add_cxx_flags("-std=c++11") # C++11
   add_flags("-pthread")
   add_flags("-Wno-sign-compare") # Disable conversion warnings
   add_flags("-Wno-missing-field-initializers") # Disable struct initialization warning
