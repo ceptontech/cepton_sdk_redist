@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
-        <link rel="next" title="Networking" href="networking.html"/>
-        <link rel="prev" title="Sensors" href="sensors.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Networking" href="networking.html" />
+    <link rel="prev" title="Sensors" href="sensors.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -112,7 +104,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -120,9 +112,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -252,7 +245,7 @@
 <span id="_CPPv2N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv"></span><span id="cepton_sdk::listen_image_frames__FpSensorImageDataCallback.voidPC"></span><span class="target" id="cepton__sdk_8hpp_1a66137111a7fe3e3adea9c9e38d7677fc"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk<code class="descclassname">::</code></code><code class="descname">listen_image_frames</code><span class="sig-paren">(</span>FpSensorImageDataCallback <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk19listen_image_framesE25FpSensorImageDataCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets image frames callback. </p>
 <p>Returns points at frequency specified by <code class="docutils literal notranslate"><a class="reference internal" href="setup.html#structCeptonSDKFrameOptions_1a8d7f23eb435f258c835cf7050547aa11"><span class="std std-ref"><span class="pre">cepton_sdk::FrameOptions::mode</span></span></a></code>. Each frame contains all possible points (use <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorImagePoint::valid</span></code> to filter points). Points are ordered by measurement, segment, and return:</p>
-<p><div class="highlight-default notranslate"><div class="highlight"><pre><span class="n">measurement_count</span> <span class="o">=</span> <span class="n">n_points</span> <span class="o">/</span> <span class="p">(</span><span class="n">segment_count</span> <span class="o">*</span> <span class="n">return_count</span><span class="p">)</span>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">measurement_count</span> <span class="o">=</span> <span class="n">n_points</span> <span class="o">/</span> <span class="p">(</span><span class="n">segment_count</span> <span class="o">*</span> <span class="n">return_count</span><span class="p">)</span>
 <span class="n">idx</span> <span class="o">=</span> <span class="p">((</span><span class="n">i_measurement</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment_count</span> <span class="o">+</span> <span class="n">i_segment</span><span class="p">)</span> <span class="o">*</span> <span class="n">return_count</span> <span class="o">+</span> <span class="n">i_return</span>
 </pre></div>
 </div>
@@ -270,9 +263,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -290,11 +281,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Cepton Technologies.
+        &copy; Copyright 2018, Cepton Technologies
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -309,36 +300,23 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

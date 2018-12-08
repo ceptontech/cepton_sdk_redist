@@ -9,7 +9,7 @@ import cepton_util.common
 
 _all_builder = cepton_util.common.AllBuilder(__name__)
 
-from cepton_util.common import AllBuilder
+from cepton_util.common import AllBuilder, SimpleTimer  # noqa isort:skip
 
 
 def static_vars(**kwargs):
@@ -291,8 +291,7 @@ class ToCArrayMixin:
     def update_from_c(self, c_a):
         if len(self) == 0:
             return
-        data = cepton_sdk.common.c.convert_c_array_to_ndarray(
-            c_a, len(self), self._get_c_class())
+        data = cepton_sdk.common.c.convert_c_array_to_ndarray(len(self), c_a)
         self._from_c_impl(data)
 
     @classmethod
@@ -306,10 +305,9 @@ class ToCArrayMixin:
         if c_type is None:
             c_type = self._get_c_class()
 
-        dtype = numpy.dtype(c_type)
-        data = numpy.zeros(len(self), dtype=dtype)
+        data = numpy.zeros(len(self), dtype=numpy.dtype(c_type))
         self._to_c_impl(data)
-        c_ptr = cepton_sdk.c.convert_ndarray_to_c_array(data, c_type)
+        c_ptr = cepton_sdk.c.convert_ndarray_to_c_array(data)
         return c_ptr
 
 

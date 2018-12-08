@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
-        <link rel="next" title="Samples" href="samples.html"/>
-        <link rel="prev" title="API" href="api.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Samples" href="samples.html" />
+    <link rel="prev" title="API" href="api.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -115,7 +107,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -123,9 +115,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -199,9 +192,8 @@
 
 <dl class="class">
 <dt id="_CPPv3N10cepton_sdk4util11SensorPointE">
-<span id="_CPPv2N10cepton_sdk4util11SensorPointE"></span><span id="cepton_sdk::util::SensorPoint"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint"></span><em class="property">struct </em><code class="descclassname">cepton_sdk::util<code class="descclassname">::</code></code><code class="descname">SensorPoint</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPointE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util11SensorPointE"></span><span id="cepton_sdk::util::SensorPoint"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint"></span><em class="property">struct </em><code class="descname">SensorPoint</code> : <em class="property">public</em> CeptonSensorImagePoint<a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPointE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>3d point class. </p>
-<p>Inherits from <a class="reference internal" href="points.html#structCeptonSensorImagePoint"><span class="std std-ref">CeptonSensorImagePoint</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Members</p>
 <dl class="member">
@@ -233,7 +225,7 @@
 <h2>Transforms<a class="headerlink" href="#transforms" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="_CPPv3N10cepton_sdk4util17CompiledTransformE">
-<span id="_CPPv2N10cepton_sdk4util17CompiledTransformE"></span><span id="cepton_sdk::util::CompiledTransform"></span><span class="target" id="classcepton__sdk_1_1util_1_1CompiledTransform"></span><em class="property">class </em><code class="descclassname">cepton_sdk::util<code class="descclassname">::</code></code><code class="descname">CompiledTransform</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util17CompiledTransformE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util17CompiledTransformE"></span><span id="cepton_sdk::util::CompiledTransform"></span><span class="target" id="classcepton__sdk_1_1util_1_1CompiledTransform"></span><em class="property">class </em><code class="descname">CompiledTransform</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util17CompiledTransformE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>3d translation and rotation. </p>
 <p>For more functionality, use Eigen’s Geometry module. </p>
 <div class="breathe-sectiondef docutils container">
@@ -269,10 +261,8 @@
 <div class="section" id="callbacks">
 <h2>Callbacks<a class="headerlink" href="#callbacks" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt>
-<span class="target" id="classcepton__sdk_1_1util_1_1Callback"></span><em class="property">template </em>&lt;typename… <em>TArgs</em>&gt;</dt>
 <dt id="_CPPv3N10cepton_sdk4util8CallbackE">
-<span id="_CPPv2N10cepton_sdk4util8CallbackE"></span><span id="cepton_sdk::util::Callback"></span><em class="property">class </em><code class="descclassname">cepton_sdk::util<code class="descclassname">::</code></code><code class="descname">Callback</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util8CallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util8CallbackE"></span><span id="cepton_sdk::util::Callback"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback"></span><em class="property">template </em>&lt;typename... <em>TArgs</em>&gt;<br /><em class="property">class </em><code class="descname">Callback</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util8CallbackE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Expands SDK callback functionality. </p>
 <p>Allows for multiple callbacks to be registered. Allows for registering lambdas and member functions. See <code class="docutils literal notranslate"><span class="pre">samples/basic.cpp</span></code>. </p>
 <div class="breathe-sectiondef docutils container">
@@ -290,22 +280,20 @@
 </dd></dl>
 
 <dl class="function">
-<dt>
-<em class="property">template </em>&lt;<em class="property">typename</em> TClass&gt;</dt>
 <dt id="_CPPv3N10cepton_sdk4util8Callback6listenEPC6TClass14MemberFunctionI6TClassDp5TArgsEPC8uint64_t">
-<span id="_CPPv2N10cepton_sdk4util8Callback6listenEPC6TClass14MemberFunctionI6TClassDp5TArgsEPC8uint64_t"></span><span id="cepton_sdk::util::Callback::listen__TClassPC.MemberFunction:TClass.TArgsDp:.uint64_tPC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a3958cfde43730f67d54d48c6a5e9de73"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descname">listen</code><span class="sig-paren">(</span>TClass *<em class="property">const</em> <em>instance</em>, MemberFunction&lt;TClass, TArgs...&gt; <em>func</em>, uint64_t *<em class="property">const</em> <em>id</em> = nullptr<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk4util8Callback6listenEPC6TClass14MemberFunctionI6TClassDp5TArgsEPC8uint64_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util8Callback6listenEPC6TClass14MemberFunctionI6TClassDp5TArgsEPC8uint64_t"></span><span id="cepton_sdk::util::Callback::listen__TClassPC.MemberFunction:TClass.TArgsDp:.uint64_tPC"></span><em class="property">template </em>&lt;<em class="property">typename</em> TClass&gt;<br /><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a3958cfde43730f67d54d48c6a5e9de73"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descname">listen</code><span class="sig-paren">(</span>TClass *<em class="property">const</em> <em>instance</em>, MemberFunction&lt;TClass, TArgs...&gt; <em>func</em>, uint64_t *<em class="property">const</em> <em>id</em> = nullptr<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk4util8Callback6listenEPC6TClass14MemberFunctionI6TClassDp5TArgsEPC8uint64_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Register instance member function. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3NK10cepton_sdk4util8Callback4emitEDp5TArgs">
-<span id="_CPPv2NK10cepton_sdk4util8Callback4emitEDp5TArgs"></span><span id="cepton_sdk::util::Callback::emit__TArgsDpC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a6a1fa2e70b8978d6e37204e248c02800"></span>void <code class="descname">emit</code><span class="sig-paren">(</span>TArgs... <em>args</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util8Callback4emitEDp5TArgs" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2NK10cepton_sdk4util8Callback4emitEDp5TArgs"></span><span id="cepton_sdk::util::Callback::emit__TArgsDpC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a741ce69b205de6fea739f81e7ff8342e"></span>void <code class="descname">emit</code><span class="sig-paren">(</span>TArgs... <em>args</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util8Callback4emitEDp5TArgs" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Emit callback. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3NK10cepton_sdk4util8CallbackclEDp5TArgs">
-<span id="_CPPv2NK10cepton_sdk4util8CallbackclEDp5TArgs"></span><span id="cepton_sdk::util::Callback::call-operator__TArgsDpC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1aff8b9df5c5e9c49710ae1f3edbdce8d7"></span>void <code class="descname">operator()</code><span class="sig-paren">(</span>TArgs... <em>args</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util8CallbackclEDp5TArgs" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2NK10cepton_sdk4util8CallbackclEDp5TArgs"></span><span id="cepton_sdk::util::Callback::call-operator__TArgsDpC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a05ae169d143b2f19f57bcac2729c80e5"></span>void <code class="descname">operator()</code><span class="sig-paren">(</span>TArgs... <em>args</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util8CallbackclEDp5TArgs" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Emit callback. </p>
 </dd></dl>
 
@@ -314,7 +302,7 @@
 <p class="breathe-sectiondef-title rubric">Public Static Functions</p>
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv">
-<span id="_CPPv2N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv"></span><span id="cepton_sdk::util::Callback::global_on_callback__TArgsDp.voidPC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a977f02e17b836b4480abd23d59ccd199"></span><em class="property">static</em> void <code class="descname">global_on_callback</code><span class="sig-paren">(</span>TArgs... <em>args</em>, void *<em class="property">const</em> <em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv"></span><span id="cepton_sdk::util::Callback::global_on_callback__TArgsDp.voidPC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1ad943039e1ed62bfe42dc2c52972f7453"></span><em class="property">static</em> void <code class="descname">global_on_callback</code><span class="sig-paren">(</span>TArgs... <em>args</em>, void *<em class="property">const</em> <em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Used for registering as c callback. </p>
 </dd></dl>
 
@@ -326,7 +314,7 @@
 <h2>Frames<a class="headerlink" href="#frames" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="_CPPv3N10cepton_sdk4util13FrameDetectorE">
-<span id="_CPPv2N10cepton_sdk4util13FrameDetectorE"></span><span id="cepton_sdk::util::FrameDetector"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameDetector"></span><em class="property">class </em><code class="descclassname">cepton_sdk::util<code class="descclassname">::</code></code><code class="descname">FrameDetector</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util13FrameDetectorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util13FrameDetectorE"></span><span id="cepton_sdk::util::FrameDetector"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameDetector"></span><em class="property">class </em><code class="descname">FrameDetector</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util13FrameDetectorE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Detects frames in streaming sensor data. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
@@ -337,7 +325,7 @@
 
 <dl class="function">
 <dt id="_CPPv3NK10cepton_sdk4util13FrameDetector11get_optionsEv">
-<span id="_CPPv2NK10cepton_sdk4util13FrameDetector11get_optionsEv"></span><span id="cepton_sdk::util::FrameDetector::get_optionsC"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameDetector_1add574c73769fa4e3fb774f4f740ccfab"></span><em class="property">const</em> <a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> &amp;<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util13FrameDetector11get_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2NK10cepton_sdk4util13FrameDetector11get_optionsEv"></span><span id="cepton_sdk::util::FrameDetector::get_optionsC"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameDetector_1a126a3513f15edbe17a3082ea76ad444d"></span><em class="property">const</em> <a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> &amp;<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util13FrameDetector11get_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -383,7 +371,7 @@
 
 <dl class="class">
 <dt id="_CPPv3N10cepton_sdk4util16FrameAccumulatorE">
-<span id="_CPPv2N10cepton_sdk4util16FrameAccumulatorE"></span><span id="cepton_sdk::util::FrameAccumulator"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameAccumulator"></span><em class="property">class </em><code class="descclassname">cepton_sdk::util<code class="descclassname">::</code></code><code class="descname">FrameAccumulator</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util16FrameAccumulatorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util16FrameAccumulatorE"></span><span id="cepton_sdk::util::FrameAccumulator"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameAccumulator"></span><em class="property">class </em><code class="descname">FrameAccumulator</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util16FrameAccumulatorE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Accumulates image points, and emits frames to callback. </p>
 <p>See <code class="docutils literal notranslate"><span class="pre">samples/frame.cpp</span></code>. </p>
 <div class="breathe-sectiondef docutils container">
@@ -395,7 +383,7 @@
 
 <dl class="function">
 <dt id="_CPPv3NK10cepton_sdk4util16FrameAccumulator11get_optionsEv">
-<span id="_CPPv2NK10cepton_sdk4util16FrameAccumulator11get_optionsEv"></span><span id="cepton_sdk::util::FrameAccumulator::get_optionsC"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameAccumulator_1a2bd9bd5b3c28076e0d8b679e3f7043aa"></span><a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> <code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util16FrameAccumulator11get_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2NK10cepton_sdk4util16FrameAccumulator11get_optionsEv"></span><span id="cepton_sdk::util::FrameAccumulator::get_optionsC"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameAccumulator_1a5f4a4872312e4a7b7d383232e2da8c9a"></span><a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> <code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util16FrameAccumulator11get_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -429,9 +417,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -449,11 +435,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Cepton Technologies.
+        &copy; Copyright 2018, Cepton Technologies
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -468,36 +454,23 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

@@ -24,7 +24,9 @@ function sensor_info = convert_sensor_information(c_sensor_info)
     sensor_info.is_mocked = flags(1);
     sensor_info.is_pps_connected = flags(2);
     sensor_info.is_nmea_connected = flags(3);
-    sensor_info.is_calibrated = flags(4);
+    sensor_info.is_ptp_connected = flags(4);
+    sensor_info.is_calibrated = flags(5);
+    sensor_info.is_overheated = flags(6);
 end
 
 function str = fix_c_string(c_str)

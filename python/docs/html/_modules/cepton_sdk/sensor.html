@@ -14,7 +14,6 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -36,22 +35,13 @@
           <div class="body" role="main">
             
   <h1>Source code for cepton_sdk.sensor</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">ctypes</span>
+<span></span><span class="kn">import</span> <span class="nn">ctypes</span>
 <span class="kn">import</span> <span class="nn">enum</span>
 
 <span class="kn">import</span> <span class="nn">cepton_sdk.c</span>
-<span class="kn">from</span> <span class="nn">cepton_sdk.common.mixin</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">cepton_sdk.common</span> <span class="k">import</span> <span class="o">*</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;get_n_sensors&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_sensor_handle&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_sensor_information_by_handle&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_sensor_information_by_index&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;get_sensor_information&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;has_sensor&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SensorInformation&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;SensorModel&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+<span class="n">_all_builder</span> <span class="o">=</span> <span class="n">AllBuilder</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SensorModel"><a class="viewcode-back" href="../../sensors.html#cepton_sdk.SensorModel">[docs]</a><span class="k">class</span> <span class="nc">SensorModel</span><span class="p">(</span><span class="n">enum</span><span class="o">.</span><span class="n">IntEnum</span><span class="p">):</span>
@@ -76,6 +66,8 @@
 <span class="sd">        last_reported_temperature</span>
 <span class="sd">        last_reported_humidity</span>
 <span class="sd">        last_reported_age</span>
+<span class="sd">        last_reported_hv</span>
+<span class="sd">        last_reported_optic_temperature</span>
 <span class="sd">        gps_ts_year</span>
 <span class="sd">        gps_ts_mont</span>
 <span class="sd">        gps_ts_day</span>
@@ -87,15 +79,16 @@
 <span class="sd">        is_pps_connected</span>
 <span class="sd">        is_nmea_connected</span>
 <span class="sd">        is_calibrated</span>
+<span class="sd">        is_over_heated</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_c_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_get_c_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_SensorInformation</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_get_dict_member_names</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_get_c_member_names</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">_get_dict_member_names</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_get_c_member_names</span><span class="p">()</span>
 
     <span class="n">__from_c_value_functions</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;model_name&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span>
@@ -106,12 +99,13 @@
         <span class="s2">&quot;is_nmea_connected&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="s2">&quot;is_ptp_connected&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="s2">&quot;is_calibrated&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="s2">&quot;is_over_heated&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_from_c_value</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">c_value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">__from_c_value_functions</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">__from_c_value_functions</span><span class="p">[</span><span class="n">member_name</span><span class="p">](</span><span class="n">c_value</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_from_c_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">member_name</span><span class="p">,</span> <span class="n">c_value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">member_name</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__from_c_value_functions</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__from_c_value_functions</span><span class="p">[</span><span class="n">member_name</span><span class="p">](</span><span class="n">c_value</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_from_c_value</span><span class="p">(</span><span class="n">member_name</span><span class="p">,</span> <span class="n">c_value</span><span class="p">)</span></div>
 
@@ -152,6 +146,9 @@
 <span class="k">def</span> <span class="nf">get_sensor_information</span><span class="p">(</span><span class="n">sensor_serial_number</span><span class="p">):</span>
     <span class="n">sensor_handle</span> <span class="o">=</span> <span class="n">get_sensor_handle</span><span class="p">(</span><span class="n">sensor_serial_number</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">get_sensor_information_by_handle</span><span class="p">(</span><span class="n">sensor_handle</span><span class="p">)</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="n">_all_builder</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </pre></div>
 
           </div>
@@ -187,7 +184,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
     </div>
   </body>
 </html>

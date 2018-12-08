@@ -17,8 +17,6 @@
 
 namespace cepton_sdk {
 
-#include "cepton_sdk_def.h"
-
 /// Returns library version.
 /**
  * This is different from `CEPTON_SDK_VERSION`.
@@ -362,6 +360,10 @@ inline SensorError close() {
   return get_error();
 }
 
+inline const char *get_filename() {
+  return cepton_sdk_capture_replay_get_filename();
+}
+
 /// Returns capture start timestamp (unix time [microseconds]).
 inline uint64_t get_start_time() {
   return cepton_sdk_capture_replay_get_start_time();
@@ -458,8 +460,6 @@ inline SensorError pause() {
   cepton_sdk_capture_replay_pause();
   return get_error();
 }
-
-#include "cepton_sdk_undef.h"
 
 }  // namespace capture_replay
 }  // namespace cepton_sdk

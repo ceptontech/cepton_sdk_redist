@@ -1,6 +1,9 @@
 #[[
 General CMake options for all cepton repositories.
 ]]
+
+get_filename_component(CEPTON_SDK_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../" ABSOLUTE)
+
 # Test endianness
 include(TestBigEndian)
 test_big_endian(IS_BIG_ENDIAN)
@@ -11,9 +14,17 @@ endif()
 # ------------------------------------------------------------------------------
 # Macros
 # ------------------------------------------------------------------------------
+# Expand path
 macro(FIX_PATH result input)
   get_filename_component(${result} "${${input}}" ABSOLUTE)
 endmacro()
+
+# Print list with newlines
+function(MESSAGE_LIST l)
+  foreach(line IN LISTS ${l})
+    message("${line}")
+  endforeach() 
+endfunction()        
 
 # Evaluate logical expression
 macro(LOGICAL result predicate)
@@ -56,22 +67,6 @@ macro(SET_OPTION key value)
   set(${key}_OPTION ${value} CACHE INTERNAL "" FORCE)
 endmacro()
 
-# Add subdirectory
-macro(ADD_EXTERNAL_SUBDIRECTORY)
-  message(STATUS "================================================================================")
-  if(CMAKE_BUILD_TYPE_OPTION STREQUAL "Release")
-    set(CMAKE_BUILD_TYPE "Release")
-  else()
-    set(CMAKE_BUILD_TYPE "RelWithDebInfo")
-  endif()
-  get_filename_component(BASENAME "${ARGV0}" NAME)
-  message(STATUS "External: " ${BASENAME})
-  message(STATUS "--------------------------------------------------------------------------------")
-  add_subdirectory(${ARGN})
-  set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE_OPTION})
-  message(STATUS "--------------------------------------------------------------------------------")
-endmacro()
-
 # Add compiler flags
 macro(ADD_C_FLAGS flags)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${flags}")
@@ -89,6 +84,18 @@ endmacro()
 macro(ADD_RELEASE_FLAGS flags)
   set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${flags}")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${flags}")
+endmacro()
+
+# Add subdirectory
+macro(ADD_EXTERNAL_SUBDIRECTORY source_dir)
+  message(STATUS "================================================================================")
+  get_filename_component(add_external_subdirectory_name "${source_dir}" NAME)
+  message(STATUS "External: " ${add_external_subdirectory_name})
+  message(STATUS "--------------------------------------------------------------------------------")
+  set(add_external_subdirectory_args "${source_dir}" ${ARGN})
+  add_subdirectory("${CEPTON_SDK_SOURCE_DIR}/cmake/subdirectory" 
+    "${PROJECT_BINARY_DIR}/third_party/cepton_subdirectory_${add_external_subdirectory_name}")
+  message(STATUS "--------------------------------------------------------------------------------")
 endmacro()
 
 # ------------------------------------------------------------------------------
@@ -184,11 +191,12 @@ if(MSVC)
   add_flags("/wd4800 /wd4267 /wd4244 /wd4018") # Disable conversion warnings
 elseif(GCC OR CLANG)
   add_c_flags("-std=c11")
-  add_cxx_flags("-std=c++11") # C++11
+  add_cxx_flags("-std=c++11") # C++11 
   add_flags("-pthread")
+  add_flags("-Wall")
   add_flags("-Wno-sign-compare") # Disable conversion warnings
   add_flags("-Wno-missing-field-initializers") # Disable struct initialization warning
-  add_flags("-Wno-unused-parameter -Wno-unused-function -Wno-attributes") # Disable unused warnings
+  add_flags("-Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-attributes") # Disable unused warnings
   if(CLANG)
     add_flags("-Wno-unused-command-line-argument") # Disable extra arguments warning
     add_flags("-Wno-inconsistent-missing-override")

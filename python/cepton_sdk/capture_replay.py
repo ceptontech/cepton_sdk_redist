@@ -12,7 +12,7 @@ def is_open():
 
 
 def open(capture_path):
-    capture_path = capture_path.encode("UTF-8")
+    capture_path = capture_path.encode("utf-8")
     cepton_sdk.c.c_capture_replay_open(capture_path)
 
 
@@ -21,6 +21,10 @@ def close():
         cepton_sdk.c.c_capture_replay_close()
     except IOError as e:
         warnings.warn(e)
+
+
+def get_filename():
+    return cepton_sdk.c.c_capture_replay_get_filename().decode("utf-8")
 
 
 def get_start_time():

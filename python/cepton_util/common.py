@@ -37,6 +37,18 @@ class AllBuilder:
 _all_builder = AllBuilder(__name__, init=["AllBuilder"])
 
 
+class SimpleTimer:
+    def tic(self):
+        self.t_0 = time.time()
+
+    def toc(self, msg=None):
+        elapsed = time.time() - self.t_0
+        if msg is None:
+            print("Elapsed: {}".format(elapsed))
+        else:
+            print("[{}] Elapsed: {}".format(msg, elapsed))
+
+
 def get_package_path(name):
     return os.path.dirname(pkgutil.get_loader(name).path)
 
@@ -120,6 +132,11 @@ def parse_enum(s, enum_type):
     if isinstance(s, int):
         return enum_type(s)
     return enum_type[s.upper()]
+
+
+@optional_function
+def serialize_enum(s):
+    return s.name
 
 
 STRING_BOOL_LOOKUP = {
@@ -216,6 +233,11 @@ def run_background(func, args=(), kwargs={}):
     thread = BackgroundThread(target=func, args=args, kwargs=kwargs)
     thread.thread.start()
     __local["threads"].append(thread)
+
+
+def check_command(name):
+    if shutil.which(IPDefragUtil) is None:
+        raise OSError("Command not found: {}".format(name))
 
 
 def execute_command(cmd_list, background=False, quiet=False, **kwargs):
@@ -406,15 +428,24 @@ def process_options(options):
     return {key: value for key, value in options.items() if value is not None}
 
 
-class _OptionsMixinMeta(type):
+class _ObjectMeta(type):
     def __call__(cls, *args, **kwargs):
         self = super().__call__(*args, **kwargs)
-        self.set_options()
+        self.post_init()
         return self
 
 
-class OptionsMixin(metaclass=_OptionsMixinMeta):
+class ObjectBase(metaclass=_ObjectMeta):
+    def post_init(self):
+        pass
+
+
+class OptionsMixin(ObjectBase):
     """Mixin for class that has options (usually from json)."""
+
+    def post_init(self):
+        super().post_init()
+        self.set_options()
 
     def get_options(self):
         return {}
@@ -422,35 +453,163 @@ class OptionsMixin(metaclass=_OptionsMixinMeta):
     def set_options(self, **kwargs):
         pass
 
+
+class ClearMixin(ObjectBase):
+    def post_init(self):
+        super().post_init()
+        self.clear()
+
+    def clear(self):
+        pass
+
 # ------------------------------------------------------------------------------
 # Capture
 # ------------------------------------------------------------------------------
 
 
-class InputDataDirectory:
+class DataDirectoryMixin:
+    default_alg_settings_name = "cepton_alg_config.json"
+    default_bag_name = "ros.bag"
+    default_clips_name = "cepton_clips.json"
+    default_gps_name = "gps.txt"
+    default_grid_mask_name = "grid_mask.json"
+    default_imu_name = "imu.txt"
+    default_pcap_name = "lidar.pcap"
+    default_player_settings_name = "cepton_player_config.json"
+    default_render_settings_name = "cepton_render_config.json"
+    default_rviz_config_name = "rviz_config.rviz"
+    default_transforms_name = "cepton_transforms.json"
+    default_viewer_config_name = "cepton_viewer_config.json"
+
+    @classmethod
+    def default_camera_name(self, i):
+        return "camera_{}.mkv".format(i)
+
+    def _get_path(self, name):
+        if self.path is None:
+            return None
+        return os.path.join(self.path, name)
+
+    def __bool__(self):
+        return self.path is not None
+
+    @property
+    def default_alg_settings_path(self):
+        return self._get_path(self.default_alg_settings_name)
+
+    @property
+    def default_bag_path(self):
+        return self._get_path(self.default_bag_name)
+
+    def default_camera_path(self, i):
+        return self._get_path(self.default_camera_name(i))
+
+    @property
+    def default_clips_path(self):
+        return self._get_path(self.default_clips_name)
+
+    @property
+    def default_gps_path(self):
+        return self._get_path(self.default_gps_name)
+
+    @property
+    def default_grid_mask_path(self):
+        return self._get_path(self.default_grid_mask_name)
+
+    @property
+    def default_imu_path(self):
+        return self._get_path(self.default_imu_name)
+
+    @property
+    def default_pcap_path(self):
+        return self._get_path(self.default_pcap_name)
+
+    @property
+    def default_player_settings_path(self):
+        return self._get_path(self.default_player_settings_name)
+
+    @property
+    def default_render_settings_path(self):
+        return self._get_path(self.default_render_settings_name)
+
+    @property
+    def default_rviz_config_path(self):
+        return self._get_path(self.default_rviz_config_name)
+
+    @property
+    def default_transforms_path(self):
+        return self._get_path(self.default_transforms_name)
+
+    @property
+    def default_viewer_config_path(self):
+        return self._get_path(self.default_viewer_config_name)
+
+
+class InputDataDirectory(DataDirectoryMixin):
     def __init__(self, path=None):
         self.path = path
 
-    def _find_file(self, name):
-        if self.path is None:
+    def _find_file(self, path):
+        if path is None:
             return None
-        return find_file_by_name(name, path=self.path, depth=1)
+        if os.path.exists(path):
+            return path
+        return None
 
     @property
-    def pcap_path(self):
-        return self._find_file("lidar.pcap")
+    def alg_settings_path(self):
+        return self._find_file(self.default_alg_settings_path)
 
     @property
-    def viewer_config_path(self):
-        return self._find_file("cepton_viewer_config.json")
+    def bag_path(self):
+        return self._find_file(self.default_bag_path)
 
     @property
-    def transforms_path(self):
-        return self._find_file("cepton_transforms.json")
+    def camera_paths(self):
+        return glob.glob(os.path.join(self.path, "camera_[0-9].mkv"))
+
+    def camera_path(self, i):
+        return self._find_file(self.default_camera_path(i))
 
     @property
     def clips_path(self):
-        return self._find_file("cepton_clips.json")
+        return self._find_file(self.default_clips_path)
+
+    @property
+    def gps_path(self):
+        return self._find_file(self.default_gps_path)
+
+    @property
+    def grid_mask_path(self):
+        return self._find_file(self.default_grid_mask_path)
+
+    @property
+    def imu_path(self):
+        return self._find_file(self.default_imu_path)
+
+    @property
+    def render_settings_path(self):
+        return self._find_file(self.default_render_settings_path)
+
+    @property
+    def pcap_path(self):
+        return self._find_file(self.default_pcap_path)
+
+    @property
+    def player_settings_path(self):
+        return self._find_file(self.default_player_settings_path)
+
+    @property
+    def rviz_config_path(self):
+        return self._find_file(self.default_rviz_config_path)
+
+    @property
+    def transforms_path(self):
+        return self._find_file(self.default_transforms_path)
+
+    @property
+    def viewer_config_path(self):
+        return self._find_file(self.default_viewer_config_path)
 
 
 def copy_settings(src, dst):
@@ -463,7 +622,7 @@ def copy_settings(src, dst):
             shutil.copy2(path, os.path.join(dst, name))
 
 
-class OutputDataDirectory(ArgumentParserMixin):
+class OutputDataDirectory(DataDirectoryMixin, ArgumentParserMixin):
     def __init__(self, path=None, duration=None, name="", postfix="", root_dir="~/Captures"):
         self.duration = duration
 
@@ -495,15 +654,20 @@ class OutputDataDirectory(ArgumentParserMixin):
         copy_settings(input_path, self.path)
 
     @property
-    def serial_numbers(self):
-        return parse_list(get_environment("CEPTON_SENSORS", ""), dtype=int)
+    def clips_path(self):
+        return self.default_clips_path
 
-    def _get_path(self, name):
-        return os.path.join(self.path, name)
+    @property
+    def transforms_path(self):
+        return self.default_transforms_path
 
     @property
     def pcap_path(self):
-        return self._get_path("lidar.pcap")
+        return self.default_pcap_path
+
+    @property
+    def viewer_config_path(self):
+        return self.default_viewer_config_path
 
 
 __all__ = _all_builder.get()

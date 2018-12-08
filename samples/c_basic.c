@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "cepton_sdk.h"
+#include <cepton_sdk.h>
 
 int frames_got = 0;
 time_t first_frame_time = 0;

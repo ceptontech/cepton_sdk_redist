@@ -6,7 +6,7 @@ import cepton_sdk
 from common import *
 
 
-def on_image_frames(serial_number, points):
+def on_frame(serial_number, points):
     print("Received {} points from sensor {}".format(
         len(points), serial_number))
 
@@ -17,12 +17,12 @@ if __name__ == "__main__":
     sensors_dict = cepton_sdk.get_sensors()
     sensor = next(iter(sensors_dict.values()))
 
-    callback_id = cepton_sdk.listen_image_frames(on_image_frames)
+    callback_id = cepton_sdk.listen_frames(on_frame)
     cepton_sdk.wait(0.1)
-    cepton_sdk.unlisten_image_frames(callback_id)
+    cepton_sdk.unlisten_frames(callback_id)
 
     # Get next frames for all sensors. Wait until data is available.
-    listener = cepton_sdk.ImageFramesListener()
+    listener = cepton_sdk.FramesListener()
     points_dict = listener.get_points()
     del listener
 
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     del listener
 
     # Get large chunk of data
-    listener = cepton_sdk.ImageFramesListener()
+    listener = cepton_sdk.FramesListener()
     cepton_sdk.wait(10)
     points_dict = listener.get_points()
     del listener

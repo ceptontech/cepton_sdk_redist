@@ -1,4 +1,4 @@
-from cepton_util import __author__, __version__  # isort:skip
+from cepton_util import __author__, __version__  # noqa isort:skip
 
 import cepton_sdk.common
 

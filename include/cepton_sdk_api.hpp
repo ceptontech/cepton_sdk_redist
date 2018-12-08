@@ -10,8 +10,6 @@
 namespace cepton_sdk {
 namespace api {
 
-#include "cepton_sdk_def.h"
-
 /// Returns true if capture replay is not open.
 inline bool is_live() { return !capture_replay::is_open(); }
 
@@ -79,30 +77,6 @@ inline SensorError create_error(SensorErrorCode error_code,
   return SensorError(error_code, error_msg);
 }
 }  // namespace internal
-
-/// DEPRECATED: use `cepton_sdk::api::log_error`.
-DEPRECATED inline SensorError log_error_code(SensorErrorCode error_code,
-                                             const std::string &msg = "") {
-  const auto error = internal::create_error(error_code, msg);
-  if (!error) return error;
-
-  std::fprintf(stderr, "%s\n", error.what());
-  return error;
-}
-
-/// DEPRECATED: use `cepton_sdk::api::check_error`.
-DEPRECATED inline SensorError check_error_code(SensorErrorCode error_code,
-                                               const std::string &msg = "") {
-  const auto error = internal::create_error(error_code, msg);
-  if (!error) return error;
-
-  if (error.is_error()) {
-    throw error;
-  } else {
-    std::fprintf(stderr, "%s\n", error.what());
-  }
-  return error;
-}
 
 /// Prints error.
 inline const SensorError &log_error(const SensorError &error,
@@ -282,8 +256,6 @@ inline std::vector<uint64_t> get_sensor_serial_numbers() {
   std::sort(serial_numbers.begin(), serial_numbers.end());
   return serial_numbers;
 }
-
-#include "cepton_sdk_undef.h"
 
 }  // namespace api
 }  // namespace cepton_sdk

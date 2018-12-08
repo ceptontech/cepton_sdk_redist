@@ -1,3 +1,4 @@
+from cepton_sdk.common.c import *  # noqa isort:skip
 import enum
 import os.path
 import warnings
@@ -7,9 +8,8 @@ from cepton_sdk.common import *
 
 _all_builder = AllBuilder(__name__)
 
-from cepton_sdk.common.c import *  # isort:skip
 
-SDK_VERSION = 17
+SDK_VERSION = 18
 
 _module_dir = os.path.dirname(os.path.abspath(__file__))
 lib = load_c_library(_module_dir, "cepton_sdk")
@@ -356,6 +356,9 @@ add_c_error_check(c_capture_replay_open)
 
 c_capture_replay_close = lib.cepton_sdk_capture_replay_close
 add_c_error_check(c_capture_replay_close)
+
+c_capture_replay_get_filename = lib.cepton_sdk_capture_replay_get_filename
+c_capture_replay_get_filename.restype = c_char_p
 
 c_capture_replay_get_start_time = lib.cepton_sdk_capture_replay_get_start_time
 c_capture_replay_get_start_time.restype = c_int64

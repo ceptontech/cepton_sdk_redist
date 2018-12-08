@@ -14,7 +14,6 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -112,12 +111,12 @@
 
 <p>All point array classes support numpy indexing and assignment as if they were 1-d arrays:</p>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_1</span><span class="p">)</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">n_points</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_1</span><span class="p">)</span>
 <span class="n">points_2</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="n">points_1</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </td></tr></table></div>
 <p>Multiple point arrays can also be combined:</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">combine_points</span><span class="p">([</span><span class="n">points_1</span><span class="p">,</span> <span class="n">points_2</span><span class="p">])</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">points</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">combine_points</span><span class="p">([</span><span class="n">points_1</span><span class="p">,</span> <span class="n">points_2</span><span class="p">])</span>
 </pre></div>
 </td></tr></table></div>
 </div>
@@ -241,7 +240,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
     </div>
   </body>
 </html>

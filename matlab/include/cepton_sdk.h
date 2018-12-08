@@ -16,7 +16,7 @@ extern "C" {
 #include "cepton_sdk_def.h"
 
 /// API version
-#define CEPTON_SDK_VERSION 17
+#define CEPTON_SDK_VERSION 18
 
 EXPORT const char *cepton_sdk_get_version_string();
 EXPORT int cepton_sdk_get_version_major();
@@ -94,9 +94,9 @@ struct EXPORT CeptonSensorInformation {
   uint16_t reserved;
   char firmware_version[32];
 
-  float last_reported_temperature;  ///< [celsius]
-  float last_reported_humidity;     ///< [%]
-  float last_reported_age;          ///< [hours]
+  float last_reported_temperature;        ///< [celsius]
+  float last_reported_humidity;           ///< [%]
+  float last_reported_age;                ///< [hours]
 
   float measurement_period;  ///< Time between measurements [seconds].
 
@@ -123,6 +123,8 @@ struct EXPORT CeptonSensorInformation {
       uint32_t is_nmea_connected : 1;  ///< GPS NMEA is available
       uint32_t is_ptp_connected : 1;   ///< PTP is available
       uint32_t is_calibrated : 1;
+      uint32_t is_over_heated : 1;  ///< Hit temperature limit (only available
+                                    ///< in Vista Gen2 for now)
     };
   };
 #endif
@@ -341,6 +343,7 @@ EXPORT int cepton_sdk_capture_replay_is_open();
 EXPORT CeptonSensorErrorCode
 cepton_sdk_capture_replay_open(const char *const path);
 EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_close();
+EXPORT const char *cepton_sdk_capture_replay_get_filename();
 
 EXPORT int64_t cepton_sdk_capture_replay_get_start_time();
 EXPORT float cepton_sdk_capture_replay_get_position();

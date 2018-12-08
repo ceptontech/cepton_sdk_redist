@@ -1,5 +1,12 @@
 # Cepton SDK Release Notes
 
+### Version 1.10 2018-12-07
+* Change `CEPTON_SDK_VERSION` to 18.
+* Add `cepton_sdk_capture_replay_get_filename`.
+* Add `CeptonSensorInformation::is_over_heated`.
+* Add pdf docs.
+* Fix CMake for samples.
+
 ### Version 1.9 2018-11-02
 * High level API changes.
 * Make `cepton_sdk::api::wait` wait forever if `t_length < 0` (default).

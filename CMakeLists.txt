@@ -1,14 +1,7 @@
 #[[
 CMake file for including cepton_sdk in a CMake project.
 
-To use, add the following to your CMake
-
-```
-add_subdirectory(<path_to_cepton_sdk>)
-include_directories(SYSTEM ${CEPTON_SDK_INCLUDE_DIRS})
-add_definitions(${CEPTON_SDK_DEFINITIONS})
-target_link_libraries(<target> ${CEPTON_SDK_LIBRARIES})
-```
+See `samples/CMakeLists.txt` for example usage.
 ]]
 cmake_minimum_required(VERSION 2.8)
 project(cepton_sdk)

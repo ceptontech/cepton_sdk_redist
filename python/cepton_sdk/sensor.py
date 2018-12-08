@@ -29,6 +29,8 @@ class SensorInformation(ToCMixin, ToDictMixin):
         last_reported_temperature
         last_reported_humidity
         last_reported_age
+        last_reported_hv
+        last_reported_optic_temperature
         gps_ts_year
         gps_ts_mont
         gps_ts_day
@@ -40,6 +42,7 @@ class SensorInformation(ToCMixin, ToDictMixin):
         is_pps_connected
         is_nmea_connected
         is_calibrated
+        is_over_heated
     """
 
     @classmethod
@@ -59,6 +62,7 @@ class SensorInformation(ToCMixin, ToDictMixin):
         "is_nmea_connected": bool,
         "is_ptp_connected": bool,
         "is_calibrated": bool,
+        "is_over_heated": bool,
     }
 
     @classmethod

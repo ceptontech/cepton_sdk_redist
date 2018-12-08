@@ -24,27 +24,19 @@
 
   
 
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="cepton_sdk  documentation" href="index.html"/>
-        <link rel="next" title="Utilities" href="utilities.html"/>
-        <link rel="prev" title="Capture Replay" href="capture_replay.html"/> 
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utilities" href="utilities.html" />
+    <link rel="prev" title="Capture Replay" href="capture_replay.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -113,7 +105,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">cepton_sdk</a>
@@ -121,9 +113,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -234,9 +227,8 @@
 
 <dl class="class">
 <dt id="_CPPv3N10cepton_sdk3api19SensorErrorCallbackE">
-<span id="_CPPv2N10cepton_sdk3api19SensorErrorCallbackE"></span><span id="cepton_sdk::api::SensorErrorCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorErrorCallback"></span><em class="property">class </em><code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">SensorErrorCallback</code><a class="headerlink" href="#_CPPv3N10cepton_sdk3api19SensorErrorCallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk3api19SensorErrorCallbackE"></span><span id="cepton_sdk::api::SensorErrorCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorErrorCallback"></span><em class="property">class </em><code class="descname">SensorErrorCallback</code> : <em class="property">public</em> cepton_sdk::util::<a class="reference internal" href="utilities.html#_CPPv3N10cepton_sdk4util8CallbackE" title="cepton_sdk::util::Callback">Callback</a>&lt;<a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a>, <em class="property">const</em> <a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a>&amp;&gt;<a class="headerlink" href="#_CPPv3N10cepton_sdk3api19SensorErrorCallbackE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback for sensor errors. </p>
-<p>Inherits from <a class="reference internal" href="utilities.html#classcepton__sdk_1_1util_1_1Callback"><span class="std std-ref">cepton_sdk::util::Callback&lt; SensorHandle, const SensorError &amp; &gt;</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Static Functions</p>
 <dl class="function">
@@ -249,10 +241,9 @@
 
 <dl class="class">
 <dt id="_CPPv3N10cepton_sdk3api24SensorImageFrameCallbackE">
-<span id="_CPPv2N10cepton_sdk3api24SensorImageFrameCallbackE"></span><span id="cepton_sdk::api::SensorImageFrameCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorImageFrameCallback"></span><em class="property">class </em><code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">SensorImageFrameCallback</code><a class="headerlink" href="#_CPPv3N10cepton_sdk3api24SensorImageFrameCallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk3api24SensorImageFrameCallbackE"></span><span id="cepton_sdk::api::SensorImageFrameCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1SensorImageFrameCallback"></span><em class="property">class </em><code class="descname">SensorImageFrameCallback</code> : <em class="property">public</em> cepton_sdk::util::<a class="reference internal" href="utilities.html#_CPPv3N10cepton_sdk4util8CallbackE" title="cepton_sdk::util::Callback">Callback</a>&lt;<a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a>, std::size_t, <em class="property">const</em> <a class="reference internal" href="points.html#_CPPv3N10cepton_sdk16SensorImagePointE" title="cepton_sdk::SensorImagePoint">SensorImagePoint</a> *&gt;<a class="headerlink" href="#_CPPv3N10cepton_sdk3api24SensorImageFrameCallbackE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback for image frames. </p>
 <p>Must call <code class="docutils literal notranslate"><span class="pre">initialize</span></code> before use. </p>
-<p>Inherits from <a class="reference internal" href="utilities.html#classcepton__sdk_1_1util_1_1Callback"><span class="std std-ref">cepton_sdk::util::Callback&lt; SensorHandle, std::size_t, const SensorImagePoint * &gt;</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="function">
@@ -275,10 +266,9 @@
 
 <dl class="class">
 <dt id="_CPPv3N10cepton_sdk3api21NetworkPacketCallbackE">
-<span id="_CPPv2N10cepton_sdk3api21NetworkPacketCallbackE"></span><span id="cepton_sdk::api::NetworkPacketCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1NetworkPacketCallback"></span><em class="property">class </em><code class="descclassname">cepton_sdk::api<code class="descclassname">::</code></code><code class="descname">NetworkPacketCallback</code><a class="headerlink" href="#_CPPv3N10cepton_sdk3api21NetworkPacketCallbackE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk3api21NetworkPacketCallbackE"></span><span id="cepton_sdk::api::NetworkPacketCallback"></span><span class="target" id="classcepton__sdk_1_1api_1_1NetworkPacketCallback"></span><em class="property">class </em><code class="descname">NetworkPacketCallback</code> : <em class="property">public</em> cepton_sdk::util::<a class="reference internal" href="utilities.html#_CPPv3N10cepton_sdk4util8CallbackE" title="cepton_sdk::util::Callback">Callback</a>&lt;<a class="reference internal" href="sensors.html#_CPPv3N10cepton_sdk12SensorHandleE" title="cepton_sdk::SensorHandle">SensorHandle</a>, int64_t, uint8_t <em class="property">const</em> *, std::size_t&gt;<a class="headerlink" href="#_CPPv3N10cepton_sdk3api21NetworkPacketCallbackE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback for network packets. </p>
 <p>Must call <code class="docutils literal notranslate"><span class="pre">initialize</span></code> before use. </p>
-<p>Inherits from <a class="reference internal" href="utilities.html#classcepton__sdk_1_1util_1_1Callback"><span class="std std-ref">cepton_sdk::util::Callback&lt; SensorHandle, int64_t, uint8_t const *, std::size_t &gt;</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="function">
@@ -324,9 +314,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -344,11 +332,11 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Cepton Technologies.
+        &copy; Copyright 2018, Cepton Technologies
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -363,36 +351,23 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+    
 
   
 
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
+  <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

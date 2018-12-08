@@ -8,6 +8,8 @@ from cepton_sdk.common import *
 
 _all_builder = AllBuilder(__name__)
 
+from cepton_util.common import InputDataDirectory, OutputDataDirectory  # noqa isort:skip
+
 
 def load_clips(path=None):
     if path is None:
@@ -30,7 +32,7 @@ class Loader(cepton_util.common.ArgumentParserMixin):
     """
 
     def __init__(self, settings_dir=None, sdk_options={}):
-        settings_dir = cepton_util.common.InputDataDirectory(settings_dir)
+        settings_dir = InputDataDirectory(settings_dir)
         self.sensor_clip_manager = load_clips(settings_dir.clips_path)
         self.sensor_transform_manager = load_transforms(
             settings_dir.transforms_path)

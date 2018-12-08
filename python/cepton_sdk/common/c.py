@@ -1,3 +1,4 @@
+import ctypes
 import os
 import os.path
 import platform
@@ -102,40 +103,42 @@ def get_c_ndpointer_type(dtype, ndim=1):
         dtype=dtype, ndim=ndim, flags=_C_NDARRAY_REQUIREMENTS)
 
 
-def get_c_ndarray(a, dtype):
-    return numpy.require(
-        a, dtype=dtype, requirements=_C_NDARRAY_REQUIREMENTS)
+def get_c_ndarray(a, **kwargs):
+    return numpy.require(a, requirements=_C_NDARRAY_REQUIREMENTS, **kwargs)
 
 
 def create_c_ndarray(size, dtype):
-    a = numpy.zeros(size, dtype=dtype)
-    return get_c_ndarray(a, dtype)
+    a = numpy.zeros(size, dtype)
+    return get_c_ndarray(a)
 
 
 def convert_bytes_to_ndarray(a_bytes, c_type):
-    """Convert bytes array to structured array"""
+    """Convert numpy bytes array to numpy array"""
     dtype = numpy.dtype(c_type)
     assert (sizeof(c_type) == dtype.itemsize)
-    a = a_bytes.view(dtype=dtype)
+    a = a_bytes.view(dtype)
     assert (len(a) == len(a_bytes) / sizeof(c_type))
     return a
 
 
 def convert_ndarray_to_bytes(a):
-    """Convert structured array to bytes array"""
-    return a.view(dtype=numpy.uint8)
+    """Convert numpy array to numpy bytes array"""
+    return a.view(numpy.uint8)
 
 
-def convert_c_array_to_ndarray(c_a, n, c_type):
-    """Convert ctypes array to structured array"""
+def convert_c_array_to_ndarray(n, c_a):
+    """Convert ctypes pointer to numpy array"""
+    assert(isinstance(c_a, ctypes._Pointer))
+    c_type = c_a._type_
     n_bytes = n * sizeof(c_type)
     a_bytes = \
         numpy.ctypeslib.as_array(cast(c_a, POINTER(c_byte)), shape=(n_bytes,))
     return convert_bytes_to_ndarray(a_bytes, c_type)
 
 
-def convert_ndarray_to_c_array(a, c_type):
-    """Convert structured array to ctypes array"""
+def convert_ndarray_to_c_array(a):
+    """Convert numpy array to ctypes pointer"""
+    c_type = a.dtype
     a_bytes = convert_ndarray_to_bytes(a)
     assert (len(a_bytes) == len(a) * sizeof(c_type))
     c_a_bytes = numpy.ctypeslib.as_ctypes(a_bytes)

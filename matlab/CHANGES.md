@@ -1,5 +1,8 @@
 # Cepton SDK MATLAB Release Notes
 
+### Version 1.10 2018-12-07
+* Update SDK.
+
 ### Version 1.9 2018-11-02
 * IMPORTANT: Combine `cepton_sdk.ImagePoints` and `cepton_sdk.Points`. Remove `cepton_sdk.ImagePoints`. All listeners now return `cepton_sdk.Points`.
 

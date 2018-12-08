@@ -14,7 +14,6 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -45,6 +44,21 @@
   <div class="section" id="capture-replay">
 <h1>Capture Replay<a class="headerlink" href="#capture-replay" title="Permalink to this headline">¶</a></h1>
 <p>To open/close capture files, use <a class="reference internal" href="setup.html#cepton_sdk.initialize" title="cepton_sdk.initialize"><code class="xref any py py-func docutils literal notranslate"><span class="pre">cepton_sdk.initialize</span></code></a> and <a class="reference internal" href="setup.html#cepton_sdk.deinitialize" title="cepton_sdk.deinitialize"><code class="xref any py py-func docutils literal notranslate"><span class="pre">cepton_sdk.deinitialize</span></code></a> methods respectively. The high level API methods will automatically resume the capture replay as necessary.</p>
+<dl class="function">
+<dt id="cepton_sdk.open_replay">
+<code class="descclassname">cepton_sdk.</code><code class="descname">open_replay</code><span class="sig-paren">(</span><em>capture_path</em>, <em>capture_seek=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#open_replay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.open_replay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cepton_sdk.close_replay">
+<code class="descclassname">cepton_sdk.</code><code class="descname">close_replay</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#cepton_sdk.close_replay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="cepton_sdk.capture_replay.get_filename">
+<code class="descclassname">cepton_sdk.capture_replay.</code><code class="descname">get_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/capture_replay.html#get_filename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.capture_replay.get_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="function">
 <dt id="cepton_sdk.capture_replay.get_length">
 <code class="descclassname">cepton_sdk.capture_replay.</code><code class="descname">get_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/capture_replay.html#get_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.capture_replay.get_length" title="Permalink to this definition">¶</a></dt>
@@ -132,7 +146,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.0.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
     </div>
   </body>
 </html>

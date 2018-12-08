@@ -18,8 +18,6 @@
 namespace cepton_sdk {
 namespace util {
 
-#include "cepton_sdk_def.h"
-
 //------------------------------------------------------------------------------
 // Common
 //------------------------------------------------------------------------------
@@ -28,6 +26,7 @@ inline float from_usec(int64_t usec) { return float(usec) * 1e-6f; }
 
 const int64_t second_usec(to_usec(1.0f));
 const int64_t hour_usec(to_usec(60.0f * 60.0f));
+const int64_t hour_sec(3600);
 
 template <typename T>
 inline T square(T x) {
@@ -618,7 +617,7 @@ class FrameDetector {
 class FrameAccumulator {
  public:
   FrameAccumulator(const SensorInformation &sensor_info)
-      : m_sensor_info(sensor_info), m_frame_detector(sensor_info) {
+      : m_frame_detector(sensor_info) {
     m_stride = sensor_info.return_count * sensor_info.segment_count;
     clear_impl();
   }
@@ -681,7 +680,6 @@ class FrameAccumulator {
 
  private:
   mutable std::mutex m_mutex;
-  SensorInformation m_sensor_info;
   int m_stride;
   std::vector<SensorImagePoint> m_image_points;
 
@@ -850,8 +848,6 @@ class SimpleConcurrentQueue {
   mutable std::mutex m_mutex;
   std::condition_variable m_condition_variable;
 };
-
-#include "cepton_sdk_undef.h"
 
 }  // namespace util
 }  // namespace cepton_sdk

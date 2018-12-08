@@ -90,7 +90,7 @@ class Points(StructureOfArrays, ToCArrayMixin):
         self.distances = numpy.zeros([n])
         self.positions = numpy.zeros([n, 3])
         self.intensities = numpy.zeros([n])
-        self.return_types = numpy.zeros([n, 8], dtype=numpy.uint8)
+        self.return_types = numpy.zeros([n, 8], dtype=bool)
         self.flags = numpy.zeros([n, 8], dtype=bool)
 
     @classmethod

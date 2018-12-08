@@ -28,7 +28,7 @@ class CaptureWriter:
         if interface is None:
             raise RuntimeError("No network interface found!")
 
-        self.start_time = cepton_util.common.get_timestamp()
+        self.start_time = get_timestamp()
 
         cmd_list = [
             "dumpcap",
@@ -42,14 +42,14 @@ class CaptureWriter:
             "background": True,
             "quiet": True,
         }
-        self._proc = cepton_util.common.execute_command(cmd_list, **options)
+        self._proc = execute_command(cmd_list, **options)
 
     def __del__(self):
         self.close()
 
     @property
     def length(self):
-        return cepton_util.common.get_timestamp() - self.start_time
+        return get_timestamp() - self.start_time
 
     def close(self):
         try:

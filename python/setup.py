@@ -6,11 +6,12 @@ import setuptools
 if __name__ == "__main__":
     setuptools.setup(
         name="cepton_sdk",
-        version="1.9.3",
+        version="1.10.1",
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
         author="Cepton Technologies",
+        author_email="support@cepton.com",
         classifiers=[
             "Development Status :: 5 - Production/Stable",
             "Programming Language :: Python :: 3",
@@ -38,8 +39,8 @@ if __name__ == "__main__":
             ],
         },
         scripts=[
-            "samples/cepton_export",
-            "samples/cepton_export_sora",
-            "samples/cepton_list_sensors",
+            "samples/cepton_export_sora.py",
+            "samples/cepton_export.py",
+            "samples/cepton_list_sensors.py",
         ]
     )
