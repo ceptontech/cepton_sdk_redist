@@ -11,6 +11,8 @@ endif()
 
 if(GCC)
   add_flags("-w")
+elseif(CLANG)
+  add_flat("-Wno-everything")
 endif()
 
 add_subdirectory(${add_external_subdirectory_args})

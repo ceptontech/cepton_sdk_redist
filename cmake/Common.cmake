@@ -14,17 +14,21 @@ endif()
 # ------------------------------------------------------------------------------
 # Macros
 # ------------------------------------------------------------------------------
-# Expand path
-macro(FIX_PATH result input)
-  get_filename_component(${result} "${${input}}" ABSOLUTE)
-endmacro()
-
 # Print list with newlines
 function(MESSAGE_LIST l)
   foreach(line IN LISTS ${l})
     message("${line}")
   endforeach() 
-endfunction()        
+endfunction()
+
+macro(STRING_APPEND key value)
+  set(${key} "${${key}} ${value}")
+endmacro()
+
+# Expand path
+macro(FIX_PATH result input)
+  get_filename_component(${result} "${input}" ABSOLUTE)
+endmacro()
 
 # Evaluate logical expression
 macro(LOGICAL result predicate)
@@ -69,21 +73,29 @@ endmacro()
 
 # Add compiler flags
 macro(ADD_C_FLAGS flags)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${flags}")
+  string_append(CMAKE_C_FLAGS "${flags}")
 endmacro()
 
 macro(ADD_CXX_FLAGS flags)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flags}")
+  string_append(CMAKE_CXX_FLAGS "${flags}")
 endmacro()
 
 macro(ADD_FLAGS flags)
-  ADD_C_FLAGS("${flags}")
-  ADD_CXX_FLAGS("${flags}")
+  add_c_flags("${flags}")
+  add_cxx_flags("${flags}")
 endmacro()
 
-macro(ADD_RELEASE_FLAGS flags)
-  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} ${flags}")
-  set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${flags}")
+macro(ADD_FLAGS_RELEASE flags)
+  string_append(CMAKE_C_FLAGS_RELEASE "${flags}")
+  string_append(CMAKE_CXX_FLAGS_RELEASE "${flags}")
+endmacro()
+
+macro(ADD_LINKER_FLAGS flags)
+  string_append(CMAKE_EXE_LINKER_FLAGS "${flags}")
+endmacro()
+
+macro(ADD_LINKER_FLAGS_RELEASE flags)
+  string_append(CMAKE_EXE_LINKER_FLAGS_RELEASE "${flags}")
 endmacro()
 
 # Add subdirectory
@@ -104,9 +116,9 @@ endmacro()
 # Detect subdirectory
 get_directory_property(parent_directory PARENT_DIRECTORY)
 if(parent_directory)
-  set(is_subdirectory TRUE)
+  set(IS_SUBDIRECTORY TRUE)
 else()
-  set(is_subdirectory FALSE)
+  set(IS_SUBDIRECTORY FALSE)
 endif()
 
 # Detect architecture
@@ -182,6 +194,10 @@ if(NOT DEFINED OS_NAME)
   set(OS_NAME "${DEFAULT_OS_NAME}")
 endif()
 
+if(CMAKE_BUILD_TYPE STREQUAL "")
+  set(CMAKE_BUILD_TYPE "Release")
+endif()
+
 # ------------------------------------------------------------------------------
 # Compiler Flags
 # ------------------------------------------------------------------------------
@@ -190,10 +206,10 @@ if(MSVC)
   add_flags("/wd4100") # Disable unused parameter warning
   add_flags("/wd4800 /wd4267 /wd4244 /wd4018") # Disable conversion warnings
 elseif(GCC OR CLANG)
-  add_c_flags("-std=c11")
-  add_cxx_flags("-std=c++11") # C++11 
-  add_flags("-pthread")
-  add_flags("-Wall")
+  add_c_flags("-std=c11") # Enable c11
+  add_cxx_flags("-std=c++11") # Enable c++11 
+  add_flags("-pthread") # Enable threading
+  add_flags("-Wall") # Enable warnings
   add_flags("-Wno-sign-compare") # Disable conversion warnings
   add_flags("-Wno-missing-field-initializers") # Disable struct initialization warning
   add_flags("-Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-attributes") # Disable unused warnings
