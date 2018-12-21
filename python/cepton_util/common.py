@@ -474,6 +474,7 @@ class DataDirectoryMixin:
     default_gps_name = "gps.txt"
     default_grid_mask_name = "grid_mask.json"
     default_imu_name = "imu.txt"
+    default_odometry_name = "odometry.txt"
     default_pcap_name = "lidar.pcap"
     default_player_settings_name = "cepton_player_config.json"
     default_render_settings_name = "cepton_render_config.json"
@@ -521,6 +522,10 @@ class DataDirectoryMixin:
         return self._get_path(self.default_imu_name)
 
     @property
+    def default_odometry_path(self):
+        return self._get_path(self.default_odometry_name)
+
+    @property
     def default_pcap_path(self):
         return self._get_path(self.default_pcap_name)
 
@@ -547,7 +552,10 @@ class DataDirectoryMixin:
 
 class InputDataDirectory(DataDirectoryMixin):
     def __init__(self, path=None):
-        self.path = path
+        if isinstance(path, DataDirectoryMixin):
+            self.path = path.path
+        else:
+            self.path = path
 
     def _find_file(self, path):
         if path is None:
@@ -586,6 +594,10 @@ class InputDataDirectory(DataDirectoryMixin):
     @property
     def imu_path(self):
         return self._find_file(self.default_imu_path)
+
+    @property
+    def odometry_path(self):
+        return self._find_file(self.default_odometry_path)
 
     @property
     def render_settings_path(self):
