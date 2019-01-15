@@ -3,16 +3,15 @@ CMake scoping project for setting subdirectory options without changing parent.
 ]]
 project(cepton_subdirectory_${add_external_subdirectory_name})
 
-if(CMAKE_BUILD_TYPE_OPTION STREQUAL "Release")
-  set(CMAKE_BUILD_TYPE "Release")
-else()
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo")
-endif()
+set(CMAKE_BUILD_TYPE "Release")
 
+# Disable all warnings
 if(GCC)
   add_flags("-w")
 elseif(CLANG)
-  add_flat("-Wno-everything")
+  add_flags("-Wno-everything")
+elseif(MSVC)
+  add_flags("/W0")
 endif()
 
 add_subdirectory(${add_external_subdirectory_args})

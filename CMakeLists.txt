@@ -3,20 +3,30 @@ CMake file for including cepton_sdk in a CMake project.
 
 See `samples/CMakeLists.txt` for example usage.
 ]]
-cmake_minimum_required(VERSION 2.8)
-project(cepton_sdk)
+cmake_minimum_required(VERSION 3.1)
+project(cepton_sdk
+  VERSION 0.1
+  LANGUAGES CXX)
 
-include("${PROJECT_SOURCE_DIR}/cmake/CommonRedist.cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include("CeptonCommon")
 
 create_option(BOOL CEPTON_SDK_USE_STATIC TRUE
     "Use static cepton sdk libraries.")
 
-set(CEPTON_SDK_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/include" PARENT_SCOPE)
 if(CEPTON_SDK_USE_STATIC)
-    CEPTON_GET_STATIC_LIBRARY(CEPTON_SDK_LIBRARIES "${PROJECT_SOURCE_DIR}" "cepton_sdk")
-    list(APPEND CEPTON_SDK_DEFINITIONS -DCEPTON_SDK_STATIC)
+    cepton_get_static_library(CEPTON_SDK_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}" "cepton_sdk")
+    add_library(cepton_sdk::cepton_sdk STATIC IMPORTED GLOBAL)
 else()
-    CEPTON_GET_SHARED_LIBRARY(CEPTON_SDK_LIBRARIES "${PROJECT_SOURCE_DIR}" "cepton_sdk")
+    cepton_get_shared_library(CEPTON_SDK_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}" "cepton_sdk")
+    add_library(cepton_sdk::cepton_sdk SHARED IMPORTED GLOBAL)
 endif()
-set(CEPTON_SDK_DEFINITIONS ${CEPTON_SDK_DEFINITIONS} PARENT_SCOPE)
-set(CEPTON_SDK_LIBRARIES ${CEPTON_SDK_LIBRARIES} PARENT_SCOPE)
+set_target_properties(cepton_sdk::cepton_sdk PROPERTIES
+  IMPORTED_LOCATION ${CEPTON_SDK_LIBRARY}
+  INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
+)
+if(CEPTON_SDK_USE_STATIC)
+  set_target_properties(cepton_sdk::cepton_sdk PROPERTIES
+    INTERFACE_COMPILE_DEFINITIONS CEPTON_SDK_STATIC
+  )
+endif()
