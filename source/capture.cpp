@@ -483,11 +483,6 @@ SensorError Capture::next_packet_impl(bool &success,
   } else {
     const int fragment_off = 8 * (int)record_header.ip.off() - udp_header_size;
     if ((packet.id != fragment_id) || (packet.off != fragment_off)) {
-#ifdef CEPTON_INTERNAL
-      api::log_error(
-          SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid fragment!"),
-          "Capture failed!");
-#endif
       return CEPTON_SUCCESS;
     }
   }

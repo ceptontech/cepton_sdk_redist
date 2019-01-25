@@ -48,13 +48,15 @@ By default, exports frames to individual files.
                         help="Capture file seek position [seconds].")
     parser.add_argument("--combine", action="store_true",
                         help="Combine points into single file per sensor.")
+    parser.add_argument("--duration", default="0",
+                        help="Export duration (if negative, export entire capture file).")
     parser.add_argument("--filter", action="store_true",
                         help="Filter invalid points.")
     all_file_types = [x.name for x in cepton_sdk.export.PointsFileType]
     parser.add_argument("--format", default="LAS", choices=all_file_types,
                         type=str.upper, help="Output file format.")
-    parser.add_argument("--duration", default="0",
-                        help="Export duration (if negative, export entire capture file).")
+    parser.add_argument("--version", action="version",
+                        version="cepton_sdk {}".format(cepton_sdk.__version__))
     args = parser.parse_args()
 
     file_type = cepton_sdk.export.PointsFileType[args.format]

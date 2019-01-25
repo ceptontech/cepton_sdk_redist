@@ -81,7 +81,7 @@ class SensorError : public std::runtime_error {
       : std::runtime_error(create_message(code_, msg_).c_str()),
         code(code_),
         msg(msg_) {}
-  SensorError(SensorErrorCode code) : SensorError(code, "") {}
+  SensorError(SensorErrorCode code_) : SensorError(code_, "") {}
   SensorError() : SensorError(CEPTON_SUCCESS) {}
 
   /// Returns `false` if code is `CEPTON_SUCCESS`, true otherwise.

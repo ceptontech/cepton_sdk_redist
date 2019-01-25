@@ -14,6 +14,7 @@
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -288,6 +289,13 @@
 <span class="c1"># Sensors</span>
 <span class="c1"># ------------------------------------------------------------------------------</span>
 
+<span class="k">class</span> <span class="nc">C_FirmwareVersion</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>
+    <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;minor&#39;</span><span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span>
+        <span class="p">(</span><span class="s1">&#39;padding&#39;</span><span class="p">,</span> <span class="n">c_uint8</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">]</span>
+
 
 <span class="k">class</span> <span class="nc">C_SensorInformation</span><span class="p">(</span><span class="n">Structure</span><span class="p">):</span>
     <span class="n">_fields_</span> <span class="o">=</span> <span class="p">[</span>
@@ -296,7 +304,8 @@
         <span class="p">(</span><span class="s2">&quot;model_name&quot;</span><span class="p">,</span> <span class="n">c_char</span> <span class="o">*</span> <span class="mi">28</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="n">c_uint16</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">c_uint16</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;firmware_version&quot;</span><span class="p">,</span> <span class="n">c_char</span> <span class="o">*</span> <span class="mi">32</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;firmware_version&quot;</span><span class="p">,</span> <span class="n">c_char</span> <span class="o">*</span> <span class="mi">28</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;formal_firmware_version&quot;</span><span class="p">,</span> <span class="n">C_FirmwareVersion</span><span class="p">),</span>
 
         <span class="p">(</span><span class="s2">&quot;last_reported_temperature&quot;</span><span class="p">,</span> <span class="n">c_float</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;last_reported_humidity&quot;</span><span class="p">,</span> <span class="n">c_float</span><span class="p">),</span>
@@ -360,7 +369,7 @@
         <span class="p">(</span><span class="s2">&quot;intensity&quot;</span><span class="p">,</span> <span class="n">c_float</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;return_type&quot;</span><span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span>
         <span class="p">(</span><span class="s2">&quot;flags&quot;</span><span class="p">,</span> <span class="n">c_uint8</span><span class="p">),</span>
-        <span class="p">(</span><span class="s2">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">c_uint8</span><span class="p">)</span>
+        <span class="p">(</span><span class="s2">&quot;reserved&quot;</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">c_uint8</span><span class="p">),</span>
     <span class="p">]</span>
 
 
@@ -483,7 +492,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
     </div>
   </body>
 </html>

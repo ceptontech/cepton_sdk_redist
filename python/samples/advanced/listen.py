@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Sample script for the different methods of getting points.
+"""
 
 import numpy
 

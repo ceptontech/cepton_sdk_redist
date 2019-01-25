@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Sample script for getting points from a single sensor.
+"""
 
 import pprint
 

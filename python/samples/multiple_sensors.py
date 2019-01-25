@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+Sample script for getting points from multiple sensors simultaneously.
+"""
 
 import pprint
 

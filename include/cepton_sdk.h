@@ -78,10 +78,12 @@ enum _CeptonSensorModel {
   HR80M = 2,
   HR80W = 3,
   SORA_200 = 4,
-  VISTA_860 = 5,
+  VISTA_860 = 5, // Deprecated, will be removed in next SDK release.
   HR80T_R2 = 6,
   VISTA_860_GEN2 = 7,
   FUSION_790 = 8,
+  VISTA_M = 9,
+  VISTA_X = 10,
   CEPTON_SENSOR_MODEL_MAX = 8,
 };
 typedef uint16_t CeptonSensorModel;
@@ -92,7 +94,13 @@ struct EXPORT CeptonSensorInformation {
   char model_name[28];
   CeptonSensorModel model;
   uint16_t reserved;
-  char firmware_version[32];
+  char firmware_version[28];
+
+  struct {
+      uint8_t major;
+      uint8_t minor;
+      uint8_t unused[2];
+  } formal_firmware_version;
 
   float last_reported_temperature;        ///< [celsius]
   float last_reported_humidity;           ///< [%]

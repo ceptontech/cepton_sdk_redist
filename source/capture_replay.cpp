@@ -8,6 +8,11 @@
 
 namespace cepton_sdk {
 
+// -----------------------------------------------------------------------------
+// CaptureReplay
+// -----------------------------------------------------------------------------
+CaptureReplay capture_replay_instance;
+
 std::string CaptureReplay::filename() const {
   std::lock_guard<std::mutex> lock(m_capture_mutex);
   return m_capture.filename();
@@ -241,7 +246,7 @@ SensorError CaptureReplay::feed_pcap() {
   while (m_is_running) {
     if (m_is_end) {
       if (m_enable_loop) {
-        auto error = seek_impl(0);
+        error = seek_impl(0);
         if (error) break;
         reset_time();
         m_is_end = false;

@@ -221,6 +221,16 @@
 <dd></dd></dl>
 
 <dl class="enumvalue">
+<dt id="c.VISTA_M">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda271ac1370ab071fbb8e1fb2bcdf60dee"></span><code class="descname">VISTA_M</code> = 9<a class="headerlink" href="#c.VISTA_M" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
+<dt id="c.VISTA_X">
+<span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fdaa54896854aa0bdf2b906ef06b07e19e3"></span><code class="descname">VISTA_X</code> = 10<a class="headerlink" href="#c.VISTA_X" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="enumvalue">
 <dt id="c.CEPTON_SENSOR_MODEL_MAX">
 <span class="target" id="cepton__sdk_8h_1ae1e07b05a55465e207c88c5725df30fda59264cb8f89e216c464332be5cd75eaf"></span><code class="descname">CEPTON_SENSOR_MODEL_MAX</code> = 8<a class="headerlink" href="#c.CEPTON_SENSOR_MODEL_MAX" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -263,8 +273,33 @@
 <dd></dd></dl>
 
 <dl class="variable">
+<dt id="c.CeptonSensorInformation::reserved">
+<span class="target" id="structCeptonSensorInformation_1ababdc522acec4bbd3356e969dc4ff7ff"></span>uint16_t <code class="descname">reserved</code><a class="headerlink" href="#c.CeptonSensorInformation::reserved" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
 <dt>
-<span class="target" id="structCeptonSensorInformation_1a8694e3f6b50ab71b11db63b2fa68ad07"></span><code class="descname">char CeptonSensorInformation::firmware_version[32]</code></dt>
+<span class="target" id="structCeptonSensorInformation_1a6fec382314713b5851e9b316077b6072"></span><code class="descname">char CeptonSensorInformation::firmware_version[28]</code></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::major">
+<span class="target" id="structCeptonSensorInformation_1ab0aad5ab5ef8b1de74d8725665c7bdd7"></span>uint8_t <code class="descname">major</code><a class="headerlink" href="#c.CeptonSensorInformation::major" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::minor">
+<span class="target" id="structCeptonSensorInformation_1ad92b26451099156441525ae53a729377"></span>uint8_t <code class="descname">minor</code><a class="headerlink" href="#c.CeptonSensorInformation::minor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt>
+<span class="target" id="structCeptonSensorInformation_1a704afb73b7685079cb30d449a1eddd8e"></span><code class="descname">uint8_t CeptonSensorInformation::unused[2]</code></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::formal_firmware_version">
+<span class="target" id="structCeptonSensorInformation_1a8f32cb5ca5cf147cb5641ee579a57839"></span>struct <a class="reference internal" href="#c.CeptonSensorInformation" title="CeptonSensorInformation">CeptonSensorInformation</a>::&#64;12  <code class="descname">formal_firmware_version</code><a class="headerlink" href="#c.CeptonSensorInformation::formal_firmware_version" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="variable">
@@ -349,6 +384,46 @@
 <span class="target" id="structCeptonSensorInformation_1a347973b239d1a7023432aa454f4ae4ec"></span>uint32_t <code class="descname">flags</code><a class="headerlink" href="#c.CeptonSensorInformation::flags" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_mocked">
+<span class="target" id="structCeptonSensorInformation_1adb4f3b47487836cd25125849bb27752a"></span>uint32_t <code class="descname">is_mocked</code><a class="headerlink" href="#c.CeptonSensorInformation::is_mocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Created by capture replay. </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_pps_connected">
+<span class="target" id="structCeptonSensorInformation_1a1b12bef069a7e709c9cb7357cd95810d"></span>uint32_t <code class="descname">is_pps_connected</code><a class="headerlink" href="#c.CeptonSensorInformation::is_pps_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>GPS PPS is available. </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_nmea_connected">
+<span class="target" id="structCeptonSensorInformation_1afb784e0d30a73514fefa9e22c5779523"></span>uint32_t <code class="descname">is_nmea_connected</code><a class="headerlink" href="#c.CeptonSensorInformation::is_nmea_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>GPS NMEA is available. </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_ptp_connected">
+<span class="target" id="structCeptonSensorInformation_1a14a6915d929a0c1f631fe61f3756a54f"></span>uint32_t <code class="descname">is_ptp_connected</code><a class="headerlink" href="#c.CeptonSensorInformation::is_ptp_connected" title="Permalink to this definition">¶</a></dt>
+<dd><p>PTP is available. </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_calibrated">
+<span class="target" id="structCeptonSensorInformation_1ab8d2e8bd69c99f404baac687c6a4279c"></span>uint32_t <code class="descname">is_calibrated</code><a class="headerlink" href="#c.CeptonSensorInformation::is_calibrated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorInformation::is_over_heated">
+<span class="target" id="structCeptonSensorInformation_1ab7f90680cec82ef0b5e3461d367912b5"></span>uint32_t <code class="descname">is_over_heated</code><a class="headerlink" href="#c.CeptonSensorInformation::is_over_heated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hit temperature limit (only available in Vista Gen2 for now) </p>
+</dd></dl>
+
+<dl class="variable">
+<dt id="c.14">
+<span class="target" id="structCeptonSensorInformation_1a7acb8c8c424a5a7f5bcd1cc95432815b"></span>union <a class="reference internal" href="#c.CeptonSensorInformation" title="CeptonSensorInformation">CeptonSensorInformation</a>::&#64;13 <a class="reference internal" href="#c.CeptonSensorInformation" title="CeptonSensorInformation">CeptonSensorInformation</a>::&#64;<code class="descname">14</code><a class="headerlink" href="#c.14" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </dd></dl>
 
@@ -427,6 +502,7 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
 
   

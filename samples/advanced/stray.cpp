@@ -1,5 +1,5 @@
 /**
- * Sample code for stray filter usage
+ * Sample code for stray filter usage. 
  */
 #include <vector>
 

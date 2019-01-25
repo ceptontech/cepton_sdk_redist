@@ -1,3 +1,5 @@
+"""Common methods used by sample code."""
+
 import os.path
 
 import numpy

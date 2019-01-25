@@ -8,9 +8,18 @@ Samples
   samples/c_basic
   samples/callback
   samples/error
+  samples/sensor
+
+Advanced
+--------
+
+.. toctree::
+  :maxdepth: 1
+
   samples/frame
   samples/network
+  samples/process_multi
+  samples/process_single
   samples/replay
-  samples/sensor
   samples/stray
   samples/transform

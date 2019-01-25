@@ -1,5 +1,4 @@
 import collections
-import datetime
 import threading
 import time
 
@@ -33,7 +32,7 @@ def is_end():
 
 def get_timestamp():
     """Returns unix timestamp"""
-    return datetime.datetime.utcnow().timestamp()
+    return time.time()
 
 
 def get_time():
@@ -100,7 +99,7 @@ def open_replay(capture_path, capture_seek=0):
         cepton_sdk.capture_replay.close()
     cepton_sdk.capture_replay.open(capture_path)
 
-    cepton_sdk.capture_replay.resume_blocking(10)
+    cepton_sdk.capture_replay.resume_blocking(3)
     cepton_sdk.capture_replay.seek(capture_seek)
 
 

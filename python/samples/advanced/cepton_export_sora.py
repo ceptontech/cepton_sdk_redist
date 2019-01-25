@@ -23,6 +23,8 @@ def main():
                         choices=all_file_types, type=str.upper)
     parser.add_argument("--speed", type=float)
     parser.add_argument("--t_length", default="1", help="Maximum export time.")
+    parser.add_argument("--version", action="version",
+                        version="cepton_sdk {}".format(cepton_sdk.__version__))
     args = parser.parse_args()
 
     file_type = cepton_sdk.export.PointsFileType[args.format]

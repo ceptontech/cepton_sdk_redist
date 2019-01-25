@@ -1,7 +1,7 @@
 Listen
 ======
 
-.. literalinclude:: ../../../samples/listen.py
+.. literalinclude:: ../../../samples/advanced/listen.py
   :language: python
   :linenos:
-  :caption: samples/listen.py
+  :caption: samples/advanced/listen.py

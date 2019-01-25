@@ -1,7 +1,0 @@
-Single Live Sensor
-==================
-
-.. literalinclude:: ../../../samples/single_live_sensor.py
-  :language: python
-  :linenos:
-  :caption: samples/single_live_sensor.py

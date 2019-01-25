@@ -269,7 +269,7 @@ set(CMAKE_CXX_STANDARD 11)
 if(MSVC)
   list(APPEND CEPTON_FLAGS /wd4996) # Disable depricated warning
   list(APPEND CEPTON_FLAGS /wd4100) # Disable unused parameter warning
-  list(APPEND CEPTON_FLAGS /wd4800 /wd4267 /wd4244 /wd4018) # Disable type conversion warnings
+  list(APPEND CEPTON_FLAGS /wd4800 /wd4267 /wd4244 /wd4018 /wd4309 /wd4305) # Disable type conversion warnings
 elseif(GCC OR CLANG)
   list(APPEND CEPTON_FLAGS -Wall) # Enable warnings
   list(APPEND CEPTON_FLAGS -Wno-sign-compare) # Disable type conversion warnings

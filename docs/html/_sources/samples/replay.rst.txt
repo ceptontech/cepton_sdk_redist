@@ -1,7 +1,7 @@
 Replay
 ======
 
-.. literalinclude:: ../../../samples/replay.cpp
+.. literalinclude:: ../../../samples/advanced/replay.cpp
   :language: c
   :linenos:
-  :caption: samples/replay.cpp
+  :caption: samples/advanced/replay.cpp

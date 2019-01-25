@@ -132,7 +132,7 @@ inline SensorError open_replay(const std::string &capture_path) {
   }
   error = capture_replay::open(capture_path);
   if (error) return error;
-  error = capture_replay::resume_blocking(10.0f);
+  error = capture_replay::resume_blocking(3.0f);
   if (error) return error;
   error = capture_replay::seek(0.0f);
   if (error) return error;

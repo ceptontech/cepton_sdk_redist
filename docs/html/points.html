@@ -180,7 +180,6 @@
 <span class="target" id="structCeptonSensorImagePoint"></span><em class="property">struct </em><code class="descname">CeptonSensorImagePoint</code><a class="headerlink" href="#c.CeptonSensorImagePoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Point in image coordinates (focal length = 1). </p>
 <p>To convert to 3d point, refer to <code class="docutils literal notranslate"><span class="pre">cepton_sdk_util.hpp</span></code>. </p>
-<p>Subclassed by <a class="reference internal" href="utilities.html#structcepton__sdk_1_1util_1_1SensorPoint"><span class="std std-ref">cepton_sdk::util::SensorPoint</span></a></p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Members</p>
 <dl class="variable">
@@ -221,13 +220,27 @@
 <dl class="variable">
 <dt id="c.CeptonSensorImagePoint::flags">
 <span class="target" id="structCeptonSensorImagePoint_1add10d50456111d3fe529c4163d674548"></span>uint8_t <code class="descname">flags</code><a class="headerlink" href="#c.CeptonSensorImagePoint::flags" title="Permalink to this definition">¶</a></dt>
-<dd><p>bit flags </p>
-<p><ol class="arabic simple">
-<li><code class="docutils literal notranslate"><span class="pre">valid</span></code>: If <code class="docutils literal notranslate"><span class="pre">false</span></code>, then the distance and intensity are invalid.</li>
-<li><code class="docutils literal notranslate"><span class="pre">saturated</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, then the intensity is invalid. Also, the distance is valid, but inaccurate. </li>
-</ol>
-</p>
-</dd></dl>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorImagePoint::valid">
+<span class="target" id="structCeptonSensorImagePoint_1acf94f34b4c3a5f7d411bd9ad3f7205ff"></span>uint8_t <code class="descname">valid</code><a class="headerlink" href="#c.CeptonSensorImagePoint::valid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.CeptonSensorImagePoint::saturated">
+<span class="target" id="structCeptonSensorImagePoint_1aa7d11ac48bd0964bfff6616e62ad7bc8"></span>uint8_t <code class="descname">saturated</code><a class="headerlink" href="#c.CeptonSensorImagePoint::saturated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt id="c.18">
+<span class="target" id="structCeptonSensorImagePoint_1a282349f583b975409c946fbbee9fe961"></span>union <a class="reference internal" href="#c.CeptonSensorImagePoint" title="CeptonSensorImagePoint">CeptonSensorImagePoint</a>::&#64;17 <a class="reference internal" href="#c.CeptonSensorImagePoint" title="CeptonSensorImagePoint">CeptonSensorImagePoint</a>::&#64;<code class="descname">18</code><a class="headerlink" href="#c.18" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="variable">
+<dt>
+<span class="target" id="structCeptonSensorImagePoint_1a6ac41e58a3f53e7aa948d8e7580c46f0"></span><code class="descname">uint8_t CeptonSensorImagePoint::reserved[2]</code></dt>
+<dd></dd></dl>
 
 </div>
 </dd></dl>
@@ -306,6 +319,7 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
 
   

@@ -26,6 +26,7 @@ class SensorInformation(ToCMixin, ToDictMixin):
         model_name
         model (:class:`cepton_sdk.SensorModel`)
         firmware_version
+        formal_firmware_version
         last_reported_temperature
         last_reported_humidity
         last_reported_age

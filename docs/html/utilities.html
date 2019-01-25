@@ -192,24 +192,88 @@
 
 <dl class="class">
 <dt id="_CPPv3N10cepton_sdk4util11SensorPointE">
-<span id="_CPPv2N10cepton_sdk4util11SensorPointE"></span><span id="cepton_sdk::util::SensorPoint"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint"></span><em class="property">struct </em><code class="descname">SensorPoint</code> : <em class="property">public</em> CeptonSensorImagePoint<a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPointE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util11SensorPointE"></span><span id="cepton_sdk::util::SensorPoint"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint"></span><em class="property">struct </em><code class="descname">SensorPoint</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPointE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>3d point class. </p>
+<p>Can’t subclass from SensorImagePoint, needs to be POD. </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Members</p>
 <dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint9timestampE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint9timestampE"></span><span id="cepton_sdk::util::SensorPoint::timestamp__int64_t"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a5b7c80f0609a3e26aeafd864fdf9473e"></span>int64_t <code class="descname">timestamp</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint9timestampE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unix time [microseconds]. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint7image_xE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint7image_xE"></span><span id="cepton_sdk::util::SensorPoint::image_x__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1aca17dfe3a36e8c629ff2963d304dd00f"></span>float <code class="descname">image_x</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint7image_xE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>x image coordinate. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint8distanceE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint8distanceE"></span><span id="cepton_sdk::util::SensorPoint::distance__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1aa7309ec921b86ced3e010238bfee66f4"></span>float <code class="descname">distance</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint8distanceE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Distance [meters]. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint7image_zE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint7image_zE"></span><span id="cepton_sdk::util::SensorPoint::image_z__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a50b25142fee4b761f1fbaac7dbed6864"></span>float <code class="descname">image_z</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint7image_zE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>z image coordinate. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint9intensityE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint9intensityE"></span><span id="cepton_sdk::util::SensorPoint::intensity__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1acb2151ee7ad184a6be68c1db792bdd83"></span>float <code class="descname">intensity</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint9intensityE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Diffuse reflectance. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint11return_typeE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint11return_typeE"></span><span id="cepton_sdk::util::SensorPoint::return_type__CeptonSensorReturnType"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1ade7eecff91150195812e05ecdc8770ff"></span>CeptonSensorReturnType <code class="descname">return_type</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint11return_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint5flagsE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint5flagsE"></span><span id="cepton_sdk::util::SensorPoint::flags__uint8_t"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1afcded124cae0935101c9905478fb0c3f"></span>uint8_t <code class="descname">flags</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint5flagsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint5validE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint5validE"></span><span id="cepton_sdk::util::SensorPoint::valid__uint8_t"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a357d4047ff61a6fad8958a4b6b99c4b5"></span>uint8_t <code class="descname">valid</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint5validE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint9saturatedE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint9saturatedE"></span><span id="cepton_sdk::util::SensorPoint::saturated__uint8_t"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1af498be828a864a2fcebfd6584fb8c8e5"></span>uint8_t <code class="descname">saturated</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint9saturatedE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPointUt2_24E">
+<span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a8804f52292c49c5509f80696d27c4ee0"></span><em class="property">union</em> cepton_sdk::util::<a class="reference internal" href="#_CPPv3N10cepton_sdk4util11SensorPointE" title="cepton_sdk::util::SensorPoint">SensorPoint</a>::<strong>[anonymous]</strong> <strong>[anonymous]</strong><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPointUt2_24E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv3N10cepton_sdk4util11SensorPoint8reservedE">
+<span id="_CPPv2N10cepton_sdk4util11SensorPoint8reservedE"></span><span id="cepton_sdk::util::SensorPoint::reserved__uint8_tA"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a3f708ea46b061cc4fb8bcb173a590a66"></span>uint8_t <code class="descname">reserved</code>[6]<a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint8reservedE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
 <dt id="_CPPv3N10cepton_sdk4util11SensorPoint1xE">
 <span id="_CPPv2N10cepton_sdk4util11SensorPoint1xE"></span><span id="cepton_sdk::util::SensorPoint::x__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1accfb43965cd459d755282d99ff288f8d"></span>float <code class="descname">x</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint1xE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>x cartesian coordinate </p>
+</dd></dl>
 
 <dl class="member">
 <dt id="_CPPv3N10cepton_sdk4util11SensorPoint1yE">
 <span id="_CPPv2N10cepton_sdk4util11SensorPoint1yE"></span><span id="cepton_sdk::util::SensorPoint::y__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a2cf20837e6d18a7b07a06864dea8e4b4"></span>float <code class="descname">y</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint1yE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>y cartesian coordinate </p>
+</dd></dl>
 
 <dl class="member">
 <dt id="_CPPv3N10cepton_sdk4util11SensorPoint1zE">
 <span id="_CPPv2N10cepton_sdk4util11SensorPoint1zE"></span><span id="cepton_sdk::util::SensorPoint::z__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1SensorPoint_1a86f72bc327947b0a20ac7db64c33637c"></span>float <code class="descname">z</code><a class="headerlink" href="#_CPPv3N10cepton_sdk4util11SensorPoint1zE" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>z cartesian coordinate </p>
+</dd></dl>
 
 </div>
 </dd></dl>
@@ -287,13 +351,13 @@
 
 <dl class="function">
 <dt id="_CPPv3NK10cepton_sdk4util8Callback4emitEDp5TArgs">
-<span id="_CPPv2NK10cepton_sdk4util8Callback4emitEDp5TArgs"></span><span id="cepton_sdk::util::Callback::emit__TArgsDpC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a741ce69b205de6fea739f81e7ff8342e"></span>void <code class="descname">emit</code><span class="sig-paren">(</span>TArgs... <em>args</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util8Callback4emitEDp5TArgs" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2NK10cepton_sdk4util8Callback4emitEDp5TArgs"></span><span id="cepton_sdk::util::Callback::emit__TArgsDpC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a6a1fa2e70b8978d6e37204e248c02800"></span>void <code class="descname">emit</code><span class="sig-paren">(</span>TArgs... <em>args</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util8Callback4emitEDp5TArgs" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Emit callback. </p>
 </dd></dl>
 
 <dl class="function">
 <dt id="_CPPv3NK10cepton_sdk4util8CallbackclEDp5TArgs">
-<span id="_CPPv2NK10cepton_sdk4util8CallbackclEDp5TArgs"></span><span id="cepton_sdk::util::Callback::call-operator__TArgsDpC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a05ae169d143b2f19f57bcac2729c80e5"></span>void <code class="descname">operator()</code><span class="sig-paren">(</span>TArgs... <em>args</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util8CallbackclEDp5TArgs" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2NK10cepton_sdk4util8CallbackclEDp5TArgs"></span><span id="cepton_sdk::util::Callback::call-operator__TArgsDpC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1aff8b9df5c5e9c49710ae1f3edbdce8d7"></span>void <code class="descname">operator()</code><span class="sig-paren">(</span>TArgs... <em>args</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util8CallbackclEDp5TArgs" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Emit callback. </p>
 </dd></dl>
 
@@ -302,7 +366,7 @@
 <p class="breathe-sectiondef-title rubric">Public Static Functions</p>
 <dl class="function">
 <dt id="_CPPv3N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv">
-<span id="_CPPv2N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv"></span><span id="cepton_sdk::util::Callback::global_on_callback__TArgsDp.voidPC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1ad943039e1ed62bfe42dc2c52972f7453"></span><em class="property">static</em> void <code class="descname">global_on_callback</code><span class="sig-paren">(</span>TArgs... <em>args</em>, void *<em class="property">const</em> <em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv"></span><span id="cepton_sdk::util::Callback::global_on_callback__TArgsDp.voidPC"></span><span class="target" id="classcepton__sdk_1_1util_1_1Callback_1a977f02e17b836b4480abd23d59ccd199"></span><em class="property">static</em> void <code class="descname">global_on_callback</code><span class="sig-paren">(</span>TArgs... <em>args</em>, void *<em class="property">const</em> <em>instance</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk4util8Callback18global_on_callbackEDp5TArgsPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Used for registering as c callback. </p>
 </dd></dl>
 
@@ -325,7 +389,7 @@
 
 <dl class="function">
 <dt id="_CPPv3NK10cepton_sdk4util13FrameDetector11get_optionsEv">
-<span id="_CPPv2NK10cepton_sdk4util13FrameDetector11get_optionsEv"></span><span id="cepton_sdk::util::FrameDetector::get_optionsC"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameDetector_1a126a3513f15edbe17a3082ea76ad444d"></span><em class="property">const</em> <a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> &amp;<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util13FrameDetector11get_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2NK10cepton_sdk4util13FrameDetector11get_optionsEv"></span><span id="cepton_sdk::util::FrameDetector::get_optionsC"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameDetector_1add574c73769fa4e3fb774f4f740ccfab"></span><em class="property">const</em> <a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> &amp;<code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util13FrameDetector11get_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -383,7 +447,7 @@
 
 <dl class="function">
 <dt id="_CPPv3NK10cepton_sdk4util16FrameAccumulator11get_optionsEv">
-<span id="_CPPv2NK10cepton_sdk4util16FrameAccumulator11get_optionsEv"></span><span id="cepton_sdk::util::FrameAccumulator::get_optionsC"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameAccumulator_1a5f4a4872312e4a7b7d383232e2da8c9a"></span><a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> <code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util16FrameAccumulator11get_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv2NK10cepton_sdk4util16FrameAccumulator11get_optionsEv"></span><span id="cepton_sdk::util::FrameAccumulator::get_optionsC"></span><span class="target" id="classcepton__sdk_1_1util_1_1FrameAccumulator_1a2bd9bd5b3c28076e0d8b679e3f7043aa"></span><a class="reference internal" href="setup.html#_CPPv3N10cepton_sdk12FrameOptionsE" title="cepton_sdk::FrameOptions">FrameOptions</a> <code class="descname">get_options</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv3NK10cepton_sdk4util16FrameAccumulator11get_optionsEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -460,6 +524,7 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
 
   

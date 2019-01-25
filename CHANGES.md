@@ -1,5 +1,10 @@
 # Cepton SDK Release Notes
 
+### Version 1.11 2019-01-25
+* Add preliminary support for "Vista M" and "Vista X".
+* Rename model name "Vista 860 Gen2" to "Vista 860".
+* Add C# wrapper library.
+
 ### Version 1.10 2018-12-07
 * Change `CEPTON_SDK_VERSION` to 18.
 * Add `cepton_sdk_capture_replay_get_filename`.

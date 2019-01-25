@@ -1,5 +1,8 @@
 # Cepton SDK Python Release Notes
 
+### Version 1.11 2019-01-25
+* Fix `get_timestamp`.
+
 ### Version 1.10 2018-12-07
 * Add `.py` extension to scripts for Windows support.
 

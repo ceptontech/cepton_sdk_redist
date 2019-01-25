@@ -170,7 +170,15 @@
             
   <div class="section" id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>The SDK parses sensor packets and computes calibrated measurements from raw sensor data. For prototyping purposes, it can optionally handle networking, frame accumulation, and capture replay.</p>
+<p>The Cepton SDK provides the following features</p>
+<ul class="simple">
+<li><strong>Parsing</strong>: parse sensor packets</li>
+<li><strong>Calibration</strong>: apply sensor calibration</li>
+<li><strong>Networking</strong>: listen for sensor packets</li>
+<li><strong>Capture Replay</strong>: read sensor packets from a PCAP file</li>
+<li><strong>Frame Accumulation</strong>: accumulate and output sensor points by frame</li>
+</ul>
+<p>Currently, the Cepton LiDAR packet formats are under active development, and are not publicly available. The SDK is required for <strong>Parsing</strong> and <strong>Calibration</strong>. All other SDK features are optional, and can be done manually by the user.</p>
 <p>For prototyping, it is recommended to start with the high level methods in <a class="reference internal" href="api.html"><span class="doc">API</span></a> and <a class="reference internal" href="utilities.html"><span class="doc">Utilities</span></a>.</p>
 <div class="section" id="timestamps">
 <h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h2>
@@ -205,8 +213,9 @@
 <h2>Minimal SDK<a class="headerlink" href="#minimal-sdk" title="Permalink to this headline">¶</a></h2>
 <p>If desired, the following SDK features can be disabled in the SDK and performed manually by the user:</p>
 <ul class="simple">
-<li>Networking: see <a class="reference internal" href="samples/network.html"><span class="doc">Network</span></a>.</li>
-<li>Frame Accumulation: see <a class="reference internal" href="samples/frame.html"><span class="doc">Frame</span></a>.</li>
+<li>Networking: <a class="reference internal" href="samples/network.html"><span class="doc">Network</span></a>.</li>
+<li>Capture Replay: <a class="reference internal" href="samples/replay.html"><span class="doc">Replay</span></a>.</li>
+<li>Frame Accumulation: <a class="reference internal" href="samples/frame.html"><span class="doc">Frame</span></a>.</li>
 </ul>
 </div>
 </div>
@@ -256,6 +265,7 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
     
 
   

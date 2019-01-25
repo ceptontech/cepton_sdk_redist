@@ -69,4 +69,6 @@ class CaptureReplay {
   int64_t m_start_ts_usec;      // Clock start time
 };
 
+extern CaptureReplay capture_replay_instance;
+
 }  // namespace cepton_sdk

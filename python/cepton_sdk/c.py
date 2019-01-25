@@ -251,6 +251,13 @@ c_get_frame_length.restype = c_float
 # Sensors
 # ------------------------------------------------------------------------------
 
+class C_FirmwareVersion(Structure):
+    _fields_ = [
+        ('major', c_uint8),
+        ('minor', c_uint8),
+        ('padding', c_uint8 * 2)
+    ]
+
 
 class C_SensorInformation(Structure):
     _fields_ = [
@@ -259,7 +266,8 @@ class C_SensorInformation(Structure):
         ("model_name", c_char * 28),
         ("model", c_uint16),
         ("", c_uint16),
-        ("firmware_version", c_char * 32),
+        ("firmware_version", c_char * 28),
+        ("formal_firmware_version", C_FirmwareVersion),
 
         ("last_reported_temperature", c_float),
         ("last_reported_humidity", c_float),
@@ -323,7 +331,7 @@ class C_SensorImagePoint(Structure):
         ("intensity", c_float),
         ("return_type", c_uint8),
         ("flags", c_uint8),
-        ("reserved", 2 * c_uint8)
+        ("reserved", 2 * c_uint8),
     ]
 
 

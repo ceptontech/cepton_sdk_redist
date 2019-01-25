@@ -4,7 +4,13 @@ Samples
 .. toctree::
   :maxdepth: 1
 
-  samples/listen
   samples/multiple_sensors
-  samples/single_live_sensor
   samples/single_sensor
+
+Advanced
+--------
+
+.. toctree::
+  :maxdepth: 1
+
+  samples/listen

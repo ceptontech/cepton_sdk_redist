@@ -1,7 +1,15 @@
 Overview
 ========
 
-The SDK parses sensor packets and computes calibrated measurements from raw sensor data. For prototyping purposes, it can optionally handle networking, frame accumulation, and capture replay.
+The Cepton SDK provides the following features
+
+- **Parsing**: parse sensor packets
+- **Calibration**: apply sensor calibration
+- **Networking**: listen for sensor packets
+- **Capture Replay**: read sensor packets from a PCAP file
+- **Frame Accumulation**: accumulate and output sensor points by frame
+
+Currently, the Cepton LiDAR packet formats are under active development, and are not publicly available. The SDK is required for **Parsing** and **Calibration**. All other SDK features are optional, and can be done manually by the user.
 
 For prototyping, it is recommended to start with the high level methods in :doc:`api` and :doc:`utilities`.
 
@@ -38,5 +46,6 @@ Minimal SDK
 
 If desired, the following SDK features can be disabled in the SDK and performed manually by the user:
 
-- Networking: see :doc:`samples/network`.
-- Frame Accumulation: see :doc:`samples/frame`.
+- Networking: :doc:`samples/network`.
+- Capture Replay: :doc:`samples/replay`.
+- Frame Accumulation: :doc:`samples/frame`.
