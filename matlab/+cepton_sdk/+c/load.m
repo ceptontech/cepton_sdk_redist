@@ -18,8 +18,8 @@ function load()
     end
 
     package = what('cepton_sdk');
-    package_path = package.path;
-    package_dir = fileparts(package_path);
+    package = package(1);
+    package_dir = strrep(package.path, '+cepton_sdk', '');
     include_dir = fullfile(package_dir, 'include');
     lib_dir = fullfile(package_dir, 'lib', os_name);
     

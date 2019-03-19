@@ -219,6 +219,8 @@ const int packet_header_size = record_header_size - pcap_record_header_size;
 // -----------------------------------------------------------------------------
 // Capture
 // -----------------------------------------------------------------------------
+Capture::~Capture() { close(); }
+
 SensorError Capture::open_for_read(const std::string &filename) {
   const auto error = open_for_read_impl(filename);
   if (error) close();

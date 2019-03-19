@@ -60,11 +60,11 @@ void SocketListener::listen() {
 // -----------------------------------------------------------------------------
 // NetworkManager
 // -----------------------------------------------------------------------------
-NetworkManager network_manager;
-
 void NetworkManager::initialize() {
   deinitialize();
-  if (sdk_manager.has_control_flag(CEPTON_SDK_CONTROL_DISABLE_NETWORK)) return;
+  if (SdkManager::instance().has_control_flag(
+          CEPTON_SDK_CONTROL_DISABLE_NETWORK))
+    return;
 
   m_is_running = true;
 
@@ -73,9 +73,9 @@ void NetworkManager::initialize() {
                                   CeptonSensorHandle handle, int buffer_size,
                                   const uint8_t *const buffer) {
     if (error.value()) {
-      callback_manager.emit_error(CEPTON_NULL_HANDLE,
-                                  CEPTON_ERROR_COMMUNICATION,
-                                  error.message().c_str(), &error);
+      CallbackManager::instance().emit_error(CEPTON_NULL_HANDLE,
+                                             CEPTON_ERROR_COMMUNICATION,
+                                             error.message().c_str(), &error);
       return;
     }
 
@@ -89,9 +89,9 @@ void NetworkManager::initialize() {
     packet->buffer.insert(packet->buffer.end(), buffer, buffer + buffer_size);
     if (m_packets.size() > 1000) {
 #ifdef CEPTON_INTERNAL
-    // api::log_error(
-    //    SensorError(CEPTON_ERROR_COMMUNICATION, "Packet queue full!"),
-    //    "Network failed!");
+      // api::log_error(
+      //    SensorError(CEPTON_ERROR_COMMUNICATION, "Packet queue full!"),
+      //    "Network failed!");
 #endif
       m_packets.clear();
     }
@@ -104,12 +104,12 @@ void NetworkManager::initialize() {
       const auto packet = m_packets.pop(0.01f);
       if (!m_is_running) break;
       if (!packet) continue;
-      callback_manager.network_cb.emit(packet->handle, packet->timestamp,
-                                       packet->buffer.data(),
-                                       packet->buffer.size());
-      sensor_manager.handle_network_receive(packet->handle, packet->timestamp,
-                                            packet->buffer.size(),
-                                            packet->buffer.data());
+      CallbackManager::instance().network_cb.emit(
+          packet->handle, packet->timestamp, packet->buffer.data(),
+          packet->buffer.size());
+      SensorManager::instance().handle_network_receive(
+          packet->handle, packet->timestamp, packet->buffer.size(),
+          packet->buffer.data());
     }
   }));
 
@@ -119,6 +119,7 @@ void NetworkManager::initialize() {
 void NetworkManager::deinitialize() {
   if (!m_is_initialized) return;
 
+  m_is_initialized = false;
   m_is_running = false;
   m_listener->stop();
   if (m_listener_thread) {
@@ -132,8 +133,6 @@ void NetworkManager::deinitialize() {
     m_worker_thread->join();
     m_worker_thread.reset();
   }
-
-  m_is_initialized = false;
 }
 
 uint16_t NetworkManager::get_port() const { return m_port; }

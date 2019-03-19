@@ -16,8 +16,10 @@ namespace Cepton.SDK
         HR80T_R2 = 6,
         VISTA_860_GEN2 = 7,
         FUSION_790 = 8,
+        VISTA_M = 9,
+        VISTA_X = 10,
 
-        MODEL_MAX = 8,
+        MODEL_MAX = 10,
     };
 
     [Flags]
@@ -47,7 +49,7 @@ namespace Cepton.SDK
         ENABLE_MULTIPLE_RETURNS = 1 << 4,
 
         ALL_POINTS = DISABLE_IMAGE_CLIP | DISABLE_DISTANCE_CLIP,
-   };
+    };
 
     public enum FrameMode : int
     {
@@ -88,7 +90,6 @@ namespace Cepton.SDK
     public delegate void FpImageDataCallback(IntPtr handle, int n_points,
         [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] SensorImagePoint[] points,
         IntPtr user_data);
-
     #endregion
 
     #region Structures
@@ -137,7 +138,10 @@ namespace Cepton.SDK
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 28)] public string model_name;
         public readonly SensorModel model;
         private readonly ushort reserved;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string firmware_version;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 28)] public string firmware_version;
+        public readonly byte firmware_version_major;
+        public readonly byte firmware_version_minor;
+        private readonly ushort reserved2;
 
         public float last_reported_temperature;  ///< [celsius]
         public float last_reported_humidity;     ///< [%]
@@ -169,7 +173,19 @@ namespace Cepton.SDK
         public bool NMEAConnected => (flags & 4) != 0;
         public bool PTPConnected => (flags & 8) != 0;
         public bool Calibrated => (flags & 16) != 0;
-        public ushort FirmwareVersion => Convert.ToUInt16(firmware_version.Substring(1), 16);
+        public uint FirmwareVersion // 4 bytes: Model.Major.Minor.Build (build is always 0
+        {
+            get
+            {
+                if (firmware_version_major > 0)
+                    return (uint)(((byte)model << 24) + (firmware_version_major << 16) + (firmware_version_minor << 8));
+
+                // Legacy calculation to be deprecated in next release
+                ushort oldver = Convert.ToUInt16(firmware_version.Substring(1), 16);
+                byte old_major = (byte)(oldver & 0xFF);
+                return (uint)(((byte)model << 24) + (old_major << 16));
+            }
+        }
     }
 
     [StructLayout(LayoutKind.Sequential)]

@@ -16,7 +16,7 @@ class SocketListener {
 
   void run() {
     listen();
-    m_io_service.run();
+    m_io_service.run_for(std::chrono::seconds(5));
   }
 
   void listen() {

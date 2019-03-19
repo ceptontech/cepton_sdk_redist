@@ -59,6 +59,8 @@ class Capture {
   };
 
  public:
+  ~Capture();
+
   std::string filename() const { return m_filename; }
   bool is_open() const { return m_stream.is_open(); }
   bool is_open_for_read() const { return (is_open() && m_is_read_mode); }

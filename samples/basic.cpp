@@ -56,6 +56,6 @@ int main(int argc, char **argv) {
   // Run
   cepton_sdk::api::check_error(cepton_sdk::api::wait());
 
-  // Deinitialize (optional)
+  // Deinitialize
   cepton_sdk::api::check_error(cepton_sdk::deinitialize());
 }

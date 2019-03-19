@@ -132,10 +132,11 @@
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">_manager</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="open_replay"><a class="viewcode-back" href="../../capture_replay.html#cepton_sdk.open_replay">[docs]</a><span class="k">def</span> <span class="nf">open_replay</span><span class="p">(</span><span class="n">capture_path</span><span class="p">,</span> <span class="n">capture_seek</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="open_replay"><a class="viewcode-back" href="../../capture_replay.html#cepton_sdk.open_replay">[docs]</a><span class="k">def</span> <span class="nf">open_replay</span><span class="p">(</span><span class="n">capture_path</span><span class="p">,</span> <span class="n">capture_seek</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">enable_loop</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">is_open</span><span class="p">():</span>
         <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">capture_path</span><span class="p">)</span>
+    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">set_enable_loop</span><span class="p">(</span><span class="n">enable_loop</span><span class="p">)</span>
 
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">resume_blocking</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">capture_replay</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">capture_seek</span><span class="p">)</span></div>
@@ -372,7 +373,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
     </div>
   </body>
 </html>

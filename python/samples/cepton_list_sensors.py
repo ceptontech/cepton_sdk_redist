@@ -19,6 +19,8 @@ if __name__ == "__main__":
     capture_path = fix_path(args.capture_path)
 
     cepton_sdk.initialize(capture_path=capture_path)
+    if cepton_sdk.is_live():
+        cepton_sdk.wait(3)
 
     sensors_dict = cepton_sdk.get_sensors()
     for sensor in sensors_dict.values():

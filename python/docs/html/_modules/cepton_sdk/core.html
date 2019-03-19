@@ -55,7 +55,8 @@
     <span class="n">DISABLE_DISTANCE_CLIP</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span>
     <span class="n">ENABLE_MULTIPLE_RETURNS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span>
     <span class="n">ENABLE_STRAY_FILTER</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span>
-    <span class="n">HOST_TIMESTAMPS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span></div>
+    <span class="n">HOST_TIMESTAMPS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">6</span>
+    <span class="n">ENABLE_CROSSTALK_FILTER</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span></div>
 
 
 <span class="nd">@enum</span><span class="o">.</span><span class="n">unique</span>
@@ -160,6 +161,7 @@
 
 <span class="k">def</span> <span class="nf">set_frame_options</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">c_options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_create_frame_options</span><span class="p">()</span>
+    <span class="n">c_options</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
     <span class="k">if</span> <span class="n">length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">c_options</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">length</span>
     <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_set_frame_options</span><span class="p">(</span><span class="n">c_options</span><span class="p">)</span>
@@ -262,7 +264,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
     </div>
   </body>
 </html>

@@ -17,8 +17,12 @@ namespace cepton_sdk {
 */
 class CaptureReplay {
  public:
-  CaptureReplay() {}
-  ~CaptureReplay() { close(); }
+  static CaptureReplay& instance() {
+    static CaptureReplay m_instance;
+    return m_instance;
+  }
+
+  ~CaptureReplay();
 
   std::string filename() const;
   bool is_open() const;
@@ -68,7 +72,4 @@ class CaptureReplay {
   int64_t m_start_offset_usec;  // Capture start time
   int64_t m_start_ts_usec;      // Clock start time
 };
-
-extern CaptureReplay capture_replay_instance;
-
 }  // namespace cepton_sdk

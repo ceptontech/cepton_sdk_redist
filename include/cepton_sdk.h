@@ -78,13 +78,13 @@ enum _CeptonSensorModel {
   HR80M = 2,
   HR80W = 3,
   SORA_200 = 4,
-  VISTA_860 = 5, // Deprecated, will be removed in next SDK release.
+  VISTA_860 = 5,  // Deprecated, will be removed in next SDK release.
   HR80T_R2 = 6,
   VISTA_860_GEN2 = 7,
   FUSION_790 = 8,
   VISTA_M = 9,
   VISTA_X = 10,
-  CEPTON_SENSOR_MODEL_MAX = 8,
+  CEPTON_SENSOR_MODEL_MAX = 10,
 };
 typedef uint16_t CeptonSensorModel;
 
@@ -96,15 +96,19 @@ struct EXPORT CeptonSensorInformation {
   uint16_t reserved;
   char firmware_version[28];
 
+#ifdef SIMPLE
+  uint32_t formal_firmware_version;
+#else
   struct {
-      uint8_t major;
-      uint8_t minor;
-      uint8_t unused[2];
+    uint8_t major;
+    uint8_t minor;
+    uint8_t unused[2];
   } formal_firmware_version;
+#endif
 
-  float last_reported_temperature;        ///< [celsius]
-  float last_reported_humidity;           ///< [%]
-  float last_reported_age;                ///< [hours]
+  float last_reported_temperature;  ///< [celsius]
+  float last_reported_humidity;     ///< [%]
+  float last_reported_age;          ///< [hours]
 
   float measurement_period;  ///< Time between measurements [seconds].
 
@@ -225,6 +229,8 @@ enum _CeptonSDKControl {
   CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER = 1 << 5,
   /// Always use packet timestamps (disable GPS/PTP timestamps).
   CEPTON_SDK_CONTROL_HOST_TIMESTAMPS = 1 << 6,
+  /// Enable marking crosstalk points as invalid.
+  CEPTON_SDK_CONTROL_ENABLE_CROSSTALK_FILTER = 1 << 7,
 };
 
 typedef uint32_t CeptonSDKFrameMode;
@@ -340,6 +346,7 @@ EXPORT CeptonSensorErrorCode cepton_sdk_listen_network_packet(
     FpCeptonNetworkReceiveCallback cb, void *const user_data);
 EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_network_packet();
 
+// timestamp is packet receive time in microseconds
 EXPORT CeptonSensorErrorCode cepton_sdk_mock_network_receive(
     CeptonSensorHandle handle, int64_t timestamp, const uint8_t *const buffer,
     size_t buffer_size);

@@ -80,7 +80,11 @@ class SensorError : public std::runtime_error {
   SensorError(SensorErrorCode code_, const char *const msg_)
       : std::runtime_error(create_message(code_, msg_).c_str()),
         code(code_),
-        msg(msg_) {}
+        msg(msg_) {
+#ifdef CEPTON_INTERNAL
+    if (std::string(name()).empty()) throw std::runtime_error("Invalid error code!");
+#endif
+  }
   SensorError(SensorErrorCode code_) : SensorError(code_, "") {}
   SensorError() : SensorError(CEPTON_SUCCESS) {}
 
@@ -179,9 +183,6 @@ inline SensorError initialize(int version,
 }
 
 /// Resets everything and deallocates memory.
-/**
- * Called automatically on program exit.
- */
 inline SensorError deinitialize() {
   cepton_sdk_deinitialize();
   return get_error();

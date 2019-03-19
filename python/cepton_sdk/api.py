@@ -94,10 +94,11 @@ def deinitialize():
     cepton_sdk.core._manager.deinitialize()
 
 
-def open_replay(capture_path, capture_seek=0):
+def open_replay(capture_path, capture_seek=0, enable_loop=False):
     if cepton_sdk.capture_replay.is_open():
         cepton_sdk.capture_replay.close()
     cepton_sdk.capture_replay.open(capture_path)
+    cepton_sdk.capture_replay.set_enable_loop(enable_loop)
 
     cepton_sdk.capture_replay.resume_blocking(3)
     cepton_sdk.capture_replay.seek(capture_seek)

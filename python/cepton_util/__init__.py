@@ -1,5 +1,5 @@
 __author__ = "Cepton Technologies"
-__version__ = "1.11.2"
+__version__ = "1.12.0"
 
 import cepton_util.common
 

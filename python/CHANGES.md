@@ -1,5 +1,8 @@
 # Cepton SDK Python Release Notes
 
+### Version 1.12 2019-03-18
+* Minor bugfixes.
+
 ### Version 1.11 2019-01-25
 * Fix `get_timestamp`.
 

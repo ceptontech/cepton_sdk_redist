@@ -48,6 +48,11 @@ class NetworkManager {
   };
 
  public:
+  static NetworkManager &instance() {
+    static NetworkManager m_instance;
+    return m_instance;
+  }
+
   void initialize();
   void deinitialize();
 
@@ -65,7 +70,4 @@ class NetworkManager {
   std::unique_ptr<std::thread> m_listener_thread;
   std::unique_ptr<std::thread> m_worker_thread;
 };
-
-extern NetworkManager network_manager;
-
 }  // namespace cepton_sdk

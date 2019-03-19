@@ -18,6 +18,7 @@ class ControlFlag(enum.IntEnum):
     ENABLE_MULTIPLE_RETURNS = 1 << 4
     ENABLE_STRAY_FILTER = 1 << 5
     HOST_TIMESTAMPS = 1 << 6
+    ENABLE_CROSSTALK_FILTER = 1 << 7
 
 
 @enum.unique
@@ -122,6 +123,7 @@ def set_port(port):
 
 def set_frame_options(mode, length=None):
     c_options = cepton_sdk.c.c_create_frame_options()
+    c_options.mode = mode
     if length is not None:
         c_options.length = length
     cepton_sdk.c.c_set_frame_options(c_options)

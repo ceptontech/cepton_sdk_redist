@@ -26,9 +26,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="cepton_sdk.dll">
+    <None Remove="cepton_sdk.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="cepton_sdk.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 
 </Project>

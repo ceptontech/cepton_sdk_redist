@@ -15,13 +15,18 @@ namespace Cepton.SDK
         public ulong SerialNumber => info.serial_number;
         public SensorModel Model => info.model;
         public string ModelName => info.model_name;
-        public ushort FirmwareVersion => info.FirmwareVersion;
+        public uint FirmwareVersion => info.FirmwareVersion;
         public ushort SegmentCount => info.segment_count;
         public ushort ReturnCount => info.return_count;
         public ushort PointStride => (ushort)(info.segment_count * info.return_count);
         public IntPtr Handle => info.handle;
 
-        public string GetFirmwareVersionString() => string.Format("V{0:X}", FirmwareVersion);
+        public static string FormatVersion(uint ver)
+        {
+            return string.Format("{0}.{1}.{2}", ver >> 24, (ver >> 16) & 0xFF, (ver >> 8) & 0xFF);
+        }
+
+        public string GetFirmwareVersionString() => FormatVersion(FirmwareVersion);
 
         public async Task<SensorImagePoint[]> GetImagePointsAsync(CancellationToken token = default(CancellationToken))
         {

@@ -11,6 +11,15 @@ extern "C" {
 
 #include "cepton_sdk_def.h"
 
+/*
+ * Duplicating some functions to provide SIMPLE interface for MATLAB.
+ * 
+ * MATLAB doesn't support:
+ * - Nested structs.
+ * - Function pointers.
+ * - Unions.
+*/
+
 EXPORT CeptonSensorErrorCode
 cepton_sdk_matlab_initialize(int ver, CeptonSDKControl control_flags);
 EXPORT CeptonSensorErrorCode cepton_sdk_matlab_deinitialize();

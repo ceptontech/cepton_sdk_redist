@@ -2,7 +2,6 @@
 
 #include <chrono>
 
-#include "cepton_sdk.hpp"
 #include "cepton_sdk/core.hpp"
 #include "cepton_sdk_api.hpp"
 
@@ -11,7 +10,7 @@ namespace cepton_sdk {
 // -----------------------------------------------------------------------------
 // CaptureReplay
 // -----------------------------------------------------------------------------
-CaptureReplay capture_replay_instance;
+CaptureReplay::~CaptureReplay() { close(); }
 
 std::string CaptureReplay::filename() const {
   std::lock_guard<std::mutex> lock(m_capture_mutex);
@@ -47,14 +46,16 @@ SensorError CaptureReplay::open_impl(const std::string &filename) {
 }
 
 SensorError CaptureReplay::close() {
-  m_is_end = true;
+  if (!is_open()) return CEPTON_SUCCESS;
 
-  util::ErrorAccumulator error = pause();
-  m_capture.close();
-  if (sdk_manager.is_initialized()) {
-    error = cepton_sdk_clear();
+  pause();
+  m_is_end = true;
+  {
+    std::lock_guard<std::mutex> lock(m_capture_mutex);
+    m_capture.close();
   }
-  return error;
+  cepton_sdk_clear();
+  return CEPTON_SUCCESS;
 }
 
 int64_t CaptureReplay::get_start_time() const {
@@ -208,8 +209,8 @@ SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
 
   const CeptonSensorHandle handle =
       (CeptonSensorHandle)header.ip_v4 | CEPTON_SENSOR_HANDLE_FLAG_MOCK;
-  callback_manager.network_cb.emit(handle, header.timestamp, data,
-                                   header.data_size);
+  CallbackManager::instance().network_cb.emit(handle, header.timestamp, data,
+                                              header.data_size);
   return cepton_sdk_mock_network_receive(handle, header.timestamp, data,
                                          header.data_size);
 }

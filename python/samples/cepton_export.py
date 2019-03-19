@@ -50,8 +50,6 @@ By default, exports frames to individual files.
                         help="Combine points into single file per sensor.")
     parser.add_argument("--duration", default="0",
                         help="Export duration (if negative, export entire capture file).")
-    parser.add_argument("--filter", action="store_true",
-                        help="Filter invalid points.")
     all_file_types = [x.name for x in cepton_sdk.export.PointsFileType]
     parser.add_argument("--format", default="LAS", choices=all_file_types,
                         type=str.upper, help="Output file format.")
@@ -81,8 +79,7 @@ By default, exports frames to individual files.
         for serial_number, points_list in points_dict.items():
             points = cepton_sdk.combine_points(points_list)
             points = process_points(points)
-            if args.filter:
-                points = filter_points(points)
+            points = filter_points(points)
 
             # Save
             path = os.path.join(output_dir, str(serial_number))
@@ -104,8 +101,7 @@ By default, exports frames to individual files.
                     os.makedirs(sensor_dir)
                 for points in points_list:
                     points = process_points(points)
-                    if args.filter:
-                        points = filter_points(points)
+                    points = filter_points(points)
 
                     # Save
                     i_frame_tmp = i_frame[serial_number]

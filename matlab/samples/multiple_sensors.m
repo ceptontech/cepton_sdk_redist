@@ -2,6 +2,7 @@
 % Variables
 capture_path = common.get_sample_capture_path();
 
+%%
 % Initialize
 if cepton_sdk.is_initialized()
     cepton_sdk.deinitialize();

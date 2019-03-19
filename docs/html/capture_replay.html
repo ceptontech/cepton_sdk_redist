@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="API" href="api.html" />
     <link rel="prev" title="Networking" href="networking.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -153,7 +155,7 @@
         <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="networking.html" class="btn btn-neutral" title="Networking" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="networking.html" class="btn btn-neutral float-left" title="Networking" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -166,110 +168,110 @@
 <h1>Capture Replay<a class="headerlink" href="#capture-replay" title="Permalink to this headline">¶</a></h1>
 <p>PCAP capture file replay. Source code can be found in the <cite>source</cite> folder. Functions are not thread safe, and should only be called from the main thread.</p>
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay7is_openEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay7is_openEv"></span><span id="cepton_sdk::capture_replay::is_open"></span><span class="target" id="cepton__sdk_8hpp_1ae4ee575739f6f4dc054c5a5def16304a"></span>bool <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">is_open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay7is_openEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay7is_openEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay7is_openEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay7is_openEv"></span><span id="cepton_sdk::capture_replay::is_open"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1ae4ee575739f6f4dc054c5a5def16304a"></span>bool <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">is_open</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay7is_openEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay4openERKNSt6stringE">
-<span id="_CPPv2N10cepton_sdk14capture_replay4openERKNSt6stringE"></span><span id="cepton_sdk::capture_replay::open__ssCR"></span><span class="target" id="cepton__sdk_8hpp_1a4b35807242283718a09907a9499b945c"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">open</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay4openERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay4openERKNSt6stringE">
+<span id="_CPPv3N10cepton_sdk14capture_replay4openERKNSt6stringE"></span><span id="_CPPv2N10cepton_sdk14capture_replay4openERKNSt6stringE"></span><span id="cepton_sdk::capture_replay::open__ssCR"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a4b35807242283718a09907a9499b945c"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">open</code><span class="sig-paren">(</span><em class="property">const</em> std::string &amp;<em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay4openERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Opens capture file. </p>
 <p>Must be called before any other replay functions listed below. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay5closeEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay5closeEv"></span><span id="cepton_sdk::capture_replay::close"></span><span class="target" id="cepton__sdk_8hpp_1a7a2128afc3fde2dde4fafba0d0e75cb4"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay5closeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay5closeEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay5closeEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay5closeEv"></span><span id="cepton_sdk::capture_replay::close"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a7a2128afc3fde2dde4fafba0d0e75cb4"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay5closeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay12get_filenameEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay12get_filenameEv"></span><span id="cepton_sdk::capture_replay::get_filename"></span><span class="target" id="cepton__sdk_8hpp_1af3af7e8a30459bac58bb199e61b590ee"></span><em class="property">const</em> char *<code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay12get_filenameEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay12get_filenameEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay12get_filenameEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay12get_filenameEv"></span><span id="cepton_sdk::capture_replay::get_filename"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1af3af7e8a30459bac58bb199e61b590ee"></span><em class="property">const</em> char *<code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_filename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay12get_filenameEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay14get_start_timeEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay14get_start_timeEv"></span><span id="cepton_sdk::capture_replay::get_start_time"></span><span class="target" id="cepton__sdk_8hpp_1a763ab7989a067cef6cdc297e05972e5d"></span>uint64_t <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_start_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay14get_start_timeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay14get_start_timeEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay14get_start_timeEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay14get_start_timeEv"></span><span id="cepton_sdk::capture_replay::get_start_time"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a763ab7989a067cef6cdc297e05972e5d"></span>uint64_t <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_start_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay14get_start_timeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture start timestamp (unix time [microseconds]). </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay12get_positionEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay12get_positionEv"></span><span id="cepton_sdk::capture_replay::get_position"></span><span class="target" id="cepton__sdk_8hpp_1ae36554113c5caf382dac9796300cb2b7"></span>float <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay12get_positionEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay12get_positionEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay12get_positionEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay12get_positionEv"></span><span id="cepton_sdk::capture_replay::get_position"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1ae36554113c5caf382dac9796300cb2b7"></span>float <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_position</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay12get_positionEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture file position [seconds]. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay10get_lengthEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay10get_lengthEv"></span><span id="cepton_sdk::capture_replay::get_length"></span><span class="target" id="cepton__sdk_8hpp_1abb7b2f4f9d960c9abdd330a671602c71"></span>float <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay10get_lengthEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay10get_lengthEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay10get_lengthEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay10get_lengthEv"></span><span id="cepton_sdk::capture_replay::get_length"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1abb7b2f4f9d960c9abdd330a671602c71"></span>float <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay10get_lengthEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture file length [seconds]. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay6is_endEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay6is_endEv"></span><span id="cepton_sdk::capture_replay::is_end"></span><span class="target" id="cepton__sdk_8hpp_1a2f5c9903f02f9813c72aa1ff3ca50477"></span>bool <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">is_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay6is_endEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay6is_endEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay6is_endEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay6is_endEv"></span><span id="cepton_sdk::capture_replay::is_end"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a2f5c9903f02f9813c72aa1ff3ca50477"></span>bool <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">is_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay6is_endEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns true if at end of capture file. </p>
 <p>This is only relevant when using <code class="docutils literal notranslate"><span class="pre">resume_blocking</span></code> methods. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay4seekEf">
-<span id="_CPPv2N10cepton_sdk14capture_replay4seekEf"></span><span id="cepton_sdk::capture_replay::seek__float"></span><span class="target" id="cepton__sdk_8hpp_1a7d7f57af47b4a93bd3b724aedef8275d"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">seek</code><span class="sig-paren">(</span>float <em>position</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay4seekEf" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay4seekEf">
+<span id="_CPPv3N10cepton_sdk14capture_replay4seekEf"></span><span id="_CPPv2N10cepton_sdk14capture_replay4seekEf"></span><span id="cepton_sdk::capture_replay::seek__float"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a7d7f57af47b4a93bd3b724aedef8275d"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">seek</code><span class="sig-paren">(</span>float <em>position</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay4seekEf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Seek to capture file position [seconds]. </p>
 <p>Position must be in range [0.0, capture length). Returns error if position is invalid. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay15set_enable_loopEb">
-<span id="_CPPv2N10cepton_sdk14capture_replay15set_enable_loopEb"></span><span id="cepton_sdk::capture_replay::set_enable_loop__b"></span><span class="target" id="cepton__sdk_8hpp_1a5ee203103538bd8c03f6441ceb23dbd2"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">set_enable_loop</code><span class="sig-paren">(</span>bool <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay15set_enable_loopEb" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay15set_enable_loopEb">
+<span id="_CPPv3N10cepton_sdk14capture_replay15set_enable_loopEb"></span><span id="_CPPv2N10cepton_sdk14capture_replay15set_enable_loopEb"></span><span id="cepton_sdk::capture_replay::set_enable_loop__b"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a5ee203103538bd8c03f6441ceb23dbd2"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">set_enable_loop</code><span class="sig-paren">(</span>bool <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay15set_enable_loopEb" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>If enabled, replay will automatically rewind at end. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay15get_enable_loopEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay15get_enable_loopEv"></span><span id="cepton_sdk::capture_replay::get_enable_loop"></span><span class="target" id="cepton__sdk_8hpp_1a8399c921bd64c12935fedada7758589b"></span>bool <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_enable_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay15get_enable_loopEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay15get_enable_loopEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay15get_enable_loopEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay15get_enable_loopEv"></span><span id="cepton_sdk::capture_replay::get_enable_loop"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a8399c921bd64c12935fedada7758589b"></span>bool <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_enable_loop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay15get_enable_loopEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay9set_speedEf">
-<span id="_CPPv2N10cepton_sdk14capture_replay9set_speedEf"></span><span id="cepton_sdk::capture_replay::set_speed__float"></span><span class="target" id="cepton__sdk_8hpp_1a36e5bc5040f9d3eca67c4b9a134b564a"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">set_speed</code><span class="sig-paren">(</span>float <em>speed</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay9set_speedEf" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay9set_speedEf">
+<span id="_CPPv3N10cepton_sdk14capture_replay9set_speedEf"></span><span id="_CPPv2N10cepton_sdk14capture_replay9set_speedEf"></span><span id="cepton_sdk::capture_replay::set_speed__float"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a36e5bc5040f9d3eca67c4b9a134b564a"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">set_speed</code><span class="sig-paren">(</span>float <em>speed</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay9set_speedEf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Replay speed multiplier for asynchronous replay. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay9get_speedEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay9get_speedEv"></span><span id="cepton_sdk::capture_replay::get_speed"></span><span class="target" id="cepton__sdk_8hpp_1ac364f715693e0165567ed4d101e4bf17"></span>float <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_speed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay9get_speedEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay9get_speedEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay9get_speedEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay9get_speedEv"></span><span id="cepton_sdk::capture_replay::get_speed"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1ac364f715693e0165567ed4d101e4bf17"></span>float <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">get_speed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay9get_speedEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay20resume_blocking_onceEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay20resume_blocking_onceEv"></span><span id="cepton_sdk::capture_replay::resume_blocking_once"></span><span class="target" id="cepton__sdk_8hpp_1a9484980d46b3331251efefbb80b92291"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">resume_blocking_once</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay20resume_blocking_onceEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay20resume_blocking_onceEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay20resume_blocking_onceEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay20resume_blocking_onceEv"></span><span id="cepton_sdk::capture_replay::resume_blocking_once"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a9484980d46b3331251efefbb80b92291"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">resume_blocking_once</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay20resume_blocking_onceEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Replay next packet in current thread without sleeping. </p>
 <p>Pauses replay thread if it is running. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay15resume_blockingEf">
-<span id="_CPPv2N10cepton_sdk14capture_replay15resume_blockingEf"></span><span id="cepton_sdk::capture_replay::resume_blocking__float"></span><span class="target" id="cepton__sdk_8hpp_1a1ff97448cfcc17ef8c551c6ceab21ce7"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">resume_blocking</code><span class="sig-paren">(</span>float <em>duration</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay15resume_blockingEf" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay15resume_blockingEf">
+<span id="_CPPv3N10cepton_sdk14capture_replay15resume_blockingEf"></span><span id="_CPPv2N10cepton_sdk14capture_replay15resume_blockingEf"></span><span id="cepton_sdk::capture_replay::resume_blocking__float"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a1ff97448cfcc17ef8c551c6ceab21ce7"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">resume_blocking</code><span class="sig-paren">(</span>float <em>duration</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay15resume_blockingEf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Replay multiple packets synchronously. </p>
 <p>No sleep between packets. Resume duration must be non-negative. Pauses replay thread if it is running. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay10is_runningEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay10is_runningEv"></span><span id="cepton_sdk::capture_replay::is_running"></span><span class="target" id="cepton__sdk_8hpp_1a93c8e1806e0aeb00e57a3c3067fa2458"></span>bool <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">is_running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay10is_runningEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay10is_runningEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay10is_runningEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay10is_runningEv"></span><span id="cepton_sdk::capture_replay::is_running"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1a93c8e1806e0aeb00e57a3c3067fa2458"></span>bool <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">is_running</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay10is_runningEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns true if replay thread is running. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay6resumeEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay6resumeEv"></span><span id="cepton_sdk::capture_replay::resume"></span><span class="target" id="cepton__sdk_8hpp_1ae320052cba872c64f778b276f089c653"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">resume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay6resumeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay6resumeEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay6resumeEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay6resumeEv"></span><span id="cepton_sdk::capture_replay::resume"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1ae320052cba872c64f778b276f089c653"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">resume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay6resumeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Packets are replayed in realtime. Replay thread sleeps in between packets. </p>
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv3N10cepton_sdk14capture_replay5pauseEv">
-<span id="_CPPv2N10cepton_sdk14capture_replay5pauseEv"></span><span id="cepton_sdk::capture_replay::pause"></span><span class="target" id="cepton__sdk_8hpp_1addec8df0b7bb2a96f76b3addb574927e"></span><a class="reference internal" href="errors.html#_CPPv3N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">pause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv3N10cepton_sdk14capture_replay5pauseEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk14capture_replay5pauseEv">
+<span id="_CPPv3N10cepton_sdk14capture_replay5pauseEv"></span><span id="_CPPv2N10cepton_sdk14capture_replay5pauseEv"></span><span id="cepton_sdk::capture_replay::pause"></span><span class="target" id="namespacecepton__sdk_1_1capture__replay_1addec8df0b7bb2a96f76b3addb574927e"></span><a class="reference internal" href="errors.html#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> <code class="descclassname">cepton_sdk::capture_replay<code class="descclassname">::</code></code><code class="descname">pause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk14capture_replay5pauseEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Pauses asynchronous replay thread. </p>
 </dd></dl>
 
@@ -286,7 +288,7 @@
         <a href="api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="networking.html" class="btn btn-neutral" title="Networking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="networking.html" class="btn btn-neutral float-left" title="Networking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -312,26 +314,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

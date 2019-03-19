@@ -1,5 +1,9 @@
 # Cepton SDK Release Notes
 
+### Version 1.12 2019-03-18
+* Minor bugfix release.
+* IMPORTANT: User must call `cepton_sdk_deinitialize` manually now.
+
 ### Version 1.11 2019-01-25
 * Add preliminary support for "Vista M" and "Vista X".
 * Rename model name "Vista 860 Gen2" to "Vista 860".

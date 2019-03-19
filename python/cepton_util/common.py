@@ -1,4 +1,5 @@
 import argparse
+import calendar
 import datetime
 import glob
 import os
@@ -89,11 +90,18 @@ def to_usec(timestamps):
 
 
 def get_timestamp():
-    return datetime.datetime.utcnow().timestamp()
+    """Returns current unix timestamp."""
+    return time.time()
 
 
 def get_timestamp_usec():
+    """Returns current unix timestamp in microseconds."""
     return to_usec(get_timestamp())
+
+
+def datetime_to_timestamp(d):
+    """Convert naive datetime to unix timestamp."""
+    return calendar.timegm(d.timetuple())
 
 
 def get_day_str():
