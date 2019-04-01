@@ -476,20 +476,6 @@ class ClearMixin(ObjectBase):
 
 
 class DataDirectoryMixin:
-    default_alg_settings_name = "cepton_alg_config.json"
-    default_bag_name = "ros.bag"
-    default_clips_name = "cepton_clips.json"
-    default_gps_name = "gps.txt"
-    default_grid_mask_name = "grid_mask.json"
-    default_imu_name = "imu.txt"
-    default_odometry_name = "odometry.txt"
-    default_pcap_name = "lidar.pcap"
-    default_player_settings_name = "cepton_player_config.json"
-    default_render_settings_name = "cepton_render_config.json"
-    default_rviz_config_name = "rviz_config.rviz"
-    default_transforms_name = "cepton_transforms.json"
-    default_viewer_config_name = "cepton_viewer_config.json"
-
     @classmethod
     def default_camera_name(self, i):
         return "camera_{}.mkv".format(i)
@@ -502,60 +488,8 @@ class DataDirectoryMixin:
     def __bool__(self):
         return self.path is not None
 
-    @property
-    def default_alg_settings_path(self):
-        return self._get_path(self.default_alg_settings_name)
-
-    @property
-    def default_bag_path(self):
-        return self._get_path(self.default_bag_name)
-
     def default_camera_path(self, i):
         return self._get_path(self.default_camera_name(i))
-
-    @property
-    def default_clips_path(self):
-        return self._get_path(self.default_clips_name)
-
-    @property
-    def default_gps_path(self):
-        return self._get_path(self.default_gps_name)
-
-    @property
-    def default_grid_mask_path(self):
-        return self._get_path(self.default_grid_mask_name)
-
-    @property
-    def default_imu_path(self):
-        return self._get_path(self.default_imu_name)
-
-    @property
-    def default_odometry_path(self):
-        return self._get_path(self.default_odometry_name)
-
-    @property
-    def default_pcap_path(self):
-        return self._get_path(self.default_pcap_name)
-
-    @property
-    def default_player_settings_path(self):
-        return self._get_path(self.default_player_settings_name)
-
-    @property
-    def default_render_settings_path(self):
-        return self._get_path(self.default_render_settings_name)
-
-    @property
-    def default_rviz_config_path(self):
-        return self._get_path(self.default_rviz_config_name)
-
-    @property
-    def default_transforms_path(self):
-        return self._get_path(self.default_transforms_name)
-
-    @property
-    def default_viewer_config_path(self):
-        return self._get_path(self.default_viewer_config_name)
 
 
 class InputDataDirectory(DataDirectoryMixin):
@@ -573,63 +507,11 @@ class InputDataDirectory(DataDirectoryMixin):
         return None
 
     @property
-    def alg_settings_path(self):
-        return self._find_file(self.default_alg_settings_path)
-
-    @property
-    def bag_path(self):
-        return self._find_file(self.default_bag_path)
-
-    @property
     def camera_paths(self):
         return glob.glob(os.path.join(self.path, "camera_[0-9].mkv"))
 
     def camera_path(self, i):
         return self._find_file(self.default_camera_path(i))
-
-    @property
-    def clips_path(self):
-        return self._find_file(self.default_clips_path)
-
-    @property
-    def gps_path(self):
-        return self._find_file(self.default_gps_path)
-
-    @property
-    def grid_mask_path(self):
-        return self._find_file(self.default_grid_mask_path)
-
-    @property
-    def imu_path(self):
-        return self._find_file(self.default_imu_path)
-
-    @property
-    def odometry_path(self):
-        return self._find_file(self.default_odometry_path)
-
-    @property
-    def render_settings_path(self):
-        return self._find_file(self.default_render_settings_path)
-
-    @property
-    def pcap_path(self):
-        return self._find_file(self.default_pcap_path)
-
-    @property
-    def player_settings_path(self):
-        return self._find_file(self.default_player_settings_path)
-
-    @property
-    def rviz_config_path(self):
-        return self._find_file(self.default_rviz_config_path)
-
-    @property
-    def transforms_path(self):
-        return self._find_file(self.default_transforms_path)
-
-    @property
-    def viewer_config_path(self):
-        return self._find_file(self.default_viewer_config_path)
 
 
 def copy_settings(src, dst):
@@ -673,21 +555,50 @@ class OutputDataDirectory(DataDirectoryMixin, ArgumentParserMixin):
             input_path = os.getcwd()
         copy_settings(input_path, self.path)
 
-    @property
-    def clips_path(self):
-        return self.default_clips_path
+    def camera_path(self, i):
+        return self.default_camera_path(i)
 
-    @property
-    def transforms_path(self):
-        return self.default_transforms_path
+    def wait(self):
+        if self.duration is None:
+            wait_for_input()
+        else:
+            time.sleep(self.duration)
+            kill_background()
 
-    @property
-    def pcap_path(self):
-        return self.default_pcap_path
 
-    @property
-    def viewer_config_path(self):
-        return self.default_viewer_config_path
+def _add_data_directory_path(name, path):
+    default_name_member = "default_{}_name".format(name)
+    setattr(DataDirectoryMixin, default_name_member, path)
 
+    def default_path_func(self):
+        return self._get_path(getattr(self, default_name_member))
+    default_path_member = "default_{}_path".format(name)
+    setattr(DataDirectoryMixin, default_path_member,
+            property(default_path_func))
+
+    def input_path_func(self):
+        return self._find_file(getattr(self, defaut_path_member))
+    setattr(InputDataDirectory, "{}_path".format(
+        name), property(input_path_func))
+
+    def output_path_func(self):
+        return getattr(self, default_path_member)
+    setattr(OutputDataDirectory, "{}_path".format(
+        name), property(output_path_func))
+
+
+_add_data_directory_path("alg_settings", "cepton_alg_config.json")
+_add_data_directory_path("bag", "ros.bag")
+_add_data_directory_path("clips", "cepton_clips.json")
+_add_data_directory_path("gps", "gps.txt")
+_add_data_directory_path("grid_mask", "grid_mask.json")
+_add_data_directory_path("imu", "imu.txt")
+_add_data_directory_path("odometry", "odometry.txt")
+_add_data_directory_path("pcap", "lidar.pcap")
+_add_data_directory_path("player_settings", "cepton_player_config.json")
+_add_data_directory_path("render_settings", "cepton_render_config.json")
+_add_data_directory_path("rviz_config", "rviz_config.rviz")
+_add_data_directory_path("transforms", "cepton_transforms.json")
+_add_data_directory_path("viewer_config", "cepton_viewer_config.json")
 
 __all__ = _all_builder.get()
