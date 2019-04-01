@@ -577,7 +577,7 @@ def _add_data_directory_path(name, path):
             property(default_path_func))
 
     def input_path_func(self):
-        return self._find_file(getattr(self, defaut_path_member))
+        return self._find_file(getattr(self, default_path_member))
     setattr(InputDataDirectory, "{}_path".format(
         name), property(input_path_func))
 
