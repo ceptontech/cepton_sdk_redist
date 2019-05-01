@@ -65,7 +65,7 @@ class CaptureReplay {
   // Shared by replay thread
   std::atomic<bool> m_is_running{false};
   std::atomic<bool> m_is_end{true};
-  mutable std::mutex m_capture_mutex;
+  mutable std::timed_mutex m_capture_mutex;
   Capture m_capture;
 
   // Replay thread only

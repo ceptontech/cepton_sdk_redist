@@ -5,7 +5,7 @@ See `samples/CMakeLists.txt` for example usage.
 ]]
 cmake_minimum_required(VERSION 3.1)
 project(cepton_sdk
-  VERSION 0.1
+  VERSION 1.0
   LANGUAGES C CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")

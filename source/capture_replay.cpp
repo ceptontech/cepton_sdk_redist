@@ -13,12 +13,12 @@ namespace cepton_sdk {
 CaptureReplay::~CaptureReplay() { close(); }
 
 std::string CaptureReplay::filename() const {
-  std::lock_guard<std::mutex> lock(m_capture_mutex);
+  util::LockGuard lock(m_capture_mutex);
   return m_capture.filename();
 }
 
 bool CaptureReplay::is_open() const {
-  std::lock_guard<std::mutex> lock(m_capture_mutex);
+  util::LockGuard lock(m_capture_mutex);
   return m_capture.is_open();
 }
 
@@ -32,7 +32,7 @@ SensorError CaptureReplay::open_impl(const std::string &filename) {
   close();
 
   {
-    std::lock_guard<std::mutex> lock(m_capture_mutex);
+    util::LockGuard lock(m_capture_mutex);
     const auto error = m_capture.open_for_read(filename);
     if (error) return error;
   }
@@ -51,7 +51,7 @@ SensorError CaptureReplay::close() {
   pause();
   m_is_end = true;
   {
-    std::lock_guard<std::mutex> lock(m_capture_mutex);
+    util::LockGuard lock(m_capture_mutex);
     m_capture.close();
   }
   cepton_sdk_clear();
@@ -61,21 +61,21 @@ SensorError CaptureReplay::close() {
 int64_t CaptureReplay::get_start_time() const {
   if (!is_open()) return 0;
 
-  std::lock_guard<std::mutex> lock(m_capture_mutex);
+  util::LockGuard lock(m_capture_mutex);
   return m_capture.start_time();
 }
 
 float CaptureReplay::get_position() const {
   if (!is_open()) return 0.0f;
 
-  std::lock_guard<std::mutex> lock(m_capture_mutex);
+  util::LockGuard lock(m_capture_mutex);
   return 1e-6f * (float)m_capture.position();
 }
 
 float CaptureReplay::get_length() const {
   if (!is_open()) return 0.0f;
 
-  std::lock_guard<std::mutex> lock(m_capture_mutex);
+  util::LockGuard lock(m_capture_mutex);
   return 1e-6f * (float)m_capture.length();
 }
 
@@ -87,7 +87,7 @@ SensorError CaptureReplay::seek(float position) {
 
 SensorError CaptureReplay::seek_impl(int64_t position) {
   {
-    std::lock_guard<std::mutex> lock(m_capture_mutex);
+    util::LockGuard lock(m_capture_mutex);
     const auto error = m_capture.seek(position);
     if (error) return error;
   }
@@ -194,10 +194,10 @@ SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
   Capture::PacketHeader header;
   const uint8_t *data;
   {
-    std::lock_guard<std::mutex> lock(m_capture_mutex);
+    util::LockGuard lock(m_capture_mutex);
     const auto error = m_capture.next_packet(header, data);
     if (error) {
-      if (error.code == CEPTON_ERROR_EOF) {
+      if (error.code() == CEPTON_ERROR_EOF) {
         m_is_end = true;
         return CEPTON_SUCCESS;
       }
@@ -218,7 +218,7 @@ SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
 void CaptureReplay::reset_time() {
   m_start_ts_usec = util::get_timestamp_usec();
   {
-    std::lock_guard<std::mutex> lock(m_capture_mutex);
+    util::LockGuard lock(m_capture_mutex);
     m_start_offset_usec = m_capture.position();
   }
 }
@@ -227,7 +227,7 @@ void CaptureReplay::sleep_once() {
   const int64_t ts_usec = util::get_timestamp_usec() - m_start_ts_usec;
   int64_t offset_usec;
   {
-    std::lock_guard<std::mutex> lock(m_capture_mutex);
+    util::LockGuard lock(m_capture_mutex);
     offset_usec = m_capture.position() - m_start_offset_usec;
   }
   offset_usec = int64_t((float)offset_usec / m_speed);

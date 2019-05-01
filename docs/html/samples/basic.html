@@ -238,7 +238,9 @@
 58
 59
 60
-61</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+61
+62
+63</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Sample code for general sdk usage.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
@@ -269,6 +271,8 @@
 <span class="p">};</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">CEPTON_RUNTIME_ASSERT</span><span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&quot;HI&quot;</span><span class="p">);</span>
+
   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">capture_path</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">capture_path</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 

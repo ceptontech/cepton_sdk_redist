@@ -256,7 +256,7 @@
   <span class="k">if</span> <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">capture_replay</span><span class="o">::</span><span class="n">is_open</span><span class="p">())</span>
     <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">capture_replay</span><span class="o">::</span><span class="n">resume</span><span class="p">());</span>
 
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">SimpleConcurrentQueue</span><span class="o">&lt;</span><span class="n">Frame</span><span class="o">&gt;</span> <span class="n">queue</span><span class="p">;</span>
+  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">SingleConsumerQueue</span><span class="o">&lt;</span><span class="n">Frame</span><span class="o">&gt;</span> <span class="n">queue</span><span class="p">;</span>
   <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
                       <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">auto</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Frame</span><span class="o">&gt;</span><span class="p">();</span>
@@ -269,7 +269,7 @@
   <span class="p">});</span>
 
   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">const</span> <span class="k">auto</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">queue</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mf">0.1f</span><span class="p">);</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">queue</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">frame</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
     <span class="c1">// Do processing</span>
   <span class="p">}</span>

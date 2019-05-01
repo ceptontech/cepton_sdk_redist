@@ -108,6 +108,7 @@ class Points(StructureOfArrays, ToCArrayMixin):
         self.image_positions[:, 1] = data["image_z"]
         self.distances[:] = data["distance"]
         self.intensities[:] = data["intensity"]
+
         self.return_types[:, :] = cepton_sdk.common.c.unpack_bits(
             data["return_type"])
         self.flags[:, :] = cepton_sdk.common.c.unpack_bits(data["flags"])

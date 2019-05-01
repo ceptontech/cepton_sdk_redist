@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "cepton_sdk_util.hpp"
+
 namespace cepton_sdk_matlab {
 
 // -----------------------------------------------------------------------------
@@ -12,18 +14,18 @@ namespace cepton_sdk_matlab {
 ErrorsListener errors_listener;
 
 void ErrorsListener::clear() {
-  std::lock_guard<std::mutex> lock(m_mutex);
+  cepton_sdk::util::LockGuard lock(m_mutex);
   m_errors.clear();
   m_queued_error.reset();
 }
 
 bool ErrorsListener::is_empty() {
-  std::lock_guard<std::mutex> lock(m_mutex);
+  cepton_sdk::util::LockGuard lock(m_mutex);
   return m_errors.empty();
 }
 
 std::shared_ptr<Error> ErrorsListener::queue_error() {
-  std::lock_guard<std::mutex> lock(m_mutex);
+  cepton_sdk::util::LockGuard lock(m_mutex);
 
   if (m_errors.empty()) {
     m_queued_error.reset();
@@ -44,7 +46,7 @@ void ErrorsListener::on_error(CeptonSensorHandle handle,
   error->error_code = error_code;
   error->msg = error_msg;
 
-  std::lock_guard<std::mutex> lock(m_mutex);
+  cepton_sdk::util::LockGuard lock(m_mutex);
 
   m_errors.push_back(error);
   while (m_errors.size() > 100) {
@@ -58,18 +60,18 @@ void ErrorsListener::on_error(CeptonSensorHandle handle,
 FramesListener frames_listener;
 
 void FramesListener::clear() {
-  std::lock_guard<std::mutex> lock(m_mutex);
+  cepton_sdk::util::LockGuard lock(m_mutex);
   m_frames.clear();
   m_queued_frame.reset();
 }
 
 bool FramesListener::is_empty() {
-  std::lock_guard<std::mutex> lock(m_mutex);
+  cepton_sdk::util::LockGuard lock(m_mutex);
   return m_frames.empty();
 }
 
 std::shared_ptr<Frame> FramesListener::queue_frame() {
-  std::lock_guard<std::mutex> lock(m_mutex);
+  cepton_sdk::util::LockGuard lock(m_mutex);
 
   if (m_frames.empty()) {
     m_queued_frame.reset();
@@ -89,7 +91,7 @@ void FramesListener::on_image_points(
   memcpy(frame->image_points.data(), p_image_points,
          n_points * sizeof(CeptonSensorImagePoint));
 
-  std::lock_guard<std::mutex> lock(m_mutex);
+  cepton_sdk::util::LockGuard lock(m_mutex);
 
   m_frames.push_back(frame);
   while (m_frames.size() > 100) {

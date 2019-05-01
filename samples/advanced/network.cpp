@@ -38,7 +38,7 @@ class SocketListener {
   }
 
  private:
-  asio::io_service m_io_service;
+  asio::io_context m_io_service;
   udp::socket m_socket;
   udp::endpoint m_end_point;
   std::array<uint8_t, 4096> m_buffer;

@@ -1,5 +1,12 @@
 # Cepton SDK Release Notes
 
+### Version 1.13 2019-05-01
+* Add support for Vista-Gen2.
+* Updated product naming: Vista M -> Vista-M90, Vista X -> Vista-X120.
+* Point cloud organizer utilities.
+* Add runtime assert.
+* Unhandled errors will now print error message to stderr.
+
 ### Version 1.12 2019-03-18
 * Minor bugfix release.
 * IMPORTANT: User must call `cepton_sdk_deinitialize` manually now.

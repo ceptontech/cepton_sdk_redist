@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
   if (cepton_sdk::capture_replay::is_open())
     cepton_sdk::api::check_error(cepton_sdk::capture_replay::resume());
 
-  cepton_sdk::util::SimpleConcurrentQueue<Frame> queue;
+  cepton_sdk::util::SingleConsumerQueue<Frame> queue;
   callback.listen([&](cepton_sdk::SensorHandle handle, std::size_t n_points,
                       const cepton_sdk::SensorImagePoint *c_image_points) {
     auto frame = std::make_shared<Frame>();
@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
   });
 
   while (true) {
-    const auto frame = queue.pop(0.1f);
+    const auto frame = queue.pop(0.01f);
     if (!frame) continue;
     // Do processing
   }

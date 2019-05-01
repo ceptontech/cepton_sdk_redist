@@ -174,54 +174,54 @@
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <dl class="enum">
 <dt id="c._CeptonSDKControl">
-<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2"></span><em class="property">enum </em><code class="descname">_CeptonSDKControl</code><a class="headerlink" href="#c._CeptonSDKControl" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2"></span><code class="descname">_CeptonSDKControl</code><a class="headerlink" href="#c._CeptonSDKControl" title="Permalink to this definition">¶</a></dt>
 <dd><p>SDK control flags. </p>
 <p><em>Values:</em></p>
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_CONTROL_DISABLE_NETWORK">
-<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a0ca7e8297c80150611c3fd84f799d6fa"></span><code class="descname">CEPTON_SDK_CONTROL_DISABLE_NETWORK</code> = 1 &lt;&lt; 1<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_DISABLE_NETWORK" title="Permalink to this definition">¶</a></dt>
+<dt id="c.1">
+<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a0ca7e8297c80150611c3fd84f799d6fa"></span><code class="descname">1</code><a class="headerlink" href="#c.1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable networking operations. </p>
 <p>Useful for running multiple instances of sdk in different processes. Must pass packets manually to <code class="docutils literal notranslate"><span class="pre">cepton_sdk::mock_network_receive</span></code>. </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_CONTROL_DISABLE_IMAGE_CLIP">
-<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2ae70247ac8a922f915b849b551e62d8bc"></span><code class="descname">CEPTON_SDK_CONTROL_DISABLE_IMAGE_CLIP</code> = 1 &lt;&lt; 2<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_DISABLE_IMAGE_CLIP" title="Permalink to this definition">¶</a></dt>
+<dt id="c.2">
+<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2ae70247ac8a922f915b849b551e62d8bc"></span><code class="descname">2</code><a class="headerlink" href="#c.2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable marking image clipped points as invalid. </p>
 <p>Does not affect number of points returned. </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_CONTROL_DISABLE_DISTANCE_CLIP">
-<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a4ca172b6637566c3b3c01ddc04377c51"></span><code class="descname">CEPTON_SDK_CONTROL_DISABLE_DISTANCE_CLIP</code> = 1 &lt;&lt; 3<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_DISABLE_DISTANCE_CLIP" title="Permalink to this definition">¶</a></dt>
+<dt id="c.3">
+<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a4ca172b6637566c3b3c01ddc04377c51"></span><code class="descname">3</code><a class="headerlink" href="#c.3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Disable marking distance clipped points as invalid. </p>
 <p>Does not affect number of points returned. </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS">
-<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a9c43c7a84fdf28caaff6f70529c7b6cc"></span><code class="descname">CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS</code> = 1 &lt;&lt; 4<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS" title="Permalink to this definition">¶</a></dt>
+<dt id="c.4">
+<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a9c43c7a84fdf28caaff6f70529c7b6cc"></span><code class="descname">4</code><a class="headerlink" href="#c.4" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable multiple returns. </p>
 <p>When set, <code class="docutils literal notranslate"><a class="reference internal" href="sensors.html#structCeptonSensorInformation_1aabd7efa7950b7ca72b5c2924ac7369b5"><span class="std std-ref"><span class="pre">cepton_sdk::SensorInformation::return_count</span></span></a></code> will indicate the number of returns per laser. Can only be set at sdk initialization. </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER">
-<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a65eef314e2a75c51f33ef4059fe8f778"></span><code class="descname">CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER</code> = 1 &lt;&lt; 5<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER" title="Permalink to this definition">¶</a></dt>
+<dt id="c.5">
+<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a65eef314e2a75c51f33ef4059fe8f778"></span><code class="descname">5</code><a class="headerlink" href="#c.5" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable marking stray points as invalid (measurement noise). </p>
 <p>Uses <code class="docutils literal notranslate"><span class="pre">cepton_sdk::util::StrayFilter</span></code> to mark points invalid.</p>
 <p>Does not affect number of points returned. </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_CONTROL_HOST_TIMESTAMPS">
-<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a4f1cd65b4164aef97a5dd2b5134fb9c1"></span><code class="descname">CEPTON_SDK_CONTROL_HOST_TIMESTAMPS</code> = 1 &lt;&lt; 6<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_HOST_TIMESTAMPS" title="Permalink to this definition">¶</a></dt>
+<dt id="c.6">
+<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a4f1cd65b4164aef97a5dd2b5134fb9c1"></span><code class="descname">6</code><a class="headerlink" href="#c.6" title="Permalink to this definition">¶</a></dt>
 <dd><p>Always use packet timestamps (disable GPS/PTP timestamps). </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_CONTROL_ENABLE_CROSSTALK_FILTER">
-<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a01c2b4e57f7aa9e1322045a53441fcf3"></span><code class="descname">CEPTON_SDK_CONTROL_ENABLE_CROSSTALK_FILTER</code> = 1 &lt;&lt; 7<a class="headerlink" href="#c.CEPTON_SDK_CONTROL_ENABLE_CROSSTALK_FILTER" title="Permalink to this definition">¶</a></dt>
+<dt id="c.7">
+<span class="target" id="cepton__sdk_8h_1afc11d30cbc8b9911ec32ab54a11033c2a01c2b4e57f7aa9e1322045a53441fcf3"></span><code class="descname">7</code><a class="headerlink" href="#c.7" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable marking crosstalk points as invalid. </p>
 </dd></dl>
 
@@ -239,46 +239,46 @@
 
 <dl class="enum">
 <dt id="c._CeptonSDKFrameMode">
-<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8"></span><em class="property">enum </em><code class="descname">_CeptonSDKFrameMode</code><a class="headerlink" href="#c._CeptonSDKFrameMode" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8"></span><code class="descname">_CeptonSDKFrameMode</code><a class="headerlink" href="#c._CeptonSDKFrameMode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Controls frequency of points being reported. </p>
 <p><em>Values:</em></p>
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_FRAME_STREAMING">
-<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8a0b54aecf57a75ce1dd143abbd953a3e4"></span><code class="descname">CEPTON_SDK_FRAME_STREAMING</code> = 0<a class="headerlink" href="#c.CEPTON_SDK_FRAME_STREAMING" title="Permalink to this definition">¶</a></dt>
+<dt id="c.0">
+<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8a0b54aecf57a75ce1dd143abbd953a3e4"></span><code class="descname">0</code><a class="headerlink" href="#c.0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Report points by packet. </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_FRAME_TIMED">
-<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8aad85a803e8773a818616bef34bf0ffd0"></span><code class="descname">CEPTON_SDK_FRAME_TIMED</code> = 1<a class="headerlink" href="#c.CEPTON_SDK_FRAME_TIMED" title="Permalink to this definition">¶</a></dt>
+<dt>
+<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8aad85a803e8773a818616bef34bf0ffd0"></span><code class="descname">1</code></dt>
 <dd><p>Report points at fixed time intervals. </p>
 <p>Interval controlled by <code class="docutils literal notranslate"><a class="reference internal" href="#structCeptonSDKFrameOptions_1a4327f741c427279413d148d6c9630434"><span class="std std-ref"><span class="pre">CeptonSDKFrameOptions::length</span></span></a></code>. </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_FRAME_COVER">
-<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8a46f5816bd59b7dc4bffed18ae1377eaf"></span><code class="descname">CEPTON_SDK_FRAME_COVER</code> = 2<a class="headerlink" href="#c.CEPTON_SDK_FRAME_COVER" title="Permalink to this definition">¶</a></dt>
+<dt>
+<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8a46f5816bd59b7dc4bffed18ae1377eaf"></span><code class="descname">2</code></dt>
 <dd><p>Report points when the field of view is covered once. </p>
 <p><ul class="simple">
-<li>For HR80 series, detects half scan cycle (left-to-right or right-to-left). </li>
+<li><p>For HR80 series, detects half scan cycle (left-to-right or right-to-left). </p></li>
 </ul>
 </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_FRAME_CYCLE">
-<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8aa17e98fb576690154cfae8a285207dff"></span><code class="descname">CEPTON_SDK_FRAME_CYCLE</code> = 3<a class="headerlink" href="#c.CEPTON_SDK_FRAME_CYCLE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8aa17e98fb576690154cfae8a285207dff"></span><code class="descname">3</code></dt>
 <dd><p>Report points when the scan pattern goes through a full cycle. </p>
 <p>Typically 2x longer frame than COVER mode.<ul class="simple">
-<li>For HR80 series, detects full scan cycle (left-to-right-to-left).</li>
-<li>For VISTA series, internally uses TIMED mode. </li>
+<li><p>For HR80 series, detects full scan cycle (left-to-right-to-left).</p></li>
+<li><p>For VISTA series, internally uses TIMED mode. </p></li>
 </ul>
 </p>
 </dd></dl>
 
 <dl class="enumvalue">
-<dt id="c.CEPTON_SDK_FRAME_MODE_MAX">
-<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8a614d7b0b9baf2abfb24452d9f8e9391b"></span><code class="descname">CEPTON_SDK_FRAME_MODE_MAX</code> = 3<a class="headerlink" href="#c.CEPTON_SDK_FRAME_MODE_MAX" title="Permalink to this definition">¶</a></dt>
+<dt>
+<span class="target" id="cepton__sdk_8h_1a041cd7b4595de2c5a05944c11ffd8cc8a614d7b0b9baf2abfb24452d9f8e9391b"></span><code class="descname">3</code></dt>
 <dd></dd></dl>
 
 </dd></dl>

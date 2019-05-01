@@ -1,5 +1,6 @@
 import argparse
 import calendar
+import collections
 import datetime
 import glob
 import os
@@ -39,15 +40,34 @@ _all_builder = AllBuilder(__name__, init=["AllBuilder"])
 
 
 class SimpleTimer:
-    def tic(self):
-        self.t_0 = time.time()
+    class Timer:
+        def __init__(self):
+            self.start = None
 
-    def toc(self, msg=None):
-        elapsed = time.time() - self.t_0
-        if msg is None:
-            print("Elapsed: {}".format(elapsed))
+    def __init__(self):
+        self._timers = collections.defaultdict(SimpleTimer.Timer)
+        self.tic()
+
+    def tic(self, name=""):
+        timer = self._timers[name]
+        timer.start = time.time()
+
+    def toc(self, name="", msg=None):
+        timer = self._timers[name]
+        assert(timer.start is not None)
+        elapsed = time.time() - timer.start
+        if msg is not None:
+            print("[{}] Elapsed: {}s".format(msg, elapsed))
+        elif name:
+            print("[{}] Elapsed: {}s".format(name, elapsed))
         else:
-            print("[{}] Elapsed: {}".format(msg, elapsed))
+            print("Elapsed: {}s".format(elapsed))
+        return elapsed
+
+    def toctic(self,  name="", msg=None):
+        elapsed = self.toc(name, msg)
+        self.tic(name)
+        return elapsed
 
 
 def get_package_path(name):
@@ -104,16 +124,26 @@ def datetime_to_timestamp(d):
     return calendar.timegm(d.timetuple())
 
 
-def get_day_str():
-    return datetime.datetime.now().strftime("%Y-%m-%d")
+def datetime_from_timestamp(t):
+    return datetime.datetime.fromtimestamp(t)
 
 
-def get_sec_str():
-    return datetime.datetime.now().strftime("%H%M%S")
+def get_day_str(d=None):
+    if d is None:
+        d = datetime.datetime.now()
+    return d.strftime("%Y-%m-%d")
 
 
-def get_timestamp_str():
-    return datetime.datetime.now().strftime("{}_{}".format(get_day_str(), get_sec_str()))
+def get_sec_str(d=None):
+    if d is None:
+        d = datetime.datetime.now()
+    return d.strftime("%H%M%S")
+
+
+def get_timestamp_str(d=None):
+    if d is None:
+        d = datetime.datetime.now()
+    return "{}_{}".format(get_day_str(d), get_sec_str(d))
 
 
 @optional_function
@@ -591,7 +621,6 @@ _add_data_directory_path("alg_settings", "cepton_alg_config.json")
 _add_data_directory_path("bag", "ros.bag")
 _add_data_directory_path("clips", "cepton_clips.json")
 _add_data_directory_path("gps", "gps.txt")
-_add_data_directory_path("grid_mask", "grid_mask.json")
 _add_data_directory_path("imu", "imu.txt")
 _add_data_directory_path("odometry", "odometry.txt")
 _add_data_directory_path("pcap", "lidar.pcap")

@@ -1,11 +1,9 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
     <title>Sensors &#8212; cepton_sdk  documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -81,6 +79,11 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="cepton_sdk.SensorModel.SORA_P60">
+<code class="descname">SORA_P60</code><em class="property"> = 11</em><a class="headerlink" href="#cepton_sdk.SensorModel.SORA_P60" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="cepton_sdk.SensorModel.VISTA_860">
 <code class="descname">VISTA_860</code><em class="property"> = 5</em><a class="headerlink" href="#cepton_sdk.SensorModel.VISTA_860" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -88,6 +91,16 @@
 <dl class="attribute">
 <dt id="cepton_sdk.SensorModel.VISTA_860_GEN2">
 <code class="descname">VISTA_860_GEN2</code><em class="property"> = 7</em><a class="headerlink" href="#cepton_sdk.SensorModel.VISTA_860_GEN2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorModel.VISTA_M">
+<code class="descname">VISTA_M</code><em class="property"> = 9</em><a class="headerlink" href="#cepton_sdk.SensorModel.VISTA_M" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="cepton_sdk.SensorModel.VISTA_X">
+<code class="descname">VISTA_X</code><em class="property"> = 10</em><a class="headerlink" href="#cepton_sdk.SensorModel.VISTA_X" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -113,14 +126,11 @@
 <dl class="attribute">
 <dt id="cepton_sdk.SensorInformation.model">
 <code class="descname">model</code><a class="headerlink" href="#cepton_sdk.SensorInformation.model" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#cepton_sdk.SensorModel" title="cepton_sdk.SensorModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">cepton_sdk.SensorModel</span></code></a></td>
-</tr>
-</tbody>
-</table>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#cepton_sdk.SensorModel" title="cepton_sdk.SensorModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">cepton_sdk.SensorModel</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -226,14 +236,11 @@
 <dd><dl class="attribute">
 <dt id="cepton_sdk.Sensor.information">
 <code class="descname">information</code><a class="headerlink" href="#cepton_sdk.Sensor.information" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="#cepton_sdk.SensorInformation" title="cepton_sdk.SensorInformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">cepton_sdk.SensorInformation</span></code></a></td>
-</tr>
-</tbody>
-</table>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#cepton_sdk.SensorInformation" title="cepton_sdk.SensorInformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">cepton_sdk.SensorInformation</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="classmethod">
@@ -282,14 +289,11 @@
 <dt id="cepton_sdk.get_sensors">
 <code class="descclassname">cepton_sdk.</code><code class="descname">get_sensors</code><span class="sig-paren">(</span><em>cls=&lt;class 'cepton_sdk.api.Sensor'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_sensors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_sensors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns attached sensors.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary of sensors, indexed by serial number.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Dictionary of sensors, indexed by serial number.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -313,8 +317,6 @@
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -340,7 +342,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
     </div>
   </body>
 </html>

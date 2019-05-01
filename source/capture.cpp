@@ -342,7 +342,7 @@ SensorError Capture::build_read_index() {
     RecordHeader record_header;
     auto error = read_record_header(m_stream, pointer, record_header);
     if (error) {
-      if (error.code == CEPTON_ERROR_EOF) break;
+      if (error.code() == CEPTON_ERROR_EOF) break;
       return error;
     }
 

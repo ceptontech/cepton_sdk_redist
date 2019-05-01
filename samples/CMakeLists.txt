@@ -3,7 +3,7 @@ CMake file for building samples.
 ]]
 cmake_minimum_required(VERSION 3.1)
 project(cepton_sdk_samples
-  VERSION 0.1
+  VERSION 1.0
   LANGUAGES C CXX)
 
 get_filename_component(CEPTON_SDK_SOURCE_DIR "${PROJECT_SOURCE_DIR}/../" ABSOLUTE)

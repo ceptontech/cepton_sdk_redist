@@ -17,7 +17,7 @@ class FrameAccumulator {
   void on_image_frame(
       cepton_sdk::SensorHandle handle, std::size_t n_points,
       const cepton_sdk::SensorImagePoint* const c_image_points) {
-    std::lock_guard<std::mutex> lock(m_mutex);
+    cepton_sdk::util::LockGuard lock(m_mutex);
 
     auto& image_points = m_image_points_dict[handle];
     image_points.reserve(image_points.size() + n_points);
@@ -43,10 +43,10 @@ class FrameAccumulator {
   }
 
  public:
-  cepton_sdk::util::SimpleConcurrentQueue<Frame> queue;
+  cepton_sdk::util::SingleConsumerQueue<Frame> queue;
 
  private:
-  std::mutex m_mutex;
+  std::timed_mutex m_mutex;
   float m_frame_length = 0.1f;
   int64_t m_timestamp = 0;
   std::map<cepton_sdk::SensorHandle, std::vector<cepton_sdk::SensorImagePoint>>
@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
   callback.listen(&accumulator, &FrameAccumulator::on_image_frame);
 
   while (true) {
-    const auto frame = accumulator.queue.pop(0.1f);
+    const auto frame = accumulator.queue.pop(0.01f);
     if (!frame) continue;
     // Do processing
   }

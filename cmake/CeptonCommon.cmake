@@ -238,17 +238,30 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 
 if(MSVC)
-  list(APPEND CEPTON_FLAGS /wd4996) # Disable depricated warning
-  list(APPEND CEPTON_FLAGS /wd4100) # Disable unused parameter warning
-  list(APPEND CEPTON_FLAGS /wd4800 /wd4267 /wd4244 /wd4018 /wd4309 /wd4305) # Disable type conversion warnings
+  list(APPEND CEPTON_FLAGS
+    /wd4996 # Disable depricated warning
+    /wd4100 # Disable unused warnings
+    /wd4800 /wd4267 /wd4244 /wd4018 /wd4309 /wd4305 # Disable type conversion warnings
+  ) 
 elseif(GCC OR CLANG)
-  list(APPEND CEPTON_FLAGS -Wall) # Enable warnings
-  list(APPEND CEPTON_FLAGS -Wno-sign-compare) # Disable type conversion warnings
-  list(APPEND CEPTON_FLAGS -Wno-missing-field-initializers) # Disable struct initialization warning
-  list(APPEND CEPTON_FLAGS -Wno-unused-parameter -Wno-unused-lambda-capture -Wno-unused-function -Wno-unused-variable -Wno-attributes) # Disable unused warnings
+  list(APPEND CEPTON_FLAGS
+    -Wall # Enable warnings
+    -Wno-sign-compare # Disable type conversion warnings
+    -Wno-missing-field-initializers # Disable struct initialization warning
+    -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-local-typedefs # Disable unused warnings
+    -Wno-attributes
+  ) 
   if(CLANG)
-    list(APPEND CEPTON_FLAGS -Wno-unused-command-line-argument) # Disable extra arguments warning
-    list(APPEND CEPTON_FLAGS -Wno-inconsistent-missing-override)
-    list(APPEND CEPTON_FLAGS -Wno-missing-braces) # Bug in clang
+    list(APPEND CEPTON_FLAGS
+      -Wno-unused-private-field # Disable unused warnings
+      -Wno-unused-command-line-argument # Disable extra arguments warning
+      -Wno-inconsistent-missing-override
+      -Wno-missing-braces # Bug in clang
+      -Wno-unused-lambda-capture # Disable unused warning
+    )
+  elseif(GCC)
+    list(APPEND CEPTON_FLAGS
+      -Wno-terminate
+    )
   endif()
 endif()

@@ -17,6 +17,41 @@
 
 namespace cepton_sdk {
 
+/**
+ * - If `CEPTON_ENABLE_EXCEPTIONS` defined, terminates
+ * - Otherwise, prints error message
+ *
+ * This function is static, just in case CEPTON_ENABLE_EXCEPTIONS is defined
+ * differently in different translation units.
+ */
+static void throw_runtime_assert(const char *const file, int line,
+                                 const char *const condition,
+                                 const char *const msg) {
+  if (msg[0] == '\0') {
+    std::fprintf(stderr,
+                 "AssertionError (file \"%s\", line %i, condition \"%s\")\n",
+                 file, line, condition);
+  } else {
+    std::fprintf(
+        stderr,
+        "AssertionError (file \"%s\", line %i, condition \"%s\"):\n\t%s\n",
+        file, line, condition, msg);
+  }
+#ifdef CEPTON_ENABLE_EXCEPTIONS
+  std::terminate();
+#endif
+}
+
+/// Runtime assert check for catching bugs.
+/**
+ * If condition is false, calls `throw_runtime_assert`.
+ */
+#define CEPTON_RUNTIME_ASSERT(condition, msg)                                \
+  do {                                                                       \
+    if (!(condition))                                                        \
+      cepton_sdk::throw_runtime_assert(__FILE__, __LINE__, #condition, msg); \
+  } while (0)
+
 /// Returns library version.
 /**
  * This is different from `CEPTON_SDK_VERSION`.
@@ -76,43 +111,105 @@ const T *get_error_data(SensorErrorCode error_code, const void *error_data,
  * Getter functions do not return an error, because they cannot fail.
  */
 class SensorError : public std::runtime_error {
+ private:
+  // For keeping track of whether error was checked.
+  class Used {
+   public:
+    Used() = default;
+    Used(const Used &other) { other.value = true; }
+    Used &operator=(const Used &other) {
+      other.value = true;
+      return *this;
+    }
+    Used(Used &&other) { other.value = true; }
+    Used &operator=(Used &&other) {
+      other.value = true;
+      return *this;
+    }
+
+   public:
+    mutable bool value = false;
+  };
+
  public:
   SensorError(SensorErrorCode code_, const char *const msg_)
       : std::runtime_error(create_message(code_, msg_).c_str()),
-        code(code_),
-        msg(msg_) {
-#ifdef CEPTON_INTERNAL
-    if (std::string(name()).empty()) throw std::runtime_error("Invalid error code!");
-#endif
+        m_code(code_),
+        m_msg(msg_) {
+    CEPTON_RUNTIME_ASSERT(get_error_code_name(m_code)[0] != '\0',
+                          "Invalid error code!");
   }
   SensorError(SensorErrorCode code_) : SensorError(code_, "") {}
   SensorError() : SensorError(CEPTON_SUCCESS) {}
 
-  /// Returns `false` if code is `CEPTON_SUCCESS`, true otherwise.
-  operator bool() const { return code; }
-  operator SensorErrorCode() const { return code; }
+  ~SensorError() {
+    CEPTON_RUNTIME_ASSERT(!m_code || m_used.value, "Error not checked!");
+  }
 
-  const char *name() const { return get_error_code_name(code); }
-  bool is_error() const { return is_error_code(code); }
-  bool is_fault() const { return is_fault_code(code); }
+  /// Mark error as checked.
+  void ignore() const { m_used.value = true; }
+
+  /// Returns error message;
+  const std::string &msg() const {
+    m_used.value = true;
+    return m_msg;
+  }
+
+  /// Returns error code
+  SensorErrorCode code() const {
+    m_used.value = true;
+    return m_code;
+  }
+
+  operator SensorErrorCode() const { return code(); }
+
+  /// Returns `false` if code is `CEPTON_SUCCESS`, true otherwise.
+  operator bool() const { return code(); }
+
+  const char *name() const { return get_error_code_name(code()); }
+
+  bool is_error() const { return is_error_code(code()); }
+  bool is_fault() const { return is_fault_code(code()); }
 
  private:
   static std::string create_message(SensorErrorCode code,
                                     const char *const msg) {
-    std::array<char, 1024> result;
+    if (!code) return "";
+    const std::string code_name = get_error_code_name(code);
     if (msg[0] == '\0') {
-      std::snprintf(result.data(), result.size(), "%s",
-                    get_error_code_name(code));
+      return code_name;
     } else {
-      std::snprintf(result.data(), result.size(), "%s: %s",
-                    get_error_code_name(code), msg);
+      return code_name + ": " + std::string(msg);
     }
-    return result.data();
   }
 
+ private:
+  SensorErrorCode m_code;
+  std::string m_msg;
+  mutable Used m_used;
+};
+
+/// Wrapper for adding current context to error stack traces.
+class SensorErrorWrapper {
  public:
-  SensorErrorCode code;
-  std::string msg;
+  SensorErrorWrapper(const char *const context_) : context(context_) {}
+
+  SensorErrorWrapper &operator=(const SensorError &error_) {
+    if (!error_) {
+      error = SensorError();
+      return *this;
+    }
+    const std::string msg = context + "\n\t" + error_.msg();
+    error = SensorError(error_.code(), msg.c_str());
+    return *this;
+  }
+
+  operator bool() const { return error; }
+  operator const SensorError &() const { return error; }
+
+ public:
+  const std::string context;
+  SensorError error;
 };
 
 /// Returns and clears the last sdk error.

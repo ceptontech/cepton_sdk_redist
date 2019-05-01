@@ -32,7 +32,7 @@ class ErrorsListener {
                 size_t error_data_size);
 
  private:
-  std::mutex m_mutex;
+  std::timed_mutex m_mutex;
   std::deque<std::shared_ptr<Error>> m_errors;
   std::shared_ptr<Error> m_queued_error;
 };
@@ -56,7 +56,7 @@ class FramesListener {
                        const CeptonSensorImagePoint *p_image_points);
 
  private:
-  std::mutex m_mutex;
+  std::timed_mutex m_mutex;
   std::deque<std::shared_ptr<Frame>> m_frames;
   std::shared_ptr<Frame> m_queued_frame;
 };

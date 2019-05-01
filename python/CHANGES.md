@@ -1,5 +1,8 @@
 # Cepton SDK Python Release Notes
 
+### Version 1.13 2019-05-01
+* Update common utilities.
+
 ### Version 1.12 2019-03-18
 * Minor bugfixes.
 

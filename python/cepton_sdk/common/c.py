@@ -116,7 +116,7 @@ def convert_bytes_to_ndarray(a_bytes, c_type):
     """Convert numpy bytes array to numpy array"""
     dtype = numpy.dtype(c_type)
     assert (sizeof(c_type) == dtype.itemsize)
-    a = a_bytes.view(dtype)
+    a = numpy.frombuffer(a_bytes, dtype)
     assert (len(a) == len(a_bytes) / sizeof(c_type))
     return a
 
@@ -151,8 +151,7 @@ def unpack_bits(a):
     if a.size == 0:
         return numpy.zeros(list(a.shape) + [a.dtype.itemsize * 8], dtype=bool)
     bits = numpy.unpackbits(a.flatten().view(numpy.uint8)).astype(bool)
-    bits = bits.reshape([a.size, -1, 8])
-    bits = bits[:, :, ::-1]
+    bits = bits.reshape([-1, 8])[:, ::-1]
     bits = bits.reshape(list(a.shape) + [-1])
     return bits
 
@@ -161,9 +160,8 @@ def pack_bits(bits, c_type):
     dtype = numpy.dtype(c_type)
     if bits.size == 0:
         return numpy.zeros(bits.shape[:-1], dtype=dtype)
-    bits_tmp = bits.reshape([-1, bits.shape[-1] / 8, 8])
-    bits_tmp = bits_tmp[:, :, ::-1]
-    a = numpy.packbits(bits_tmp.flatten()).view(dtype)
+    bits = bits_tmp.reshape([-1, 8])[:, ::-1]
+    a = numpy.packbits(bits.flatten()).view(dtype)
     a = numpy.reshape([bits.shape[:-1]])
     return a
 

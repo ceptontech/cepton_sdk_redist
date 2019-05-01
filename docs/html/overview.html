@@ -174,11 +174,11 @@
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p>The Cepton SDK provides the following features</p>
 <ul class="simple">
-<li><strong>Parsing</strong>: parse sensor packets</li>
-<li><strong>Calibration</strong>: apply sensor calibration</li>
-<li><strong>Networking</strong>: listen for sensor packets</li>
-<li><strong>Capture Replay</strong>: read sensor packets from a PCAP file</li>
-<li><strong>Frame Accumulation</strong>: accumulate and output sensor points by frame</li>
+<li><p><strong>Parsing</strong>: parse sensor packets</p></li>
+<li><p><strong>Calibration</strong>: apply sensor calibration</p></li>
+<li><p><strong>Networking</strong>: listen for sensor packets</p></li>
+<li><p><strong>Capture Replay</strong>: read sensor packets from a PCAP file</p></li>
+<li><p><strong>Frame Accumulation</strong>: accumulate and output sensor points by frame</p></li>
 </ul>
 <p>Currently, the Cepton LiDAR packet formats are under active development, and are not publicly available. The SDK is required for <strong>Parsing</strong> and <strong>Calibration</strong>. All other SDK features are optional, and can be done manually by the user.</p>
 <p>For prototyping, it is recommended to start with the high level methods in <a class="reference internal" href="api.html"><span class="doc">API</span></a> and <a class="reference internal" href="utilities.html"><span class="doc">Utilities</span></a>.</p>
@@ -186,9 +186,9 @@
 <h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h2>
 <p>All <code class="code docutils literal notranslate"><span class="pre">int64</span></code> timestamps are microseconds since the Unix epoch (UTC). Point timestamps are based on one of the following sources (the first valid source is used):</p>
 <ol class="arabic simple">
-<li>GPS (NMEA + PPS)</li>
-<li>PTP</li>
-<li>Host PC</li>
+<li><p>GPS (NMEA + PPS)</p></li>
+<li><p>PTP</p></li>
+<li><p>Host PC</p></li>
 </ol>
 <p>All <code class="code docutils literal notranslate"><span class="pre">float</span></code> and <code class="code docutils literal notranslate"><span class="pre">int64</span></code> time differences are seconds (measurement period, replay time, frame length, etc.).</p>
 </div>
@@ -198,26 +198,26 @@
 <p>The returns are as follows:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Strongest signal.</li>
-<li>Furthest signal, if it is not the strongest. Otherwise, the second strongest signal.</li>
+<li><p>Strongest signal.</p></li>
+<li><p>Furthest signal, if it is not the strongest. Otherwise, the second strongest signal.</p></li>
 </ol>
 </div></blockquote>
 </div>
 <div class="section" id="concurrency">
 <h2>Concurrency<a class="headerlink" href="#concurrency" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>If networking is enabled, the sdk creates 2 threads for networking. All callbacks occur in these networking threads.</li>
-<li>If networking is disabled, the sdk does not create any threads. All callbacks occur in the main thread.</li>
-<li>All sdk getter functions are thread safe, and can be called from callbacks. Other sdk functions are not guarunteed to be thread safe, and can cause deadlock if called from callbacks.</li>
+<li><p>If networking is enabled, the sdk creates 2 threads for networking. All callbacks occur in these networking threads.</p></li>
+<li><p>If networking is disabled, the sdk does not create any threads. All callbacks occur in the main thread.</p></li>
+<li><p>All sdk getter functions are thread safe, and can be called from callbacks. Other sdk functions are not guarunteed to be thread safe, and can cause deadlock if called from callbacks.</p></li>
 </ul>
 </div>
 <div class="section" id="minimal-sdk">
 <h2>Minimal SDK<a class="headerlink" href="#minimal-sdk" title="Permalink to this headline">¶</a></h2>
 <p>If desired, the following SDK features can be disabled in the SDK and performed manually by the user:</p>
 <ul class="simple">
-<li>Networking: <a class="reference internal" href="samples/network.html"><span class="doc">Network</span></a>.</li>
-<li>Capture Replay: <a class="reference internal" href="samples/replay.html"><span class="doc">Replay</span></a>.</li>
-<li>Frame Accumulation: <a class="reference internal" href="samples/frame.html"><span class="doc">Frame</span></a>.</li>
+<li><p>Networking: <a class="reference internal" href="samples/network.html"><span class="doc">Network</span></a>.</p></li>
+<li><p>Capture Replay: <a class="reference internal" href="samples/replay.html"><span class="doc">Replay</span></a>.</p></li>
+<li><p>Frame Accumulation: <a class="reference internal" href="samples/frame.html"><span class="doc">Frame</span></a>.</p></li>
 </ul>
 </div>
 </div>
