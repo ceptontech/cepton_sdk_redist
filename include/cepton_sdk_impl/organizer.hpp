@@ -64,40 +64,40 @@ inline void Organizer::organize_points(
   for (int point_index = 0; point_index < num_points_in; point_index++)
   {
     const auto& unorganized_point = unorganized_points[point_index];
-    if (unorganized_point.valid)
+    const auto grid_index = getGridIndex(organized_cloud, unorganized_point.image_x,unorganized_point.image_z);
+
+    int n_return = 0;
+    if (unorganized_point.return_type | CEPTON_RETURN_STRONGEST)
     {
-      const auto grid_index = getGridIndex(organized_cloud, unorganized_point.image_x,unorganized_point.image_z);
-      int n_return = 0;
+      n_return = 0;
+    }
+    else if (n_returns > 1)
+    {
+      n_return = 1;
+    }
 
-      if (unorganized_point.return_type == CEPTON_RETURN_FARTHEST)
-      {
-        n_return = 0;
-      }
-      else if (n_returns > 1
-               && unorganized_point.return_type == CEPTON_RETURN_STRONGEST)
-      {
-        n_return = 1;
-      }
+    if (grid_index.row >=0 && grid_index.col >= 0)
+    {
+      const size_t organized_index = static_cast<size_t>(
+          organized_cloud.getIndex(grid_index.row, grid_index.col, n_return));
 
-      if (grid_index.row >=0 && grid_index.col >= 0)
+      if (!organized_cloud.info_cells[organized_index].occupied_cell ||
+          (unorganized_point.valid &&
+           unorganized_point.timestamp >
+               organized_cloud.points[organized_index].timestamp)) 
       {
-        const size_t organized_index = static_cast<size_t>(organized_cloud.getIndex(grid_index.row, grid_index.col, n_return));
+        organized_cloud.timestamp_start =
+            std::min(organized_cloud.timestamp_start, unorganized_point.timestamp);
+        organized_cloud.timestamp_end =
+            std::max(organized_cloud.timestamp_end, unorganized_point.timestamp);
+        organized_cloud.info_cells[organized_index].occupied_cell = true;
+        organized_cloud.info_cells[organized_index].original_index = point_index;
 
-        if (!organized_cloud.info_cells[organized_index].occupied_cell ||
-            !organized_cloud.points[organized_index].valid ||
-            organized_cloud.points[organized_index].timestamp < unorganized_point.timestamp)
-        {
-          organized_cloud.timestamp_start = std::min(organized_cloud.timestamp_start,unorganized_point.timestamp);
-          organized_cloud.timestamp_end = std::max(organized_cloud.timestamp_end,unorganized_point.timestamp);
-          organized_cloud.points[organized_index] = unorganized_point;
-          organized_cloud.info_cells[organized_index].occupied_cell = true;
-          organized_cloud.info_cells[organized_index].original_index = point_index;
-          if (m_settings.mode == OrganizerMode::CENTER)
-          {
-            ImageXZ image_xz = getXZ(organized_cloud,grid_index.row,grid_index.col);
-            organized_cloud.points[organized_index].image_x = image_xz.X;
-            organized_cloud.points[organized_index].image_z = image_xz.Z;
-          }
+        organized_cloud.points[organized_index] = unorganized_point;
+        if (m_settings.mode == OrganizerMode::CENTER) {
+          ImageXZ image_xz = getXZ(organized_cloud, grid_index.row, grid_index.col);
+          organized_cloud.points[organized_index].image_x = image_xz.X;
+          organized_cloud.points[organized_index].image_z = image_xz.Z;
         }
       }
     }

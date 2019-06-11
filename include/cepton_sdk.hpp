@@ -24,18 +24,18 @@ namespace cepton_sdk {
  * This function is static, just in case CEPTON_ENABLE_EXCEPTIONS is defined
  * differently in different translation units.
  */
-static void throw_runtime_assert(const char *const file, int line,
-                                 const char *const condition,
-                                 const char *const msg) {
-  if (msg[0] == '\0') {
+static void throw_runtime_assert(const std::string &file, int line,
+                                 const std::string &condition,
+                                 const std::string &msg) {
+  if (msg.empty()) {
     std::fprintf(stderr,
                  "AssertionError (file \"%s\", line %i, condition \"%s\")\n",
-                 file, line, condition);
+                 file.c_str(), line, condition.c_str());
   } else {
     std::fprintf(
         stderr,
         "AssertionError (file \"%s\", line %i, condition \"%s\"):\n\t%s\n",
-        file, line, condition, msg);
+        file.c_str(), line, condition.c_str(), msg.c_str());
   }
 #ifdef CEPTON_ENABLE_EXCEPTIONS
   std::terminate();
@@ -109,58 +109,59 @@ const T *get_error_data(SensorErrorCode error_code, const void *error_data,
 /**
  * Implicitly convertible from/to SensorErrorCode.
  * Getter functions do not return an error, because they cannot fail.
+ * Will call `CEPTON_RUNTIME_ASSERT` if nonzero error is not checked (call
+ * `ignore` to manually use error).
  */
 class SensorError : public std::runtime_error {
- private:
-  // For keeping track of whether error was checked.
-  class Used {
-   public:
-    Used() = default;
-    Used(const Used &other) { other.value = true; }
-    Used &operator=(const Used &other) {
-      other.value = true;
-      return *this;
-    }
-    Used(Used &&other) { other.value = true; }
-    Used &operator=(Used &&other) {
-      other.value = true;
-      return *this;
-    }
-
-   public:
-    mutable bool value = false;
-  };
-
  public:
-  SensorError(SensorErrorCode code_, const char *const msg_)
-      : std::runtime_error(create_message(code_, msg_).c_str()),
+  SensorError(SensorErrorCode code_, const std::string &msg_)
+      : std::runtime_error(create_message(code_, msg_)),
         m_code(code_),
         m_msg(msg_) {
-    CEPTON_RUNTIME_ASSERT(get_error_code_name(m_code)[0] != '\0',
-                          "Invalid error code!");
+    if (get_error_code_name(m_code)[0] == '\0') {
+      char *buffer;
+      const int buffer_size =
+          asprintf(&buffer, "Invalid error code: %i", m_code);
+      CEPTON_RUNTIME_ASSERT(false, buffer);
+      free(buffer);
+    }
   }
   SensorError(SensorErrorCode code_) : SensorError(code_, "") {}
   SensorError() : SensorError(CEPTON_SUCCESS) {}
+  ~SensorError() { check(); }
 
-  ~SensorError() {
-    CEPTON_RUNTIME_ASSERT(!m_code || m_used.value, "Error not checked!");
+  SensorError(const SensorError &other) : std::runtime_error(other) {
+    m_code = other.code();
+    m_msg = other.msg();
+  }
+  SensorError &operator=(const SensorError &other) {
+    check();
+    std::runtime_error::operator=(other);
+    m_code = other.code();
+    m_msg = other.msg();
+    m_used = false;
+    return *this;
   }
 
-  /// Mark error as checked.
-  void ignore() const { m_used.value = true; }
+  /// Internal use only.
+  bool used() const { return m_used; }
+
+  /// Mark error as used.
+  void ignore() const { m_used = true; }
 
   /// Returns error message;
   const std::string &msg() const {
-    m_used.value = true;
+    m_used = true;
     return m_msg;
   }
 
   /// Returns error code
   SensorErrorCode code() const {
-    m_used.value = true;
+    m_used = true;
     return m_code;
   }
 
+  /// Implicitly convert to `SensorErrorCode`.
   operator SensorErrorCode() const { return code(); }
 
   /// Returns `false` if code is `CEPTON_SUCCESS`, true otherwise.
@@ -173,7 +174,7 @@ class SensorError : public std::runtime_error {
 
  private:
   static std::string create_message(SensorErrorCode code,
-                                    const char *const msg) {
+                                    const std::string &msg) {
     if (!code) return "";
     const std::string code_name = get_error_code_name(code);
     if (msg[0] == '\0') {
@@ -183,33 +184,49 @@ class SensorError : public std::runtime_error {
     }
   }
 
+  void check() const {
+    if (m_code && !m_used) {
+      char *buffer;
+      const int buffer_size =
+          asprintf(&buffer, "Error not checked: %s", what());
+      CEPTON_RUNTIME_ASSERT(false, buffer);
+      free(buffer);
+    }
+  }
+
  private:
   SensorErrorCode m_code;
   std::string m_msg;
-  mutable Used m_used;
+  mutable bool m_used = false;
 };
 
 /// Wrapper for adding current context to error stack traces.
 class SensorErrorWrapper {
  public:
-  SensorErrorWrapper(const char *const context_) : context(context_) {}
+  SensorErrorWrapper(const std::string &context_) : m_context(context_) {}
 
   SensorErrorWrapper &operator=(const SensorError &error_) {
+    if (enable_accumulation && m_error) return *this;
     if (!error_) {
-      error = SensorError();
+      m_error = SensorError();
       return *this;
     }
-    const std::string msg = context + "\n\t" + error_.msg();
-    error = SensorError(error_.code(), msg.c_str());
+    const std::string msg = m_context + "\n\t" + error_.msg();
+    m_error = SensorError(error_.code(), msg);
     return *this;
   }
 
-  operator bool() const { return error; }
-  operator const SensorError &() const { return error; }
+  operator bool() const { return m_error; }
+  const SensorError &error() const { return m_error; }
+  operator const SensorError &() const { return m_error; }
 
  public:
-  const std::string context;
-  SensorError error;
+  /// If true, store first stored error, and ignore future errors.
+  bool enable_accumulation = false;
+
+ private:
+  const std::string m_context;
+  SensorError m_error;
 };
 
 /// Returns and clears the last sdk error.

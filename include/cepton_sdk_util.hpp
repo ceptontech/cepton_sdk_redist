@@ -24,13 +24,13 @@ namespace util {
 //------------------------------------------------------------------------------
 inline int64_t to_usec(float sec) { return int64_t(sec * 1e6f); }
 inline float from_usec(int64_t usec) { return float(usec) * 1e-6f; }
-static const float PI = 3.14159265359f;
-inline float to_degrees(float val) { return (val * 180.0f / PI); }
-inline float to_radians(float val) { return (val * PI / 180.0f); }
-
 const int64_t second_usec(to_usec(1.0f));
 const int64_t hour_usec(to_usec(60.0f * 60.0f));
 const int64_t hour_sec(3600);
+
+static const float PI = 3.14159265359f;
+inline float to_degrees(float val) { return val * (180.0f / PI); }
+inline float to_radians(float val) { return val * (PI / 180.0f); }
 
 template <typename T>
 inline T square(T x) {
@@ -157,6 +157,7 @@ class SingleConsumerQueue {
 //------------------------------------------------------------------------------
 /// Accumulates errors
 /**
+ * DEPRICATED: use `cepton_sdk::SensorErrorWrapper`.
  * Useful for accumulating non fatal errors.
  * Currently, stores first error.
  */
@@ -192,6 +193,18 @@ inline void convert_image_point_to_point(float image_x, float image_z,
   x = -image_x * ratio;
   y = ratio;
   z = -image_z * ratio;
+}
+/// Convert image point to spherical coordinates. Convention used is the
+/// "mathematics" convention. Refer to this link for a diagram
+/// https://en.wikipedia.org/wiki/Spherical_coordinate_system#/media/File:3D_Spherical_2.svg
+/// Positive azimuth is defined as clockwise rotation around the z-axis
+/// with 0 azimuth pointing along the positive x-axis.
+/// Inclination is defined as the angle from the positive z-axis. Both
+/// inclination and azimuth will always fall in [0, pi)
+inline void convert_image_point_to_polar(float image_x, float image_z,
+                                         float &inclination, float &azimuth) {
+  azimuth = std::atan2(image_x, 1.0f) + (PI / 2.f);
+  inclination = (PI / 2.f) - std::atan2(-image_z, 1.0f);
 }
 
 /// 3d point class.
@@ -233,7 +246,7 @@ struct SensorPoint {
 
 /**
  * @brief The OrganizedCloud struct
- * An organized verison of the cepton point cloud.
+ * An organized version of the cepton point cloud.
  */
 struct OrganizedCloud {
   /**
@@ -272,18 +285,18 @@ struct OrganizedCloud {
     bool occupied_cell = false;
     /**
      * @brief original_index Index of the point that was used to generate the
-     * organizd point. Can be used to match back with orginial data if required.
-     * Should only be use if occupied_cell is true.
+     * organized point. Can be used to match back with orginial data if
+     * required. Should only be use if occupied_cell is true.
      */
     int original_index = -1;
   };
 
   /**
-   * @brief getIndex Returns the index of the point corresponding to the
-   * inputting row, col and return
-   * @param row
-   * @param col
-   * @param n_return
+   * @brief getIndex Returns the index of the point corresponding to the inputed
+   * row, col and return number.
+   * @param[in] row Row index
+   * @param[in] col Col index
+   * @param[in] n_return Return index
    * @return
    */
   int getIndex(int row, int col, int n_return) {
@@ -298,7 +311,7 @@ struct OrganizedCloud {
 
   /**
    * @brief points Vector of organized points.
-   * Stored in Return, Row, Col order
+   * Stored in Return, Row, Col order.
    * So to get a point at row 10, col 15, return 1 would be points[(row * width
    * + col) n_returns + return
    */
@@ -307,10 +320,10 @@ struct OrganizedCloud {
 
 /**
  * @brief The Organizer class
- * Class that performs organization on cepton unorganized points.
+ * Performs organization on cepton unorganized points.
  * Creates an angular grid, places each point within that grid and outputs
- * a point for each location in the grid in a row/col format
- * Thread safe
+ * a point for each location in the grid in a row/col format.
+ * Thread safe.
  * Defaults to a 0.4deg spaced grid
  */
 class Organizer {
@@ -333,9 +346,9 @@ class Organizer {
                        cepton_sdk::util::OrganizedCloud &organized_points);
 
   enum class OrganizerMode {
-    RECENT,  // Output the most recent point from the frame that fell within the
-             // grid
-    CENTER   // Output the center of the grid.  Uses median point distance.
+    RECENT,  ///< Output the most recent point from the frame that fell within
+             ///< the grid
+    CENTER   ///< Output the center of the grid.  Uses median point distance.
   };
 
   struct OrganizerSettings {
@@ -386,16 +399,18 @@ class Organizer {
 
   /**
    * @brief getIndex
-   * @param X
-   * @param Y
-   * @return The index in the grid that Cepton sensor X,Y coordinates match with
+   * @param[in] cloud
+   * @param[in] X
+   * @param[in] Z
+   * @return The index in the grid that Cepton sensor X,Z coordinates match with
    */
   GridIndex getGridIndex(const OrganizedCloud &cloud, float X, float Z);
 
   /**
    * @brief getXZ
-   * @param row
-   * @param col
+   * @param[in] cloud
+   * @param[in] row
+   * @param[in] col
    * @return The Cepton sensor coordinates of a row and column in the grid
    */
   ImageXZ getXZ(const OrganizedCloud &cloud, int row, int col);
@@ -513,6 +528,8 @@ using MemberFunction = void (TClass::*)(TArgs...);
 template <typename... TArgs>
 class Callback {
  public:
+  virtual ~Callback() = default;
+
   /// Clear all listeners.
   void clear() {
     LockGuard lock(m_mutex);
@@ -530,8 +547,13 @@ class Callback {
     return CEPTON_SUCCESS;
   }
   SensorError unlisten(uint64_t id) {
+    SensorErrorWrapper error("cepton_sdk::util::Callback::unlisten");
     LockGuard lock(m_mutex);
-    if (!m_functions.count(id)) return CEPTON_ERROR_INVALID_ARGUMENTS;
+    if (!m_functions.count(id)) {
+      error =
+          SensorError(CEPTON_ERROR_INVALID_ARGUMENTS, "Invalid function id");
+      return error;
+    }
     m_functions.erase(id);
     return CEPTON_SUCCESS;
   }
