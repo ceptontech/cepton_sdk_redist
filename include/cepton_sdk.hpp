@@ -119,11 +119,9 @@ class SensorError : public std::runtime_error {
         m_code(code_),
         m_msg(msg_) {
     if (get_error_code_name(m_code)[0] == '\0') {
-      char *buffer;
-      const int buffer_size =
-          asprintf(&buffer, "Invalid error code: %i", m_code);
+      char buffer[100];
+      std::snprintf(buffer, 100, "Invalid error code: %i", m_code);
       CEPTON_RUNTIME_ASSERT(false, buffer);
-      free(buffer);
     }
   }
   SensorError(SensorErrorCode code_) : SensorError(code_, "") {}
@@ -186,11 +184,9 @@ class SensorError : public std::runtime_error {
 
   void check() const {
     if (m_code && !m_used) {
-      char *buffer;
-      const int buffer_size =
-          asprintf(&buffer, "Error not checked: %s", what());
+      char buffer[1000];
+      std::snprintf(buffer, 1000, "Error not checked: %s", what());
       CEPTON_RUNTIME_ASSERT(false, buffer);
-      free(buffer);
     }
   }
 
