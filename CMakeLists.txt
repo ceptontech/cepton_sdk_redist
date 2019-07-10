@@ -11,22 +11,21 @@ project(cepton_sdk
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include("CeptonCommon")
 
-create_option(BOOL CEPTON_SDK_USE_STATIC TRUE
+create_option(BOOL CEPTON_SDK_USE_STATIC FALSE
     "Use static cepton sdk libraries.")
 
 if(NOT TARGET cepton_sdk::cepton_sdk)
   if(CEPTON_SDK_USE_STATIC)
-      cepton_get_static_library(CEPTON_SDK_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}" "cepton_sdk")
       add_library(cepton_sdk::cepton_sdk STATIC IMPORTED GLOBAL)
+      cepton_import_static_library(cepton_sdk::cepton_sdk "${CMAKE_CURRENT_SOURCE_DIR}" "cepton_sdk")
       set_target_properties(cepton_sdk::cepton_sdk PROPERTIES
         INTERFACE_COMPILE_DEFINITIONS CEPTON_SDK_STATIC
       )
   else()
-      cepton_get_shared_library(CEPTON_SDK_LIBRARY "${CMAKE_CURRENT_SOURCE_DIR}" "cepton_sdk")
       add_library(cepton_sdk::cepton_sdk SHARED IMPORTED GLOBAL)
+      cepton_import_shared_library(cepton_sdk::cepton_sdk "${CMAKE_CURRENT_SOURCE_DIR}" "cepton_sdk")
   endif()
   set_target_properties(cepton_sdk::cepton_sdk PROPERTIES
-    IMPORTED_LOCATION ${CEPTON_SDK_LIBRARY}
     INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
   )
 endif()

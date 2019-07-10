@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
     // Filter stray
     filter.init(sensor_info);
-    filter.run(n_points, image_points.data());
+    filter.run((int)n_points, image_points.data());
   });
 
   // Run

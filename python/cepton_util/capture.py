@@ -35,7 +35,7 @@ def find_interface(network="192.168.0.0/16"):
         raise RuntimeError("No network interface found!")
     if len(interfaces) > 1:
         raise RuntimeError("Multiple network interfaces found!")
-    return interface
+    return interfaces[0]
 
 
 class PCAPCapture(CaptureBase):

@@ -110,7 +110,7 @@ class SingleConsumerQueue {
   void clear() {
     std::lock_guard<std::mutex> lock(m_mutex);
     m_queue = std::queue<std::shared_ptr<T>>();
-    m_size = m_queue.size();
+    m_size = (int)m_queue.size();
   }
 
   int push(const std::shared_ptr<T> &value, int max_size = 0) {
@@ -124,7 +124,7 @@ class SingleConsumerQueue {
           ++n_dropped;
         }
       }
-      m_size = m_queue.size();
+      m_size = (int)m_queue.size();
     }
     m_condition_variable.notify_one();
     return n_dropped;
@@ -141,7 +141,7 @@ class SingleConsumerQueue {
     if (empty()) return nullptr;
     const std::shared_ptr<T> value = m_queue.front();
     m_queue.pop();
-    m_size = m_queue.size();
+    m_size = (int)m_queue.size();
     return value;
   }
 
@@ -219,7 +219,7 @@ struct SensorPoint {
   float intensity;    ///< Diffuse reflectance.
   CeptonSensorReturnType return_type;
 
-#ifdef SIMPLE
+#ifdef CEPTON_SIMPLE
   /// bit flags
   /**
    * 1. `valid`: If `false`, then the distance and intensity are invalid.
@@ -408,17 +408,23 @@ class Organizer {
 
   /**
    * @brief getXZ
-   * @param[in] cloud
+   * @param[in] width
+   * @param[in] height
    * @param[in] row
    * @param[in] col
    * @return The Cepton sensor coordinates of a row and column in the grid
    */
-  ImageXZ getXZ(const OrganizedCloud &cloud, int row, int col);
+  ImageXZ getXZ(int width, int height, int row, int col);
 
   /**
    * @brief m_settings Organizer settings
    */
   OrganizerSettings m_settings;
+
+  /** 
+   * @brief Vector of organized points with distance values of 0
+   */
+  std::vector<CeptonSensorImagePoint> empty_points;
 
   std::mutex m_organizer_mutex;
 };

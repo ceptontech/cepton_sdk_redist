@@ -95,6 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#transforms">Transforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#callbacks">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#frames">Frames</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#organizer">Organizer</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
@@ -475,6 +476,247 @@
 <dd></dd></dl>
 
 </div>
+</dd></dl>
+
+</div>
+<div class="section" id="organizer">
+<h2>Organizer<a class="headerlink" href="#organizer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloudE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloudE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloudE"></span><span id="cepton_sdk::util::OrganizedCloud"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud"></span><em class="property">struct </em><code class="descname">OrganizedCloud</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloudE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The <a class="reference internal" href="#structcepton__sdk_1_1util_1_1OrganizedCloud"><span class="std std-ref">OrganizedCloud</span></a> struct An organized version of the cepton point cloud. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud8getIndexEiii">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud8getIndexEiii"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud8getIndexEiii"></span><span id="cepton_sdk::util::OrganizedCloud::getIndex__i.i.i"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1a0975fc496b37213453e56cab0b3d181b"></span>int <code class="descname">getIndex</code><span class="sig-paren">(</span>int <em>row</em>, int <em>col</em>, int <em>n_return</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud8getIndexEiii" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>getIndex Returns the index of the point corresponding to the inputed row, col and return number. </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p></p>
+</dd>
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">row</span></code>: Row index </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">col</span></code>: Col index </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">n_return</span></code>: Return index </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud15timestamp_startE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud15timestamp_startE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud15timestamp_startE"></span><span id="cepton_sdk::util::OrganizedCloud::timestamp_start__int64_t"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1afca527fbc49e8db0ef88ed1a2f33d380"></span>int64_t <code class="descname">timestamp_start</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud15timestamp_startE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>timestamp_start The time of the oldest point in the cloud </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud13timestamp_endE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud13timestamp_endE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud13timestamp_endE"></span><span id="cepton_sdk::util::OrganizedCloud::timestamp_end__int64_t"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1a2ff64f272a870b996e82c3355e5d5a19"></span>int64_t <code class="descname">timestamp_end</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud13timestamp_endE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>timestamp_end The time of the newest point in the cloud </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud6heightE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud6heightE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud6heightE"></span><span id="cepton_sdk::util::OrganizedCloud::height__i"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1acb4fe84d026a9003e66879842688d545"></span>int <code class="descname">height</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud6heightE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>height Height of the cloud. Represents how many rows there are in the cloud </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud5widthE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud5widthE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud5widthE"></span><span id="cepton_sdk::util::OrganizedCloud::width__i"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1a66b5b5aa1470434ba65b2aaf0ed30507"></span>int <code class="descname">width</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud5widthE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>width Width of the cloud. Represents how many columns there are in the cloud </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud9n_returnsE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud9n_returnsE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud9n_returnsE"></span><span id="cepton_sdk::util::OrganizedCloud::n_returns__i"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1a760064365c02575c411bf0b16f64815b"></span>int <code class="descname">n_returns</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud9n_returnsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>n_returns Number of return represented by the cloud. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud10info_cellsE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud10info_cellsE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud10info_cellsE"></span><span id="cepton_sdk::util::OrganizedCloud::info_cells__std::vector:CellInfo:"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1a392bf2430d74d346969447ea678c721b"></span>std::vector&lt;<a class="reference internal" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfoE" title="cepton_sdk::util::OrganizedCloud::CellInfo">CellInfo</a>&gt; <code class="descname">info_cells</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud10info_cellsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>info_cells Vector of cell info which provide information about the matching points </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud6pointsE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud6pointsE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud6pointsE"></span><span id="cepton_sdk::util::OrganizedCloud::points__std::vector:CeptonSensorImagePoint:"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1a10edab3602ede570c90cc007ab99868e"></span>std::vector&lt;CeptonSensorImagePoint&gt; <code class="descname">points</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud6pointsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>points Vector of organized points. Stored in Return, Row, Col order. So to get a point at row 10, col 15, return 1 would be points[(row * width </p>
+<p><ul class="simple">
+<li><p>col) n_returns + return </p></li>
+</ul>
+</p>
+</dd></dl>
+
+</div>
+<dl class="class">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfoE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud8CellInfoE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud8CellInfoE"></span><span id="cepton_sdk::util::OrganizedCloud::CellInfo"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1_1CellInfo"></span><em class="property">struct </em><code class="descname">CellInfo</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfoE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The <a class="reference internal" href="#structcepton__sdk_1_1util_1_1OrganizedCloud_1_1CellInfo"><span class="std std-ref">CellInfo</span></a> struct. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfo13occupied_cellE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud8CellInfo13occupied_cellE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud8CellInfo13occupied_cellE"></span><span id="cepton_sdk::util::OrganizedCloud::CellInfo::occupied_cell__b"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1_1CellInfo_1a0ee50589fa0266529df92620c330a677"></span>bool <code class="descname">occupied_cell</code> = false<a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfo13occupied_cellE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>occupied_cell Is the cell at this index occupied with a point. If false can’t assume this represents free space. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfo14original_indexE">
+<span id="_CPPv3N10cepton_sdk4util14OrganizedCloud8CellInfo14original_indexE"></span><span id="_CPPv2N10cepton_sdk4util14OrganizedCloud8CellInfo14original_indexE"></span><span id="cepton_sdk::util::OrganizedCloud::CellInfo::original_index__i"></span><span class="target" id="structcepton__sdk_1_1util_1_1OrganizedCloud_1_1CellInfo_1af5407cc1734081acb68cb1a3ba21f053"></span>int <code class="descname">original_index</code> = -1<a class="headerlink" href="#_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfo14original_indexE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>original_index Index of the point that was used to generate the organized point. Can be used to match back with orginial data if required. Should only be use if occupied_cell is true. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv4N10cepton_sdk4util9OrganizerE">
+<span id="_CPPv3N10cepton_sdk4util9OrganizerE"></span><span id="_CPPv2N10cepton_sdk4util9OrganizerE"></span><span id="cepton_sdk::util::Organizer"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer"></span><em class="property">class </em><code class="descname">Organizer</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9OrganizerE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The <a class="reference internal" href="#classcepton__sdk_1_1util_1_1Organizer"><span class="std std-ref">Organizer</span></a> class Performs organization on cepton unorganized points. Creates an angular grid, places each point within that grid and outputs a point for each location in the grid in a row/col format. Thread safe. Defaults to a 0.4deg spaced grid. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Types</p>
+<dl class="enum">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer13OrganizerModeE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer13OrganizerModeE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer13OrganizerModeE"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1a47ad9a62aa44f66e85c9763a07fb6b28"></span><em class="property">enum </em><code class="descname">OrganizerMode</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer13OrganizerModeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><em>Values:</em></p>
+<dl class="enumerator">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer6RECENTE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer6RECENTE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer6RECENTE"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1a47ad9a62aa44f66e85c9763a07fb6b28a68912c9b31ea1bf39e22348a1b33ff26"></span><code class="descname">RECENT</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer6RECENTE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Output the most recent point from the frame that fell within the grid </p>
+</dd></dl>
+
+<dl class="enumerator">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer6CENTERE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer6CENTERE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer6CENTERE"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1a47ad9a62aa44f66e85c9763a07fb6b28ac397289ee45877be0cd49811fe245b4e"></span><code class="descname">CENTER</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer6CENTERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Output the center of the grid. Uses median point distance. </p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Functions</p>
+<dl class="function">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer9OrganizerEN10cepton_sdk17SensorInformationE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer9OrganizerEN10cepton_sdk17SensorInformationE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer9OrganizerEN10cepton_sdk17SensorInformationE"></span><span id="cepton_sdk::util::Organizer::Organizer__cepton_sdk::SensorInformation"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1ae2297bbb699c76884d82024214b8441a"></span><code class="descname">Organizer</code><span class="sig-paren">(</span>cepton_sdk::<a class="reference internal" href="sensors.html#_CPPv4N10cepton_sdk17SensorInformationE" title="cepton_sdk::SensorInformation">SensorInformation</a> <em>sensor_info</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer9OrganizerEN10cepton_sdk17SensorInformationE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#classcepton__sdk_1_1util_1_1Organizer"><span class="std std-ref">Organizer</span></a>. </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sensor_info</span></code>: Sensor info for organizer. Used to set min/max angles </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer15organize_pointsEKiKiPCK22CeptonSensorImagePointRN10cepton_sdk4util14OrganizedCloudE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer15organize_pointsEKiKiPCK22CeptonSensorImagePointRN10cepton_sdk4util14OrganizedCloudE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer15organize_pointsEKiKiPCK22CeptonSensorImagePointRN10cepton_sdk4util14OrganizedCloudE"></span><span id="cepton_sdk::util::Organizer::organize_points__iC.iC.CeptonSensorImagePointCPC.cepton_sdk::util::OrganizedCloudR"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1a73ead715de2ac2534d0e8639fca35b92"></span>void <code class="descname">organize_points</code><span class="sig-paren">(</span><em class="property">const</em> int <em>num_points_in</em>, <em class="property">const</em> int <em>n_returns</em>, <em class="property">const</em> CeptonSensorImagePoint *<em class="property">const</em> <em>unorganized_points</em>, cepton_sdk::util::<a class="reference internal" href="#_CPPv4N10cepton_sdk4util14OrganizedCloudE" title="cepton_sdk::util::OrganizedCloud">OrganizedCloud</a> &amp;<em>organized_points</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer15organize_pointsEKiKiPCK22CeptonSensorImagePointRN10cepton_sdk4util14OrganizedCloudE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>organize_points </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">num_points_in</span></code>: Number of unorganized points </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">n_returns</span></code>: Number of returns </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[in]</span> <span class="pre">unorganized_points</span></code>: Unorganized points to proces </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[out]</span> <span class="pre">organized_points</span></code>: Points in organized form </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer4modeE13OrganizerMode">
+<span id="_CPPv3N10cepton_sdk4util9Organizer4modeE13OrganizerMode"></span><span id="_CPPv2N10cepton_sdk4util9Organizer4modeE13OrganizerMode"></span><span id="cepton_sdk::util::Organizer::mode__OrganizerMode"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1aa7abe0559cb8190ce2914d23221c4f00"></span>void <code class="descname">mode</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N10cepton_sdk4util9Organizer13OrganizerModeE" title="cepton_sdk::util::Organizer::OrganizerMode">OrganizerMode</a> <em>mode</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer4modeE13OrganizerMode" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>mode </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mode</span></code>: Change the mode of the organizer. [RECENT] Points are the most recent which fill within the grid. [CENTER] Points outputted are at the center of the grid. More even spacing but less accurate. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer7binSizeEf">
+<span id="_CPPv3N10cepton_sdk4util9Organizer7binSizeEf"></span><span id="_CPPv2N10cepton_sdk4util9Organizer7binSizeEf"></span><span id="cepton_sdk::util::Organizer::binSize__float"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1adf592c4b216d24f2002d226b1ddfaabd"></span>void <code class="descname">binSize</code><span class="sig-paren">(</span>float <em>bin_size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer7binSizeEf" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>binSize Change the bin size of the organizer </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bin_size</span></code>: The horizontal and vertical bin size to set. In radians </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer8settingsE17OrganizerSettings">
+<span id="_CPPv3N10cepton_sdk4util9Organizer8settingsE17OrganizerSettings"></span><span id="_CPPv2N10cepton_sdk4util9Organizer8settingsE17OrganizerSettings"></span><span id="cepton_sdk::util::Organizer::settings__OrganizerSettings"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1a92c5fcd2ef33d018fefe78f94dd92379"></span>void <code class="descname">settings</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettingsE" title="cepton_sdk::util::Organizer::OrganizerSettings">OrganizerSettings</a> <em>organizer_settings</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer8settingsE17OrganizerSettings" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>settings </p>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">organizer_settings</span></code>: Change organizer settings </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer8settingsEv">
+<span id="_CPPv3N10cepton_sdk4util9Organizer8settingsEv"></span><span id="_CPPv2N10cepton_sdk4util9Organizer8settingsEv"></span><span id="cepton_sdk::util::Organizer::settings"></span><span class="target" id="classcepton__sdk_1_1util_1_1Organizer_1a62ee6df63ff5043ca4813fd9984f180d"></span><a class="reference internal" href="#_CPPv4N10cepton_sdk4util9OrganizerE" title="cepton_sdk::util::Organizer">Organizer</a>::<a class="reference internal" href="#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettingsE" title="cepton_sdk::util::Organizer::OrganizerSettings">OrganizerSettings</a> <code class="descname">settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer8settingsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>settings </p>
+<p><dl class="simple">
+<dt><strong>Return</strong></dt><dd><p>The settings the organizer is using </p>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+</div>
+<dl class="class">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettingsE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer17OrganizerSettingsE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer17OrganizerSettingsE"></span><span id="cepton_sdk::util::Organizer::OrganizerSettings"></span><span class="target" id="structcepton__sdk_1_1util_1_1Organizer_1_1OrganizerSettings"></span><em class="property">struct </em><code class="descname">OrganizerSettings</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettingsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings24horizontal_range_radiansE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer17OrganizerSettings24horizontal_range_radiansE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer17OrganizerSettings24horizontal_range_radiansE"></span><span id="cepton_sdk::util::Organizer::OrganizerSettings::horizontal_range_radians__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1Organizer_1_1OrganizerSettings_1a8ff34eae14fa20536f742bd9008d36f4"></span>float <code class="descname">horizontal_range_radians</code> = to_radians(70.f)<a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings24horizontal_range_radiansE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings22vertical_range_radiansE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer17OrganizerSettings22vertical_range_radiansE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer17OrganizerSettings22vertical_range_radiansE"></span><span id="cepton_sdk::util::Organizer::OrganizerSettings::vertical_range_radians__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1Organizer_1_1OrganizerSettings_1ad94bc9c3a4c4934fbdcc349fad27ad2c"></span>float <code class="descname">vertical_range_radians</code> = to_radians(30.f)<a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings22vertical_range_radiansE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings27horizontal_bin_size_radiansE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer17OrganizerSettings27horizontal_bin_size_radiansE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer17OrganizerSettings27horizontal_bin_size_radiansE"></span><span id="cepton_sdk::util::Organizer::OrganizerSettings::horizontal_bin_size_radians__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1Organizer_1_1OrganizerSettings_1a54b9b424da89a84b241f12d5582a0070"></span>float <code class="descname">horizontal_bin_size_radians</code> = to_radians(0.4f)<a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings27horizontal_bin_size_radiansE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings25vertical_bin_size_radiansE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer17OrganizerSettings25vertical_bin_size_radiansE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer17OrganizerSettings25vertical_bin_size_radiansE"></span><span id="cepton_sdk::util::Organizer::OrganizerSettings::vertical_bin_size_radians__float"></span><span class="target" id="structcepton__sdk_1_1util_1_1Organizer_1_1OrganizerSettings_1ace0e2e1351a163d0e6e0668ca6c3b1dc"></span>float <code class="descname">vertical_bin_size_radians</code> = to_radians(0.4f)<a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings25vertical_bin_size_radiansE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings4modeE">
+<span id="_CPPv3N10cepton_sdk4util9Organizer17OrganizerSettings4modeE"></span><span id="_CPPv2N10cepton_sdk4util9Organizer17OrganizerSettings4modeE"></span><span id="cepton_sdk::util::Organizer::OrganizerSettings::mode__OrganizerMode"></span><span class="target" id="structcepton__sdk_1_1util_1_1Organizer_1_1OrganizerSettings_1ac84f7f3109078705df19e8cda1adcc8e"></span><a class="reference internal" href="#_CPPv4N10cepton_sdk4util9Organizer13OrganizerModeE" title="cepton_sdk::util::Organizer::OrganizerMode">OrganizerMode</a> <code class="descname">mode</code> = <a class="reference internal" href="#_CPPv4N10cepton_sdk4util9Organizer13OrganizerModeE" title="cepton_sdk::util::Organizer::OrganizerMode">OrganizerMode</a>::RECENT<a class="headerlink" href="#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings4modeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </div>

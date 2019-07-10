@@ -11,6 +11,7 @@ list(APPEND CMAKE_MODULE_PATH "${CEPTON_SDK_SOURCE_DIR}/cmake")
 include("CeptonCommon")
 
 if(GCC OR CLANG)
+  add_flags(-Wall)
   add_linker_flags(-pthread)
 endif()
 

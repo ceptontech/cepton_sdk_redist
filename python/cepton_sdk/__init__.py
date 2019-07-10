@@ -9,7 +9,8 @@ def __check_version():
     c_version = cepton_sdk.c.get_version_string().split(".")[:2]
     version = __version__.split(".")[:2]
     if c_version != version:
-        raise RuntimeError("Library versions do not match!")
+        raise RuntimeError(
+            "Library versions do not match: {} != {}".format(c_version, version))
 
 
 try:

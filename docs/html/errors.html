@@ -176,12 +176,12 @@
 <dt id="_CPPv4N10cepton_sdk11SensorErrorE">
 <span id="_CPPv3N10cepton_sdk11SensorErrorE"></span><span id="_CPPv2N10cepton_sdk11SensorErrorE"></span><span id="cepton_sdk::SensorError"></span><span class="target" id="classcepton__sdk_1_1SensorError"></span><em class="property">class </em><code class="descname">SensorError</code> : <em class="property">public</em> runtime_error<a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorErrorE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Error returned by most functions. </p>
-<p>Implicitly convertible from/to SensorErrorCode. Getter functions do not return an error, because they cannot fail. </p>
+<p>Implicitly convertible from/to SensorErrorCode. Getter functions do not return an error, because they cannot fail. Will call <code class="docutils literal notranslate"><span class="pre">CEPTON_RUNTIME_ASSERT</span></code> if nonzero error is not checked (call <code class="docutils literal notranslate"><span class="pre">ignore</span></code> to manually use error). </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
 <dl class="function">
-<dt id="_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodePCKc">
-<span id="_CPPv3N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodePCKc"></span><span id="_CPPv2N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodePCKc"></span><span id="cepton_sdk::SensorError::SensorError__SensorErrorCode.cCPC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a2318d3596f184e41ed47f6a5c8042ee5"></span><code class="descname">SensorError</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>code_</em>, <em class="property">const</em> char *<em class="property">const</em> <em>msg_</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodePCKc" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE">
+<span id="_CPPv3N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE"></span><span id="_CPPv2N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE"></span><span id="cepton_sdk::SensorError::SensorError__SensorErrorCode.ssCR"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a5649dfd31c2531820ef98116e0825eb7"></span><code class="descname">SensorError</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N10cepton_sdk15SensorErrorCodeE" title="cepton_sdk::SensorErrorCode">SensorErrorCode</a> <em>code_</em>, <em class="property">const</em> std::string &amp;<em>msg_</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -200,9 +200,25 @@
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="_CPPv4N10cepton_sdk11SensorError11SensorErrorERK11SensorError">
+<span id="_CPPv3N10cepton_sdk11SensorError11SensorErrorERK11SensorError"></span><span id="_CPPv2N10cepton_sdk11SensorError11SensorErrorERK11SensorError"></span><span id="cepton_sdk::SensorError::SensorError__SensorErrorCR"></span><span class="target" id="classcepton__sdk_1_1SensorError_1abf81ae0cdd992ef259208675c810142c"></span><code class="descname">SensorError</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE" title="cepton_sdk::SensorError::SensorError">SensorError</a> &amp;<em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorERK11SensorError" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N10cepton_sdk11SensorErroraSERK11SensorError">
+<span id="_CPPv3N10cepton_sdk11SensorErroraSERK11SensorError"></span><span id="_CPPv2N10cepton_sdk11SensorErroraSERK11SensorError"></span><span id="cepton_sdk::SensorError::assign-operator__SensorErrorCR"></span><span class="target" id="classcepton__sdk_1_1SensorError_1aca9e065c64b319b3a21866ae34fc69ab"></span><a class="reference internal" href="#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<code class="descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorErroraSERK11SensorError" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK10cepton_sdk11SensorError4usedEv">
+<span id="_CPPv3NK10cepton_sdk11SensorError4usedEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError4usedEv"></span><span id="cepton_sdk::SensorError::usedC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a49d9c5d75f86a592e6d20e3fea102287"></span>bool <code class="descname">used</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError4usedEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Internal use only. </p>
+</dd></dl>
+
+<dl class="function">
 <dt id="_CPPv4NK10cepton_sdk11SensorError6ignoreEv">
 <span id="_CPPv3NK10cepton_sdk11SensorError6ignoreEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError6ignoreEv"></span><span id="cepton_sdk::SensorError::ignoreC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a224013e7b42aca1b5f47c2dc2f3e1454"></span>void <code class="descname">ignore</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError6ignoreEv" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Mark error as checked. </p>
+<dd><p>Mark error as used. </p>
 </dd></dl>
 
 <dl class="function">
@@ -220,7 +236,8 @@
 <dl class="function">
 <dt id="_CPPv4NK10cepton_sdk11SensorErrorcv15SensorErrorCodeEv">
 <span id="_CPPv3NK10cepton_sdk11SensorErrorcv15SensorErrorCodeEv"></span><span id="_CPPv2NK10cepton_sdk11SensorErrorcv15SensorErrorCodeEv"></span><span id="cepton_sdk::SensorError::castto-SensorErrorCode-operatorC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1af2329ded33f75c470c8b245c9031bb5b"></span><code class="descname">operator SensorErrorCode</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorErrorcv15SensorErrorCodeEv" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<dd><p>Implicitly convert to <code class="docutils literal notranslate"><span class="pre">SensorErrorCode</span></code>. </p>
+</dd></dl>
 
 <dl class="function">
 <dt id="_CPPv4NK10cepton_sdk11SensorErrorcvbEv">

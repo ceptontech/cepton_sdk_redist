@@ -284,7 +284,7 @@ inline SensorError get_sensor_information_by_serial_number(
 
 /// Returns serial numbers for all sensors.
 inline std::vector<uint64_t> get_sensor_serial_numbers() {
-  const int n_sensors = get_n_sensors();
+  const int n_sensors = (int)get_n_sensors();
   std::vector<uint64_t> serial_numbers;
   serial_numbers.reserve(n_sensors);
   for (int i = 0; i < n_sensors; ++i) {

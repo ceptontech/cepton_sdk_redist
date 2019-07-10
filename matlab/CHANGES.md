@@ -1,5 +1,8 @@
 # Cepton SDK MATLAB Release Notes
 
+### Version 1.14 2019-06-10
+* Update SDK.
+
 ### Version 1.13 2019-05-01
 * Update SDK.
 

@@ -1,4 +1,4 @@
 /** Undefine macros.
  */
-#undef EXPORT
-#undef DEPRECATED
+#undef CEPTON_EXPORT
+#undef CEPTON_DEPRECATED

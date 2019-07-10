@@ -66,6 +66,11 @@ By default, exports frames to individual files.
 
     # Initialize
     options = {}
+    if args.combine:
+        options.update({
+            "frame_length": 1,
+            "frame_mode": cepton_sdk.FrameMode.TIMED,
+        })
     if args.capture_path is not None:
         options["capture_path"] = fix_path(args.capture_path)
     cepton_sdk.initialize(**options)

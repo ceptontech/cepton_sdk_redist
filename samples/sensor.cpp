@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
   cepton_sdk::api::check_error(cepton_sdk::api::wait(5.0f));
 
   // Get all sensors
-  const int n_sensors = cepton_sdk::get_n_sensors();
+  const int n_sensors = (int)cepton_sdk::get_n_sensors();
   for (int i = 0; i < n_sensors; ++i) {
     cepton_sdk::SensorInformation sensor_info;
     cepton_sdk::api::check_error(

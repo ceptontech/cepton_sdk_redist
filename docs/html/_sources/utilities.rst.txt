@@ -47,3 +47,17 @@ Frames
 .. doxygenclass:: cepton_sdk::util::FrameAccumulator
   :members:
   :undoc-members:
+
+Organizer
+---------
+
+.. See :doc: `samples/advanced/organize`.
+
+.. doxygenstruct:: cepton_sdk::util::OrganizedCloud
+  :members:
+
+.. doxygenclass:: cepton_sdk::util::Organizer
+  :members:
+  :undoc-members:
+
+

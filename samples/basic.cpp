@@ -29,8 +29,6 @@ class FramesListener {
 };
 
 int main(int argc, char **argv) {
-  CEPTON_RUNTIME_ASSERT(argc > 10, "HI");
-
   std::string capture_path;
   if (argc >= 2) capture_path = argv[1];
 

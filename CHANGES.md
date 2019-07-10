@@ -1,5 +1,12 @@
 # Cepton SDK Release Notes
 
+### Version 1.14 2019-06-10
+* Fix cmake redist bugs.
+* Improve support for "Vista-P60".
+* Fix point cloud organizer bugs.
+* Fix unused error checking.
+* Allow speed=0 in cepton_sdk_capture_replay_set_speed() to mean replay without delay.
+
 ### Version 1.13 2019-05-01
 * Add support for Vista-Gen2.
 * Updated product naming: Vista M -> Vista-M90, Vista X -> Vista-X120.

@@ -22,7 +22,7 @@ ANGLE_MIN = -30
 ANGLE_MAX = 30
 
 """Scan speed. Must be in range [1, 10]."""
-SPEED = 3
+SPEED = 2
 
 # ------------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ def main():
 
                 q_1 = transforms3d.quaternions.axangle2quat(
                     [0, 1, 0], -numpy.pi / 2)
-                q_2 = transforms3d.quaternions.axangle2quat([0, 0, 1], -angle)
+                q_2 = transforms3d.quaternions.axangle2quat([0, 0, 1], angle)
                 q = transforms3d.quaternions.qmult(q_2, q_1)
 
                 print("{} {} {} {} 0 0 0".format(q[0], q[1], q[2], q[3]))

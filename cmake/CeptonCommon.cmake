@@ -131,24 +131,6 @@ macro(ADD_EXTERNAL_SUBDIRECTORY source_dir)
   message(STATUS "--------------------------------------------------------------------------------")
 endmacro()
 
-macro(CEPTON_GET_SHARED_LIBRARY result root lib_name)
-  if(WINDOWS)
-    set(${result} "${root}/bin/${OS_NAME}/${lib_name}.dll")
-  elseif(APPLE)
-    set(${result} "${root}/lib/${OS_NAME}/${lib_name}.dylib")
-  elseif(LINUX)
-    set(${result} "${root}/lib/${OS_NAME}/lib${lib_name}.so")
-  endif()
-endmacro()
-
-macro(CEPTON_GET_STATIC_LIBRARY result root lib_name)
-  if(WINDOWS)
-    set(${result} "${root}/lib/${OS_NAME}/${lib_name}.lib")
-  elseif(APPLE OR LINUX)
-    set(${result} "${root}/lib/${OS_NAME}/lib${lib_name}.a")
-  endif()
-endmacro()
-
 # ------------------------------------------------------------------------------
 # Variables
 # ------------------------------------------------------------------------------
@@ -237,31 +219,53 @@ endif()
 # ------------------------------------------------------------------------------
 set(CMAKE_CXX_STANDARD 11)
 
-if(MSVC)
-  list(APPEND CEPTON_FLAGS
-    /wd4996 # Disable depricated warning
-    /wd4100 # Disable unused warnings
-    /wd4800 /wd4267 /wd4244 /wd4018 /wd4309 /wd4305 # Disable type conversion warnings
-  ) 
-elseif(GCC OR CLANG)
-  list(APPEND CEPTON_FLAGS
-    -Wall # Enable warnings
-    -Wno-sign-compare # Disable type conversion warnings
-    -Wno-missing-field-initializers # Disable struct initialization warning
-    -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-local-typedefs # Disable unused warnings
-    -Wno-attributes
-  ) 
-  if(CLANG)
-    list(APPEND CEPTON_FLAGS
-      -Wno-unused-private-field # Disable unused warnings
-      -Wno-unused-command-line-argument # Disable extra arguments warning
-      -Wno-inconsistent-missing-override
-      -Wno-missing-braces # Bug in clang
-      -Wno-unused-lambda-capture # Disable unused warning
-    )
-  elseif(GCC)
-    list(APPEND CEPTON_FLAGS
-      -Wno-terminate
+# ------------------------------------------------------------------------------
+# Libraries
+# ------------------------------------------------------------------------------
+if(WINDOWS)
+  set(CEPTON_SHARED_LIBRARY_EXTENSION ".dll")
+  set(CEPTON_STATIC_LIBRARY_EXTENSION ".lib")
+elseif(APPLE)
+  set(CEPTON_SHARED_LIBRARY_EXTENSION ".dylib")
+  set(CEPTON_STATIC_LIBRARY_EXTENSION ".a")
+elseif(LINUX)
+  set(CEPTON_SHARED_LIBRARY_EXTENSION ".so")
+  set(CEPTON_STATIC_LIBRARY_EXTENSION ".a")
+endif()
+
+macro(CEPTON_GET_SHARED_LIBRARY result root lib_name)
+  if(WINDOWS)
+    set(${result} "${root}/bin/${OS_NAME}/${lib_name}")
+  elseif(APPLE)
+    set(${result} "${root}/lib/${OS_NAME}/${lib_name}")
+  elseif(LINUX)
+    set(${result} "${root}/lib/${OS_NAME}/lib${lib_name}")
+  endif()
+endmacro()
+
+macro(CEPTON_GET_STATIC_LIBRARY result root lib_name)
+  if(WINDOWS)
+    set(${result} "${root}/lib/${OS_NAME}/${lib_name}")
+  elseif(APPLE OR LINUX)
+    set(${result} "${root}/lib/${OS_NAME}/lib${lib_name}")
+  endif()
+endmacro()
+
+macro(CEPTON_IMPORT_SHARED_LIBRARY lib root lib_name)
+  cepton_get_shared_library(cepton_import_shared_library_path "${root}" "${lib_name}")
+  set_target_properties(${lib} PROPERTIES
+    IMPORTED_LOCATION "${cepton_import_shared_library_path}${CEPTON_SHARED_LIBRARY_EXTENSION}"
+  )
+  if(WINDOWS)
+    set_target_properties(${lib} PROPERTIES
+      IMPORTED_IMPLIB "${cepton_import_shared_library_path}.imp.lib"
     )
   endif()
-endif()
+endmacro()
+
+macro(CEPTON_IMPORT_STATIC_LIBRARY lib root lib_name)
+  cepton_get_static_library(cepton_import_static_library_path "${root}" "${lib_name}")
+  set_target_properties(${lib} PROPERTIES
+    IMPORTED_LOCATION "${cepton_import_static_library_path}${CEPTON_STATIC_LIBRARY_EXTENSION}"
+  )
+endmacro()

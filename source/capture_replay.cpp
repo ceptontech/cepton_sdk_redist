@@ -113,7 +113,7 @@ SensorError CaptureReplay::set_enable_loop(bool enable_loop) {
 }
 
 SensorError CaptureReplay::set_speed(float speed) {
-  if ((speed < 1e-6f) || speed > 5.0f)
+  if (speed != 0 && (speed < 1e-6f || speed > 5.0f))
     return SensorError(CEPTON_ERROR_INVALID_ARGUMENTS, "Invalid replay speed!");
 
   return run_paused([&]() {
@@ -205,7 +205,7 @@ SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
     }
   }
 
-  if (enable_sleep) sleep_once();
+  if (enable_sleep && m_speed > 0) sleep_once();
 
   const CeptonSensorHandle handle =
       (CeptonSensorHandle)header.ip_v4 | CEPTON_SENSOR_HANDLE_FLAG_MOCK;

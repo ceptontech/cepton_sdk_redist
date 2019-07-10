@@ -15,8 +15,6 @@ import threading
 import time
 
 import numpy
-import serial
-import serial.tools.list_ports
 
 
 class AllBuilder:
@@ -228,6 +226,7 @@ class BackgroundProcess:
 
 class BackgroundThread:
     def __init__(self, *args, **kwargs):
+        kwargs.setdefault("kwargs", {})
         self.shutdown_event = threading.Event()
         kwargs["kwargs"]["shutdown_event"] = self.shutdown_event
         self.thread = threading.Thread(*args, **kwargs)
@@ -271,6 +270,7 @@ def run_background(func, args=(), kwargs={}):
     thread = BackgroundThread(target=func, args=args, kwargs=kwargs)
     thread.thread.start()
     __local["threads"].append(thread)
+    return thread
 
 
 def check_command(name):

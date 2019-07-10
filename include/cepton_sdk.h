@@ -18,9 +18,9 @@ extern "C" {
 /// API version
 #define CEPTON_SDK_VERSION 18
 
-EXPORT const char *cepton_sdk_get_version_string();
-EXPORT int cepton_sdk_get_version_major();
-EXPORT int cepton_sdk_get_version_minor();
+CEPTON_EXPORT const char *cepton_sdk_get_version_string();
+CEPTON_EXPORT int cepton_sdk_get_version_major();
+CEPTON_EXPORT int cepton_sdk_get_version_minor();
 
 //------------------------------------------------------------------------------
 // Errors
@@ -55,16 +55,18 @@ enum _CeptonSensorErrorCode {
   CEPTON_FAULT_DETECTOR_MALFUNCTION = -1008,
 };
 typedef int32_t CeptonSensorErrorCode;
-EXPORT const char *cepton_get_error_code_name(CeptonSensorErrorCode error_code);
-EXPORT int cepton_is_error_code(CeptonSensorErrorCode error_code);
-EXPORT int cepton_is_fault_code(CeptonSensorErrorCode error_code);
+CEPTON_EXPORT const char *cepton_get_error_code_name(
+    CeptonSensorErrorCode error_code);
+CEPTON_EXPORT int cepton_is_error_code(CeptonSensorErrorCode error_code);
+CEPTON_EXPORT int cepton_is_fault_code(CeptonSensorErrorCode error_code);
 
 /// Returns and clears last sdk error.
 /**
  * `error_msg` is owned by the SDK, and is valid until the next call in the
  * current thread.
  */
-EXPORT CeptonSensorErrorCode cepton_sdk_get_error(const char **error_msg);
+CEPTON_EXPORT CeptonSensorErrorCode
+cepton_sdk_get_error(const char **error_msg);
 
 //------------------------------------------------------------------------------
 // Types
@@ -90,7 +92,7 @@ enum _CeptonSensorModel {
 };
 typedef uint16_t CeptonSensorModel;
 
-struct EXPORT CeptonSensorInformation {
+struct CEPTON_EXPORT CeptonSensorInformation {
   CeptonSensorHandle handle;
   uint64_t serial_number;
   char model_name[28];
@@ -98,7 +100,7 @@ struct EXPORT CeptonSensorInformation {
   uint16_t reserved;
   char firmware_version[28];
 
-#ifdef SIMPLE
+#ifdef CEPTON_SIMPLE
   uint32_t formal_firmware_version;
 #else
   struct {
@@ -126,7 +128,7 @@ struct EXPORT CeptonSensorInformation {
   uint8_t return_count;
   uint8_t segment_count;  ///< Number of image segments
 
-#ifdef SIMPLE
+#ifdef CEPTON_SIMPLE
   uint32_t flags;
 #else
   union {
@@ -139,11 +141,12 @@ struct EXPORT CeptonSensorInformation {
       uint32_t is_calibrated : 1;
       uint32_t is_over_heated : 1;  ///< Hit temperature limit (only available
                                     ///< in Vista Gen2 for now)
+      uint32_t is_sync_firing_enabled : 1;
     };
   };
 #endif
 };
-EXPORT extern const size_t cepton_sensor_information_size;
+CEPTON_EXPORT extern const size_t cepton_sensor_information_size;
 
 enum _CeptonSensorReturnType {
   CEPTON_RETURN_STRONGEST = 1 << 0,
@@ -155,7 +158,7 @@ typedef uint8_t CeptonSensorReturnType;
 /**
  * To convert to 3d point, refer to `cepton_sdk_util.hpp`.
  */
-struct EXPORT CeptonSensorImagePoint {
+struct CEPTON_EXPORT CeptonSensorImagePoint {
   int64_t timestamp;  ///< Unix time [microseconds].
   float image_x;      ///< x image coordinate.
   float distance;     ///< Distance [meters].
@@ -163,7 +166,7 @@ struct EXPORT CeptonSensorImagePoint {
   float intensity;    ///< Diffuse reflectance.
   CeptonSensorReturnType return_type;
 
-#ifdef SIMPLE
+#ifdef CEPTON_SIMPLE
   /// bit flags
   /**
    * 1. `valid`: If `false`, then the distance and intensity are invalid.
@@ -182,7 +185,7 @@ struct EXPORT CeptonSensorImagePoint {
 #endif
   uint8_t reserved[2];
 };
-EXPORT extern const size_t cepton_sensor_image_point_size;
+CEPTON_EXPORT extern const size_t cepton_sensor_image_point_size;
 
 //------------------------------------------------------------------------------
 // Limits to help application to preallocation of buffers
@@ -263,7 +266,7 @@ enum _CeptonSDKFrameMode {
   CEPTON_SDK_FRAME_MODE_MAX = 3
 };
 
-struct EXPORT CeptonSDKFrameOptions {
+struct CEPTON_EXPORT CeptonSDKFrameOptions {
   size_t signature;  ///< Internal use only.
   /// Default: CEPTON_SDK_FRAME_STREAMING.
   CeptonSDKFrameMode mode;
@@ -274,16 +277,16 @@ struct EXPORT CeptonSDKFrameOptions {
    */
   float length;
 };
-EXPORT struct CeptonSDKFrameOptions cepton_sdk_create_frame_options();
+CEPTON_EXPORT struct CeptonSDKFrameOptions cepton_sdk_create_frame_options();
 
 /// SDK initialization options.
-struct EXPORT CeptonSDKOptions {
+struct CEPTON_EXPORT CeptonSDKOptions {
   size_t signature;                ///< Internal use only.
   CeptonSDKControl control_flags;  ///< Default: 0.
   struct CeptonSDKFrameOptions frame;
   uint16_t port;  ///< Default: 8808.
 };
-EXPORT struct CeptonSDKOptions cepton_sdk_create_options();
+CEPTON_EXPORT struct CeptonSDKOptions cepton_sdk_create_options();
 
 typedef void (*FpCeptonSensorErrorCallback)(CeptonSensorHandle handle,
                                             CeptonSensorErrorCode error_code,
@@ -292,26 +295,26 @@ typedef void (*FpCeptonSensorErrorCallback)(CeptonSensorHandle handle,
                                             size_t error_data_size,
                                             void *user_data);
 
-EXPORT int cepton_sdk_is_initialized();  // 1 for true, 0 for false
-EXPORT CeptonSensorErrorCode
+CEPTON_EXPORT int cepton_sdk_is_initialized();  // 1 for true, 0 for false
+CEPTON_EXPORT CeptonSensorErrorCode
 cepton_sdk_initialize(int ver, const struct CeptonSDKOptions *const options,
                       FpCeptonSensorErrorCallback cb, void *const user_data);
-EXPORT CeptonSensorErrorCode cepton_sdk_deinitialize();
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_deinitialize();
 
-EXPORT CeptonSensorErrorCode
+CEPTON_EXPORT CeptonSensorErrorCode
 cepton_sdk_set_control_flags(CeptonSDKControl mask, CeptonSDKControl flags);
-EXPORT CeptonSDKControl cepton_sdk_get_control_flags();
-EXPORT int cepton_sdk_has_control_flag(CeptonSDKControl flag);
+CEPTON_EXPORT CeptonSDKControl cepton_sdk_get_control_flags();
+CEPTON_EXPORT int cepton_sdk_has_control_flag(CeptonSDKControl flag);
 
-EXPORT uint16_t cepton_sdk_get_port();
-EXPORT CeptonSensorErrorCode cepton_sdk_set_port(uint16_t port);
+CEPTON_EXPORT uint16_t cepton_sdk_get_port();
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_set_port(uint16_t port);
 
-EXPORT CeptonSensorErrorCode
+CEPTON_EXPORT CeptonSensorErrorCode
 cepton_sdk_set_frame_options(const struct CeptonSDKFrameOptions *const options);
-EXPORT CeptonSDKFrameMode cepton_sdk_get_frame_mode();
-EXPORT float cepton_sdk_get_frame_length();
+CEPTON_EXPORT CeptonSDKFrameMode cepton_sdk_get_frame_mode();
+CEPTON_EXPORT float cepton_sdk_get_frame_length();
 
-EXPORT CeptonSensorErrorCode cepton_sdk_clear();
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_clear();
 
 //------------------------------------------------------------------------------
 // Points
@@ -320,19 +323,20 @@ typedef void (*FpCeptonSensorImageDataCallback)(
     CeptonSensorHandle handle, size_t n_points,
     const struct CeptonSensorImagePoint *c_points, void *user_data);
 
-EXPORT CeptonSensorErrorCode cepton_sdk_listen_image_frames(
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_listen_image_frames(
     FpCeptonSensorImageDataCallback cb, void *const user_data);
-EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_image_frames();
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_image_frames();
 
 //------------------------------------------------------------------------------
 // Sensors
 //------------------------------------------------------------------------------
-EXPORT size_t cepton_sdk_get_n_sensors();
-EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_handle_by_serial_number(
-    uint64_t serial_number, CeptonSensorHandle *const handle);
-EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_information_by_index(
+CEPTON_EXPORT size_t cepton_sdk_get_n_sensors();
+CEPTON_EXPORT CeptonSensorErrorCode
+cepton_sdk_get_sensor_handle_by_serial_number(uint64_t serial_number,
+                                              CeptonSensorHandle *const handle);
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_information_by_index(
     size_t idx, struct CeptonSensorInformation *const info);
-EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_information(
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_information(
     CeptonSensorHandle handle, struct CeptonSensorInformation *const info);
 
 //------------------------------------------------------------------------------
@@ -344,44 +348,48 @@ typedef void (*FpCeptonNetworkReceiveCallback)(CeptonSensorHandle handle,
                                                size_t buffer_size,
                                                void *user_data);
 
-EXPORT CeptonSensorErrorCode cepton_sdk_listen_network_packet(
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_listen_network_packet(
     FpCeptonNetworkReceiveCallback cb, void *const user_data);
-EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_network_packet();
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_network_packet();
 
 // timestamp is packet receive time in microseconds
-EXPORT CeptonSensorErrorCode cepton_sdk_mock_network_receive(
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_mock_network_receive(
     CeptonSensorHandle handle, int64_t timestamp, const uint8_t *const buffer,
     size_t buffer_size);
 
 //------------------------------------------------------------------------------
 // Capture Replay
 //------------------------------------------------------------------------------
-EXPORT int cepton_sdk_capture_replay_is_open();
-EXPORT CeptonSensorErrorCode
+CEPTON_EXPORT int cepton_sdk_capture_replay_is_open();
+CEPTON_EXPORT CeptonSensorErrorCode
 cepton_sdk_capture_replay_open(const char *const path);
-EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_close();
-EXPORT const char *cepton_sdk_capture_replay_get_filename();
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_close();
+CEPTON_EXPORT const char *cepton_sdk_capture_replay_get_filename();
 
-EXPORT int64_t cepton_sdk_capture_replay_get_start_time();
-EXPORT float cepton_sdk_capture_replay_get_position();
-EXPORT float cepton_sdk_capture_replay_get_length();
-EXPORT int cepton_sdk_capture_replay_is_end();
-DEPRECATED EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_rewind();
-EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_seek(float position);
+CEPTON_EXPORT int64_t cepton_sdk_capture_replay_get_start_time();
+CEPTON_EXPORT float cepton_sdk_capture_replay_get_position();
+CEPTON_EXPORT float cepton_sdk_capture_replay_get_length();
+CEPTON_EXPORT int cepton_sdk_capture_replay_is_end();
+CEPTON_DEPRECATED CEPTON_EXPORT CeptonSensorErrorCode
+cepton_sdk_capture_replay_rewind();
+CEPTON_EXPORT CeptonSensorErrorCode
+cepton_sdk_capture_replay_seek(float position);
 
-EXPORT CeptonSensorErrorCode
+CEPTON_EXPORT CeptonSensorErrorCode
 cepton_sdk_capture_replay_set_enable_loop(int enable_loop);
-EXPORT int cepton_sdk_capture_replay_get_enable_loop();
+CEPTON_EXPORT int cepton_sdk_capture_replay_get_enable_loop();
 
-EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_set_speed(float speed);
-EXPORT float cepton_sdk_capture_replay_get_speed();
+CEPTON_EXPORT CeptonSensorErrorCode
+cepton_sdk_capture_replay_set_speed(float speed);
+CEPTON_EXPORT float cepton_sdk_capture_replay_get_speed();
 
-EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_resume_blocking_once();
-EXPORT CeptonSensorErrorCode
+CEPTON_EXPORT CeptonSensorErrorCode
+cepton_sdk_capture_replay_resume_blocking_once();
+CEPTON_EXPORT CeptonSensorErrorCode
 cepton_sdk_capture_replay_resume_blocking(float duration);
-EXPORT int cepton_sdk_capture_replay_is_running();
-EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_resume();
-EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_pause();
+CEPTON_EXPORT int cepton_sdk_capture_replay_is_running();
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_resume();
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_capture_replay_pause();
 
 #include "cepton_sdk_undef.h"
 

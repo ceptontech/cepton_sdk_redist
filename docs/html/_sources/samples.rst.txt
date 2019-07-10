@@ -23,3 +23,4 @@ Advanced
   samples/replay
   samples/stray
   samples/transform
+  samples/organize

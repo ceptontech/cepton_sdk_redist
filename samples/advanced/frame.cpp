@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
       [&](cepton_sdk::SensorHandle handle, std::size_t n_points,
           const cepton_sdk::SensorImagePoint *const c_image_points) {
         if (handle != sensor_info.handle) return;
-        accumulator.add_points(n_points, c_image_points);
+        accumulator.add_points((int)n_points, c_image_points);
       });
 
   // Listen

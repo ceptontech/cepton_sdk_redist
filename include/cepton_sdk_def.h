@@ -1,33 +1,33 @@
 /** Define macros.
  */
-#ifdef CEPTON_SDK_COMPILING // Export
+#ifdef CEPTON_SDK_COMPILING  // Export
 
 #ifdef _MSC_VER
-#define EXPORT __declspec(dllexport)
+#define CEPTON_EXPORT __declspec(dllexport)
 #elif __GNUC__
-#define EXPORT __attribute__((visibility("default")))
+#define CEPTON_EXPORT __attribute__((visibility("default")))
 #else
-#define EXPORT
+#define CEPTON_EXPORT
 #endif
 
-#elif defined(CEPTON_SDK_STATIC) // Import static
+#elif defined(CEPTON_SDK_STATIC)  // Import static
 
-#define EXPORT
+#define CEPTON_EXPORT
 
-#else // Import shared
+#else  // Import shared
 
 #ifdef _MSC_VER
-#define EXPORT __declspec(dllimport)
+#define CEPTON_EXPORT __declspec(dllimport)
 #else
-#define EXPORT
+#define CEPTON_EXPORT
 #endif
 
 #endif
 
 #if defined(_MSC_VER)
-#define DEPRECATED __declspec(deprecated)
+#define CEPTON_DEPRECATED __declspec(deprecated)
 #elif defined(__GNUC__)
-#define DEPRECATED __attribute__((deprecated))
+#define CEPTON_DEPRECATED __attribute__((deprecated))
 #else
-#define DEPRECATED
+#define CEPTON_DEPRECATED
 #endif

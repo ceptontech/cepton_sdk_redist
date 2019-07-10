@@ -15,6 +15,7 @@ namespace util {
 
 inline Organizer::Organizer(cepton_sdk::SensorInformation sensor_info)
 {
+  m_settings.vertical_range_radians = to_radians(30.f);
   switch(sensor_info.model)
   {
     case HR80W:
@@ -23,12 +24,14 @@ inline Organizer::Organizer(cepton_sdk::SensorInformation sensor_info)
     case VISTA_P60:
       m_settings.horizontal_range_radians = to_radians(70.f);
       break;
+    case VISTA_X120:
+      m_settings.horizontal_range_radians = to_radians(130.f);
+      m_settings.vertical_range_radians = to_radians(40.f);
+      break;
     case HR80T:
     case HR80T_R2:
     default:
-      m_settings.horizontal_range_radians = to_radians(40.f);
-
-    m_settings.vertical_range_radians = to_radians(30.f);
+      m_settings.horizontal_range_radians = to_radians(40.f); 
   }
 
 }
@@ -41,25 +44,25 @@ inline void Organizer::organize_points(
 {
   std::lock_guard<std::mutex> lock(m_organizer_mutex);
 
-  //This list of points we are going to output
-  auto& organized_points = organized_cloud.points;
-  organized_points.clear();
-  organized_cloud.info_cells.clear();
+  // set start and end timestamps to numeric limits
   organized_cloud.timestamp_start = std::numeric_limits<long>::max();
   organized_cloud.timestamp_end = std::numeric_limits<long>::min();
+
+  organized_cloud.width =
+      static_cast<int>(m_settings.horizontal_range_radians /
+                       m_settings.horizontal_bin_size_radians);
+  organized_cloud.height = static_cast<int>(
+      m_settings.vertical_range_radians / m_settings.vertical_bin_size_radians);
   organized_cloud.n_returns = n_returns;
-  //Setup the grid sizing in case it has changed
-  organized_cloud.width = static_cast<int>(
-      (m_settings.horizontal_range_radians / m_settings.horizontal_bin_size_radians));
-  organized_cloud.height =
-      static_cast<int>(m_settings.vertical_range_radians / m_settings.vertical_bin_size_radians);
-  const auto organized_cloud_size = organized_cloud.width * organized_cloud.height;
 
-  //There are n_returned points for each location in the grid
-  organized_points.resize(static_cast<size_t>(organized_cloud_size * n_returns));
+  int cloud_size = organized_cloud.width * organized_cloud.height * n_returns;
 
-  //Initialize each location in the grid as unoccupied with no valid original indice
-  organized_cloud.info_cells.resize(static_cast<size_t>(organized_cloud_size * n_returns));
+  // initialize points
+  organized_cloud.points.resize(cloud_size);
+
+  // initialize info cells
+  organized_cloud.info_cells.clear();
+  organized_cloud.info_cells.resize(cloud_size);
 
   for (int point_index = 0; point_index < num_points_in; point_index++)
   {
@@ -81,23 +84,61 @@ inline void Organizer::organize_points(
       const size_t organized_index = static_cast<size_t>(
           organized_cloud.getIndex(grid_index.row, grid_index.col, n_return));
 
-      if (!organized_cloud.info_cells[organized_index].occupied_cell ||
+      auto& organized_point = organized_cloud.points[organized_index];
+      auto& info_cell = organized_cloud.info_cells[organized_index];
+
+      // If the existing cell is unoccupied populate. If we have a valid point
+      // and it's more recent we always want to populate with it. 
+      if (!info_cell.occupied_cell ||
           (unorganized_point.valid &&
-           unorganized_point.timestamp >
-               organized_cloud.points[organized_index].timestamp)) 
+           organized_point.timestamp < unorganized_point.timestamp)) 
       {
         organized_cloud.timestamp_start =
             std::min(organized_cloud.timestamp_start, unorganized_point.timestamp);
         organized_cloud.timestamp_end =
             std::max(organized_cloud.timestamp_end, unorganized_point.timestamp);
-        organized_cloud.info_cells[organized_index].occupied_cell = true;
-        organized_cloud.info_cells[organized_index].original_index = point_index;
+        info_cell.occupied_cell = true;
+        info_cell.original_index = point_index;
+        
+        // We always populated everything except the image_x and image_z
+        organized_point.timestamp = unorganized_point.timestamp;
+        organized_point.distance = unorganized_point.distance;
+        organized_point.intensity = unorganized_point.intensity;
+        organized_point.return_type = unorganized_point.return_type;
+        organized_point.valid = unorganized_point.valid;
+        organized_point.saturated = unorganized_point.saturated;
 
-        organized_cloud.points[organized_index] = unorganized_point;
-        if (m_settings.mode == OrganizerMode::CENTER) {
-          ImageXZ image_xz = getXZ(organized_cloud, grid_index.row, grid_index.col);
-          organized_cloud.points[organized_index].image_x = image_xz.X;
-          organized_cloud.points[organized_index].image_z = image_xz.Z;
+        // In RECENT mode, populate the image xy points with the unorganized
+        // point for accuracy.
+        if (m_settings.mode == OrganizerMode::RECENT) 
+        {
+          organized_point.image_x = unorganized_point.image_x;
+          organized_point.image_z = unorganized_point.image_z;
+        }
+        else
+        {
+          auto image_xz = getXZ(organized_cloud.width, organized_cloud.height,
+                                grid_index.row, grid_index.col);
+          organized_point.image_x = image_xz.X;
+          organized_point.image_z = image_xz.Z;
+        }
+      }
+    }
+  }
+  for (int row = 0; row < organized_cloud.height; ++row)
+  {
+    for (int col = 0; col < organized_cloud.width; ++col)
+    {
+      for (int n_return = 0; n_return < organized_cloud.n_returns; ++n_return)
+      {
+        int index = organized_cloud.getIndex(row, col, n_return);
+        auto& pt = organized_cloud.points[index];
+        if (pt.distance == 0.f)
+        {
+          ImageXZ image_xz =
+              getXZ(organized_cloud.width, organized_cloud.height, row, col);
+          pt.image_x = image_xz.X;
+          pt.image_z = image_xz.Z;
         }
       }
     }
@@ -128,13 +169,12 @@ inline void Organizer::settings(OrganizerSettings organizer_settings)
   m_settings = organizer_settings;
 }
 
-inline Organizer::ImageXZ Organizer::getXZ(const OrganizedCloud& cloud, int row, int col)
+inline Organizer::ImageXZ Organizer::getXZ(int width, int height, int row, int col)
 {
-   float angle_horizontal = (m_settings.horizontal_range_radians /cloud.width) * ((col + 0.5f) - cloud.width / 2);
-   float angle_vertical = (m_settings.vertical_range_radians /cloud.height) * ((row + 0.5f) - cloud.height / 2);
+   float angle_horizontal = (m_settings.horizontal_range_radians / width) * ((col + 0.5f) - width / 2);
+   float angle_vertical = (m_settings.vertical_range_radians / height) * ((row + 0.5f) - height / 2);
    return {tanf(angle_horizontal),tanf(angle_vertical)};
 }
-
 
 inline Organizer::GridIndex Organizer::getGridIndex(const OrganizedCloud& cloud, float X, float Z)
 {
