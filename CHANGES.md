@@ -1,6 +1,6 @@
 # Cepton SDK Release Notes
 
-### Version 1.14 2019-06-10
+### Version 1.14 2019-07-10
 * Fix cmake redist bugs.
 * Improve support for "Vista-P60".
 * Fix point cloud organizer bugs.
