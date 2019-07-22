@@ -421,7 +421,7 @@ class Organizer {
    */
   OrganizerSettings m_settings;
 
-  /** 
+  /**
    * @brief Vector of organized points with distance values of 0
    */
   std::vector<CeptonSensorImagePoint> empty_points;
@@ -574,7 +574,7 @@ class Callback {
   }
 
   /// Emit callback.
-  void emit(TArgs... args) const {
+  void operator()(TArgs... args) const {
     LockGuard lock(m_mutex);
     for (const auto &iter : m_functions) {
       const auto &func = iter.second;
@@ -582,12 +582,9 @@ class Callback {
     }
   }
 
-  /// Emit callback.
-  void operator()(TArgs... args) const { emit(args...); }
-
   /// Used for registering as c callback.
   static void global_on_callback(TArgs... args, void *const instance) {
-    ((Callback *)instance)->emit(args...);
+    ((Callback *)instance)->operator()(args...);
   }
 
  private:

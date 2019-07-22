@@ -181,7 +181,8 @@ class SensorErrorCallback
                                  const void *const error_data,
                                  size_t error_data_size, void *const instance) {
     ((const SensorErrorCallback *)instance)
-        ->emit(handle, SensorError(error_code, error_msg));
+        ->
+        operator()(handle, SensorError(error_code, error_msg));
   }
 };
 
