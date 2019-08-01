@@ -6,7 +6,7 @@ import setuptools
 if __name__ == "__main__":
     setuptools.setup(
         name="cepton_sdk",
-        version="1.14.0",
+        version="1.14.1",
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
