@@ -32,18 +32,18 @@ class Loader(cepton_util.common.ArgumentParserMixin):
     """
 
     def __init__(self, settings_dir=None, sdk_options={}):
-        settings_dir = InputDataDirectory(settings_dir)
-        self.sensor_clip_manager = load_clips(settings_dir.clips_path)
+        self.settings_dir = InputDataDirectory(settings_dir)
+        self.sensor_clip_manager = load_clips(self.settings_dir.clips_path)
         self.sensor_transform_manager = load_transforms(
-            settings_dir.transforms_path)
-
-        cepton_sdk.api.initialize(**sdk_options)
+            self.settings_dir.transforms_path)
+        self.sdk_options = sdk_options
 
     @classmethod
     def add_arguments(cls, parser):
         group = parser.add_argument_group("Loader")
-        group.add_argument("--capture_path")
-        group.add_argument("--capture_seek")
+        group.add_argument("--capture_path", help="Path to PCAP capture file.")
+        group.add_argument("--capture_seek",
+                           help="Capture file seek position [seconds].")
         group.add_argument("--settings_dir",
                            help="Load settings from directory.")
         return group
@@ -68,10 +68,21 @@ class Loader(cepton_util.common.ArgumentParserMixin):
         }
         return cepton_util.common.process_options(options)
 
-    def process_points(self, points_dict):
-        self.sensor_transform_manager.process_points(points_dict)
-        self.sensor_clip_manager.process_points(points_dict)
+    def initialize(self):
+        cepton_sdk.api.initialize(**self.sdk_options)
+
+    def process_points(self, points_dict, combine=True):
+        points_dict = self.sensor_transform_manager.process_points(points_dict)
+        points_dict = self.sensor_clip_manager.process_points(points_dict)
+        if not combine:
+            return points_dict
         points = cepton_sdk.point.Points.combine(list(points_dict.values()))
+        return points
+
+    def process_sensor_points(self, serial_number, points):
+        self.sensor_transform_manager.process_sensor_points(
+            serial_number, points)
+        self.sensor_clip_manager.process_sensor_points(serial_number, points)
         return points
 
 

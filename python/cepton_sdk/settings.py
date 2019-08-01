@@ -78,6 +78,7 @@ class _ManagerBase:
     def process_points(self, points_dict):
         for sensor_serial_number, points in points_dict.items():
             self.process_sensor_points(sensor_serial_number, points)
+        return points_dict
 
 
 class SensorTransformManager(_ManagerBase):
@@ -109,12 +110,13 @@ class SensorTransformManager(_ManagerBase):
 
     def process_sensor_points(self, sensor_serial_number, points):
         if sensor_serial_number not in self.transforms:
-            return
+            return points
         if len(points) == 0:
-            return
+            return points
 
         transform = self.transforms[sensor_serial_number]
         points.positions[:, :] = transform.apply(points.positions)
+        return points
 
 
 class SensorClip:
@@ -226,11 +228,11 @@ class SensorClipManager(_ManagerBase):
                     sensor_serial_number = int(key)
                 except:
                     continue
-                self.clips[sensor_serial_number] = SensorClip.from_dict(d_tmp)        
+                self.clips[sensor_serial_number] = SensorClip.from_dict(d_tmp)
 
     def process_sensor_points(self, sensor_serial_number, points):
         if len(points) == 0:
-            return
+            return points
 
         is_clipped_list = [
             self.focus_clip.find_points(points),
@@ -241,6 +243,7 @@ class SensorClipManager(_ManagerBase):
                 self.clips[sensor_serial_number].find_points(points))
         is_clipped = numpy.logical_or.reduce(is_clipped_list)
         points.flags[is_clipped, cepton_sdk.PointFlag.VALID] = False
+        return points
 
 
 __all__ = _all_builder.get()

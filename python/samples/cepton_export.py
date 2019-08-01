@@ -14,6 +14,7 @@ import numpy
 import cepton_sdk
 import cepton_sdk.capture_replay
 import cepton_sdk.export
+import cepton_sdk.load
 from cepton_util.common import *
 
 
@@ -26,7 +27,10 @@ def filter_points(points):
 
 
 def process_points(points):
-    # TODO: process points before exporting
+    points = filter_points(points)
+
+    # TODO: add extra processing here
+
     return points
 
 
@@ -43,10 +47,8 @@ By default, exports frames to individual files.
     parser = argparse.ArgumentParser(
         usage="%(prog)s [OPTIONS] output_dir", description=description, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("output_dir", help="Output directory.")
-    parser.add_argument("--capture_path", help="Path to PCAP capture file.")
-    parser.add_argument("--capture_seek", type=float,
-                        help="Capture file seek position [seconds].")
-    parser.add_argument("--combine", action="store_true",
+    cepton_sdk.load.Loader.add_arguments(parser)
+    parser.add_argument("--combine_frames", action="store_true",
                         help="Combine points into single file per sensor.")
     parser.add_argument("--duration", default="0",
                         help="Export duration (if negative, export entire capture file).")
@@ -60,58 +62,62 @@ By default, exports frames to individual files.
     file_type = cepton_sdk.export.PointsFileType[args.format]
     duration = parse_time_hms(args.duration)
 
+    # Create directory
     output_dir = fix_path(remove_extension(args.output_dir))
     shutil.rmtree(output_dir, ignore_errors=True)
     os.makedirs(output_dir)
 
     # Initialize
-    options = {}
-    if args.combine:
-        options.update({
+    loader = cepton_sdk.load.Loader.from_arguments(args)
+    # TODO: uncomment to set custom frame length
+    # loader.sdk_options.update({
+    #     "frame_length": 0.1,
+    #     "frame_mode": cepton_sdk.FrameMode.TIMED,
+    # })
+    if args.combine_frames and ((duration < 0) or (duration > 10)):
+        # Performance optimization
+        loader.sdk_options.update({
             "frame_length": 1,
             "frame_mode": cepton_sdk.FrameMode.TIMED,
         })
-    if args.capture_path is not None:
-        options["capture_path"] = fix_path(args.capture_path)
-    cepton_sdk.initialize(**options)
-    if args.capture_seek is not None:
-        cepton_sdk.capture_replay.seek(args.capture_seek)
+    loader.initialize()
 
+    # Run
     listener = cepton_sdk.FramesListener()
-    if args.combine:
+    if args.combine_frames:
         cepton_sdk.wait(duration)
         points_dict = listener.get_points()
         for serial_number, points_list in points_dict.items():
             points = cepton_sdk.combine_points(points_list)
+            points = loader.process_sensor_points(serial_number, points)
             points = process_points(points)
-            points = filter_points(points)
 
             # Save
             path = os.path.join(output_dir, str(serial_number))
             cepton_sdk.export.save_points(points, path, file_type=file_type)
     else:
         t_0 = cepton_sdk.get_time()
-        i_frame = collections.defaultdict(lambda: 0)
         while True:
             if duration >= 0:
                 if (cepton_sdk.get_time() - t_0) > duration:
                     break
+
             try:
                 points_dict = listener.get_points()
             except:
                 break
+            t = cepton_sdk.get_time()
             for serial_number, points_list in points_dict.items():
                 sensor_dir = os.path.join(output_dir, str(serial_number))
                 if not os.path.isdir(sensor_dir):
                     os.makedirs(sensor_dir)
                 for points in points_list:
+                    points = \
+                        loader.process_sensor_points(serial_number, points)
                     points = process_points(points)
-                    points = filter_points(points)
 
                     # Save
-                    i_frame_tmp = i_frame[serial_number]
-                    i_frame[serial_number] += 1
-                    path = os.path.join(sensor_dir, str(i_frame_tmp))
+                    path = os.path.join(sensor_dir, str(int(1e6 * t)))
                     cepton_sdk.export.save_points(
                         points, path, file_type=file_type)
 
