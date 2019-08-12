@@ -32,8 +32,11 @@ def main():
     speed = args.speed if (args.speed is not None) else 0
     t_length = parse_time_hms(args.t_length)
 
-    # Get points
+    # Initialize
     loader = cepton_sdk.load.Loader.from_arguments(args)
+    loader.initialize()
+
+    # Get points
     listener = cepton_sdk.FramesListener()
     cepton_sdk.wait(t_length)
     points_dict = listener.get_points()

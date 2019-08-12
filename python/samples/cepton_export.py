@@ -45,7 +45,8 @@ By default, exports frames to individual files.
     python3 cepton_export --capture_path lidar.pcap --format CSV --duration -1 points
 """
     parser = argparse.ArgumentParser(
-        usage="%(prog)s [OPTIONS] output_dir", description=description, formatter_class=argparse.RawTextHelpFormatter)
+        usage="%(prog)s [OPTIONS] output_dir", 
+        description=description, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("output_dir", help="Output directory.")
     cepton_sdk.load.Loader.add_arguments(parser)
     parser.add_argument("--combine_frames", action="store_true",

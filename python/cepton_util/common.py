@@ -279,9 +279,7 @@ def check_command(name):
 
 
 def execute_command(cmd_list, background=False, quiet=False, **kwargs):
-    options = {
-        # "check": True,
-    }
+    options = {}
     if quiet:
         options.update({
             "stdout": subprocess.DEVNULL,
@@ -293,6 +291,7 @@ def execute_command(cmd_list, background=False, quiet=False, **kwargs):
         __local["procs"].append(proc)
         return proc
     else:
+        options["check"] = true
         subprocess.run(cmd_list, **options)
 
 
@@ -528,6 +527,8 @@ class InputDataDirectory(DataDirectoryMixin):
             self.path = path.path
         else:
             self.path = path
+        if (self.path is not None) and (not os.path.isdir(self.path)):
+            raise ValueError("Invalid directory: {}".format(self.path))
 
     def _find_file(self, path):
         if path is None:
@@ -569,8 +570,10 @@ class OutputDataDirectory(DataDirectoryMixin, ArgumentParserMixin):
 
     @classmethod
     def add_arguments(cls, parser):
-        parser.add_argument("--duration")
-        parser.add_argument("--name", default="")
+        group = parser.add_argument_group("OutputDataDirectory")
+        group.add_argument("--duration", help="Capture duration.")
+        group.add_argument("--name", default="", help="Capture name.")
+        return group
 
     @classmethod
     def parse_arguments(cls, args):

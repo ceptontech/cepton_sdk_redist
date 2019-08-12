@@ -6,7 +6,7 @@ import setuptools
 if __name__ == "__main__":
     setuptools.setup(
         name="cepton_sdk",
-        version="1.14.1",
+        version="1.14.2",
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
@@ -26,7 +26,10 @@ if __name__ == "__main__":
         ],
         extras_require={
             "capture": [
+                "imageio",
+                "imageio-ffmpeg",
                 "netifaces",
+                "pyqt5",
             ],
             "export": [
                 "laspy",
@@ -42,5 +45,7 @@ if __name__ == "__main__":
             "samples/advanced/cepton_export_sora.py",
             "samples/cepton_export.py",
             "samples/cepton_list_sensors.py",
+            "tools/cepton_capture.py",
+            "tools/cepton_capture_gui.py",
         ]
     )

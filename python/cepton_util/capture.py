@@ -1,8 +1,12 @@
 import datetime
 import ipaddress
+import shutil
+import glob
+import sys
+
+import netifaces
 
 from cepton_util.common import *
-import netifaces
 
 _all_builder = AllBuilder(__name__)
 
@@ -14,12 +18,15 @@ class CaptureBase:
     def __del__(self):
         self.close()
 
+    def close(self):
+        pass
+
     @property
     def length(self):
         return get_timestamp() - self.start_time
 
 
-def find_interface(network="192.168.0.0/16"):
+def find_network_interface(network="192.168.0.0/16"):
     network = ipaddress.ip_network(network)
     interfaces = []
     for interface in netifaces.interfaces():
@@ -40,22 +47,24 @@ def find_interface(network="192.168.0.0/16"):
 
 class PCAPCapture(CaptureBase):
     def __init__(self, output_path, interface=None, **kwargs):
+        if shutil.which("dumpcap") is None:
+            raise RuntimeError("Cannot find dumpcap!")
+
         if interface is None:
-            interface = find_interface()
+            interface = find_network_interface()
 
         super().__init__(**kwargs)
 
         cmd_list = [
             "dumpcap",
-            "-q",
-            "-i", interface,
-            "-w", output_path,
+            "-q",  # Quiet
+            "-i", interface,  # Interface
+            "-w", output_path,  # Output path
             "-P",  # PCAP
             "-B", "1024",  # Buffer size
         ]
         options = {
             "background": True,
-            "quiet": True,
         }
         self._proc = execute_command(cmd_list, **options)
 
@@ -67,27 +76,39 @@ class PCAPCapture(CaptureBase):
         self._proc = None
 
 
+def get_all_camera_devices():
+    if sys.platform.startswith("linux"):
+        return sorted(glob.glob("/dev/video[0-9]"))
+    else:
+        raise NotImplementedError("OS not supported!")
+
+
 class CameraCapture(CaptureBase):
     def __init__(self, video_device, output_path, video_size="1280x720", **kwargs):
+        if shutil.which("dumpcap") is None:
+            raise OSError("Cannot find ffmpeg!")
+        if not sys.platform.startswith("linux"):
+            raise NotImplementedError("OS not supported!")
+
         super().__init__(**kwargs)
 
         cmd_list = [
             "ffmpeg",
-            "-nostdin",
-            "-y",
+            "-loglevel", "error",  # Quiet
+            "-nostdin",  # Disable capturing keyboard
+            "-y",  # Overwrite
             "-f", "v4l2",
-            "-video_size", video_size,
-            "-input_format", "mjpeg",
+            "-video_size", video_size,  # Video size
+            "-input_format", "mjpeg",  # Video codec
             "-ts", "mono2abs",
             "-i", str(video_device),
-            "-c:v", "copy",
-            "-an",
-            "-copyts",
+            "-c:v", "copy",  # Copy video codec
+            "-an",  # No audio
+            "-copyts",  # Copy timestamps
             output_path,
         ]
         options = {
             "background": True,
-            "quiet": True,
         }
         self._proc = execute_command(cmd_list, **options)
 
