@@ -10,5 +10,8 @@ classdef SensorModel < int16
         FUSION_790 (8)
         VISTA_M (9)
         VISTA_X (10)
+        SORA_P60 (11)
+        VISTA_P60 (12)
+        VISTA_X15 (13)
     end
 end
