@@ -40,7 +40,7 @@ class Loader(cepton_util.common.ArgumentParserMixin):
 
     @classmethod
     def add_arguments(cls, parser):
-        group = parser.add_argument_group("Loader")
+        group = parser.add_argument_group("Load")
         group.add_argument("--capture_path", help="Path to PCAP capture file.")
         group.add_argument("--capture_seek",
                            help="Capture file seek position [seconds].")
@@ -51,6 +51,7 @@ class Loader(cepton_util.common.ArgumentParserMixin):
     @classmethod
     def parse_arguments(cls, args):
         capture_path = cepton_util.common.fix_path(args.capture_path)
+
         settings_dir = cepton_util.common.fix_path(args.settings_dir)
         if (settings_dir is None) and (capture_path is not None):
             settings_dir = os.path.dirname(capture_path)

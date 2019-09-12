@@ -22,7 +22,7 @@ namespace util {
 //------------------------------------------------------------------------------
 // Common
 //------------------------------------------------------------------------------
-inline int64_t to_usec(float sec) { return int64_t(sec * 1e6f); }
+inline int64_t to_usec(float sec) { return int64_t(sec * 1e6); }
 inline float from_usec(int64_t usec) { return float(usec) * 1e-6f; }
 const int64_t second_usec(to_usec(1.0f));
 const int64_t hour_usec(to_usec(60.0f * 60.0f));
@@ -56,7 +56,7 @@ class LockGuard {
   explicit LockGuard(std::timed_mutex &mutex) : m_mutex(mutex) {
     m_is_locked = m_mutex.try_lock_for(std::chrono::seconds(1));
     if (m_is_locked) return;
-    CEPTON_RUNTIME_ASSERT(false, "Deadlock!");
+    CEPTON_ASSERT(false, "Deadlock!");
   }
 
   ~LockGuard() {
@@ -505,7 +505,7 @@ class CompiledTransform {
   }
 
  public:
-  std::array<float, 3> translation;
+  std::array<float, 3> translation = {{0, 0, 0}};
 
   // Rotation matrix
   float rotation_m00 = 1.0f;
@@ -744,7 +744,7 @@ class TimedFrameDetector {
 
     if (m_t == 0) m_t = point.timestamp;
     const int64_t t_diff = point.timestamp - m_t;
-    if ((t_diff > int64_t(1e6f * -0.5f)) && (t_diff < int64_t(1e6f * length)))
+    if ((t_diff > int64_t(1e6 * -0.5)) && (t_diff < int64_t(1e6 * length)))
       return false;
 
     frame_found = true;
@@ -834,42 +834,22 @@ class FrameDetector {
   SensorError set_options(const FrameOptions &options) {
     m_options = options;
 
+    // Fix options
     switch (m_options.mode) {
       case CEPTON_SDK_FRAME_COVER:
-        switch (m_sensor_info.model) {
-          case VISTA_860:
-          case VISTA_860_GEN2:
-            m_options.mode = CEPTON_SDK_FRAME_TIMED;
-            m_options.length = 0.075f;
-            break;
-          default:
-            if (!m_cover_detector.is_model_supported) {
-              m_options.mode = CEPTON_SDK_FRAME_TIMED;
-              m_options.length = 0.1f;
-            }
-            break;
-        }
-        break;
       case CEPTON_SDK_FRAME_CYCLE:
-        switch (m_sensor_info.model) {
-          case VISTA_860:
-          case VISTA_860_GEN2:
-            m_options.mode = CEPTON_SDK_FRAME_TIMED;
-            m_options.length = 0.1f;
-            break;
-          default:
-            if (!m_cover_detector.is_model_supported) {
-              m_options.mode = CEPTON_SDK_FRAME_TIMED;
-              m_options.length = 0.1f;
-            }
-            break;
-        }
+        if (!m_cover_detector.is_model_supported) {
+          m_options.mode = CEPTON_SDK_FRAME_TIMED;
+          m_options.length = 0.1f;
+        }        
         break;
     }
 
     switch (m_options.mode) {
       case CEPTON_SDK_FRAME_TIMED:
-        if (!m_options.length) return CEPTON_ERROR_INVALID_ARGUMENTS;
+        if (!m_options.length)
+          return SensorError(CEPTON_ERROR_INVALID_ARGUMENTS,
+                             "Frame length not set!");
         m_timed_detector.length = m_options.length;
         break;
     }

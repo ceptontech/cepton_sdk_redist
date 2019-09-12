@@ -355,7 +355,8 @@ SensorError Capture::build_read_index() {
     pi.pointer = pointer;
     m_read_index.push_back(pi);
 
-    if (record_header.pcap.incl_len == 0) return CEPTON_ERROR_CORRUPT_FILE;
+    if (record_header.pcap.incl_len == 0)
+      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Empty packet");
     pointer += pcap_record_header_size + record_header.pcap.incl_len;
   }
   return CEPTON_SUCCESS;
@@ -369,15 +370,17 @@ SensorError Capture::load_read_index(std::ifstream &f) {
   read_value(f, index_header);
   CHECK_FILE(f)
   if (index_header.version != IndexFileHeader().version)
-    return CEPTON_ERROR_CORRUPT_FILE;
-  if (index_header.n == 0) return CEPTON_ERROR_CORRUPT_FILE;
+    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index version");
+  if (index_header.n == 0)
+    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Index empty");
   m_start_time = index_header.start_time;
 
   // Load index
   m_read_index.resize(index_header.n);
   read_values(f, m_read_index.data(), index_header.n);
   CHECK_FILE(f)
-  if (!is_eof(f)) return CEPTON_ERROR_CORRUPT_FILE;
+  if (!is_eof(f))
+    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Corrupt index file");
 
   // Check start time
   {
@@ -387,7 +390,8 @@ SensorError Capture::load_read_index(std::ifstream &f) {
     if (error) return error;
     const int64_t timestamp = record_header.pcap.ts_sec * util::second_usec +
                               record_header.pcap.ts_usec + m_timestamp_offset;
-    if (m_start_time != timestamp) return CEPTON_ERROR_CORRUPT_FILE;
+    if (m_start_time != timestamp)
+      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index timestamp");
   }
 
   // Check final position
@@ -400,7 +404,8 @@ SensorError Capture::load_read_index(std::ifstream &f) {
                             pcap_record_header_size +
                             record_header.pcap.incl_len;
     m_stream.seekg(pointer);
-    if (!is_eof(m_stream)) return CEPTON_ERROR_CORRUPT_FILE;
+    if (!is_eof(m_stream))
+      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index");
   }
 
   return CEPTON_SUCCESS;

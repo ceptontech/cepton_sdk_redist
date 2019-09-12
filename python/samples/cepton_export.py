@@ -45,12 +45,14 @@ By default, exports frames to individual files.
     python3 cepton_export --capture_path lidar.pcap --format CSV --duration -1 points
 """
     parser = argparse.ArgumentParser(
-        usage="%(prog)s [OPTIONS] output_dir", 
+        usage="%(prog)s [OPTIONS] output_dir",
         description=description, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("output_dir", help="Output directory.")
     cepton_sdk.load.Loader.add_arguments(parser)
     parser.add_argument("--combine_frames", action="store_true",
                         help="Combine points into single file per sensor.")
+    parser.add_argument("--combine_sensors", action="store_true",
+                        help="Combine points into single file per frame.")
     parser.add_argument("--duration", default="0",
                         help="Export duration (if negative, export entire capture file).")
     all_file_types = [x.name for x in cepton_sdk.export.PointsFileType]
@@ -60,13 +62,17 @@ By default, exports frames to individual files.
                         version="cepton_sdk {}".format(cepton_sdk.__version__))
     args = parser.parse_args()
 
+    if args.combine_sensors and (not args.combine_frames):
+        raise NotImplementedError()
+
     file_type = cepton_sdk.export.PointsFileType[args.format]
     duration = parse_time_hms(args.duration)
 
     # Create directory
     output_dir = fix_path(remove_extension(args.output_dir))
-    shutil.rmtree(output_dir, ignore_errors=True)
-    os.makedirs(output_dir)
+    if not (args.combine_sensors and args.combine_frames):
+        shutil.rmtree(output_dir, ignore_errors=True)
+        os.makedirs(output_dir)
 
     # Initialize
     loader = cepton_sdk.load.Loader.from_arguments(args)
@@ -86,39 +92,51 @@ By default, exports frames to individual files.
     # Run
     listener = cepton_sdk.FramesListener()
     if args.combine_frames:
+        # Get points
         cepton_sdk.wait(duration)
         points_dict = listener.get_points()
-        for serial_number, points_list in points_dict.items():
-            points = cepton_sdk.combine_points(points_list)
+        points_list = []
+        for serial_number, points_list_tmp in points_dict.items():
+            # Process points
+            points = cepton_sdk.combine_points(points_list_tmp)
             points = loader.process_sensor_points(serial_number, points)
             points = process_points(points)
+            points_list.append(points)
 
             # Save
-            path = os.path.join(output_dir, str(serial_number))
+            if not args.combine_sensors:
+                path = os.path.join(output_dir, str(serial_number))
+                cepton_sdk.export.save_points(
+                    points, path, file_type=file_type)
+        # Save
+        if args.combine_sensors:
+            path = output_dir
+            points = cepton_sdk.combine_points(points_list)
             cepton_sdk.export.save_points(points, path, file_type=file_type)
     else:
         t_0 = cepton_sdk.get_time()
         while True:
-            if duration >= 0:
-                if (cepton_sdk.get_time() - t_0) > duration:
-                    break
-
+            # Check if done
+            if (duration >= 0) and ((cepton_sdk.get_time() - t_0) > duration):
+                break
+            # Get points
             try:
                 points_dict = listener.get_points()
             except:
                 break
-            t = cepton_sdk.get_time()
             for serial_number, points_list in points_dict.items():
                 sensor_dir = os.path.join(output_dir, str(serial_number))
                 if not os.path.isdir(sensor_dir):
                     os.makedirs(sensor_dir)
                 for points in points_list:
+                    # Process points
                     points = \
                         loader.process_sensor_points(serial_number, points)
                     points = process_points(points)
 
                     # Save
-                    path = os.path.join(sensor_dir, str(int(1e6 * t)))
+                    path = os.path.join(sensor_dir, str(
+                        int(1e6 * cepton_sdk.get_time())))
                     cepton_sdk.export.save_points(
                         points, path, file_type=file_type)
 

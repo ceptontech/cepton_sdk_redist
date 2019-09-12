@@ -9,7 +9,7 @@ from cepton_sdk.common import *
 _all_builder = AllBuilder(__name__)
 
 
-SDK_VERSION = 18
+SDK_VERSION = 19
 
 _module_dir = os.path.dirname(os.path.abspath(__file__))
 lib = load_c_library(_module_dir, "cepton_sdk")
@@ -251,6 +251,7 @@ c_get_frame_length.restype = c_float
 # Sensors
 # ------------------------------------------------------------------------------
 
+
 class C_FirmwareVersion(Structure):
     _fields_ = [
         ('major', c_uint8),
@@ -338,9 +339,6 @@ class C_SensorImagePoint(Structure):
 check_c_size(lib, C_SensorImagePoint, "cepton_sensor_image_point_size")
 
 
-# ------------------------------------------------------------------------------
-# Listen
-# ------------------------------------------------------------------------------
 C_SensorImageDataCallback = \
     CFUNCTYPE(None,
               C_SensorHandle, c_size_t, POINTER(C_SensorImagePoint), c_void_p)
@@ -351,6 +349,21 @@ add_c_error_check(c_listen_image_frames)
 
 c_unlisten_image_frames = lib.cepton_sdk_unlisten_image_frames
 add_c_error_check(c_unlisten_image_frames)
+
+# ------------------------------------------------------------------------------
+# Serial
+# ------------------------------------------------------------------------------
+
+C_SerialReceiveCallback = \
+    CFUNCTYPE(None,
+              C_SensorHandle, c_char_p, c_void_p)
+
+c_listen_serial_lines = lib.cepton_sdk_listen_serial_lines
+c_listen_serial_lines.argtypes = [C_SerialReceiveCallback, c_void_p]
+add_c_error_check(c_listen_serial_lines)
+
+c_unlisten_serial_lines = lib.cepton_sdk_unlisten_serial_lines
+add_c_error_check(c_unlisten_serial_lines)
 
 # ------------------------------------------------------------------------------
 # Capture

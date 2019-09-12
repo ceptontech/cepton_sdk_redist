@@ -4,7 +4,6 @@ Points
 Types
 -----
 
-.. doxygentypedef:: cepton_sdk::SensorImagePoint
 .. doxygenstruct:: CeptonSensorImagePoint
   :members:
   :undoc-members:
@@ -13,5 +12,5 @@ Methods
 -------
 
 .. doxygentypedef:: FpCeptonSensorImageDataCallback
-.. doxygenfunction:: cepton_sdk::listen_image_frames
-.. doxygenfunction:: cepton_sdk::unlisten_image_frames
+.. doxygenfunction:: cepton_sdk_listen_image_frames
+.. doxygenfunction:: cepton_sdk_unlisten_image_frames

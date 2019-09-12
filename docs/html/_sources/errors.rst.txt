@@ -8,13 +8,13 @@ Types
     :members:
     :undoc-members:
 .. doxygenenum:: _CeptonSensorErrorCode
-.. doxygentypedef:: cepton_sdk::SensorErrorCode
 .. doxygentypedef:: CeptonSensorErrorCode
 
 Methods
 -------
 
-.. doxygenfunction:: cepton_sdk::get_error_code_name
-.. doxygenfunction:: cepton_sdk::is_error_code
-.. doxygenfunction:: cepton_sdk::is_fault_code
-.. doxygenfunction:: cepton_sdk::get_error
+.. doxygenfunction:: cepton_get_error_code_name
+.. doxygenfunction:: cepton_is_error_code
+.. doxygenfunction:: cepton_is_fault_code
+
+.. doxygenfunction:: cepton_sdk_get_error

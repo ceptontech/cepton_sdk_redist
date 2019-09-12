@@ -1,14 +1,16 @@
 import platform
 import sys
+import pathlib
 
 import setuptools
 
 if __name__ == "__main__":
     setuptools.setup(
         name="cepton_sdk",
-        version="1.14.2",
+        version=open("cepton_util/VERSION").read().strip(),
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
+        license=open("COPYRIGHT.md").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
         author="Cepton Technologies",
         author_email="support@cepton.com",
@@ -42,7 +44,7 @@ if __name__ == "__main__":
             ],
         },
         scripts=[
-            "samples/advanced/cepton_export_sora.py",
+            "samples/advanced/cepton_export_serial.py",
             "samples/cepton_export.py",
             "samples/cepton_list_sensors.py",
             "tools/cepton_capture.py",

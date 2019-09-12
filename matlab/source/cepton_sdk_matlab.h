@@ -1,15 +1,23 @@
 #ifndef CEPTON_SDK_MATLAB_H
 #define CEPTON_SDK_MATLAB_H
 
+#ifndef CEPTON_SIMPLE
 #define CEPTON_SIMPLE
+#endif
 #include "cepton_sdk.h"
-#undef CEPTON_SIMPLE
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include "cepton_sdk_def.h"
+
+#ifndef CEPTON_EXPORT
+#define CEPTON_EXPORT
+#endif
+#ifndef CEPTON_DEPRECATED
+#define CEPTON_DEPRECATED
+#endif
 
 /*
  * Duplicating some functions to provide interface for MATLAB.

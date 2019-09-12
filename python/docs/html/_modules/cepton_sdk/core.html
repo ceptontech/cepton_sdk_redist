@@ -205,10 +205,10 @@
 
     <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_c_on_frame</span> <span class="o">=</span> \
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_on_callback</span> <span class="o">=</span> \
             <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_SensorImageDataCallback</span><span class="p">(</span>
                 <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_frame</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
-        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_listen_image_frames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_on_frame</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_listen_image_frames</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_on_callback</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">deinitialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
@@ -226,6 +226,34 @@
 
 <span class="n">_frames_callback</span> <span class="o">=</span> <span class="n">_FramesCallback</span><span class="p">()</span>
 
+
+<span class="k">class</span> <span class="nc">_SerialLinesCallback</span><span class="p">(</span><span class="n">_Callback</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deinitialize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_c_on_callback</span> <span class="o">=</span> \
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">C_SerialReceiveCallback</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_line</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_listen_serial_lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_c_on_callback</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">deinitialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">c_unlisten_serial_lines</span><span class="p">()</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_on_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_handle</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+        <span class="n">sensor_info</span> <span class="o">=</span> \
+            <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">sensor</span><span class="o">.</span><span class="n">get_sensor_information_by_handle</span><span class="p">(</span><span class="n">sensor_handle</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_on_callback</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+
+
+<span class="n">_serial_lines_callback</span> <span class="o">=</span> <span class="n">_SerialLinesCallback</span><span class="p">()</span>
+
+
 <span class="n">__all__</span> <span class="o">=</span> <span class="n">_all_builder</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
 </pre></div>
 
@@ -235,10 +263,10 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -260,7 +288,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
     </div>
   </body>
 </html>

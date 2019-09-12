@@ -19,12 +19,12 @@ inline Organizer::Organizer(cepton_sdk::SensorInformation sensor_info)
   switch(sensor_info.model)
   {
     case HR80W:
-    case VISTA_860:
     case VISTA_860_GEN2:
     case VISTA_P60:
       m_settings.horizontal_range_radians = to_radians(70.f);
       break;
     case VISTA_X120:
+    case VISTA_X15:
       m_settings.horizontal_range_radians = to_radians(130.f);
       m_settings.vertical_range_radians = to_radians(40.f);
       break;

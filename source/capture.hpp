@@ -78,7 +78,7 @@ class Capture {
   SensorError next_packet(PacketHeader &header, const uint8_t *&data);
   SensorError append_packet(const PacketHeader &header, const uint8_t *data);
 
-  void rewind() { read_file_header(); }
+  void rewind() { (void)read_file_header(); }
 
  private:
   SensorError open_for_read_impl(const std::string &filename);

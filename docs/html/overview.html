@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Errors" href="errors.html" />
+    <link rel="next" title="Samples" href="samples.html" />
     <link rel="prev" title="Cepton SDK" href="index.html" /> 
 </head>
 
@@ -82,21 +82,24 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#timestamps">Timestamps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#multiple-returns">Multiple Returns</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#concurrency">Concurrency</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#minimal-sdk">Minimal SDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sensor-fusion">Sensor Fusion</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sensors.html">Sensors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="points.html">Points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serial.html">Serial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="capture_replay.html">Capture Replay</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c++.html">C++</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
-<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
 </ul>
 
             
@@ -158,7 +161,7 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="errors.html" class="btn btn-neutral float-right" title="Errors" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="samples.html" class="btn btn-neutral float-right" title="Samples" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Cepton SDK" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -181,10 +184,14 @@
 <li><p><strong>Frame Accumulation</strong>: accumulate and output sensor points by frame</p></li>
 </ul>
 <p>Currently, the Cepton LiDAR packet formats are under active development, and are not publicly available. The SDK is required for <strong>Parsing</strong> and <strong>Calibration</strong>. All other SDK features are optional, and can be done manually by the user.</p>
-<p>For prototyping, it is recommended to start with the high level methods in <a class="reference internal" href="api.html"><span class="doc">API</span></a> and <a class="reference internal" href="utilities.html"><span class="doc">Utilities</span></a>.</p>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>To start, take a look at <a class="reference internal" href="samples.html"><span class="doc">Samples</span></a>. The sample code covers most common use cases.</p>
+<p>For prototyping, it is recommended to use the high level C++ API (<a class="reference internal" href="c++.html"><span class="doc">C++</span></a>, <a class="reference internal" href="utilities.html"><span class="doc">Utilities</span></a>).</p>
+</div>
 <div class="section" id="timestamps">
 <h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h2>
-<p>All <code class="code docutils literal notranslate"><span class="pre">int64</span></code> timestamps are microseconds since the Unix epoch (UTC). Point timestamps are based on one of the following sources (the first valid source is used):</p>
+<p>All <code class="code docutils literal notranslate"><span class="pre">int64</span></code> timestamps are microseconds since the Unix epoch (UTC). All <code class="code docutils literal notranslate"><span class="pre">float</span></code> timestamps are time differences measured in seconds. Point timestamps are based on one of the following sources (the first valid source is used):</p>
 <ol class="arabic simple">
 <li><p>GPS (NMEA + PPS)</p></li>
 <li><p>PTP</p></li>
@@ -220,6 +227,10 @@
 <li><p>Frame Accumulation: <a class="reference internal" href="samples/frame.html"><span class="doc">Frame</span></a>.</p></li>
 </ul>
 </div>
+<div class="section" id="sensor-fusion">
+<h2>Sensor Fusion<a class="headerlink" href="#sensor-fusion" title="Permalink to this headline">¶</a></h2>
+<p>Cepton sensors do not have a concept of a frame boundaries. This is especially useful with multiple sensors, since there is no need to worry about frame synchronization between sensors. We recommend choosing a desired frame length, and collecting data for all sensors simultaneously (<a class="reference internal" href="samples/process_single.html"><span class="doc">Process Single</span></a>, <a class="reference internal" href="samples/process_multi.html"><span class="doc">Process Multi</span></a>). Longer frame lengths will allow for higher point density per frame, but higher latency. A frame length of ~0.1s (10Hz) is recommended for most applications.</p>
+</div>
 </div>
 
 
@@ -230,7 +241,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="errors.html" class="btn btn-neutral float-right" title="Errors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="samples.html" class="btn btn-neutral float-right" title="Samples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="Cepton SDK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -84,6 +84,7 @@ def initialize(capture_path=None, capture_seek=0, control_flags=0,
         options["port"] = port
     cepton_sdk.core._manager.initialize(**options)
     cepton_sdk.core._frames_callback.initialize()
+    cepton_sdk.core._serial_lines_callback.initialize()
 
     if capture_path is not None:
         open_replay(capture_path, capture_seek=capture_seek)
@@ -139,16 +140,19 @@ def _wait_on_func(func, timeout=None):
 class _ListenerBase:
     def __init__(self):
         self._lock = threading.Lock()
-        self._callback_id = self._frames_callback().listen(self._on_points)
+        self._callback_id = self._callback().listen(self._on_callback)
 
     def __del__(self):
         try:
-            self._frames_callback().unlisten(self._callback_id)
+            self._callback().unlisten(self._callback_id)
         except:
             pass
 
+    def _on_callback(self):
+        raise NotImplementedError()
 
-class _FramesListener(_ListenerBase):
+
+class FramesListener(_ListenerBase):
     """Listener for getting all sensor frames."""
 
     def __init__(self):
@@ -156,16 +160,19 @@ class _FramesListener(_ListenerBase):
         self._points_dict = collections.defaultdict(list)
         super().__init__()
 
-    def reset(self):
-        with self._lock:
-            self._i_frame_dict = collections.defaultdict(lambda: 0)
-            self._points_dict = collections.defaultdict(list)
+    def _callback(self):
+        return cepton_sdk.core._frames_callback
 
-    def _on_points(self, sensor_info, points):
+    def _on_callback(self, sensor_info, points):
         with self._lock:
             self._i_frame_dict[sensor_info.serial_number] += 1
             if self._i_frame_dict[sensor_info.serial_number] > 2:
                 self._points_dict[sensor_info.serial_number].append(points)
+
+    def reset(self):
+        with self._lock:
+            self._i_frame_dict = collections.defaultdict(lambda: 0)
+            self._points_dict = collections.defaultdict(list)
 
     def has_points(self):
         with self._lock:
@@ -182,25 +189,28 @@ class _FramesListener(_ListenerBase):
         return self._get_points()
 
 
-class _SensorFramesListener(_ListenerBase):
+class SensorFramesListener(_ListenerBase):
     def __init__(self, serial_number):
         self._serial_number = serial_number
         self._i_frame = 0
         self._points_list = []
         super().__init__()
 
-    def reset(self):
-        with self._lock:
-            self._i_frame = 0
-            self._points_list = []
+    def _callback(self):
+        return cepton_sdk.core._frames_callback
 
-    def _on_points(self, sensor_info, points):
+    def _on_callback(self, sensor_info, points):
         with self._lock:
             if sensor_info.serial_number != self._serial_number:
                 return
             self._i_frame += 1
             if self._i_frame > 2:
                 self._points_list.append(points)
+
+    def reset(self):
+        with self._lock:
+            self._i_frame = 0
+            self._points_list = []
 
     def has_points(self):
         with self._lock:
@@ -215,20 +225,6 @@ class _SensorFramesListener(_ListenerBase):
     def get_points(self, **kwargs):
         _wait_on_func(self.has_points, **kwargs)
         return self._get_points()
-
-
-class _ListenerMixin:
-    @classmethod
-    def _frames_callback(cls):
-        return cepton_sdk.core._frames_callback
-
-
-class FramesListener(_FramesListener, _ListenerMixin):
-    pass
-
-
-class SensorFramesListener(_SensorFramesListener, _ListenerMixin):
-    pass
 
 
 class Sensor:
@@ -297,6 +293,33 @@ def get_sensors(cls=Sensor):
         sensor = cls.create_by_index(i_sensor)
         sensors_dict[sensor.serial_number] = sensor
     return sensors_dict
+
+
+def listen_serial_lines(callback):
+    return cepton_sdk.core._serial_lines_callback.listen(callback)
+
+
+def unlisten_serial_lines(callback_id):
+    cepton_sdk.core._serial_lines_callback.unlisten(callback_id)
+
+
+class SerialLinesListener(_ListenerBase):
+    def __init__(self):
+        self._lines_dict = collections.defaultdict(list)
+        super().__init__()
+
+    def _callback(self):
+        return cepton_sdk.core._serial_lines_callback
+
+    def _on_callback(self, sensor_info, line):
+        with self._lock:
+            self._lines_dict[sensor_info.serial_number].append(line)
+
+    def get_lines(self):
+        with self._lock:
+            lines_dict = self._lines_dict
+            self._lines_dict = collections.defaultdict(list)
+        return lines_dict
 
 
 __all__ = _all_builder.get()

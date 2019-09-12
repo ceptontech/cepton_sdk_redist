@@ -4,13 +4,13 @@ Cepton Python SDK
 ## Installation
 
 ```sh
-pip install .
+pip3 install .
 ```
 
 To install extra dependencies
 
 ```sh
-pip install .[capture,export,plot]
+pip3 install .[capture,export,plot]
 ```
 
 ## Documentation

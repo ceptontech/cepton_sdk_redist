@@ -92,6 +92,8 @@ class Points(StructureOfArrays, ToCArrayMixin):
         self.intensities = numpy.zeros([n])
         self.return_types = numpy.zeros([n, 8], dtype=bool)
         self.flags = numpy.zeros([n, 8], dtype=bool)
+        
+        self.flags[:, PointFlag.VALID] = True
 
     @classmethod
     def _get_array_member_names(cls):

@@ -163,12 +163,12 @@ inline bool has_control_flags(Control flags) {
   return (get_control_flags() & flags) == flags;
 }
 
-inline void enable_control_flags(Control flags) {
-  set_control_flags(flags, flags);
+inline SensorError enable_control_flags(Control flags) {
+  return set_control_flags(flags, flags);
 }
 
-inline void disable_control_flags(Control flags) {
-  set_control_flags(flags, 0);
+inline SensorError disable_control_flags(Control flags) {
+  return set_control_flags(flags, 0);
 }
 
 /// Callback for sensor errors.

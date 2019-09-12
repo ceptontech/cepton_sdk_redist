@@ -175,12 +175,10 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sensors.html#cepton_sdk.Sensor.handle">handle (cepton_sdk.Sensor attribute)</a>
-
-      <ul>
-        <li><a href="sensors.html#cepton_sdk.SensorInformation.handle">(cepton_sdk.SensorInformation attribute)</a>
+      <li><a href="sensors.html#cepton_sdk.SensorInformation.handle">handle (cepton_sdk.SensorInformation attribute)</a>
 </li>
-      </ul></li>
+      <li><a href="sensors.html#cepton_sdk.Sensor.handle">handle() (cepton_sdk.Sensor property)</a>
+</li>
       <li><a href="sensors.html#cepton_sdk.has_sensor">has_sensor() (in module cepton_sdk)</a>
 </li>
       <li><a href="setup.html#cepton_sdk.ControlFlag.HOST_TIMESTAMPS">HOST_TIMESTAMPS (cepton_sdk.ControlFlag attribute)</a>
@@ -247,13 +245,15 @@
 </li>
       <li><a href="sensors.html#cepton_sdk.SensorInformation.last_reported_hv">last_reported_hv (cepton_sdk.SensorInformation attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sensors.html#cepton_sdk.SensorInformation.last_reported_optic_temperature">last_reported_optic_temperature (cepton_sdk.SensorInformation attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sensors.html#cepton_sdk.SensorInformation.last_reported_temperature">last_reported_temperature (cepton_sdk.SensorInformation attribute)</a>
 </li>
       <li><a href="points.html#cepton_sdk.listen_frames">listen_frames() (in module cepton_sdk)</a>
+</li>
+      <li><a href="serial.html#cepton_sdk.listen_serial_lines">listen_serial_lines() (in module cepton_sdk)</a>
 </li>
       <li><a href="export.html#cepton_sdk.export.load_points">load_points() (in module cepton_sdk.export)</a>
 </li>
@@ -331,22 +331,22 @@
 </li>
       <li><a href="capture_replay.html#cepton_sdk.capture_replay.seek_relative">seek_relative() (in module cepton_sdk.capture_replay)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="sensors.html#cepton_sdk.Sensor">Sensor (class in cepton_sdk)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="points.html#cepton_sdk.SensorFramesListener">SensorFramesListener (class in cepton_sdk)</a>
 </li>
       <li><a href="sensors.html#cepton_sdk.SensorInformation">SensorInformation (class in cepton_sdk)</a>
 </li>
       <li><a href="sensors.html#cepton_sdk.SensorModel">SensorModel (class in cepton_sdk)</a>
 </li>
-      <li><a href="sensors.html#cepton_sdk.Sensor.serial_number">serial_number (cepton_sdk.Sensor attribute)</a>
-
-      <ul>
-        <li><a href="sensors.html#cepton_sdk.SensorInformation.serial_number">(cepton_sdk.SensorInformation attribute)</a>
+      <li><a href="sensors.html#cepton_sdk.SensorInformation.serial_number">serial_number (cepton_sdk.SensorInformation attribute)</a>
 </li>
-      </ul></li>
+      <li><a href="sensors.html#cepton_sdk.Sensor.serial_number">serial_number() (cepton_sdk.Sensor property)</a>
+</li>
+      <li><a href="serial.html#cepton_sdk.SerialLinesListener">SerialLinesListener (class in cepton_sdk)</a>
+</li>
       <li><a href="sensors.html#cepton_sdk.SensorModel.SORA_200">SORA_200 (cepton_sdk.SensorModel attribute)</a>
 </li>
       <li><a href="sensors.html#cepton_sdk.SensorModel.SORA_P60">SORA_P60 (cepton_sdk.SensorModel attribute)</a>
@@ -373,6 +373,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="serial.html#cepton_sdk.unlisten_serial_lines">unlisten_serial_lines() (in module cepton_sdk)</a>
+</li>
       <li><a href="sensors.html#cepton_sdk.Sensor.update">update() (cepton_sdk.Sensor method)</a>
 </li>
   </ul></td>
@@ -395,6 +397,8 @@
 </li>
       <li><a href="sensors.html#cepton_sdk.SensorModel.VISTA_X">VISTA_X (cepton_sdk.SensorModel attribute)</a>
 </li>
+      <li><a href="sensors.html#cepton_sdk.SensorModel.VISTA_X15">VISTA_X15 (cepton_sdk.SensorModel attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -414,10 +418,10 @@
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -438,7 +442,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2018, Cepton Technologies.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.0.
     </div>
   </body>
 </html>

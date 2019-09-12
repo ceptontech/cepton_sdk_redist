@@ -7,9 +7,8 @@ Types
 .. doxygentypedef:: cepton_sdk::SensorHandle
 
 .. doxygenenum:: _CeptonSensorModel
-.. doxygentypedef:: cepton_sdk::SensorModel
+.. doxygentypedef:: CeptonSensorModel
 
-.. doxygentypedef:: cepton_sdk::SensorInformation
 .. doxygenstruct:: CeptonSensorInformation
   :members:
   :undoc-members:
@@ -17,7 +16,7 @@ Types
 Methods
 -------
 
-.. doxygenfunction:: cepton_sdk::get_n_sensors
-.. doxygenfunction:: cepton_sdk::get_sensor_handle_by_serial_number
-.. doxygenfunction:: cepton_sdk::get_sensor_information_by_index
-.. doxygenfunction:: cepton_sdk::get_sensor_information
+.. doxygenfunction:: cepton_sdk_get_n_sensors
+.. doxygenfunction:: cepton_sdk_get_sensor_handle_by_serial_number
+.. doxygenfunction:: cepton_sdk_get_sensor_information_by_index
+.. doxygenfunction:: cepton_sdk_get_sensor_information

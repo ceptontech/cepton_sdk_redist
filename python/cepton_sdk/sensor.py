@@ -20,6 +20,7 @@ class SensorModel(enum.IntEnum):
     VISTA_X = 10
     SORA_P60 = 11
     VISTA_P60 = 12
+    VISTA_X15 = 13
 
 
 class SensorInformation(ToCMixin, ToDictMixin):

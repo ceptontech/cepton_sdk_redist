@@ -169,10 +169,10 @@ class _FramesCallback(_Callback):
 
     def initialize(self):
         self.deinitialize()
-        self._c_on_frame = \
+        self._c_on_callback = \
             cepton_sdk.c.C_SensorImageDataCallback(
                 lambda *args: self._on_frame(*args[:-1]))
-        cepton_sdk.c.c_listen_image_frames(self._c_on_frame, None)
+        cepton_sdk.c.c_listen_image_frames(self._c_on_callback, None)
 
     def deinitialize(self):
         try:
@@ -189,5 +189,33 @@ class _FramesCallback(_Callback):
 
 
 _frames_callback = _FramesCallback()
+
+
+class _SerialLinesCallback(_Callback):
+    def __del__(self):
+        self.deinitialize()
+
+    def initialize(self):
+        self.deinitialize()
+        self._c_on_callback = \
+            cepton_sdk.c.C_SerialReceiveCallback(
+                lambda *args: self._on_line(*args[:-1]))
+        cepton_sdk.c.c_listen_serial_lines(self._c_on_callback, None)
+
+    def deinitialize(self):
+        try:
+            cepton_sdk.c.c_unlisten_serial_lines()
+        except:
+            pass
+        self.clear()
+
+    def _on_line(self, sensor_handle, line):
+        sensor_info = \
+            cepton_sdk.sensor.get_sensor_information_by_handle(sensor_handle)
+        self._on_callback(sensor_info, line)
+
+
+_serial_lines_callback = _SerialLinesCallback()
+
 
 __all__ = _all_builder.get()

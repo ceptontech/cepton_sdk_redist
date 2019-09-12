@@ -17,6 +17,8 @@ int main(int argc, char **argv) {
   if (argc >= 2) capture_path = argv[1];
 
   auto options = cepton_sdk::create_options();
+  options.frame.mode = CEPTON_SDK_FRAME_TIMED;
+  options.frame.length = 0.1f;
   cepton_sdk::api::check_error(
       cepton_sdk::api::initialize(options, capture_path));
   cepton_sdk::api::SensorImageFrameCallback callback;

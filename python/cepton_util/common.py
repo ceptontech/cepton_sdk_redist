@@ -291,7 +291,7 @@ def execute_command(cmd_list, background=False, quiet=False, **kwargs):
         __local["procs"].append(proc)
         return proc
     else:
-        options["check"] = true
+        options["check"] = True
         subprocess.run(cmd_list, **options)
 
 

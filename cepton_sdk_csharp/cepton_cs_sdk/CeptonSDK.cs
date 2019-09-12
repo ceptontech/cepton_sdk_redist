@@ -215,7 +215,7 @@ namespace Cepton.SDK
     public static class CeptonSDK
     {
         #region Private interfaces and helpers
-        private const int SDK_VERSION = 18;
+        private const int SDK_VERSION = 19;
 
         private static void _E(SensorErrorCode ec)
         {

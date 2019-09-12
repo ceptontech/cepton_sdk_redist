@@ -1,2 +1,4 @@
 include *.md
+include *.txt
+include cepton_util/VERSION
 recursive-include cepton_sdk/lib *

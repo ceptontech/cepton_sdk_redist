@@ -1,7 +1,10 @@
-__author__ = "Cepton Technologies"
-__version__ = "1.14.1"
-
 import cepton_util.common
+import pathlib
+
+version_path = pathlib.Path(__file__).resolve().parent / "VERSION"
+__version__ = version_path.open().read().strip()
+
+__author__ = "Cepton Technologies"
 
 _all_builder = cepton_util.common.AllBuilder(__name__)
 

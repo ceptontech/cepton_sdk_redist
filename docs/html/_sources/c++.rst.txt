@@ -1,7 +1,7 @@
-API
+C++
 ===
 
-High level SDK api for prototyping (`cepton_sdk_api.hpp`). Methods are agnostic to live/replay mode.
+High level C++ API for prototyping (`cepton_sdk_api.hpp`). Methods are agnostic to live/replay mode.
 
 .. doxygenfunction:: cepton_sdk::api::is_live
 .. doxygenfunction:: cepton_sdk::api::is_end

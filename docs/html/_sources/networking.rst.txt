@@ -1,15 +1,15 @@
 Networking
 ==========
 
+Network callback for debugging.
+
 Types
 -----
 
-.. doxygentypedef:: FpNetworkReceiveCallback
+.. doxygentypedef:: FpCeptonNetworkReceiveCallback
 
 Methods
 -------
 
-.. doxygenfunction:: cepton_sdk::listen_network_packets
-.. doxygenfunction:: cepton_sdk::unlisten_network_packets
-
-.. doxygenfunction:: cepton_sdk::clear
+.. doxygenfunction:: cepton_sdk_listen_network_packet
+.. doxygenfunction:: cepton_sdk_unlisten_network_packet

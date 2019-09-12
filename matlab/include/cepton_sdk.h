@@ -24,7 +24,7 @@ extern "C" {
 #endif
 
 /// API version
-#define CEPTON_SDK_VERSION 18
+#define CEPTON_SDK_VERSION 19
 
 /// Returns library version.
 /**
@@ -110,7 +110,9 @@ enum _CeptonSensorModel {
   SORA_P60 = 11,
   VISTA_P60 = 12,
   VISTA_X15 = 13,
-  CEPTON_SENSOR_MODEL_MAX = 13,
+  VISTA_P90 = 14,
+  VISTA_H120 = 15,
+  CEPTON_SENSOR_MODEL_MAX = 15,
 };
 typedef uint16_t CeptonSensorModel;
 
@@ -416,6 +418,25 @@ CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_information(
     CeptonSensorHandle handle, struct CeptonSensorInformation *const info);
 
 //------------------------------------------------------------------------------
+// Serial
+//------------------------------------------------------------------------------
+/// Callback for receiving serial data (e.g. NMEA).
+typedef void (*FpCeptonSerialReceiveCallback)(CeptonSensorHandle handle,
+                                              const char *str, void *user_data);
+
+/// Sets serial line callback.
+/**
+ * Useful for listening to NMEA data from GPS attached to sensor.
+ *
+ * Each callback contains 1 line of serial data (including newline characters).
+ *
+ * Returns error if callback already registered.
+ */
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_listen_serial_lines(
+    FpCeptonSerialReceiveCallback cb, void *const user_data);
+CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_serial_lines();
+
+//------------------------------------------------------------------------------
 // Networking
 //------------------------------------------------------------------------------
 /// Callback for receiving network packets.
@@ -425,7 +446,7 @@ CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_information(
  */
 typedef void (*FpCeptonNetworkReceiveCallback)(CeptonSensorHandle handle,
                                                int64_t timestamp,
-                                               uint8_t const *buffer,
+                                               const uint8_t *buffer,
                                                size_t buffer_size,
                                                void *user_data);
 

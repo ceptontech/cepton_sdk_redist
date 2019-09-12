@@ -1,0 +1,7 @@
+Organize Points
+===============
+
+.. literalinclude:: ../../../samples/advanced/organize_points.cpp
+  :language: c
+  :linenos:
+  :caption: samples/advanced/organize_points.cpp

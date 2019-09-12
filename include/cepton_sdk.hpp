@@ -24,18 +24,15 @@ namespace cepton_sdk {
  * This function is static, just in case CEPTON_ENABLE_EXCEPTIONS is defined
  * differently in different translation units.
  */
-static void throw_runtime_assert(const std::string &file, int line,
-                                 const std::string &condition,
-                                 const std::string &msg) {
+static void throw_assert(const std::string &file, int line,
+                         const std::string &condition, const std::string &msg) {
   if (msg.empty()) {
-    std::fprintf(stderr,
-                 "AssertionError (file \"%s\", line %i, condition \"%s\")\n",
+    std::fprintf(stderr, "AssertionError (file \"%s\", line %i, \"%s\")\n",
                  file.c_str(), line, condition.c_str());
   } else {
-    std::fprintf(
-        stderr,
-        "AssertionError (file \"%s\", line %i, condition \"%s\"):\n\t%s\n",
-        file.c_str(), line, condition.c_str(), msg.c_str());
+    std::fprintf(stderr,
+                 "AssertionError (file \"%s\", line %i, \"%s\")\n\t%s\n",
+                 file.c_str(), line, condition.c_str(), msg.c_str());
   }
 #ifdef CEPTON_ENABLE_EXCEPTIONS
   std::terminate();
@@ -44,19 +41,15 @@ static void throw_runtime_assert(const std::string &file, int line,
 
 /// Runtime assert check for catching bugs.
 /**
- * If condition is false, calls `throw_runtime_assert`.
+ * If condition is false, calls `throw_assert`.
  */
-#define CEPTON_RUNTIME_ASSERT(condition, msg)                                \
-  do {                                                                       \
-    if (!(condition))                                                        \
-      cepton_sdk::throw_runtime_assert(__FILE__, __LINE__, #condition, msg); \
-  } while (0)
+#define CEPTON_ASSERT(condition, msg)                                      \
+  ((condition)                                                             \
+       ? true                                                              \
+       : (::cepton_sdk::throw_assert(__FILE__, __LINE__, #condition, msg), \
+          false))
 
-/// Returns library version.
-/**
- * This is different from `CEPTON_SDK_VERSION`.
- */
-inline const char *get_version_string() {
+inline std::string get_version_string() {
   return cepton_sdk_get_version_string();
 }
 inline int get_version_major() { return cepton_sdk_get_version_major(); }
@@ -67,20 +60,14 @@ inline int get_version_minor() { return cepton_sdk_get_version_minor(); }
 //------------------------------------------------------------------------------
 typedef CeptonSensorErrorCode SensorErrorCode;
 
-/// Returns string name of error code.
-/**
- * Returns empty string if error code is invalid.
- */
-inline const char *get_error_code_name(SensorErrorCode error_code) {
+inline std::string get_error_code_name(SensorErrorCode error_code) {
   return cepton_get_error_code_name(error_code);
 }
 
-/// Returns true if error name is of the form `CEPTON_ERROR_*`, false otherwise.
 inline bool is_error_code(SensorErrorCode error_code) {
   return (bool)cepton_is_error_code(error_code);
 }
 
-/// Returns true if error name is of the form `CEPTON_FAULT_*`, false otherwise.
 inline bool is_fault_code(SensorErrorCode error_code) {
   return (bool)cepton_is_fault_code(error_code);
 }
@@ -109,7 +96,7 @@ const T *get_error_data(SensorErrorCode error_code, const void *error_data,
 /**
  * Implicitly convertible from/to SensorErrorCode.
  * Getter functions do not return an error, because they cannot fail.
- * Will call `CEPTON_RUNTIME_ASSERT` if nonzero error is not checked (call
+ * Will call `CEPTON_RUNTIME_ASSERT` if nonzero error is not used (call
  * `ignore` to manually use error).
  */
 class SensorError : public std::runtime_error {
@@ -118,22 +105,19 @@ class SensorError : public std::runtime_error {
       : std::runtime_error(create_message(code_, msg_)),
         m_code(code_),
         m_msg(msg_) {
-    if (get_error_code_name(m_code)[0] == '\0') {
-      char buffer[100];
-      std::snprintf(buffer, 100, "Invalid error code: %i", m_code);
-      CEPTON_RUNTIME_ASSERT(false, buffer);
-    }
+    CEPTON_ASSERT(!get_error_code_name(code_).empty(),
+                  std::string("Invalid error code: ") + std::to_string(m_code));
   }
   SensorError(SensorErrorCode code_) : SensorError(code_, "") {}
   SensorError() : SensorError(CEPTON_SUCCESS) {}
-  ~SensorError() { check(); }
+  ~SensorError() { check_used(); }
 
   SensorError(const SensorError &other) : std::runtime_error(other) {
     m_code = other.code();
     m_msg = other.msg();
   }
   SensorError &operator=(const SensorError &other) {
-    check();
+    check_used();
     std::runtime_error::operator=(other);
     m_code = other.code();
     m_msg = other.msg();
@@ -145,7 +129,10 @@ class SensorError : public std::runtime_error {
   bool used() const { return m_used; }
 
   /// Mark error as used.
-  void ignore() const { m_used = true; }
+  const SensorError &ignore() const {
+    m_used = true;
+    return *this;
+  }
 
   /// Returns error message;
   const std::string &msg() const {
@@ -165,7 +152,7 @@ class SensorError : public std::runtime_error {
   /// Returns `false` if code is `CEPTON_SUCCESS`, true otherwise.
   operator bool() const { return code(); }
 
-  const char *name() const { return get_error_code_name(code()); }
+  const std::string name() const { return get_error_code_name(code()); }
 
   bool is_error() const { return is_error_code(code()); }
   bool is_fault() const { return is_fault_code(code()); }
@@ -174,20 +161,17 @@ class SensorError : public std::runtime_error {
   static std::string create_message(SensorErrorCode code,
                                     const std::string &msg) {
     if (!code) return "";
-    const std::string code_name = get_error_code_name(code);
-    if (msg[0] == '\0') {
-      return code_name;
-    } else {
-      return code_name + ": " + std::string(msg);
+    std::string result = get_error_code_name(code);
+    if (!msg.empty()) {
+      result.append("\n\t");
+      result.append(msg);
     }
+    return result;
   }
 
-  void check() const {
-    if (m_code && !m_used) {
-      char buffer[1000];
-      std::snprintf(buffer, 1000, "Error not checked: %s", what());
-      CEPTON_RUNTIME_ASSERT(false, buffer);
-    }
+  /// Throw assert if error not used.
+  void check_used() const {
+    CEPTON_ASSERT(!m_code || m_used, std::string("Error not used: ") + what());
   }
 
  private:
@@ -207,7 +191,14 @@ class SensorErrorWrapper {
       m_error = SensorError();
       return *this;
     }
-    const std::string msg = m_context + "\n\t" + error_.msg();
+
+    // Prepend context.
+    std::string msg = m_context;
+    if (!error_.msg().empty()) {
+      msg.append("\n\t");
+      msg.append(error_.msg());
+    }
+
     m_error = SensorError(error_.code(), msg);
     return *this;
   }
@@ -218,7 +209,7 @@ class SensorErrorWrapper {
 
  public:
   /// If true, store first stored error, and ignore future errors.
-  bool enable_accumulation = false;
+  bool enable_accumulation = true;
 
  private:
   const std::string m_context;
@@ -239,10 +230,7 @@ inline SensorError get_error() {
 //------------------------------------------------------------------------------
 // Types
 //------------------------------------------------------------------------------
-/// Sensor identifier.
 typedef CeptonSensorHandle SensorHandle;
-
-/// Indicates that handle was generated by capture replay.
 const SensorHandle SENSOR_HANDLE_FLAG_MOCK = CEPTON_SENSOR_HANDLE_FLAG_MOCK;
 
 typedef CeptonSensorModel SensorModel;
@@ -254,24 +242,17 @@ typedef CeptonSensorImagePoint SensorImagePoint;
 //------------------------------------------------------------------------------
 // SDK Setup
 //------------------------------------------------------------------------------
-
 typedef CeptonSDKControl Control;
 typedef CeptonSDKFrameMode FrameMode;
 typedef CeptonSDKFrameOptions FrameOptions;
 typedef CeptonSDKOptions Options;
 
-/// Create default frame options.
 inline FrameOptions create_frame_options() {
   return cepton_sdk_create_frame_options();
 }
 
-/// Create default options.
 inline Options create_options() { return cepton_sdk_create_options(); }
 
-/// Callback for receiving sdk and sensor errors.
-/**
- * Currently, `error_data` is not used.
- */
 typedef void (*FpSensorErrorCallback)(SensorHandle handle,
                                       SensorErrorCode error_code,
                                       const char *error_msg,
@@ -279,11 +260,6 @@ typedef void (*FpSensorErrorCallback)(SensorHandle handle,
                                       size_t error_data_size, void *user_data);
 
 inline bool is_initialized() { return (bool)cepton_sdk_is_initialized(); }
-
-/// Initializes settings and networking.
-/**
- * Must be called before any other sdk function listed below.
- */
 inline SensorError initialize(int version,
                               const Options &options = create_options(),
                               const FpSensorErrorCallback &cb = nullptr,
@@ -291,10 +267,13 @@ inline SensorError initialize(int version,
   cepton_sdk_initialize(version, &options, cb, user_data);
   return get_error();
 }
-
-/// Resets everything and deallocates memory.
 inline SensorError deinitialize() {
   cepton_sdk_deinitialize();
+  return get_error();
+}
+
+inline SensorError clear() {
+  cepton_sdk_clear();
   return get_error();
 }
 
@@ -309,58 +288,32 @@ inline bool has_control_flag(Control flag) {
   return (bool)cepton_sdk_has_control_flag(flag);
 }
 
-/// Sets network listen port.
-/**
- * Default: 8808.
- */
 inline SensorError set_port(uint16_t port) {
   cepton_sdk_set_port(port);
   return get_error();
 }
-
 inline uint16_t get_port() { return cepton_sdk_get_port(); }
 
 inline SensorError set_frame_options(const CeptonSDKFrameOptions &options) {
   cepton_sdk_set_frame_options(&options);
   return get_error();
 }
-
 inline FrameMode get_frame_mode() { return cepton_sdk_get_frame_mode(); }
-
 inline float get_frame_length() { return cepton_sdk_get_frame_length(); }
 
 //------------------------------------------------------------------------------
 // Points
 //------------------------------------------------------------------------------
-/// Callback for receiving image points.
-/**
- * Set the frame length to control the callback rate.
- */
 typedef void (*FpSensorImageDataCallback)(SensorHandle handle,
                                           std::size_t n_points,
                                           const SensorImagePoint *c_points,
                                           void *user_data);
 
-/// Sets image frames callback.
-/**
- * Returns points at frequency specified by `cepton_sdk::FrameOptions::mode`.
- * Each frame contains all possible points (use
- * `cepton_sdk::SensorImagePoint::valid` to filter points). Points are ordered
- * by measurement, segment, and return:
- *
- * ```
- * measurement_count = n_points / (segment_count * return_count)
- * idx = ((i_measurement) * segment_count + i_segment) * return_count + i_return
- * ```
- *
- * Returns error if callback already registered.
- */
 inline SensorError listen_image_frames(FpSensorImageDataCallback cb,
                                        void *const user_data) {
   cepton_sdk_listen_image_frames(cb, user_data);
   return get_error();
 }
-
 inline SensorError unlisten_image_frames() {
   cepton_sdk_unlisten_image_frames();
   return get_error();
@@ -369,34 +322,19 @@ inline SensorError unlisten_image_frames() {
 //------------------------------------------------------------------------------
 // Sensors
 //------------------------------------------------------------------------------
-/**
- * Get number of sensors attached.
- * Use to check for new sensors. Sensors are not deleted until deinitialization.
- */
 inline std::size_t get_n_sensors() { return cepton_sdk_get_n_sensors(); }
 
-/**
- * Returns error if sensor not found.
- */
 inline SensorError get_sensor_handle_by_serial_number(uint64_t serial_number,
                                                       SensorHandle &handle) {
   cepton_sdk_get_sensor_handle_by_serial_number(serial_number, &handle);
   return get_error();
 }
 
-/**
- * Valid indices are in range [0, n_sensors).
- * Returns error if index invalid.
- */
 inline SensorError get_sensor_information_by_index(std::size_t idx,
                                                    SensorInformation &info) {
   cepton_sdk_get_sensor_information_by_index(idx, &info);
   return get_error();
 }
-
-/**
- * Returns error if sensor not found.
- */
 inline SensorError get_sensor_information(SensorHandle handle,
                                           SensorInformation &info) {
   cepton_sdk_get_sensor_information(handle, &info);
@@ -404,46 +342,38 @@ inline SensorError get_sensor_information(SensorHandle handle,
 }
 
 //------------------------------------------------------------------------------
+// Serial
+//------------------------------------------------------------------------------
+typedef void (*FpSerialReceiveCallback)(SensorHandle handle, const char *str,
+                                        void *user_data);
+
+inline SensorError listen_serial_lines(FpSerialReceiveCallback cb,
+                                       void *const user_data) {
+  cepton_sdk_listen_serial_lines(cb, user_data);
+  return get_error();
+}
+inline SensorError unlisten_serial_lines() {
+  cepton_sdk_unlisten_serial_lines();
+  return get_error();
+}
+
+//------------------------------------------------------------------------------
 // Networking
 //------------------------------------------------------------------------------
-/// Callback for receiving network packets.
-/**
- * \param handle Unique sensor identifier (e.g. IP address).
- * Returns error if callback already set.
- */
 typedef void (*FpNetworkReceiveCallback)(SensorHandle handle, int64_t timestamp,
-                                         uint8_t const *buffer,
+                                         const uint8_t *buffer,
                                          size_t buffer_size, void *user_data);
 
-/// Sets network packets callback.
-/**
- * Only 1 callback can be registered.
- */
 inline SensorError listen_network_packets(FpNetworkReceiveCallback cb,
                                           void *const user_data) {
   cepton_sdk_listen_network_packet(cb, user_data);
   return get_error();
 }
-
 inline SensorError unlisten_network_packets() {
   cepton_sdk_unlisten_network_packet();
   return get_error();
 }
 
-/// Clears sensors.
-/**
- * Use when loading/unloading capture file.
- */
-inline SensorError clear() {
-  cepton_sdk_clear();
-  return get_error();
-}
-
-/// Manually passes packets to sdk.
-/**
- * Blocks while processing, and calls listener callbacks synchronously before
- * returning.
- */
 inline SensorError mock_network_receive(SensorHandle handle, int64_t timestamp,
                                         const uint8_t *const buffer,
                                         std::size_t buffer_size) {
@@ -456,57 +386,35 @@ inline SensorError mock_network_receive(SensorHandle handle, int64_t timestamp,
 namespace capture_replay {
 
 inline bool is_open() { return (bool)cepton_sdk_capture_replay_is_open(); }
-
-/// Opens capture file.
-/**
- * Must be called before any other replay functions listed below.
- */
 inline SensorError open(const std::string &path) {
   cepton_sdk_capture_replay_open(path.c_str());
   return get_error();
 }
-
 inline SensorError close() {
   cepton_sdk_capture_replay_close();
   return get_error();
 }
 
-inline const char *get_filename() {
+inline std::string get_filename() {
   return cepton_sdk_capture_replay_get_filename();
 }
 
-/// Returns capture start timestamp (unix time [microseconds]).
 inline uint64_t get_start_time() {
   return cepton_sdk_capture_replay_get_start_time();
 }
-
-/// Returns capture file position [seconds].
 inline float get_position() { return cepton_sdk_capture_replay_get_position(); }
-
 /// Returns capture file time (unix time [microseconds])
 inline uint64_t get_time() {
-  return get_start_time() + uint64_t(1e6f * get_position());
+  return get_start_time() + uint64_t(1e6 * get_position());
 }
-
-/// Returns capture file length [seconds].
 inline float get_length() { return cepton_sdk_capture_replay_get_length(); }
 
-/// Returns true if at end of capture file.
-/**
- * This is only relevant when using `resume_blocking` methods.
- */
 inline bool is_end() { return (bool)cepton_sdk_capture_replay_is_end(); }
 
-/// Seek to capture file position [seconds].
-/**
- * Position must be in range [0.0, capture length).
- * Returns error if position is invalid.
- */
 inline SensorError seek(float position) {
   cepton_sdk_capture_replay_seek(position);
   return get_error();
 }
-
 /// Seek to relative capture file position [seconds].
 /**
  * Returns error if position is invalid.
@@ -517,56 +425,33 @@ inline SensorError seek_relative(float position) {
   return get_error();
 }
 
-/// If enabled, replay will automatically rewind at end.
 inline SensorError set_enable_loop(bool value) {
   cepton_sdk_capture_replay_set_enable_loop((int)value);
   return get_error();
 }
-
 inline bool get_enable_loop() {
   return (bool)cepton_sdk_capture_replay_get_enable_loop();
 }
 
-/// Replay speed multiplier for asynchronous replay.
 inline SensorError set_speed(float speed) {
   cepton_sdk_capture_replay_set_speed(speed);
   return get_error();
 }
-
 inline float get_speed() { return cepton_sdk_capture_replay_get_speed(); }
 
-/// Replay next packet in current thread without sleeping.
-/**
- * Pauses replay thread if it is running.
- */
 inline SensorError resume_blocking_once() {
   cepton_sdk_capture_replay_resume_blocking_once();
   return get_error();
 }
-
-/// Replay multiple packets synchronously.
-/**
- * No sleep between packets. Resume duration must be non-negative.
- * Pauses replay thread if it is running.
- */
 inline SensorError resume_blocking(float duration) {
   cepton_sdk_capture_replay_resume_blocking(duration);
   return get_error();
 }
-
-/// Returns true if replay thread is running.
 inline bool is_running() { return cepton_sdk_capture_replay_is_running(); }
-
-// Resumes asynchronous replay thread.
-/**
- * Packets are replayed in realtime. Replay thread sleeps in between packets.
- */
 inline SensorError resume() {
   cepton_sdk_capture_replay_resume();
   return get_error();
 }
-
-/// Pauses asynchronous replay thread.
 inline SensorError pause() {
   cepton_sdk_capture_replay_pause();
   return get_error();

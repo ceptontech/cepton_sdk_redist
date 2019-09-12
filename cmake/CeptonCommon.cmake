@@ -1,27 +1,102 @@
 #[[
 General CMake options for all cepton repositories.
 ]]
+get_filename_component(CEPTON_SDK_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../"
+                       ABSOLUTE)
 
-get_filename_component(CEPTON_SDK_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/../" ABSOLUTE)
+set(CEPTON_DEFINITIONS "")
+set(CEPTON_FLAGS "")
 
-# Test endianness
+# ------------------------------------------------------------------------------
+# Platform
+# ------------------------------------------------------------------------------
+# Detect endianness
 include(TestBigEndian)
 test_big_endian(IS_BIG_ENDIAN)
 if(IS_BIG_ENDIAN)
   message(FATAL_ERROR "Big endian is not supported!")
 endif()
 
-set(CEPTON_DEFINITIONS "")
-set(CEPTON_FLAGS "")
+# Detect subdirectory
+get_directory_property(parent_directory PARENT_DIRECTORY)
+if(parent_directory)
+  set(IS_SUBDIRECTORY TRUE)
+else()
+  set(IS_SUBDIRECTORY FALSE)
+endif()
+
+# Detect architecture
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+  set(ARCH_64 TRUE)
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+  set(ARCH_32 TRUE)
+else()
+  message(FATAL_ERROR "Unsupported architecture!")
+endif()
+
+# Detect OS
+if(WIN32)
+  set(WINDOWS TRUE)
+  list(APPEND CEPTON_DEFINITIONS IS_WINDOWS)
+elseif(UNIX)
+  list(APPEND CEPTON_DEFINITIONS IS_UNIX)
+  if(APPLE)
+    list(APPEND CEPTON_DEFINITIONS IS_APPLE)
+  else()
+    set(LINUX TRUE)
+    list(APPEND CEPTON_DEFINITIONS IS_LINUX)
+  endif()
+else()
+  message(FATAL_ERROR "Unsupported OS!")
+endif()
+if(NOT DEFINED WINDOWS)
+  set(WINDOWS FALSE)
+endif()
+if(NOT DEFINED LINUX)
+  set(LINUX FALSE)
+endif()
+
+# Detect OS name
+if(WINDOWS)
+  set(DEFAULT_OS_NAME "win64")
+elseif(APPLE)
+  set(DEFAULT_OS_NAME "osx")
+elseif(LINUX)
+  execute_process(COMMAND uname -m
+                  OUTPUT_VARIABLE MACHINE_ARCH
+                  OUTPUT_STRIP_TRAILING_WHITESPACE)
+  if("${MACHINE_ARCH}" MATCHES "^armv")
+    set(DEFAULT_OS_NAME "linux-arm")
+  else()
+    set(DEFAULT_OS_NAME "linux-${MACHINE_ARCH}")
+  endif()
+endif()
+
+# Detect compiler
+if(MSVC)
+  list(APPEND CEPTON_DEFINITIONS IS_MSVC)
+elseif(CMAKE_COMPILER_IS_GNUCXX)
+  set(GCC TRUE)
+  list(APPEND CEPTON_DEFINITIONS IS_GCC)
+elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang$")
+  set(CLANG TRUE)
+  list(APPEND CEPTON_DEFINITIONS IS_CLANG)
+else()
+  message(STATUS "Compiler: " ${CMAKE_CXX_COMPILER_ID})
+  message(FATAL_ERROR "Unsupported compiler!")
+endif()
 
 # ------------------------------------------------------------------------------
 # Macros
 # ------------------------------------------------------------------------------
 # Print list with newlines
 macro(MESSAGE_LIST l)
-  foreach(line IN LISTS ${l})
+  foreach(line
+          IN
+          LISTS
+          ${l})
     message("${line}")
-  endforeach() 
+  endforeach()
 endmacro()
 
 # Append to string
@@ -31,7 +106,10 @@ endmacro()
 
 # Join list
 macro(STRING_JOIN result delimiter)
-  string(REPLACE ";" "${delimiter}" ${result} "${ARGN}")
+  string(REPLACE ";"
+                 "${delimiter}"
+                 ${result}
+                 "${ARGN}")
 endmacro()
 
 # Expand path
@@ -42,7 +120,11 @@ endmacro()
 # Evaluate logical expression
 macro(LOGICAL result predicate)
   # Split into list
-  string(REGEX REPLACE " +" ";" logical_p "${predicate}")
+  string(REGEX
+         REPLACE " +"
+                 ";"
+                 logical_p
+                 "${predicate}")
   if(${logical_p})
     set(${result} TRUE)
   else()
@@ -51,7 +133,11 @@ macro(LOGICAL result predicate)
 endmacro()
 
 # Add cmake option
-macro(CREATE_OPTION type key init_value docstring #[[predicate default_value]])
+macro(CREATE_OPTION
+      type
+      key
+      init_value
+      docstring)
   set(create_option_enabled TRUE)
   if(${ARGC} EQUAL 6)
     logical(create_option_enabled ${ARGV4})
@@ -121,94 +207,38 @@ endif()
 
 # Add subdirectory
 macro(ADD_EXTERNAL_SUBDIRECTORY source_dir)
-  message(STATUS "================================================================================")
+  message(
+    STATUS
+      "================================================================================"
+    )
   get_filename_component(add_external_subdirectory_name "${source_dir}" NAME)
   message(STATUS "External: " ${add_external_subdirectory_name})
-  message(STATUS "--------------------------------------------------------------------------------")
+  message(
+    STATUS
+      "--------------------------------------------------------------------------------"
+    )
   set(add_external_subdirectory_args "${source_dir}" ${ARGN})
-  add_subdirectory("${CEPTON_SDK_SOURCE_DIR}/cmake/subdirectory" 
-    "${PROJECT_BINARY_DIR}/third_party/cepton_subdirectory_${add_external_subdirectory_name}")
-  message(STATUS "--------------------------------------------------------------------------------")
+  add_subdirectory(
+    "${CEPTON_SDK_SOURCE_DIR}/cmake/subdirectory"
+    "${PROJECT_BINARY_DIR}/third_party/cepton_subdirectory_${add_external_subdirectory_name}"
+    EXCLUDE_FROM_ALL)
+  message(
+    STATUS
+      "--------------------------------------------------------------------------------"
+    )
 endmacro()
-
-# ------------------------------------------------------------------------------
-# Variables
-# ------------------------------------------------------------------------------
-# Detect subdirectory
-get_directory_property(parent_directory PARENT_DIRECTORY)
-if(parent_directory)
-  set(IS_SUBDIRECTORY TRUE)
-else()
-  set(IS_SUBDIRECTORY FALSE)
-endif()
-
-# Detect architecture
-if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set(ARCH_64 TRUE)
-elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-  set(ARCH_32 TRUE)
-else()
-  message(FATAL_ERROR "Unsupported architecture!")
-endif()
-
-# Detect OS
-if(WIN32)
-  set(WINDOWS TRUE)
-  list(APPEND CEPTON_DEFINITIONS IS_WINDOWS)
-elseif(UNIX)
-  list(APPEND CEPTON_DEFINITIONS IS_UNIX)
-  if(APPLE)
-    list(APPEND CEPTON_DEFINITIONS IS_APPLE)
-  else()
-    set(LINUX TRUE)
-    list(APPEND CEPTON_DEFINITIONS IS_LINUX)
-  endif()
-else()
-  message(FATAL_ERROR "Unsupported OS!")
-endif()
-if(NOT DEFINED WINDOWS)
-  set(WINDOWS FALSE)
-endif()
-if(NOT DEFINED LINUX)
-  set(LINUX FALSE)
-endif()
-
-# Detect OS name
-if(WINDOWS)
-  set(DEFAULT_OS_NAME "win64")
-elseif(APPLE)
-  set(DEFAULT_OS_NAME "osx")
-elseif(LINUX)
-  execute_process(COMMAND uname -m OUTPUT_VARIABLE MACHINE_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
-  if("${MACHINE_ARCH}" MATCHES "^armv")
-    set(DEFAULT_OS_NAME "linux-arm")
-  else()
-    set(DEFAULT_OS_NAME "linux-${MACHINE_ARCH}")
-  endif()
-endif()
-
-# Detect compiler
-if(MSVC)
-  list(APPEND CEPTON_DEFINITIONS IS_MSVC)
-elseif(CMAKE_COMPILER_IS_GNUCXX)
-  set(GCC TRUE)
-  list(APPEND CEPTON_DEFINITIONS IS_GCC)
-elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang$")
-  set(CLANG TRUE)
-  list(APPEND CEPTON_DEFINITIONS IS_CLANG)
-else()
-  message(STATUS "Compiler: " ${CMAKE_CXX_COMPILER_ID})
-  message(FATAL_ERROR "Unsupported compiler!")
-endif()
 
 # ------------------------------------------------------------------------------
 # Options
 # ------------------------------------------------------------------------------
-create_option(STRING OS_NAME "${DEFAULT_OS_NAME}"
-  "OS name")
+create_option(STRING
+              OS_NAME
+              "${DEFAULT_OS_NAME}"
+              "OS name")
 if(NOT DEFINED OS_NAME)
   set(OS_NAME "${DEFAULT_OS_NAME}")
 endif()
+list(APPEND CEPTON_DEFINITIONS OS_NAME="${OS_NAME}")
 
 if(CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "Release")
@@ -233,7 +263,10 @@ elseif(LINUX)
   set(CEPTON_STATIC_LIBRARY_EXTENSION ".a")
 endif()
 
-macro(CEPTON_GET_SHARED_LIBRARY result root lib_name)
+macro(CEPTON_GET_SHARED_LIBRARY
+      result
+      root
+      lib_name)
   if(WINDOWS)
     set(${result} "${root}/bin/${OS_NAME}/${lib_name}")
   elseif(APPLE)
@@ -243,7 +276,10 @@ macro(CEPTON_GET_SHARED_LIBRARY result root lib_name)
   endif()
 endmacro()
 
-macro(CEPTON_GET_STATIC_LIBRARY result root lib_name)
+macro(CEPTON_GET_STATIC_LIBRARY
+      result
+      root
+      lib_name)
   if(WINDOWS)
     set(${result} "${root}/lib/${OS_NAME}/${lib_name}")
   elseif(APPLE OR LINUX)
@@ -251,21 +287,33 @@ macro(CEPTON_GET_STATIC_LIBRARY result root lib_name)
   endif()
 endmacro()
 
-macro(CEPTON_IMPORT_SHARED_LIBRARY lib root lib_name)
-  cepton_get_shared_library(cepton_import_shared_library_path "${root}" "${lib_name}")
-  set_target_properties(${lib} PROPERTIES
-    IMPORTED_LOCATION "${cepton_import_shared_library_path}${CEPTON_SHARED_LIBRARY_EXTENSION}"
-  )
+macro(CEPTON_IMPORT_SHARED_LIBRARY
+      lib
+      root
+      lib_name)
+  cepton_get_shared_library(cepton_import_shared_library_path "${root}"
+                            "${lib_name}")
+  set_target_properties(
+    ${lib}
+    PROPERTIES
+      IMPORTED_LOCATION
+      "${cepton_import_shared_library_path}${CEPTON_SHARED_LIBRARY_EXTENSION}")
   if(WINDOWS)
-    set_target_properties(${lib} PROPERTIES
-      IMPORTED_IMPLIB "${cepton_import_shared_library_path}.imp.lib"
-    )
+    set_target_properties(
+      ${lib}
+      PROPERTIES IMPORTED_IMPLIB "${cepton_import_shared_library_path}.imp.lib")
   endif()
 endmacro()
 
-macro(CEPTON_IMPORT_STATIC_LIBRARY lib root lib_name)
-  cepton_get_static_library(cepton_import_static_library_path "${root}" "${lib_name}")
-  set_target_properties(${lib} PROPERTIES
-    IMPORTED_LOCATION "${cepton_import_static_library_path}${CEPTON_STATIC_LIBRARY_EXTENSION}"
-  )
+macro(CEPTON_IMPORT_STATIC_LIBRARY
+      lib
+      root
+      lib_name)
+  cepton_get_static_library(cepton_import_static_library_path "${root}"
+                            "${lib_name}")
+  set_target_properties(
+    ${lib}
+    PROPERTIES
+      IMPORTED_LOCATION
+      "${cepton_import_static_library_path}${CEPTON_STATIC_LIBRARY_EXTENSION}")
 endmacro()
