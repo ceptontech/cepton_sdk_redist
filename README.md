@@ -1,5 +1,4 @@
-Cepton SDK
-==========
+# Cepton SDK
 
 ## Overview
 

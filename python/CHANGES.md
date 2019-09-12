@@ -1,5 +1,8 @@
 # Cepton SDK Python Release Notes
 
+### Version 1.15 2019-09-12
+* Add serial listener.
+
 ### Version 1.14 2019-07-10
 * Update sdk.
 

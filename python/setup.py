@@ -10,7 +10,7 @@ if __name__ == "__main__":
         version=open("cepton_util/VERSION").read().strip(),
         description="Cepton Python SDK",
         long_description=open("README.md").read(),
-        license=open("COPYRIGHT.md").read(),
+        license=open("COPYRIGHT.txt").read(),
         url="https://github.com/ceptontech/cepton_sdk_redist",
         author="Cepton Technologies",
         author_email="support@cepton.com",

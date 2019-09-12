@@ -1,5 +1,10 @@
 # Cepton SDK Release Notes
 
+### Version 1.15 2019-09-12
+* Add serial lines callback for receiving GPS/INS data.
+* Add `VERSION` files.
+* Add `python/samples/cepton_georeference.py` script.
+
 ### Version 1.14 2019-07-10
 * Fix cmake redist bugs.
 * Improve support for "Vista-P60".
