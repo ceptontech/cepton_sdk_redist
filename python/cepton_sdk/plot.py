@@ -29,10 +29,11 @@ def plot_positions(positions, colors=None, sizes=None):
     points_visual = vispy.scene.visuals.Markers()
     points_visual.antialias = 0
     view.add(points_visual)
+    positions = positions - numpy.mean(positions, axis=0)
     if colors is None:
         colors = numpy.ones([positions.shape[0], 4])
     if sizes is None:
-        sizes = numpy.full([positions.shape[0]])
+        sizes = numpy.full([positions.shape[0]], 2)
     options = {
         "edge_width": 0,
         "face_color": colors,

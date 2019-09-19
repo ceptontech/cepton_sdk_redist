@@ -246,13 +246,11 @@
 65</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Sample code for general sdk usage.</span>
 <span class="cm"> */</span>
-<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
 
-<span class="cp">#undef CEPTON_ENABLE_EXCEPTIONS</span>
-
 <span class="cp">#include</span> <span class="cpf">&lt;cepton_sdk_api.hpp&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;common.hpp&quot;</span><span class="cp"></span>
 
 <span class="n">class</span> <span class="n">FramesListener</span> <span class="p">{</span>
  <span class="nl">public</span><span class="p">:</span>
@@ -260,8 +258,7 @@
                       <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// Get sensor info</span>
     <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorInformation</span> <span class="n">sensor_info</span><span class="p">;</span>
-    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
-        <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_sensor_information</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">));</span>
+    <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_sensor_information</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">));</span>
 
     <span class="c1">// Print info</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">i_frame</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
@@ -276,37 +273,40 @@
 <span class="p">};</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">check_help</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="s">&quot;cepton_sdk_sample_basic [capture_path]&quot;</span><span class="p">);</span>
   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">capture_path</span><span class="p">;</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">capture_path</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+  <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Press Ctrl+C to stop</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
 
   <span class="c1">// Initialize</span>
   <span class="k">auto</span> <span class="n">options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">create_options</span><span class="p">();</span>
   <span class="n">options</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CEPTON_SDK_FRAME_TIMED</span><span class="p">;</span>
   <span class="n">options</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="mf">0.1f</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
-      <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">capture_path</span><span class="p">));</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">capture_path</span><span class="p">));</span>
 
   <span class="c1">// Get sensor</span>
   <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Waiting for sensor to connect...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
   <span class="k">while</span> <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_n_sensors</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">wait</span><span class="p">(</span><span class="mf">0.1f</span><span class="p">));</span>
+    <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">wait</span><span class="p">(</span><span class="mf">0.1f</span><span class="p">));</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorInformation</span> <span class="n">sensor_info</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span>
       <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_sensor_information_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">));</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sensor: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sensor: %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
 
   <span class="c1">// Listen for frames</span>
   <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Listening for frames...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">SensorImageFrameCallback</span> <span class="n">callback</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
   <span class="n">FramesListener</span> <span class="n">frames_listener</span><span class="p">;</span>
-  <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span><span class="o">&amp;</span><span class="n">frames_listener</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">FramesListener</span><span class="o">::</span><span class="n">on_image_frame</span><span class="p">);</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span>
+      <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span><span class="o">&amp;</span><span class="n">frames_listener</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">FramesListener</span><span class="o">::</span><span class="n">on_image_frame</span><span class="p">));</span>
 
   <span class="c1">// Run</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">wait</span><span class="p">());</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">wait</span><span class="p">());</span>
 
   <span class="c1">// Deinitialize</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">deinitialize</span><span class="p">());</span>
+  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">deinitialize</span><span class="p">().</span><span class="n">ignore</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>

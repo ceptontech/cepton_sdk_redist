@@ -16,18 +16,23 @@ class FramesListener {
 
 int main(int argc, char **argv) {
   // Initialize
-  cepton_sdk::api::check_error(cepton_sdk::api::initialize());
+  CEPTON_CHECK_ERROR(cepton_sdk::api::initialize());
   cepton_sdk::api::SensorImageFrameCallback callback;
-  cepton_sdk::api::check_error(callback.initialize());
+  CEPTON_CHECK_ERROR(callback.initialize());
 
   // Listen lambda
-  callback.listen([](cepton_sdk::SensorHandle handle, std::size_t n_points,
-                     const cepton_sdk::SensorImagePoint *c_image_points) {});
+  CEPTON_CHECK_ERROR(callback.listen(
+      [](cepton_sdk::SensorHandle handle, std::size_t n_points,
+         const cepton_sdk::SensorImagePoint *c_image_points) {}));
 
   // Listen global function
-  callback.listen(on_image_frame);
+  CEPTON_CHECK_ERROR(callback.listen(on_image_frame));
 
   // Listen member function
   FramesListener frames_listener;
-  callback.listen(&frames_listener, &FramesListener::on_image_frame);
+  CEPTON_CHECK_ERROR(
+      callback.listen(&frames_listener, &FramesListener::on_image_frame));
+
+  // Deinitialize
+  cepton_sdk::deinitialize().ignore();
 }

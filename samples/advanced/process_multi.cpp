@@ -57,20 +57,24 @@ int main(int argc, char** argv) {
   std::string capture_path;
   if (argc >= 2) capture_path = argv[1];
 
+  // Initialize
   auto options = cepton_sdk::create_options();
-  cepton_sdk::api::check_error(
-      cepton_sdk::api::initialize(options, capture_path));
+  CEPTON_CHECK_ERROR(cepton_sdk::api::initialize(options, capture_path));
   cepton_sdk::api::SensorImageFrameCallback callback;
-  cepton_sdk::api::check_error(callback.initialize());
+  CEPTON_CHECK_ERROR(callback.initialize());
   if (cepton_sdk::capture_replay::is_open())
-    cepton_sdk::api::check_error(cepton_sdk::capture_replay::resume());
+    CEPTON_CHECK_ERROR(cepton_sdk::capture_replay::resume());
 
+  // Listen
   FrameAccumulator accumulator;
-  callback.listen(&accumulator, &FrameAccumulator::on_image_frame);
-
+  CEPTON_CHECK_ERROR(
+      callback.listen(&accumulator, &FrameAccumulator::on_image_frame));
   while (true) {
     const auto frame = accumulator.queue.pop(0.01f);
     if (!frame) continue;
     // Do processing
   }
+
+  // Deinitialize
+  cepton_sdk::deinitialize().ignore();
 }

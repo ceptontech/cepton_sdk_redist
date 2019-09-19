@@ -31,7 +31,7 @@ class SocketListener {
           // should be
           // used.
           const int64_t timestamp = cepton_sdk::util::get_timestamp_usec();
-          cepton_sdk::api::check_error(cepton_sdk::mock_network_receive(
+          CEPTON_CHECK_ERROR(cepton_sdk::mock_network_receive(
               handle, timestamp, m_buffer.data(), buffer_size));
           listen();
         });
@@ -45,21 +45,25 @@ class SocketListener {
 };
 
 int main() {
-  // Initialize sdk
+  // Initialize
   auto options = cepton_sdk::create_options();
   options.control_flags |= CEPTON_SDK_CONTROL_DISABLE_NETWORK;
   options.frame.mode = CEPTON_SDK_FRAME_COVER;
-  cepton_sdk::api::check_error(cepton_sdk::api::initialize(options));
+  CEPTON_CHECK_ERROR(cepton_sdk::api::initialize(options));
 
   // Listen for points
   cepton_sdk::api::SensorImageFrameCallback callback;
-  cepton_sdk::api::check_error(callback.initialize());
-  callback.listen([](cepton_sdk::SensorHandle handle, std::size_t n_points,
-                     const cepton_sdk::SensorImagePoint* c_image_points) {
-    std::printf("Received %i points from sensor %lli\n", (int)n_points,
-                (long long)handle);
-  });
+  CEPTON_CHECK_ERROR(callback.initialize());
+  CEPTON_CHECK_ERROR(
+      callback.listen([](cepton_sdk::SensorHandle handle, std::size_t n_points,
+                         const cepton_sdk::SensorImagePoint* c_image_points) {
+        std::printf("Received %i points from sensor %lli\n", (int)n_points,
+                    (long long)handle);
+      }));
 
   SocketListener listener;
   listener.run();
+
+  // Deinitialize
+  cepton_sdk::deinitialize().ignore();
 }

@@ -32,6 +32,7 @@ def save_points_las(points, path):
         f.header.gps_time_type = 1
         f.header.guid = uuid.uuid1()
         f.header.scale = [0.001] * 3
+        f.header.offset = numpy.median(points.positions, axis=0)
 
         f.gps_time = points.timestamps - 1e9
         f.x = points.positions[:, 0]

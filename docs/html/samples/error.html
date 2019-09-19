@@ -193,7 +193,10 @@
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+15
+16
+17
+18</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Sample code for error callback usage.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;cepton_sdk_api.hpp&gt;</span><span class="cp"></span>
@@ -201,12 +204,15 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// Initialize</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">SensorErrorCallback</span> <span class="n">error_callback</span><span class="p">;</span>
-  <span class="n">error_callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">error_callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span>
       <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span>
-          <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorError</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span> <span class="n">throw</span> <span class="n">error</span><span class="p">;</span> <span class="p">});</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span>
+          <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorError</span><span class="o">&amp;</span> <span class="n">error</span><span class="p">)</span> <span class="p">{</span> <span class="n">throw</span> <span class="n">error</span><span class="p">;</span> <span class="p">}));</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span>
       <span class="n">CEPTON_SDK_VERSION</span><span class="p">,</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">create_options</span><span class="p">(),</span>
       <span class="n">error_callback</span><span class="p">.</span><span class="n">global_on_callback</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">error_callback</span><span class="p">));</span>
+
+  <span class="c1">// Deinitialize</span>
+  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">deinitialize</span><span class="p">().</span><span class="n">ignore</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>

@@ -96,7 +96,6 @@
 <li class="toctree-l3"><a class="reference internal" href="process_single.html">Process Single</a></li>
 <li class="toctree-l3"><a class="reference internal" href="replay.html">Replay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stray.html">Stray</a></li>
-<li class="toctree-l3"><a class="reference internal" href="transform.html">Transform</a></li>
 </ul>
 </li>
 </ul>
@@ -253,7 +252,11 @@
 62
 63
 64
-65</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+65
+66
+67
+68
+69</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Sample code for custom networking.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;asio.hpp&gt;</span><span class="cp"></span>
@@ -286,7 +289,7 @@
           <span class="c1">// should be</span>
           <span class="c1">// used.</span>
           <span class="k">const</span> <span class="kt">int64_t</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">get_timestamp_usec</span><span class="p">();</span>
-          <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">mock_network_receive</span><span class="p">(</span>
+          <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">mock_network_receive</span><span class="p">(</span>
               <span class="n">handle</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">m_buffer</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span> <span class="n">buffer_size</span><span class="p">));</span>
           <span class="n">listen</span><span class="p">();</span>
         <span class="p">});</span>
@@ -300,23 +303,27 @@
 <span class="p">};</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-  <span class="c1">// Initialize sdk</span>
+  <span class="c1">// Initialize</span>
   <span class="k">auto</span> <span class="n">options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">create_options</span><span class="p">();</span>
   <span class="n">options</span><span class="p">.</span><span class="n">control_flags</span> <span class="o">|=</span> <span class="n">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span><span class="p">;</span>
   <span class="n">options</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CEPTON_SDK_FRAME_COVER</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">));</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">));</span>
 
   <span class="c1">// Listen for points</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">SensorImageFrameCallback</span> <span class="n">callback</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
-  <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">([](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
-                     <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span><span class="o">*</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points from sensor %lli</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">,</span>
-                <span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">handle</span><span class="p">);</span>
-  <span class="p">});</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span>
+      <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">([](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
+                         <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span><span class="o">*</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points from sensor %lli</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">,</span>
+                    <span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">handle</span><span class="p">);</span>
+      <span class="p">}));</span>
 
   <span class="n">SocketListener</span> <span class="n">listener</span><span class="p">;</span>
   <span class="n">listener</span><span class="p">.</span><span class="n">run</span><span class="p">();</span>
+
+  <span class="c1">// Deinitialize</span>
+  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">deinitialize</span><span class="p">().</span><span class="n">ignore</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>

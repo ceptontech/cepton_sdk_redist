@@ -27,7 +27,7 @@ class CaptureReplay {
   std::string filename() const;
   bool is_open() const;
   SensorError open(const std::string& filename);
-  SensorError close();
+  void close();
 
   int64_t get_start_time() const;
   float get_position() const;

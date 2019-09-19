@@ -1,6 +1,7 @@
 /**
  * Sample code for custom frame accumulation.
  */
+
 #include <cepton_sdk_api.hpp>
 
 int main(int argc, char **argv) {
@@ -9,16 +10,15 @@ int main(int argc, char **argv) {
 
   // Initialize
   auto options = cepton_sdk::create_options();
-  cepton_sdk::api::check_error(
-      cepton_sdk::api::initialize(options, capture_path));
+  CEPTON_CHECK_ERROR(cepton_sdk::api::initialize(options, capture_path));
   cepton_sdk::api::SensorImageFrameCallback callback;
-  cepton_sdk::api::check_error(callback.initialize());
+  CEPTON_CHECK_ERROR(callback.initialize());
 
   // Get sensor
   while (cepton_sdk::get_n_sensors() == 0)
-    cepton_sdk::api::check_error(cepton_sdk::api::wait(0.1f));
+    CEPTON_CHECK_ERROR(cepton_sdk::api::wait(0.1f));
   cepton_sdk::SensorInformation sensor_info;
-  cepton_sdk::api::check_error(
+  CEPTON_CHECK_ERROR(
       cepton_sdk::get_sensor_information_by_index(0, sensor_info));
 
   // Create accumulator
@@ -26,20 +26,23 @@ int main(int argc, char **argv) {
   frame_options.mode = CEPTON_SDK_FRAME_TIMED;
   frame_options.length = 0.1f;
   cepton_sdk::util::FrameAccumulator accumulator(sensor_info);
-  cepton_sdk::api::check_error(accumulator.set_options(frame_options));
-  callback.listen(
+  CEPTON_CHECK_ERROR(accumulator.set_options(frame_options));
+  CEPTON_CHECK_ERROR(callback.listen(
       [&](cepton_sdk::SensorHandle handle, std::size_t n_points,
           const cepton_sdk::SensorImagePoint *const c_image_points) {
         if (handle != sensor_info.handle) return;
         accumulator.add_points((int)n_points, c_image_points);
-      });
+      }));
 
   // Listen
-  accumulator.callback.listen(
+  CEPTON_CHECK_ERROR(accumulator.callback.listen(
       [&](int n_points,
           const cepton_sdk::SensorImagePoint *const c_image_points) {
         std::printf("Received %i points\n", n_points);
-      });
+      }));
 
-  cepton_sdk::api::check_error(cepton_sdk::api::wait(5.0f));
+  CEPTON_CHECK_ERROR(cepton_sdk::api::wait(5.0f));
+
+  // Deinitialize
+  cepton_sdk::deinitialize().ignore();
 }

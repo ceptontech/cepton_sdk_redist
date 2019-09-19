@@ -82,6 +82,9 @@ def main():
                 from_gps_time(float(data[2]), float(data[3]))
             transforms.translations[i_transform, :2] = utm.from_latlon(
                 float(data[4]), float(data[5]))[:2]
+            if i_transform == 0:
+                print("UTM: {}".format(utm.from_latlon(
+                    float(data[4]), float(data[5]))[2:]))
             transforms.translations[i_transform, 2] = float(data[6])
             transforms.quaternions[i_transform, :] = \
                 scipy.spatial.transform.Rotation.from_euler(
@@ -90,8 +93,6 @@ def main():
                 degrees=True).as_quat()
             i_transform += 1
     transforms = transforms[:i_transform]
-    transforms.translations[:, :] -= \
-        numpy.mean(transforms.translations, axis=0)
     t_diff = numpy.diff(transforms.timestamps)
     assert (numpy.all(t_diff > 0))
 
@@ -151,7 +152,7 @@ def main():
     if args.downsample:
         grid_ub = numpy.full([3], 1e4)
         grid_lb = -grid_ub
-        grid_spacing = numpy.full([3], 0.1)
+        grid_spacing = numpy.full([3], 0.01)
         grid_shape = ((grid_ub - grid_lb) / grid_spacing).astype(int)
 
         def get_flat_grid_indices(positions):
@@ -178,6 +179,11 @@ def main():
     # Save
     cepton_sdk.export.save_points(
         points, output_path, file_type=cepton_sdk.export.PointsFileType.LAS)
+
+    # Load
+    points_tmp = cepton_sdk.export.load_points(output_path)[0]
+    assert (numpy.max(numpy.abs(points.positions - points_tmp.positions)) < 1e-3)
+    points = points_tmp
 
     # Plot points
     cepton_sdk.plot.plot_points(points)

@@ -36,7 +36,7 @@ inline SensorError wait(float t_length) {
         std::chrono::milliseconds((int)(1e3f * t_length)));
     return CEPTON_SUCCESS;
   } else {
-    return capture_replay::resume_blocking(t_length);
+    return CEPTON_PROCESS_ERROR(capture_replay::resume_blocking(t_length));
   }
 }
 }  // namespace internal
@@ -46,67 +46,29 @@ inline SensorError wait(float t_length) {
  * If `t_length < 0`, then waits forever.
  */
 inline SensorError wait(float t_length = -1.0f) {
-  SensorErrorWrapper error("cepton_sdk::api::wait");
   if (t_length >= 0.0f) {
-    error = internal::wait(t_length);
-    return error;
+    return CEPTON_PROCESS_ERROR(internal::wait(t_length));
   } else {
     do {
-      error = internal::wait(0.1f);
-      if (error) return error;
+      CEPTON_RETURN_ERROR(internal::wait(0.1f));
     } while (!is_end());
+    return CEPTON_SUCCESS;
   }
-  return CEPTON_SUCCESS;
 }
 
 // -----------------------------------------------------------------------------
 // Errors
 // -----------------------------------------------------------------------------
-namespace internal {
-inline SensorError create_error(SensorErrorCode error_code,
-                                const std::string &msg = "") {
-  if (!error_code) return SensorError();
-
-  std::string error_code_name = get_error_code_name(error_code);
-  char error_msg[1024];
-  if (msg.empty()) {
-    std::snprintf(error_msg, 1024, "SDK Error: %s!\n", error_code_name.c_str());
-  } else {
-    std::snprintf(error_msg, 1024, "%s: %s!\n", msg.c_str(),
-                  error_code_name.c_str());
-  }
-  return SensorError(error_code, error_msg);
-}
-}  // namespace internal
-
-/// Prints error.
-inline const SensorError &log_error(const SensorError &error,
-                                    const std::string &msg = "") {
-  if (!error) return error;
-
-  if (msg.empty()) {
-    std::fprintf(stderr, "%s\n", error.what());
-  } else {
-    std::fprintf(stderr, "%s <%s>\n", msg.c_str(), error.what());
-  }
-  return error;
+/// DEPRECATED: use CEPTON_LOG_ERROR
+inline SensorError log_error(const SensorError &error,
+                             const std::string &msg = "") {
+  return CEPTON_LOG_ERROR(error);
 }
 
-/// Handles error.
-/**
- * If error, raises exception.
- * Otherwise, prints error.
- */
-inline const SensorError &check_error(const SensorError &error,
-                                      const std::string &msg = "") {
-  if (!error) return error;
-
-  if (error.is_error()) {
-    throw error;
-  } else {
-    log_error(error, msg);
-  }
-  return error;
+/// DEPRECATED: use CEPTON_CHECK_ERROR
+inline SensorError check_error(const SensorError &error,
+                               const std::string &msg = "") {
+  return CEPTON_CHECK_ERROR(error);
 }
 
 /// Basic SDK error callback.
@@ -118,44 +80,46 @@ inline void default_on_error(SensorHandle h, SensorErrorCode error_code,
                              const void *const error_data,
                              std::size_t error_data_size,
                              void *const instance) {
-  log_error(SensorError(error_code, error_msg));
+  CEPTON_LOG_ERROR(SensorError(error_code, error_msg));
 }
 
 // -----------------------------------------------------------------------------
 // Setup
 // -----------------------------------------------------------------------------
 /// Opens capture replay.
-inline SensorError open_replay(const std::string &capture_path) {
-  SensorErrorWrapper error("cepton_sdk::api::open_replay");
-  if (capture_replay::is_open()) {
-    error = capture_replay::close();
-    if (error) return error;
+/**
+ * If `enable_wait` is true, replays a few seconds to intialize sensors.
+ */
+inline SensorError open_replay(const std::string &capture_path,
+                               bool enable_wait = false) {
+  if (capture_replay::is_open()) CEPTON_RETURN_ERROR(capture_replay::close());
+  CEPTON_RETURN_ERROR(capture_replay::open(capture_path));
+  if (enable_wait) {
+    CEPTON_RETURN_ERROR(capture_replay::resume_blocking(3.0f));
+    CEPTON_RETURN_ERROR(capture_replay::seek(0.0f));
   }
-  error = capture_replay::open(capture_path);
-  if (error) return error;
-  error = capture_replay::resume_blocking(3.0f);
-  if (error) return error;
-  error = capture_replay::seek(0.0f);
-  return error;
+  return CEPTON_SUCCESS;
 }
 
 /// Initialize SDK and optionally starts capture replay.
+/**
+ * If `enable_wait` is true, waits a few seconds to initialize sensors.
+ */
 inline SensorError initialize(Options options = create_options(),
-                              const std::string &capture_path = "") {
-  SensorErrorWrapper error("cepton_sdk::api::initialize");
-
+                              const std::string &capture_path = "",
+                              bool enable_wait = false) {
   // Initialize
   if (!capture_path.empty())
     options.control_flags |= CEPTON_SDK_CONTROL_DISABLE_NETWORK;
-  error =
-      ::cepton_sdk::initialize(CEPTON_SDK_VERSION, options, default_on_error);
-  if (error) return error;
+  CEPTON_RETURN_ERROR(
+      ::cepton_sdk::initialize(CEPTON_SDK_VERSION, options, default_on_error));
 
-  // Open capture replay
-  if (!capture_path.empty()) {
-    error = open_replay(capture_path);
-    if (error) return error;
+  if (capture_path.empty()) {
+    if (enable_wait) wait(3.0f);
+  } else {
+    CEPTON_RETURN_ERROR(open_replay(capture_path, enable_wait));
   }
+
   return CEPTON_SUCCESS;
 }
 
@@ -164,11 +128,11 @@ inline bool has_control_flags(Control flags) {
 }
 
 inline SensorError enable_control_flags(Control flags) {
-  return set_control_flags(flags, flags);
+  return CEPTON_PROCESS_ERROR(set_control_flags(flags, flags));
 }
 
 inline SensorError disable_control_flags(Control flags) {
-  return set_control_flags(flags, 0);
+  return CEPTON_PROCESS_ERROR(set_control_flags(flags, 0));
 }
 
 /// Callback for sensor errors.
@@ -198,25 +162,17 @@ class SensorImageFrameCallback
   ~SensorImageFrameCallback() { deinitialize(); }
 
   SensorError initialize() {
-    SensorErrorWrapper error(
-        "cepton_sdk::api::SensorImageFrameCallback::initialize");
-    error = listen_image_frames(global_on_callback, this);
-    if (error) return error;
+    CEPTON_RETURN_ERROR(listen_image_frames(global_on_callback, this));
     m_is_initialized = true;
     return CEPTON_SUCCESS;
   }
 
   SensorError deinitialize() {
-    SensorErrorWrapper error(
-        "cepton_sdk::api::SensorImageFrameCallback::deinitialize");
-    error.enable_accumulation = true;
     clear();
     if (!m_is_initialized) return CEPTON_SUCCESS;
-    if (::cepton_sdk::is_initialized()) {
-      error = unlisten_image_frames();
-    }
+    if (::cepton_sdk::is_initialized()) unlisten_image_frames().ignore();
     m_is_initialized = false;
-    return error;
+    return CEPTON_SUCCESS;
   }
 
   bool is_initialized() const { return m_is_initialized; }
@@ -235,24 +191,16 @@ class NetworkPacketCallback
  public:
   ~NetworkPacketCallback() { deinitialize(); }
   SensorError initialize() {
-    SensorErrorWrapper error(
-        "cepton_sdk::api::NetworkPacketCallback::initialize");
-    error = listen_network_packets(global_on_callback, this);
-    if (error) return error;
+    CEPTON_RETURN_ERROR(listen_network_packets(global_on_callback, this));
     m_is_initialized = true;
     return CEPTON_SUCCESS;
   }
   SensorError deinitialize() {
-    SensorErrorWrapper error(
-        "cepton_sdk::api::NetworkPacketCallback::deinitialize");
-    error.enable_accumulation = true;
     clear();
     if (!m_is_initialized) return CEPTON_SUCCESS;
-    if (::cepton_sdk::is_initialized()) {
-      error = unlisten_network_packets();
-    }
+    if (::cepton_sdk::is_initialized()) unlisten_network_packets().ignore();
     m_is_initialized = false;
-    return error;
+    return CEPTON_SUCCESS;
   }
 
  private:
@@ -274,13 +222,10 @@ inline bool has_sensor_by_serial_number(uint64_t serial_number) {
  */
 inline SensorError get_sensor_information_by_serial_number(
     uint64_t serial_number, SensorInformation &info) {
-  SensorErrorWrapper error(
-      "cepton_sdk::api::get_sensor_information_by_serial_number");
   CeptonSensorHandle handle;
-  error = get_sensor_handle_by_serial_number(serial_number, handle);
-  if (error) return error;
-  error = get_sensor_information(handle, info);
-  return error;
+  CEPTON_RETURN_ERROR(
+      get_sensor_handle_by_serial_number(serial_number, handle));
+  return CEPTON_PROCESS_ERROR(get_sensor_information(handle, info));
 }
 
 /// Returns serial numbers for all sensors.
@@ -290,9 +235,8 @@ inline std::vector<uint64_t> get_sensor_serial_numbers() {
   serial_numbers.reserve(n_sensors);
   for (int i = 0; i < n_sensors; ++i) {
     SensorInformation sensor_info;
-    auto error = get_sensor_information_by_index(i, sensor_info);
-    log_error(error);
-    if (error) continue;
+    if (CEPTON_LOG_ERROR(get_sensor_information_by_index(i, sensor_info)))
+      continue;
     serial_numbers.push_back(sensor_info.serial_number);
   }
   std::sort(serial_numbers.begin(), serial_numbers.end());

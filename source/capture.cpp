@@ -17,12 +17,6 @@ SensorError check_file(std::ios &stream) {
   return error;
 }
 
-#define CHECK_FILE(stream)                     \
-  {                                            \
-    auto internal_error = check_file(stream);  \
-    if (internal_error) return internal_error; \
-  }
-
 bool is_eof(std::istream &stream) {
   bool result = false;
   if (stream.peek() == EOF) result = true;
@@ -222,7 +216,7 @@ const int packet_header_size = record_header_size - pcap_record_header_size;
 Capture::~Capture() { close(); }
 
 SensorError Capture::open_for_read(const std::string &filename) {
-  const auto error = open_for_read_impl(filename);
+  const auto error = CEPTON_PROCESS_ERROR(open_for_read_impl(filename));
   if (error) close();
   return error;
 }
@@ -234,9 +228,8 @@ SensorError Capture::open_for_read_impl(const std::string &filename) {
   m_is_read_mode = true;
 
   m_stream.open(filename.c_str(), std::ios::in | std::ios::binary);
-  CHECK_FILE(m_stream)
-  auto error = read_file_header();
-  if (error) return error;
+  CEPTON_RETURN_ERROR(check_file(m_stream));
+  CEPTON_RETURN_ERROR(read_file_header());
 
   bool index_loaded = false;
   const std::string index_path =
@@ -247,8 +240,7 @@ SensorError Capture::open_for_read_impl(const std::string &filename) {
     if (!error_tmp) index_loaded = true;
   }
   if (!index_loaded) {
-    error = build_read_index();
-    if (error) return error;
+    CEPTON_RETURN_ERROR(build_read_index());
     {
       std::ofstream f(index_path.c_str(),
                       std::ios::out | std::ios::trunc | std::ios::binary);
@@ -262,7 +254,8 @@ SensorError Capture::open_for_read_impl(const std::string &filename) {
 }
 
 SensorError Capture::open_for_write(const std::string &filename, bool append) {
-  const auto error = open_for_write_impl(filename, append);
+  const auto error =
+      CEPTON_PROCESS_ERROR(open_for_write_impl(filename, append));
   if (error) close();
   return error;
 }
@@ -277,11 +270,8 @@ SensorError Capture::open_for_write_impl(const std::string &filename,
   std::ios::openmode mode = std::ios::out | std::ios::binary;
   mode |= (append) ? std::ios::app : std::ios::trunc;
   m_stream.open(filename.c_str(), mode);
-  CHECK_FILE(m_stream)
-  if (!append) {
-    auto error = write_file_header();
-    if (error) return error;
-  }
+  CEPTON_RETURN_ERROR(check_file(m_stream));
+  if (!append) CEPTON_RETURN_ERROR(write_file_header());
   return CEPTON_SUCCESS;
 }
 
@@ -307,7 +297,7 @@ SensorError Capture::write_file_header() {
   file_header.snaplen = 0xFFFF;
   file_header.linktype = PCAP_LINKTYPE_ETHERNET;
   write_value(m_stream, file_header);
-  CHECK_FILE(m_stream)
+  CEPTON_RETURN_ERROR(check_file(m_stream));
   m_write_ptr = m_stream.tellp();
   return CEPTON_SUCCESS;
 }
@@ -316,7 +306,7 @@ SensorError Capture::read_file_header() {
   m_stream.seekg(0);
   PCAPFileHeader file_header;
   read_value(m_stream, file_header);
-  CHECK_FILE(m_stream)
+  CEPTON_RETURN_ERROR(check_file(m_stream));
   m_read_ptr = m_stream.tellg();
   if (file_header.magic != PCAP_MAGIC) return CEPTON_ERROR_INVALID_FILE_TYPE;
   m_position = 0;
@@ -329,7 +319,7 @@ SensorError read_record_header(std::istream &f, int64_t pointer,
   f.seekg(pointer);
   if (is_eof(f)) return CEPTON_ERROR_EOF;
   read_value(f, record_header);
-  CHECK_FILE(f)
+  CEPTON_RETURN_ERROR(check_file(f));
   record_header.swap_endian();
   return CEPTON_SUCCESS;
 }
@@ -340,10 +330,11 @@ SensorError Capture::build_read_index() {
   int64_t pointer = pcap_file_header_size;
   while (true) {
     RecordHeader record_header;
-    auto error = read_record_header(m_stream, pointer, record_header);
-    if (error) {
+    {
+      const auto error = CEPTON_PROCESS_ERROR(
+          read_record_header(m_stream, pointer, record_header));
       if (error.code() == CEPTON_ERROR_EOF) break;
-      return error;
+      if (error) return error;
     }
 
     const int64_t timestamp = record_header.pcap.ts_sec * util::second_usec +
@@ -356,7 +347,7 @@ SensorError Capture::build_read_index() {
     m_read_index.push_back(pi);
 
     if (record_header.pcap.incl_len == 0)
-      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Empty packet");
+      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Empty packet!");
     pointer += pcap_record_header_size + record_header.pcap.incl_len;
   }
   return CEPTON_SUCCESS;
@@ -368,44 +359,42 @@ SensorError Capture::load_read_index(std::ifstream &f) {
   // Load header
   IndexFileHeader index_header;
   read_value(f, index_header);
-  CHECK_FILE(f)
+  CEPTON_RETURN_ERROR(check_file(f));
   if (index_header.version != IndexFileHeader().version)
-    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index version");
+    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index version!");
   if (index_header.n == 0)
-    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Index empty");
+    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Index empty!");
   m_start_time = index_header.start_time;
 
   // Load index
   m_read_index.resize(index_header.n);
   read_values(f, m_read_index.data(), index_header.n);
-  CHECK_FILE(f)
+  CEPTON_RETURN_ERROR(check_file(f));
   if (!is_eof(f))
-    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Corrupt index file");
+    return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Corrupt index file!");
 
   // Check start time
   {
     RecordHeader record_header;
-    auto error = read_record_header(m_stream, m_read_index.front().pointer,
-                                    record_header);
-    if (error) return error;
+    CEPTON_RETURN_ERROR(read_record_header(
+        m_stream, m_read_index.front().pointer, record_header));
     const int64_t timestamp = record_header.pcap.ts_sec * util::second_usec +
                               record_header.pcap.ts_usec + m_timestamp_offset;
     if (m_start_time != timestamp)
-      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index timestamp");
+      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index timestamp!");
   }
 
   // Check final position
   {
     RecordHeader record_header;
-    auto error = read_record_header(m_stream, m_read_index.back().pointer,
-                                    record_header);
-    if (error) return error;
+    CEPTON_RETURN_ERROR(read_record_header(
+        m_stream, m_read_index.back().pointer, record_header));
     const int64_t pointer = m_read_index.back().pointer +
                             pcap_record_header_size +
                             record_header.pcap.incl_len;
     m_stream.seekg(pointer);
     if (!is_eof(m_stream))
-      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index");
+      return SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid index!");
   }
 
   return CEPTON_SUCCESS;
@@ -417,7 +406,7 @@ SensorError Capture::save_read_index(std::ofstream &f) const {
   index_header.n = m_read_index.size();
   write_value(f, index_header);
   write_values(f, m_read_index.data(), index_header.n);
-  CHECK_FILE(f)
+  CEPTON_RETURN_ERROR(check_file(f));
   return CEPTON_SUCCESS;
 }
 
@@ -443,8 +432,7 @@ SensorError Capture::next_packet(PacketHeader &packet_header,
                                  const uint8_t *&packet_data) {
   while (true) {
     bool success;
-    const auto error = next_packet_impl(success, packet_header, packet_data);
-    if (error) return error;
+    CEPTON_RETURN_ERROR(next_packet_impl(success, packet_header, packet_data));
     if (success) break;
   }
 
@@ -458,19 +446,17 @@ SensorError Capture::next_packet_impl(bool &success,
 
   // Read record header
   RecordHeader record_header;
-  auto error = read_record_header(m_stream, m_read_ptr, record_header);
-  if (error) return error;
+  CEPTON_RETURN_ERROR(read_record_header(m_stream, m_read_ptr, record_header));
   m_read_ptr += pcap_record_header_size + record_header.pcap.incl_len;
 
   // Checks
   if ((record_header.protocol_type != PROTOCOL_V4) ||
       (record_header.ip.p != IP_PROTOCOL_UDP))
     return CEPTON_SUCCESS;
-
   if (record_header.ip.hl_ver != IP_HL_VER) {
 #ifdef CEPTON_INTERNAL
-    api::log_error(SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid IP header!"),
-                   "Capture failed!");
+    CEPTON_LOG_ERROR(
+        SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid IP header!"));
 #endif
     return CEPTON_SUCCESS;
   }
@@ -501,12 +487,12 @@ SensorError Capture::next_packet_impl(bool &success,
   if (!is_first_fragment) {
     // Fragments do not have udp header
     m_stream.seekg(-udp_header_size, std::ios_base::cur);
-    CHECK_FILE(m_stream);
+    CEPTON_RETURN_ERROR(check_file(m_stream));
     fragment_len += udp_header_size;
   }
   packet.buffer.resize(packet.off + fragment_len);
   m_stream.read((char *)packet.buffer.data() + packet.off, fragment_len);
-  CHECK_FILE(m_stream)
+  CEPTON_RETURN_ERROR(check_file(m_stream));
   packet.off += fragment_len;
 
   // More fragments
@@ -515,9 +501,8 @@ SensorError Capture::next_packet_impl(bool &success,
   // Check packet size
   if (packet.buffer.size() != packet.len) {
 #ifdef CEPTON_INTERNAL
-    api::log_error(
-        SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid packet size!"),
-        "Capture failed!");
+    CEPTON_LOG_ERROR(
+        SensorError(CEPTON_ERROR_CORRUPT_FILE, "Invalid packet size!"));
 #endif
     return CEPTON_SUCCESS;
   }
@@ -564,7 +549,7 @@ SensorError Capture::append_packet(const Capture::PacketHeader &packet_header,
   m_stream.seekp(m_write_ptr);
   write_value(m_stream, record_header);
   m_stream.write((const char *)data, data_len);
-  CHECK_FILE(m_stream)
+  CEPTON_RETURN_ERROR(check_file(m_stream));
   m_write_ptr = m_stream.tellp();
   return CEPTON_SUCCESS;
 }

@@ -23,4 +23,3 @@ Advanced
   samples/process_single
   samples/replay
   samples/stray
-  samples/transform

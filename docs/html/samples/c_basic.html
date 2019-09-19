@@ -223,13 +223,28 @@
 42
 43
 44
-45</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+45
+46
+47
+48
+49
+50
+51
+52
+53</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Sample code for general C sdk usage.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;time.h&gt;</span><span class="cp"></span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;cepton_sdk.h&gt;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">check_sdk_error</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">error_msg</span><span class="p">;</span>
+  <span class="k">const</span> <span class="k">auto</span> <span class="n">error_code</span> <span class="o">=</span> <span class="n">cepton_sdk_get_error</span><span class="p">(</span><span class="o">&amp;</span><span class="n">error_msg</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cepton_get_error_code_name</span><span class="p">(</span><span class="n">error_code</span><span class="p">),</span> <span class="n">error_msg</span><span class="p">);</span>
+  <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
 
 <span class="kt">int</span> <span class="n">frames_got</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="kt">time_t</span> <span class="n">first_frame_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -250,23 +265,24 @@
 <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Start</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-  <span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+  <span class="c1">// Initialize</span>
   <span class="k">struct</span> <span class="n">CeptonSDKOptions</span> <span class="n">options</span> <span class="o">=</span> <span class="n">cepton_sdk_create_options</span><span class="p">();</span>
   <span class="n">options</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CEPTON_SDK_FRAME_TIMED</span><span class="p">;</span>
   <span class="n">options</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span> <span class="mf">0.1f</span><span class="p">;</span>
-  <span class="n">CeptonSensorErrorCode</span> <span class="n">ret</span><span class="p">;</span>
-  <span class="n">ret</span> <span class="o">=</span> <span class="n">cepton_sdk_initialize</span><span class="p">(</span><span class="n">CEPTON_SDK_VERSION</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">options</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="n">CEPTON_SUCCESS</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cepton_get_error_code_name</span><span class="p">(</span><span class="n">ret</span><span class="p">));</span>
-  <span class="n">ret</span> <span class="o">=</span> <span class="n">cepton_sdk_listen_image_frames</span><span class="p">(</span><span class="n">image_frame_callback</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">!=</span> <span class="n">CEPTON_SUCCESS</span><span class="p">)</span> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cepton_get_error_code_name</span><span class="p">(</span><span class="n">ret</span><span class="p">));</span>
+  <span class="n">cepton_sdk_initialize</span><span class="p">(</span><span class="n">CEPTON_SDK_VERSION</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">options</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="n">check_sdk_error</span><span class="p">();</span>
 
+  <span class="c1">// Listen for frames</span>
+  <span class="n">cepton_sdk_listen_image_frames</span><span class="p">(</span><span class="n">image_frame_callback</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="n">check_sdk_error</span><span class="p">();</span>
+
+  <span class="c1">// Run</span>
   <span class="k">while</span> <span class="p">(</span><span class="n">frames_got</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>
     <span class="p">;</span>  <span class="c1">// Just spin loop for lack of cross platform sleep in C</span>
 
+  <span class="c1">// Deinitialize</span>
   <span class="n">cepton_sdk_deinitialize</span><span class="p">();</span>
-
-  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="n">check_sdk_error</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </td></tr></table></div>

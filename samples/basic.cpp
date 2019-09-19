@@ -1,13 +1,11 @@
 /**
  * Sample code for general sdk usage.
  */
-#include <iostream>
-#include <string>
 #include <vector>
 
-#undef CEPTON_ENABLE_EXCEPTIONS
-
 #include <cepton_sdk_api.hpp>
+
+#include "common.hpp"
 
 class FramesListener {
  public:
@@ -15,8 +13,7 @@ class FramesListener {
                       const cepton_sdk::SensorImagePoint *c_image_points) {
     // Get sensor info
     cepton_sdk::SensorInformation sensor_info;
-    cepton_sdk::api::check_error(
-        cepton_sdk::get_sensor_information(handle, sensor_info));
+    CEPTON_CHECK_ERROR(cepton_sdk::get_sensor_information(handle, sensor_info));
 
     // Print info
     if (i_frame < 5) {
@@ -31,35 +28,38 @@ class FramesListener {
 };
 
 int main(int argc, char **argv) {
+  check_help(argc, argv, "cepton_sdk_sample_basic [capture_path]");
   std::string capture_path;
   if (argc >= 2) capture_path = argv[1];
+
+  std::printf("Press Ctrl+C to stop\n");
 
   // Initialize
   auto options = cepton_sdk::create_options();
   options.frame.mode = CEPTON_SDK_FRAME_TIMED;
   options.frame.length = 0.1f;
-  cepton_sdk::api::check_error(
-      cepton_sdk::api::initialize(options, capture_path));
+  CEPTON_CHECK_ERROR(cepton_sdk::api::initialize(options, capture_path));
 
   // Get sensor
   std::printf("Waiting for sensor to connect...\n");
   while (cepton_sdk::get_n_sensors() == 0)
-    cepton_sdk::api::check_error(cepton_sdk::api::wait(0.1f));
+    CEPTON_CHECK_ERROR(cepton_sdk::api::wait(0.1f));
   cepton_sdk::SensorInformation sensor_info;
-  cepton_sdk::api::check_error(
+  CEPTON_CHECK_ERROR(
       cepton_sdk::get_sensor_information_by_index(0, sensor_info));
-  std::printf("Sensor: %d\n", (int)sensor_info.serial_number);
+  std::printf("Sensor: %i\n", (int)sensor_info.serial_number);
 
   // Listen for frames
   std::printf("Listening for frames...\n");
   cepton_sdk::api::SensorImageFrameCallback callback;
-  cepton_sdk::api::check_error(callback.initialize());
+  CEPTON_CHECK_ERROR(callback.initialize());
   FramesListener frames_listener;
-  callback.listen(&frames_listener, &FramesListener::on_image_frame);
+  CEPTON_CHECK_ERROR(
+      callback.listen(&frames_listener, &FramesListener::on_image_frame));
 
   // Run
-  cepton_sdk::api::check_error(cepton_sdk::api::wait());
+  CEPTON_CHECK_ERROR(cepton_sdk::api::wait());
 
   // Deinitialize
-  cepton_sdk::api::check_error(cepton_sdk::deinitialize());
+  cepton_sdk::deinitialize().ignore();
 }

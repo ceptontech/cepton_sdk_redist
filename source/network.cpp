@@ -103,8 +103,13 @@ void NetworkManager::initialize() {
     packet->buffer.clear();
     packet->buffer.reserve(buffer_size);
     packet->buffer.insert(packet->buffer.end(), buffer, buffer + buffer_size);
-    const int max_size = 1000;
-    m_packets.push(packet, max_size);
+    if (m_packets.size() > 1000) {
+#ifdef CEPTON_INTERNAL
+      std::fprintf(stderr, "[cepton_sdk::NetworkManager] Packet queue full!\n");
+#endif
+      m_packets.clear();
+    }
+    m_packets.push(packet);
   });
   m_listener->run();
 

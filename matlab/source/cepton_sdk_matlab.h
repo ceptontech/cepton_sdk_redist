@@ -10,13 +10,8 @@
 extern "C" {
 #endif
 
-#include "cepton_sdk_def.h"
-
-#ifndef CEPTON_EXPORT
-#define CEPTON_EXPORT
-#endif
-#ifndef CEPTON_DEPRECATED
-#define CEPTON_DEPRECATED
+#ifndef CEPTON_SDK_EXPORT
+#define CEPTON_SDK_EXPORT
 #endif
 
 /*
@@ -28,32 +23,31 @@ extern "C" {
  * - Unions.
  */
 
-CEPTON_EXPORT CeptonSensorErrorCode
+CEPTON_SDK_EXPORT CeptonSensorErrorCode
 cepton_sdk_matlab_initialize(int ver, CeptonSDKControl control_flags);
-CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_deinitialize();
-CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_clear_cache();
+CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_deinitialize();
+CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_clear_cache();
 
-CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_sensor_information(
+CEPTON_SDK_EXPORT CeptonSensorErrorCode
+cepton_sdk_matlab_get_sensor_information(
     CeptonSensorHandle sensor_handle,
     struct CeptonSensorInformation *const sensor_info);
-CEPTON_EXPORT CeptonSensorErrorCode
+CEPTON_SDK_EXPORT CeptonSensorErrorCode
 cepton_sdk_matlab_get_sensor_information_by_index(
     int sensor_index, struct CeptonSensorInformation *const sensor_info);
 
-CEPTON_EXPORT int cepton_sdk_matlab_has_error();
-CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_error(
+CEPTON_SDK_EXPORT int cepton_sdk_matlab_has_error();
+CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_error(
     CeptonSensorHandle *const handle, CeptonSensorErrorCode *const error_code,
     size_t *const msg_size);
 
-CEPTON_EXPORT int cepton_sdk_matlab_has_image_points();
-CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_image_points(
+CEPTON_SDK_EXPORT int cepton_sdk_matlab_has_image_points();
+CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_image_points(
     CeptonSensorHandle *const sensor_handle, size_t *const n_points);
-CEPTON_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_image_points_data(
+CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_matlab_get_image_points_data(
     uint64_t *const timestamps, float *const image_x, float *const distances,
     float *const image_z, float *const intensities, uint8_t *const return_types,
     uint8_t *const flags);
-
-#include "cepton_sdk_undef.h"
 
 #ifdef __cplusplus
 }  // extern "C"

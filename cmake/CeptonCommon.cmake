@@ -31,7 +31,7 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
   set(ARCH_32 TRUE)
 else()
-  message(FATAL_ERROR "Unsupported architecture!")
+  message(FATAL_ERROR "Unsupported architecture: ${CMAKE_SIZEOF_VOID_P}!")
 endif()
 
 # Detect OS
@@ -47,7 +47,7 @@ elseif(UNIX)
     list(APPEND CEPTON_DEFINITIONS IS_LINUX)
   endif()
 else()
-  message(FATAL_ERROR "Unsupported OS!")
+  message(FATAL_ERROR "Unsupported OS")
 endif()
 if(NOT DEFINED WINDOWS)
   set(WINDOWS FALSE)
@@ -58,19 +58,22 @@ endif()
 
 # Detect OS name
 if(WINDOWS)
-  set(DEFAULT_OS_NAME "win64")
+  set(OS_NAME "win64")
 elseif(APPLE)
-  set(DEFAULT_OS_NAME "osx")
+  set(OS_NAME "osx")
 elseif(LINUX)
-  execute_process(COMMAND uname -m
-                  OUTPUT_VARIABLE MACHINE_ARCH
-                  OUTPUT_STRIP_TRAILING_WHITESPACE)
-  if("${MACHINE_ARCH}" MATCHES "^armv")
-    set(DEFAULT_OS_NAME "linux-arm")
+  set(OS_NAME "linux-${CMAKE_SYSTEM_PROCESSOR}")
+  if("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "x86_64")
+    set(DEBIAN_ARCHITECTURE "amd64")
+  elseif("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "aarch64")
+    set(DEBIAN_ARCHITECTURE "arm64")
+  elseif("${CMAKE_SYSTEM_PROCESSOR}" MATCHES "arm")
+    set(DEBIAN_ARCHITECTURE "armhf")
   else()
-    set(DEFAULT_OS_NAME "linux-${MACHINE_ARCH}")
+    message(FATAL_ERROR "Unsupported architecture: ${CMAKE_SYSTEM_PROCESSOR}!")
   endif()
 endif()
+list(APPEND CEPTON_DEFINITIONS OS_NAME="${OS_NAME}")
 
 # Detect compiler
 if(MSVC)
@@ -82,8 +85,7 @@ elseif("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang$")
   set(CLANG TRUE)
   list(APPEND CEPTON_DEFINITIONS IS_CLANG)
 else()
-  message(STATUS "Compiler: " ${CMAKE_CXX_COMPILER_ID})
-  message(FATAL_ERROR "Unsupported compiler!")
+  message(FATAL_ERROR "Unsupported compiler: ${CMAKE_CXX_COMPILER_ID}!")
 endif()
 
 # ------------------------------------------------------------------------------
@@ -231,15 +233,6 @@ endmacro()
 # ------------------------------------------------------------------------------
 # Options
 # ------------------------------------------------------------------------------
-create_option(STRING
-              OS_NAME
-              "${DEFAULT_OS_NAME}"
-              "OS name")
-if(NOT DEFINED OS_NAME)
-  set(OS_NAME "${DEFAULT_OS_NAME}")
-endif()
-list(APPEND CEPTON_DEFINITIONS OS_NAME="${OS_NAME}")
-
 if(CMAKE_BUILD_TYPE STREQUAL "")
   set(CMAKE_BUILD_TYPE "Release")
 endif()

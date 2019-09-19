@@ -19,14 +19,6 @@ Points
 
 .. doxygenfunction:: cepton_sdk::util::convert_sensor_image_point_to_point
 
-Transforms
-----------
-
-.. See :doc:`samples/transform`.
-
-.. doxygenclass:: cepton_sdk::util::CompiledTransform
-  :members:
-
 Callbacks
 ---------
 

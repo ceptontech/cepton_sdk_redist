@@ -23,7 +23,7 @@ bool CaptureReplay::is_open() const {
 }
 
 SensorError CaptureReplay::open(const std::string &filename) {
-  auto error = open_impl(filename);
+  const auto error = CEPTON_PROCESS_ERROR(open_impl(filename));
   if (error) close();
   return error;
 }
@@ -33,29 +33,24 @@ SensorError CaptureReplay::open_impl(const std::string &filename) {
 
   {
     util::LockGuard lock(m_capture_mutex);
-    const auto error = m_capture.open_for_read(filename);
-    if (error) return error;
+    CEPTON_RETURN_ERROR(m_capture.open_for_read(filename));
   }
-  SensorError error;
-  error = cepton_sdk_set_control_flags(CEPTON_SDK_CONTROL_DISABLE_NETWORK,
-                                       CEPTON_SDK_CONTROL_DISABLE_NETWORK);
-  if (error) return error;
-  error = seek(0);
-  if (error) return error;
+  CEPTON_RETURN_ERROR(cepton_sdk_set_control_flags(
+      CEPTON_SDK_CONTROL_DISABLE_NETWORK, CEPTON_SDK_CONTROL_DISABLE_NETWORK));
+  CEPTON_RETURN_ERROR(seek(0));
   return CEPTON_SUCCESS;
 }
 
-SensorError CaptureReplay::close() {
-  if (!is_open()) return CEPTON_SUCCESS;
+void CaptureReplay::close() {
+  if (!is_open()) return;
 
-  pause();
+  pause().ignore();
   m_is_end = true;
   {
     util::LockGuard lock(m_capture_mutex);
     m_capture.close();
   }
-  cepton_sdk_clear();
-  return CEPTON_SUCCESS;
+  (void)cepton_sdk_clear();
 }
 
 int64_t CaptureReplay::get_start_time() const {
@@ -80,16 +75,19 @@ float CaptureReplay::get_length() const {
 }
 
 SensorError CaptureReplay::seek(float position) {
-  if (!is_open()) return CEPTON_ERROR_NOT_OPEN;
+  CEPTON_ASSERT_ERROR(is_open(), CEPTON_ERROR_NOT_OPEN, "Not open!");
 
-  return run_paused([&]() { return seek_impl(int64_t(1e6f * position)); });
+  CEPTON_RETURN_ERROR(run_paused([&]() -> SensorError {
+    CEPTON_RETURN_ERROR(seek_impl(int64_t(1e6f * position)));
+    return CEPTON_SUCCESS;
+  }));
+  return CEPTON_SUCCESS;
 }
 
 SensorError CaptureReplay::seek_impl(int64_t position) {
   {
     util::LockGuard lock(m_capture_mutex);
-    const auto error = m_capture.seek(position);
-    if (error) return error;
+    CEPTON_RETURN_ERROR(m_capture.seek(position));
   }
   m_is_end = false;
   return CEPTON_SUCCESS;
@@ -98,57 +96,57 @@ SensorError CaptureReplay::seek_impl(int64_t position) {
 SensorError CaptureReplay::run_paused(
     const std::function<SensorError()> &func) {
   const bool is_running_tmp = m_is_running;
-
   util::ErrorAccumulator error = pause();
   error = func();
   if (is_running_tmp) error = resume();
-  return error;
+  CEPTON_RETURN_ERROR(error);
+  return CEPTON_SUCCESS;
 }
 
 SensorError CaptureReplay::set_enable_loop(bool enable_loop) {
-  return run_paused([&]() {
+  CEPTON_RETURN_ERROR(run_paused([&]() -> SensorError {
     m_enable_loop = enable_loop;
     return CEPTON_SUCCESS;
-  });
+  }));
+  return CEPTON_SUCCESS;
 }
 
 SensorError CaptureReplay::set_speed(float speed) {
-  if (speed != 0 && (speed < 1e-6f || speed > 5.0f))
-    return SensorError(CEPTON_ERROR_INVALID_ARGUMENTS, "Invalid replay speed!");
+  CEPTON_ASSERT_ERROR(((speed > 1e-6f) && (speed < 5.0f)),
+                      CEPTON_ERROR_INVALID_ARGUMENTS, "Invalid speed!");
 
-  return run_paused([&]() {
+  CEPTON_RETURN_ERROR(run_paused([&]() -> SensorError {
     m_speed = speed;
     return CEPTON_SUCCESS;
-  });
+  }));
+  return CEPTON_SUCCESS;
 }
 
 SensorError CaptureReplay::resume_blocking_once() {
-  if (!is_open()) return CEPTON_ERROR_NOT_OPEN;
-  if (m_is_running)
-    return SensorError(CEPTON_ERROR_GENERIC, "Replay already running!");
+  CEPTON_ASSERT_ERROR(is_open(), CEPTON_ERROR_NOT_OPEN, "Not open!");
+  CEPTON_ASSERT_ERROR(!m_is_running, CEPTON_ERROR_GENERIC, "Already running!");
+
   if (m_is_end) {
     if (m_enable_loop) {
-      auto error = seek_impl(0);
-      if (error) return error;
+      CEPTON_RETURN_ERROR(seek_impl(0));
       m_is_end = false;
     } else {
       return CEPTON_ERROR_EOF;
     }
   }
-
-  return feed_pcap_once(false);
+  CEPTON_RETURN_ERROR(feed_pcap_once(false));
+  return CEPTON_SUCCESS;
 }
 
 SensorError CaptureReplay::resume_blocking(float duration) {
-  if (duration < 0)
-    return SensorError(CEPTON_ERROR_INVALID_ARGUMENTS, "Invalid duration!");
-  if (!is_open()) return CEPTON_ERROR_NOT_OPEN;
-  if (m_is_running)
-    return SensorError(CEPTON_ERROR_GENERIC, "Replay already running!");
+  CEPTON_ASSERT_ERROR(duration >= 0, CEPTON_ERROR_INVALID_ARGUMENTS,
+                      "Invalid duration!");
+  CEPTON_ASSERT_ERROR(is_open(), CEPTON_ERROR_NOT_OPEN, "Not open!");
+  CEPTON_ASSERT_ERROR(!m_is_running, CEPTON_ERROR_GENERIC, "Already running!");
+
   if (m_is_end) {
     if (m_enable_loop) {
-      auto error = seek_impl(0);
-      if (error) return error;
+      CEPTON_RETURN_ERROR(seek_impl(0));
       m_is_end = false;
     } else {
       return CEPTON_ERROR_EOF;
@@ -157,28 +155,25 @@ SensorError CaptureReplay::resume_blocking(float duration) {
 
   const float start = get_position();
   while (true) {
-    if (m_is_end || ((get_position() - start) > duration)) {
-      break;
-    }
-    auto error = feed_pcap_once(false);
-    if (error) return error;
+    if (m_is_end || ((get_position() - start) > duration)) break;
+    CEPTON_RETURN_ERROR(feed_pcap_once(false));
   }
   return CEPTON_SUCCESS;
 }
 
 SensorError CaptureReplay::resume() {
-  if (!is_open()) return CEPTON_ERROR_NOT_OPEN;
+  CEPTON_ASSERT_ERROR(is_open(), CEPTON_ERROR_NOT_OPEN, "Not open!");
 
-  auto error = pause();
-  if (error) return error;
+  CEPTON_RETURN_ERROR(pause());
   reset_time();
   m_is_running = true;
-  m_feeder_thread.reset(new std::thread([this]() { feed_pcap(); }));
+  m_feeder_thread.reset(
+      new std::thread([this]() { CEPTON_LOG_ERROR(feed_pcap()); }));
   return CEPTON_SUCCESS;
 }
 
 SensorError CaptureReplay::pause() {
-  if (!is_open()) return CEPTON_SUCCESS;
+  CEPTON_ASSERT_ERROR(is_open(), CEPTON_ERROR_NOT_OPEN, "Not open!");
 
   m_is_running = false;
   if (m_feeder_thread) {
@@ -195,7 +190,8 @@ SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
   const uint8_t *data;
   {
     util::LockGuard lock(m_capture_mutex);
-    const auto error = m_capture.next_packet(header, data);
+    const auto error =
+        CEPTON_PROCESS_ERROR(m_capture.next_packet(header, data));
     if (error) {
       if (error.code() == CEPTON_ERROR_EOF) {
         m_is_end = true;
@@ -211,8 +207,9 @@ SensorError CaptureReplay::feed_pcap_once(bool enable_sleep) {
       (CeptonSensorHandle)header.ip_v4 | CEPTON_SENSOR_HANDLE_FLAG_MOCK;
   CallbackManager::instance().network_cb.emit(handle, header.timestamp, data,
                                               header.data_size);
-  return cepton_sdk_mock_network_receive(handle, header.timestamp, data,
-                                         header.data_size);
+  CEPTON_RETURN_ERROR(cepton_sdk_mock_network_receive(handle, header.timestamp,
+                                                      data, header.data_size));
+  return CEPTON_SUCCESS;
 }
 
 void CaptureReplay::reset_time() {
@@ -247,7 +244,7 @@ SensorError CaptureReplay::feed_pcap() {
   while (m_is_running) {
     if (m_is_end) {
       if (m_enable_loop) {
-        error = seek_impl(0);
+        error = CEPTON_PROCESS_ERROR(seek_impl(0));
         if (error) break;
         reset_time();
         m_is_end = false;
@@ -257,12 +254,7 @@ SensorError CaptureReplay::feed_pcap() {
     }
 
     error = feed_pcap_once(true);
-    if (error) {
-#ifdef CEPTON_INTERNAL
-      api::log_error(error, "Capture replay failed!");
-#endif
-      break;
-    }
+    if (error) break;
   }
   m_is_running = false;
   return error;

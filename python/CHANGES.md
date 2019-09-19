@@ -4,7 +4,6 @@
 * Add serial listener.
 
 ### Version 1.14 2019-07-10
-* Update sdk.
 
 ### Version 1.13 2019-05-01
 * Update common utilities.

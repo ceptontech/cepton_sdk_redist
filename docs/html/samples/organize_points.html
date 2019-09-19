@@ -96,7 +96,6 @@
 <li class="toctree-l3"><a class="reference internal" href="process_single.html">Process Single</a></li>
 <li class="toctree-l3"><a class="reference internal" href="replay.html">Replay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="stray.html">Stray</a></li>
-<li class="toctree-l3"><a class="reference internal" href="transform.html">Transform</a></li>
 </ul>
 </li>
 </ul>
@@ -299,7 +298,7 @@
   <span class="k">auto</span> <span class="n">options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">create_options</span><span class="p">();</span>
   <span class="n">options</span><span class="p">.</span><span class="n">control_flags</span> <span class="o">|=</span> <span class="n">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span><span class="p">;</span>
   <span class="n">options</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CEPTON_SDK_FRAME_COVER</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">));</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">));</span>
 
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorInformation</span> <span class="n">sensor_info</span><span class="p">;</span>
 
@@ -307,16 +306,16 @@
   <span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">os</span><span class="p">;</span>
 
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">Capture</span> <span class="n">m_capture</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">m_capture</span><span class="p">.</span><span class="n">open_for_read</span><span class="p">(</span><span class="n">capture_path</span><span class="p">));</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">m_capture</span><span class="p">.</span><span class="n">open_for_read</span><span class="p">(</span><span class="n">capture_path</span><span class="p">));</span>
 
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span>
       <span class="n">cepton_sdk_set_control_flags</span><span class="p">(</span><span class="n">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span><span class="p">,</span>
                                    <span class="n">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span><span class="p">));</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk_clear</span><span class="p">());</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk_clear</span><span class="p">());</span>
 
   <span class="c1">// Listen for points</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">SensorImageFrameCallback</span> <span class="n">callback</span><span class="p">;</span>
-  <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
   <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
                      <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span><span class="o">*</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
 
@@ -353,12 +352,12 @@
   <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">Capture</span><span class="o">::</span><span class="n">PacketHeader</span> <span class="n">header</span><span class="p">;</span>
     <span class="k">const</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">data</span><span class="p">;</span>
-    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">m_capture</span><span class="p">.</span><span class="n">next_packet</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">data</span><span class="p">));</span>
+    <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">m_capture</span><span class="p">.</span><span class="n">next_packet</span><span class="p">(</span><span class="n">header</span><span class="p">,</span> <span class="n">data</span><span class="p">));</span>
 
     <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span> <span class="o">=</span>
         <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span><span class="o">&gt;</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">ip_v4</span><span class="p">)</span> <span class="o">|</span>
         <span class="n">CEPTON_SENSOR_HANDLE_FLAG_MOCK</span><span class="p">;</span>
-    <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">check_error</span><span class="p">(</span><span class="n">cepton_sdk_mock_network_receive</span><span class="p">(</span>
+    <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk_mock_network_receive</span><span class="p">(</span>
         <span class="n">handle</span><span class="p">,</span> <span class="n">header</span><span class="p">.</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">data_size</span><span class="p">)));</span>
   <span class="p">}</span>
 <span class="p">}</span>

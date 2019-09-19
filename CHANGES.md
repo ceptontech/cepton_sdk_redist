@@ -2,6 +2,8 @@
 
 ### Version 1.15 2019-09-12
 * Add serial lines callback for receiving GPS/INS data.
+* Remove `*_def.h`/`*_undef.h` files.
+* Add error macros.
 * Add `VERSION` files.
 * Add `python/samples/cepton_georeference.py` script.
 

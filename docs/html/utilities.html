@@ -93,7 +93,6 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#common">Common</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#points">Points</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#transforms">Transforms</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#callbacks">Callbacks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#frames">Frames</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#organizer">Organizer</a></li>
@@ -283,42 +282,6 @@
 <dt id="_CPPv4N10cepton_sdk4util35convert_sensor_image_point_to_pointERK16SensorImagePointR11SensorPoint">
 <span id="_CPPv3N10cepton_sdk4util35convert_sensor_image_point_to_pointERK16SensorImagePointR11SensorPoint"></span><span id="_CPPv2N10cepton_sdk4util35convert_sensor_image_point_to_pointERK16SensorImagePointR11SensorPoint"></span><span id="cepton_sdk::util::convert_sensor_image_point_to_point__SensorImagePointCR.SensorPointR"></span><span class="target" id="namespacecepton__sdk_1_1util_1a32907b1248ff53e4da5818ac796b6c95"></span>void <code class="sig-prename descclassname">cepton_sdk::util<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">convert_sensor_image_point_to_point</code><span class="sig-paren">(</span><em class="property">const</em> SensorImagePoint &amp;<em>image_point</em>, <a class="reference internal" href="#_CPPv4N10cepton_sdk4util11SensorPointE" title="cepton_sdk::util::SensorPoint">SensorPoint</a> &amp;<em>point</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util35convert_sensor_image_point_to_pointERK16SensorImagePointR11SensorPoint" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Convenience method to convert <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorImagePoint</span></code> to <code class="docutils literal notranslate"><span class="pre">cepton_sdk::SensorPoint</span></code>. </p>
-</dd></dl>
-
-</div>
-<div class="section" id="transforms">
-<h2>Transforms<a class="headerlink" href="#transforms" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="_CPPv4N10cepton_sdk4util17CompiledTransformE">
-<span id="_CPPv3N10cepton_sdk4util17CompiledTransformE"></span><span id="_CPPv2N10cepton_sdk4util17CompiledTransformE"></span><span id="cepton_sdk::util::CompiledTransform"></span><span class="target" id="classcepton__sdk_1_1util_1_1CompiledTransform"></span><em class="property">class </em><code class="sig-name descname">CompiledTransform</code><a class="headerlink" href="#_CPPv4N10cepton_sdk4util17CompiledTransformE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>3d translation and rotation. </p>
-<p>For more functionality, use Eigen’s Geometry module. </p>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Functions</p>
-<dl class="function">
-<dt id="_CPPv4N10cepton_sdk4util17CompiledTransform5applyERfRfRf">
-<span id="_CPPv3N10cepton_sdk4util17CompiledTransform5applyERfRfRf"></span><span id="_CPPv2N10cepton_sdk4util17CompiledTransform5applyERfRfRf"></span><span id="cepton_sdk::util::CompiledTransform::apply__floatR.floatR.floatR"></span><span class="target" id="classcepton__sdk_1_1util_1_1CompiledTransform_1aa0b8dcf75521cac0b5a88249824a48d1"></span>void <code class="sig-name descname">apply</code><span class="sig-paren">(</span>float &amp;<em>x</em>, float &amp;<em>y</em>, float &amp;<em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util17CompiledTransform5applyERfRfRf" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Apply transformation to 3d position. </p>
-</dd></dl>
-
-</div>
-<div class="breathe-sectiondef docutils container">
-<p class="breathe-sectiondef-title rubric">Public Static Functions</p>
-<dl class="function">
-<dt id="_CPPv4N10cepton_sdk4util17CompiledTransform6createEPCKfPCKf">
-<span id="_CPPv3N10cepton_sdk4util17CompiledTransform6createEPCKfPCKf"></span><span id="_CPPv2N10cepton_sdk4util17CompiledTransform6createEPCKfPCKf"></span><span id="cepton_sdk::util::CompiledTransform::create__floatCPC.floatCPC"></span><span class="target" id="classcepton__sdk_1_1util_1_1CompiledTransform_1a1c4fc060ffa7242d1715f8db16c538c9"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv4N10cepton_sdk4util17CompiledTransformE" title="cepton_sdk::util::CompiledTransform">CompiledTransform</a> <code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="property">const</em> float *<em class="property">const</em> <em>translation</em>, <em class="property">const</em> float *<em class="property">const</em> <em>rotation</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk4util17CompiledTransform6createEPCKfPCKf" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Create from translation and rotation. </p>
-<p><dl class="simple">
-<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">translation</span></code>: Cartesian (x, y, z) </p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rotation</span></code>: Quaternion (x, y, z, w) </p></li>
-</ul>
-</dd>
-</dl>
-</p>
-</dd></dl>
-
-</div>
 </dd></dl>
 
 </div>

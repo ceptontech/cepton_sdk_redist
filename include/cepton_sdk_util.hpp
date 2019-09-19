@@ -42,8 +42,6 @@ inline T square(T x) {
  * This is the timestamp format used by all sdk functions.
  */
 inline int64_t get_timestamp_usec() {
-  // const auto t_epoch =
-  // std::chrono::high_resolution_clock::now().time_since_epoch();
   const auto t_epoch = std::chrono::system_clock::now().time_since_epoch();
   return std::chrono::duration_cast<std::chrono::microseconds>(t_epoch).count();
 }
@@ -440,86 +438,6 @@ inline void convert_sensor_image_point_to_point(
 }
 
 // -----------------------------------------------------------------------------
-// Transforms
-// -----------------------------------------------------------------------------
-/// 3d translation and rotation.
-/**
- * For more functionality, use Eigen's Geometry module.
- */
-class CompiledTransform {
- public:
-  /// Create from translation and rotation.
-  /**
-   * @param translation Cartesian (x, y, z)
-   * @param rotation Quaternion (x, y, z, w)
-   */
-  static CompiledTransform create(const float *const translation,
-                                  const float *const rotation) {
-    CompiledTransform compiled_transform;
-    std::copy(translation, translation + 3,
-              compiled_transform.translation.begin());
-
-    // Convert quaternion to rotation matrix
-    float x = rotation[0];
-    float y = rotation[1];
-    float z = rotation[2];
-    float w = rotation[3];
-    float xx = x * x;
-    float xy = x * y;
-    float xz = x * z;
-    float xw = x * w;
-    float yy = y * y;
-    float yz = y * z;
-    float yw = y * w;
-    float zz = z * z;
-    float zw = z * w;
-
-    compiled_transform.rotation_m00 = 1 - 2 * (yy + zz);
-    compiled_transform.rotation_m01 = 2 * (xy - zw);
-    compiled_transform.rotation_m02 = 2 * (xz + yw);
-
-    compiled_transform.rotation_m10 = 2 * (xy + zw);
-    compiled_transform.rotation_m11 = 1 - 2 * (xx + zz);
-    compiled_transform.rotation_m12 = 2 * (yz - xw);
-
-    compiled_transform.rotation_m20 = 2 * (xz - yw);
-    compiled_transform.rotation_m21 = 2 * (yz + xw);
-    compiled_transform.rotation_m22 = 1 - 2 * (xx + yy);
-
-    return compiled_transform;
-  }
-
-  /// Apply transformation to 3d position.
-  void apply(float &x, float &y, float &z) {
-    float x_tmp = x * rotation_m00 + y * rotation_m01 + z * rotation_m02;
-    float y_tmp = x * rotation_m10 + y * rotation_m11 + z * rotation_m12;
-    float z_tmp = x * rotation_m20 + y * rotation_m21 + z * rotation_m22;
-
-    x_tmp += translation[0];
-    y_tmp += translation[1];
-    z_tmp += translation[2];
-
-    x = x_tmp;
-    y = y_tmp;
-    z = z_tmp;
-  }
-
- public:
-  std::array<float, 3> translation = {{0, 0, 0}};
-
-  // Rotation matrix
-  float rotation_m00 = 1.0f;
-  float rotation_m01 = 0.0f;
-  float rotation_m02 = 0.0f;
-  float rotation_m10 = 0.0f;
-  float rotation_m11 = 1.0f;
-  float rotation_m12 = 0.0f;
-  float rotation_m20 = 0.0f;
-  float rotation_m21 = 0.0f;
-  float rotation_m22 = 1.0f;
-};
-
-// -----------------------------------------------------------------------------
 // Callbacks
 // -----------------------------------------------------------------------------
 template <typename TClass, typename... TArgs>
@@ -552,14 +470,11 @@ class Callback {
     ++m_i_callback;
     return CEPTON_SUCCESS;
   }
+
   SensorError unlisten(uint64_t id) {
-    SensorErrorWrapper error("cepton_sdk::util::Callback::unlisten");
     LockGuard lock(m_mutex);
-    if (!m_functions.count(id)) {
-      error =
-          SensorError(CEPTON_ERROR_INVALID_ARGUMENTS, "Invalid function id");
-      return error;
-    }
+    CEPTON_ASSERT_ERROR(m_functions.count(id), CEPTON_ERROR_INVALID_ARGUMENTS,
+                        "Invalid function id");
     m_functions.erase(id);
     return CEPTON_SUCCESS;
   }
@@ -841,15 +756,15 @@ class FrameDetector {
         if (!m_cover_detector.is_model_supported) {
           m_options.mode = CEPTON_SDK_FRAME_TIMED;
           m_options.length = 0.1f;
-        }        
+        }
         break;
     }
 
+    // Check options
     switch (m_options.mode) {
       case CEPTON_SDK_FRAME_TIMED:
-        if (!m_options.length)
-          return SensorError(CEPTON_ERROR_INVALID_ARGUMENTS,
-                             "Frame length not set!");
+        CEPTON_ASSERT_ERROR(m_options.length, CEPTON_ERROR_INVALID_ARGUMENTS,
+                            "Frame length not set!");
         m_timed_detector.length = m_options.length;
         break;
     }
