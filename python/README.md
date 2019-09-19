@@ -1,5 +1,4 @@
-Cepton Python SDK
-=================
+# Cepton Python SDK
 
 ## Installation
 
