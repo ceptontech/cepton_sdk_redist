@@ -1,0 +1,26 @@
+Sensors
+=======
+
+Types
+-----
+
+.. doxygentypedef:: CeptonSensorHandle
+
+.. doxygentypedef:: CeptonSensorModel
+.. doxygenenum:: _CeptonSensorModel
+
+.. doxygenstruct:: CeptonSensorInformation
+  :members:
+  :undoc-members:
+
+Methods
+-------
+
+.. doxygenfunction:: cepton_is_vista
+.. doxygenfunction:: cepton_is_hr80
+.. doxygenfunction:: cepton_is_vista
+
+.. doxygenfunction:: cepton_sdk_get_n_sensors
+.. doxygenfunction:: cepton_sdk_get_sensor_handle_by_serial_number
+.. doxygenfunction:: cepton_sdk_get_sensor_information_by_index
+.. doxygenfunction:: cepton_sdk_get_sensor_information

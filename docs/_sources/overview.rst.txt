@@ -1,0 +1,85 @@
+Overview
+========
+
+The Cepton SDK provides the following features:
+
+- **Networking**: Listen for sensor packets.
+- **Capture Replay**: Read sensor packets from a PCAP file.
+- **Parsing**: Parse sensor packets.
+- **Calibration**: Apply sensor calibration.
+- **Frame Accumulation**: Accumulate sensor points and detect frames.
+
+.. note::
+
+  Currently, the Cepton LiDAR packet formats are under active development, and are not publicly available. The SDK is required for **Parsing** and **Calibration**. All other SDK features are optional, and can be done manually by the user.
+
+Getting Started
+---------------
+
+To start, take a look at :doc:`samples`. The sample code covers most common use cases.
+
+For prototyping, it is recommended to use the high level C++ API. The C++ API also acts as reference code for C API usage. Any C++ functions that directly wrap C functions are not documented; refer to the C function documentation.
+
+The general C SDK workflow is as follows: 
+
+1. Initialize SDK (:any:`cepton_sdk_initialize()`). See :doc:`setup`.
+2. Register point listener function (:any:`cepton_sdk_listen_image_frames`). See :doc:`points`. 
+3. Wait for sensor calibration/information packets, then query sensors. See :doc:`sensors`.
+4. Sleep or run replay. Callbacks will occur asynchronously.
+5. Deinitialize SDK.
+
+Packets
+-------
+
+The SDK passively listens for sensor UDP packets. There are 2 types of sensor packets:
+
+- **Calibration/Information**: Contains sensor calibration, statistics, and other information. Published at ``~1Hz``.
+- **Points**: Contains ``~100`` measurements. Published at ``~1000Hz``. 
+
+Errors
+------
+
+Many SDK functions return :any:`CeptonSensorErrorCode`. If this is not :any:`CEPTON_SUCCESS`, then the user must call :any:`cepton_sdk_get_error()`, otherwise the SDK will complain that the error was not checked.
+
+All sensor errors will be returned via :any:`FpCeptonSensorErrorCallback`, which is registered in :any:`cepton_sdk_initialize`. 
+
+Timestamps
+----------
+
+All ``int64`` timestamps are microseconds since the Unix epoch (UTC). All ``float`` times (measurement period, replay time, frame length, etc.) are time differences measured in seconds. Point timestamps are based on one of the following sources (the first valid source is used):
+
+1. GPS (NMEA + PPS)
+2. PTP
+3. Host PC
+
+Concurrency
+-----------
+
+- If networking is enabled, the SDK creates 2 threads for networking. All callbacks occur in these networking threads.
+- If networking is disabled, the SDK does not create any threads. All callbacks occur in the main thread.
+- All SDK getter functions are thread safe, and can be called from callbacks. Other SDK functions are not guarunteed to be thread safe, and can cause deadlock if called from callbacks.
+
+Sensor Fusion
+-------------
+
+See :doc:`samples/process_single`, :doc:`samples/process_multi`.
+
+Multiple Returns
+----------------
+
+To enable multiple returns, pass the :any:`CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS` flag during initialization.
+
+The returns are as follows:
+
+  1. Strongest signal.
+  2. Furthest signal, if it is not the strongest. Otherwise, the second strongest signal.
+
+
+Minimal SDK
+-----------
+
+If desired, the following SDK features can be disabled in the SDK and performed manually by the user:
+
+- Capture Replay: :doc:`samples/replay`.
+- Frame Accumulation: :doc:`samples/frame`.
+- Networking: :doc:`samples/network`.
