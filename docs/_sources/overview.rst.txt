@@ -16,7 +16,11 @@ The Cepton SDK provides the following features:
 Getting Started
 ---------------
 
-To start, take a look at :doc:`samples`. The sample code covers most common use cases.
+Below is a very simple SDK usage example. For more complete examples, see :doc:`samples`.
+
+.. literalinclude:: ../../samples/advanced/simple.cpp
+  :language: c
+  :linenos:
 
 For prototyping, it is recommended to use the high level C++ API. The C++ API also acts as reference code for C API usage. Any C++ functions that directly wrap C functions are not documented; refer to the C function documentation.
 
@@ -52,13 +56,6 @@ All ``int64`` timestamps are microseconds since the Unix epoch (UTC). All ``floa
 2. PTP
 3. Host PC
 
-Concurrency
------------
-
-- If networking is enabled, the SDK creates 2 threads for networking. All callbacks occur in these networking threads.
-- If networking is disabled, the SDK does not create any threads. All callbacks occur in the main thread.
-- All SDK getter functions are thread safe, and can be called from callbacks. Other SDK functions are not guarunteed to be thread safe, and can cause deadlock if called from callbacks.
-
 Sensor Fusion
 -------------
 
@@ -73,13 +70,3 @@ The returns are as follows:
 
   1. Strongest signal.
   2. Furthest signal, if it is not the strongest. Otherwise, the second strongest signal.
-
-
-Minimal SDK
------------
-
-If desired, the following SDK features can be disabled in the SDK and performed manually by the user:
-
-- Capture Replay: :doc:`samples/replay`.
-- Frame Accumulation: :doc:`samples/frame`.
-- Networking: :doc:`samples/network`.

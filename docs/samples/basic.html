@@ -94,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../samples.html#advanced">Advanced</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../internal.html">Internal</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">Errors</a></li>
@@ -341,7 +342,7 @@
   <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_sensors</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorInformation</span> <span class="n">sensor_info</span><span class="p">;</span>
     <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span>
-        <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_sensor_information_by_index</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">));</span>
+        <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">get_sensor_information_by_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">sensor_info</span><span class="p">));</span>
     <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sensor: %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
   <span class="p">}</span>
 

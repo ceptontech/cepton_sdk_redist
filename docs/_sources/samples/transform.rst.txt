@@ -1,7 +1,0 @@
-Transform
-=========
-
-.. literalinclude:: ../../../samples/advanced/transform.cpp
-  :language: c
-  :linenos:
-  :caption: samples/advanced/transform.cpp
