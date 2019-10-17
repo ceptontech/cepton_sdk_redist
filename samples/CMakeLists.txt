@@ -28,7 +28,6 @@ set(CEPTON_SDK_SAMPLE_SOURCES
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/process_multi.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/process_single.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/stray.cpp"
-    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/transform.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/basic.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/callback.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/error.cpp"
