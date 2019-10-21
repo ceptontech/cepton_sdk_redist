@@ -12,14 +12,21 @@ namespace Cepton.SDK
         HR80M = 2,
         HR80W = 3,
         SORA_200 = 4,
-        VISTA_860 = 5,
+        VISTA_860_LEGACY = 5,
         HR80T_R2 = 6,
-        VISTA_860_GEN2 = 7,
+        VISTA_860 = 7,
         FUSION_790 = 8,
         VISTA_M = 9,
-        VISTA_X = 10,
+        VISTA_X120 = 10,
+        SORA_P60 = 11,
+        VISTA_P60 = 12,
+        VISTA_X15 = 13,
+        VISTA_P90 = 14,
+        SORA_P90 = 15,
+        VISTA_P61 = 16,
+        SORA_P61 = 17,
 
-        MODEL_MAX = 10,
+        INVALID_MODEL = 18,
     };
 
     [Flags]
@@ -120,6 +127,12 @@ namespace Cepton.SDK
             return string.Format("<{0,7:F4},{1,7:F4}:{2:F2}>", image_x, image_z, distance);
         }
 
+        /// <summary>
+        /// Convert to point in 3D space
+        /// </summary>
+        /// <param name="x">Horizontal</param>
+        /// <param name="y">Distance</param>
+        /// <param name="z">Vertical</param>
         public void ConvertToPoint(out float x, out float y, out float z)
         {
             double hypotenuse_small = Math.Sqrt(image_x * image_x + image_z * image_z + 1.0f);
@@ -177,7 +190,8 @@ namespace Cepton.SDK
         {
             get
             {
-                if (firmware_version_major > 0)
+                // TODO: remove special handling for Vista-X120 after it released
+                if (firmware_version_major > 0 || model == SensorModel.VISTA_X120)
                     return (uint)(((byte)model << 24) + (firmware_version_major << 16) + (firmware_version_minor << 8));
 
                 // Legacy calculation to be deprecated in next release
@@ -251,7 +265,10 @@ namespace Cepton.SDK
         [DllImport("cepton_sdk.dll", EntryPoint = "cepton_sdk_get_n_sensors")]
         private static extern int _GetSensorCount();
 
+        [DllImport("cepton_sdk.dll", EntryPoint = "cepton_sdk_get_frame_length")]
+        private static extern float _GetFrameLength();
         #endregion
+
         #region Internal higher level functions and frame cache
         public delegate Sensor fpSensorFactory(ref SensorInformation info);
         public static fpSensorFactory SensorFactory = (ref SensorInformation info) => new Sensor(ref info);
@@ -315,7 +332,8 @@ namespace Cepton.SDK
         public const int MAX_POINTS_PER_SECOND = 1000000;
         public const int MAX_FRAMES_PER_SECOND = 40;
 
-        public static void Initialize(FpCeptonSensorErrorCallback cb, ControlFlags control_flags = 0)
+        public static void Initialize(FpCeptonSensorErrorCallback cb,
+            ControlFlags control_flags = ControlFlags.ENABLE_MULTIPLE_RETURNS)
         {
             SDKOptions opt = SDKOptions.Create();
             opt.control_flags = control_flags;
@@ -337,5 +355,7 @@ namespace Cepton.SDK
         public static ConcurrentDictionary<ulong, Sensor> SensorDictionary { get; private set; } = new ConcurrentDictionary<ulong, Sensor>();
         public static Sensor GetSensor(ulong serial_number) =>
             SensorDictionary.TryGetValue(serial_number, out Sensor s) ? s : null;
+
+        public static float GetFrameLength() => _GetFrameLength();
     }
 }
