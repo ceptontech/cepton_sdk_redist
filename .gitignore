@@ -30,3 +30,10 @@ __pycache__/
 .pytest_cache/
 .benchmarks/
 *.egg-info/
+
+!\lib
+!*.a
+!*.so
+!*.lib
+!*.dll
+!*.dylib
