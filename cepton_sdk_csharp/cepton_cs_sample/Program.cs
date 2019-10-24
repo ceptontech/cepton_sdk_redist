@@ -8,7 +8,7 @@ namespace Cepton.SDKSample
 {
     class Program
     {
-        static void ErrorCallback(IntPtr handle, SensorErrorCode error_code, String error_msg, IntPtr error_data, IntPtr user_data)
+        static void ErrorCallback(IntPtr handle, SensorErrorCode error_code, String error_msg, IntPtr error_data, long error_data_size, IntPtr user_data)
         {
             float[] float_data = new float[2];
             switch (error_code)
@@ -64,6 +64,7 @@ namespace Cepton.SDKSample
                 {
                     var image_points = s.GetImagePoints(100);
                     Console.WriteLine("Got {0} points", image_points.Length);
+                    Thread.Sleep(1000);
                 }
             }
 

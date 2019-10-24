@@ -92,6 +92,7 @@ namespace Cepton.SDK
         SensorErrorCode error_code,
         string error_msg,
         IntPtr error_data,
+        long error_data_size,
         IntPtr user_data);
 
     public delegate void FpImageDataCallback(IntPtr handle, int n_points,
