@@ -5,13 +5,17 @@
 
 // Sample global callback.
 void on_image_frame(cepton_sdk::SensorHandle handle, std::size_t n_points,
-                    const cepton_sdk::SensorImagePoint *c_image_points) {}
+                    const cepton_sdk::SensorImagePoint *c_image_points) {
+  // Handle frame...
+}
 
 // Sample member callback.
 class FramesListener {
  public:
   void on_image_frame(cepton_sdk::SensorHandle handle, std::size_t n_points,
-                      const cepton_sdk::SensorImagePoint *c_image_points) {}
+                      const cepton_sdk::SensorImagePoint *c_image_points) {
+    // Handle frame...
+  }
 };
 
 int main(int argc, char **argv) {
@@ -21,9 +25,11 @@ int main(int argc, char **argv) {
   CEPTON_CHECK_ERROR(callback.initialize());
 
   // Listen lambda
-  CEPTON_CHECK_ERROR(callback.listen(
-      [](cepton_sdk::SensorHandle handle, std::size_t n_points,
-         const cepton_sdk::SensorImagePoint *c_image_points) {}));
+  CEPTON_CHECK_ERROR(
+      callback.listen([](cepton_sdk::SensorHandle handle, std::size_t n_points,
+                         const cepton_sdk::SensorImagePoint *c_image_points) {
+        //  Handle frame...
+      }));
 
   // Listen global function
   CEPTON_CHECK_ERROR(callback.listen(on_image_frame));

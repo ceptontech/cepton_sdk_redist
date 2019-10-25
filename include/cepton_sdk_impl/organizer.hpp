@@ -28,7 +28,6 @@ inline Organizer::Organizer(cepton_sdk::SensorInformation sensor_info)
       m_settings.horizontal_range_radians = to_radians(130.f);
       m_settings.vertical_range_radians = to_radians(40.f);
       break;
-    case HR80T:
     case HR80T_R2:
     default:
       m_settings.horizontal_range_radians = to_radians(40.f); 
@@ -107,6 +106,7 @@ inline void Organizer::organize_points(
         organized_point.return_type = unorganized_point.return_type;
         organized_point.valid = unorganized_point.valid;
         organized_point.saturated = unorganized_point.saturated;
+        organized_point.segment_id = unorganized_point.segment_id;
 
         // In RECENT mode, populate the image xy points with the unorganized
         // point for accuracy.

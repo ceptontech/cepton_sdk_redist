@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Serial" href="serial.html" />
     <link rel="prev" title="Capture Replay" href="capture_replay.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -83,6 +85,12 @@
 <li class="toctree-l1"><a class="reference internal" href="building.html">Building</a></li>
 <li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
@@ -162,7 +170,7 @@
         <a href="serial.html" class="btn btn-neutral float-right" title="Serial" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="capture_replay.html" class="btn btn-neutral" title="Capture Replay" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="capture_replay.html" class="btn btn-neutral float-left" title="Capture Replay" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -177,18 +185,17 @@
 <div class="section" id="types">
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <dl class="type">
-<dt id="_CPPv330FpCeptonNetworkReceiveCallback">
-<span id="_CPPv230FpCeptonNetworkReceiveCallback"></span><span id="FpCeptonNetworkReceiveCallback"></span><span class="target" id="cepton__sdk_8h_1accfc25f9ff3a11f3bb7b76168531507f"></span><em class="property">typedef </em>void (*<code class="descname">FpCeptonNetworkReceiveCallback</code>)<span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv318CeptonSensorHandle" title="CeptonSensorHandle">CeptonSensorHandle</a> handle, int64_t timestamp, <em class="property">const</em> uint8_t *buffer, size_t buffer_size, void *user_data<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv330FpCeptonNetworkReceiveCallback" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv430FpCeptonNetworkReceiveCallback">
+<span id="_CPPv330FpCeptonNetworkReceiveCallback"></span><span id="_CPPv230FpCeptonNetworkReceiveCallback"></span><span id="FpCeptonNetworkReceiveCallback"></span><span class="target" id="cepton__sdk_8h_1accfc25f9ff3a11f3bb7b76168531507f"></span><em class="property">typedef </em>void (*<code class="sig-name descname">FpCeptonNetworkReceiveCallback</code>)<span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv418CeptonSensorHandle" title="CeptonSensorHandle">CeptonSensorHandle</a> handle, int64_t timestamp, <em class="property">const</em> uint8_t *buffer, size_t buffer_size, void *user_data<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430FpCeptonNetworkReceiveCallback" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback for receiving network packets. </p>
 <p>Returns error if callback already set.</p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">handle</span></code>: Sensor handle. </li>
-<li><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: Packet Unix timestamp [microseconds]. </li>
-<li><code class="docutils literal notranslate"><span class="pre">buffer</span></code>: Packet bytes. </li>
-<li><code class="docutils literal notranslate"><span class="pre">buffer_size</span></code>: Buffer size. </li>
-<li><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User instance pointer. </li>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">handle</span></code>: Sensor handle. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: Packet Unix timestamp [microseconds]. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buffer</span></code>: Packet bytes. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">buffer_size</span></code>: Buffer size. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User instance pointer. </p></li>
 </ul>
 </dd>
 </dl>
@@ -199,16 +206,15 @@
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="_CPPv332cepton_sdk_listen_network_packet30FpCeptonNetworkReceiveCallbackPCv">
-<span id="_CPPv232cepton_sdk_listen_network_packet30FpCeptonNetworkReceiveCallbackPCv"></span><span id="cepton_sdk_listen_network_packet__FpCeptonNetworkReceiveCallback.voidPC"></span><span class="target" id="cepton__sdk_8h_1a0fb65f505cf813539857f0360887c0d1"></span><a class="reference internal" href="errors.html#_CPPv321CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="descname">cepton_sdk_listen_network_packet</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv330FpCeptonNetworkReceiveCallback" title="FpCeptonNetworkReceiveCallback">FpCeptonNetworkReceiveCallback</a> <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv332cepton_sdk_listen_network_packet30FpCeptonNetworkReceiveCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv432cepton_sdk_listen_network_packet30FpCeptonNetworkReceiveCallbackPCv">
+<span id="_CPPv332cepton_sdk_listen_network_packet30FpCeptonNetworkReceiveCallbackPCv"></span><span id="_CPPv232cepton_sdk_listen_network_packet30FpCeptonNetworkReceiveCallbackPCv"></span><span id="cepton_sdk_listen_network_packet__FpCeptonNetworkReceiveCallback.voidPC"></span><span class="target" id="cepton__sdk_8h_1a0fb65f505cf813539857f0360887c0d1"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_listen_network_packet</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv430FpCeptonNetworkReceiveCallback" title="FpCeptonNetworkReceiveCallback">FpCeptonNetworkReceiveCallback</a> <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432cepton_sdk_listen_network_packet30FpCeptonNetworkReceiveCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets network packets callback. </p>
 <p>For internal use.</p>
 <p>Returns error if callback already registered.</p>
-<p><dl class="docutils">
-<dt><strong>Parameters</strong></dt>
-<dd><ul class="breatheparameterlist first last simple">
-<li><code class="docutils literal notranslate"><span class="pre">cb</span></code>: Callback. </li>
-<li><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User instance pointer. </li>
+<p><dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cb</span></code>: Callback. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User instance pointer. </p></li>
 </ul>
 </dd>
 </dl>
@@ -216,8 +222,8 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="_CPPv334cepton_sdk_unlisten_network_packetv">
-<span id="_CPPv234cepton_sdk_unlisten_network_packetv"></span><span id="cepton_sdk_unlisten_network_packet"></span><span class="target" id="cepton__sdk_8h_1a425f02f6b1f46879d31a088935a5a07f"></span><a class="reference internal" href="errors.html#_CPPv321CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="descname">cepton_sdk_unlisten_network_packet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv334cepton_sdk_unlisten_network_packetv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv434cepton_sdk_unlisten_network_packetv">
+<span id="_CPPv334cepton_sdk_unlisten_network_packetv"></span><span id="_CPPv234cepton_sdk_unlisten_network_packetv"></span><span id="cepton_sdk_unlisten_network_packet"></span><span class="target" id="cepton__sdk_8h_1a425f02f6b1f46879d31a088935a5a07f"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_unlisten_network_packet</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv434cepton_sdk_unlisten_network_packetv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Clears network packet callback. </p>
 </dd></dl>
 
@@ -235,7 +241,7 @@
         <a href="serial.html" class="btn btn-neutral float-right" title="Serial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="capture_replay.html" class="btn btn-neutral" title="Capture Replay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="capture_replay.html" class="btn btn-neutral float-left" title="Capture Replay" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -261,25 +267,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

@@ -56,5 +56,5 @@ Minimal SDK
 If desired, the following SDK features can be disabled in the SDK and performed manually by the user:
 
 - Capture Replay: :doc:`samples/replay`.
-- Frame Accumulation: :doc:`samples/frame`.
+- Frame Accumulation: :doc:`samples/frame_accumulator`.
 - Networking: :doc:`samples/network`.

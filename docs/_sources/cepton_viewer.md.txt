@@ -1,0 +1,87 @@
+# Cepton Viewer
+
+The Cepton Viewer tool allows viewing raw Cepton sensor data. It is primarily used for sensor debugging.
+
+- View live or replay sensor data.
+- View sensor information.
+- Update extrinsic sensor transforms.
+
+### Downloads
+
+Cepton Viewer can be downloaded from our SDK repository: <https://github.com/ceptontech/cepton_sdk_redist/setup>.
+
+- **Windows x64:** <https://www.cepton.com/downloads/cepton_sdk/latest/win64/cepton_sdk-win64.deb>
+- **Linux x64:** <https://www.cepton.com/downloads/cepton_sdk/latest/linux-x86_64/cepton_sdk-linux-x86_64.deb>
+- **Mac x64:** <https://www.cepton.com/downloads/cepton_sdk/latest/osx/cepton_sdk-osx.deb>
+
+On Windows, a firewall popup will appear the first time Cepton Viewer is launched. Select "Allow access" for both private and public networks.
+
+### Main Menu
+
+- Hover over menu items to view tooltips.
+- When editing value fields, press `ESC` to undo new value and `ENTER` to accept new value.
+
+### Camera Controls
+
+| Command        | Mouse     |
+| -------------- | --------- |
+| Rotate View    | `LButton` |
+| Translate View | `RButton` |
+| Zoom View      | `MButton` |
+
+### Workflows
+
+#### Open Capture
+
+- Drag and drop capture file/folder onto the main window.
+
+`OR`
+
+- Switch to `General` tab.
+- Select `Capture` -> `Load Capture`.
+
+#### Save Capture
+
+- Switch to `General` tab.
+- Select `Capture` -> `Start Capture`.
+- Wait for desired duration.
+- Select `Capture` -> `Stop Capture`.
+
+The capture is saved in `~/Media/CeptonViewer`.
+
+#### Take Screenshot
+
+- Switch to `General` tab.
+- Select `Tools` -> `Screenshot`.
+
+The screenshot is saved in `~/Media/CeptonViewer`.
+
+### Update Sensor Transforms/Clips
+
+- Switch to `Settings` tab.
+- For each sensor, update the transforms/clips.
+- Select `File` -> `Save`/`Save As...`.
+
+### Keyboard Shortcuts
+
+#### GUI
+
+| Command  | Key   |
+| -------- | ----- |
+| Help     | `F1`  |
+| Hide GUI | `F11` |
+
+#### Replay
+
+| Command      | Key     |
+| ------------ | ------- |
+| Pause/Resume | `SPACE` |
+
+#### View
+
+| Command           | Key |
+| ----------------- | --- |
+| Reset View Origin | `O` |
+| Front View        | `1` |
+| Top View          | `2` |
+| Side View         | `3` |

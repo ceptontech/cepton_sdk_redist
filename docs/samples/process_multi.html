@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Process Single" href="process_single.html" />
     <link rel="prev" title="Organize Points" href="organize_points.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -85,18 +87,25 @@
 <li class="toctree-l2"><a class="reference internal" href="../samples.html#building">Building</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../samples.html#basic">Basic</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../samples.html#advanced">Advanced</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="frame.html">Frame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="frame_accumulator.html">Frame Detector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="frame_detector.html">Frame Accumulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="network.html">Network</a></li>
 <li class="toctree-l3"><a class="reference internal" href="organize_points.html">Organize Points</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Process Multi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="process_single.html">Process Single</a></li>
 <li class="toctree-l3"><a class="reference internal" href="replay.html">Replay</a></li>
-<li class="toctree-l3"><a class="reference internal" href="stray.html">Stray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stray_filter.html">Stray Filter</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">Errors</a></li>
@@ -174,7 +183,7 @@
         <a href="process_single.html" class="btn btn-neutral float-right" title="Process Single" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="organize_points.html" class="btn btn-neutral" title="Organize Points" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="organize_points.html" class="btn btn-neutral float-left" title="Organize Points" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -266,13 +275,15 @@
 77
 78
 79
-80</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
-<span class="cm"> * Sample code for processing data from multiple sensors.</span>
+80
+81
+82
+83</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Sample code for processing offline data from multiple sensors.</span>
 <span class="cm"> */</span>
-<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
-
 <span class="cp">#include</span> <span class="cpf">&lt;cepton_sdk_api.hpp&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;common.hpp&quot;</span><span class="cp"></span>
 
 <span class="k">struct</span> <span class="n">Frame</span> <span class="p">{</span>
   <span class="kt">int64_t</span> <span class="n">timestamp</span><span class="p">;</span>
@@ -287,8 +298,8 @@
       <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span><span class="o">*</span> <span class="k">const</span> <span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">LockGuard</span> <span class="n">lock</span><span class="p">(</span><span class="n">m_mutex</span><span class="p">);</span>
 
+    <span class="c1">// Add points to buffer</span>
     <span class="k">auto</span><span class="o">&amp;</span> <span class="n">image_points</span> <span class="o">=</span> <span class="n">m_image_points_dict</span><span class="p">[</span><span class="n">handle</span><span class="p">];</span>
-    <span class="n">image_points</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">image_points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">+</span> <span class="n">n_points</span><span class="p">);</span>
     <span class="n">image_points</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">image_points</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">c_image_points</span><span class="p">,</span>
                         <span class="n">c_image_points</span> <span class="o">+</span> <span class="n">n_points</span><span class="p">);</span>
 
@@ -297,12 +308,12 @@
 
  <span class="nl">private</span><span class="p">:</span>
   <span class="kt">void</span> <span class="n">check_and_publish</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// Check if frame done</span>
     <span class="k">const</span> <span class="k">auto</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">get_time</span><span class="p">();</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">timestamp</span> <span class="o">&lt;</span> <span class="n">m_timestamp</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">timestamp</span> <span class="o">-</span> <span class="n">m_timestamp</span><span class="p">)</span> <span class="o">&lt;</span> <span class="kt">int64_t</span><span class="p">(</span><span class="n">m_frame_length</span> <span class="o">*</span> <span class="mf">1e6</span><span class="n">f</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
     <span class="n">m_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span><span class="p">;</span>
 
+    <span class="c1">// Add frame to queue</span>
     <span class="k">auto</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">Frame</span><span class="o">&gt;</span><span class="p">();</span>
     <span class="n">frame</span><span class="o">-&gt;</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">timestamp</span><span class="p">;</span>
     <span class="n">frame</span><span class="o">-&gt;</span><span class="n">image_points_dict</span> <span class="o">=</span> <span class="n">m_image_points_dict</span><span class="p">;</span>
@@ -322,25 +333,29 @@
 <span class="p">};</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">capture_path</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="n">capture_path</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+  <span class="n">check_help</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="s">&quot;cepton_sdk_sample_process_multi capture_path&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">CEPTON_ASSERT</span><span class="p">(</span><span class="n">argc</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;Capture path not provided!&quot;</span><span class="p">))</span> <span class="n">std</span><span class="o">::</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">capture_path</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
   <span class="c1">// Initialize</span>
   <span class="k">auto</span> <span class="n">options</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">create_options</span><span class="p">();</span>
   <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">capture_path</span><span class="p">));</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">SensorImageFrameCallback</span> <span class="n">callback</span><span class="p">;</span>
   <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
-  <span class="k">if</span> <span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">capture_replay</span><span class="o">::</span><span class="n">is_open</span><span class="p">())</span>
-    <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">capture_replay</span><span class="o">::</span><span class="n">resume</span><span class="p">());</span>
 
   <span class="c1">// Listen</span>
   <span class="n">FrameAccumulator</span> <span class="n">accumulator</span><span class="p">;</span>
   <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span>
       <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span><span class="o">&amp;</span><span class="n">accumulator</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">FrameAccumulator</span><span class="o">::</span><span class="n">on_image_frame</span><span class="p">));</span>
-  <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">const</span> <span class="k">auto</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">accumulator</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">);</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">capture_replay</span><span class="o">::</span><span class="n">is_end</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// Get frame</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">accumulator</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+      <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">capture_replay</span><span class="o">::</span><span class="n">resume_blocking</span><span class="p">(</span><span class="mf">0.1f</span><span class="p">));</span>
+    <span class="k">const</span> <span class="k">auto</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">accumulator</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">frame</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-    <span class="c1">// Do processing</span>
+
+    <span class="c1">// Do processing...</span>
   <span class="p">}</span>
 
   <span class="c1">// Deinitialize</span>
@@ -362,7 +377,7 @@
         <a href="process_single.html" class="btn btn-neutral float-right" title="Process Single" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="organize_points.html" class="btn btn-neutral" title="Organize Points" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="organize_points.html" class="btn btn-neutral float-left" title="Organize Points" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -388,25 +403,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

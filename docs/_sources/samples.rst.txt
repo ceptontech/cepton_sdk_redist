@@ -24,10 +24,11 @@ Advanced
 .. toctree::
   :maxdepth: 1
 
-  samples/frame
+  samples/frame_accumulator
+  samples/frame_detector
   samples/network
   samples/organize_points
   samples/process_multi
   samples/process_single
   samples/replay
-  samples/stray
+  samples/stray_filter

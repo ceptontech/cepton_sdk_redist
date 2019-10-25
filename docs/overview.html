@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Building" href="building.html" />
     <link rel="prev" title="Cepton SDK" href="index.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -91,6 +93,12 @@
 <li class="toctree-l1"><a class="reference internal" href="building.html">Building</a></li>
 <li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
@@ -166,7 +174,7 @@
         <a href="building.html" class="btn btn-neutral float-right" title="Building" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Cepton SDK" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Cepton SDK" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -179,15 +187,15 @@
 <h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
 <p>The Cepton SDK provides the following features:</p>
 <ul class="simple">
-<li><strong>Networking</strong>: Listen for sensor packets.</li>
-<li><strong>Capture Replay</strong>: Read sensor packets from a PCAP file.</li>
-<li><strong>Parsing</strong>: Parse sensor packets.</li>
-<li><strong>Calibration</strong>: Apply sensor calibration.</li>
-<li><strong>Frame Accumulation</strong>: Accumulate sensor points and detect frames.</li>
+<li><p><strong>Networking</strong>: Listen for sensor packets.</p></li>
+<li><p><strong>Capture Replay</strong>: Read sensor packets from a PCAP file.</p></li>
+<li><p><strong>Parsing</strong>: Parse sensor packets.</p></li>
+<li><p><strong>Calibration</strong>: Apply sensor calibration.</p></li>
+<li><p><strong>Frame Accumulation</strong>: Accumulate sensor points and detect frames.</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Currently, the Cepton LiDAR packet formats are under active development, and are not publicly available. The SDK is required for <strong>Parsing</strong> and <strong>Calibration</strong>. All other SDK features are optional, and can be done manually by the user.</p>
+<p class="admonition-title">Note</p>
+<p>Currently, the Cepton LiDAR packet formats are under active development, and are not publicly available. The SDK is required for <strong>Parsing</strong> and <strong>Calibration</strong>. All other SDK features are optional, and can be done manually by the user.</p>
 </div>
 <div class="section" id="getting-started">
 <h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
@@ -272,33 +280,33 @@
 <p>For prototyping, it is recommended to use the high level C++ API. The C++ API also acts as reference code for C API usage. Any C++ functions that directly wrap C functions are not documented; refer to the C function documentation.</p>
 <p>The general C SDK workflow is as follows:</p>
 <ol class="arabic simple">
-<li>Initialize SDK (<a class="reference internal" href="setup.html#_CPPv321cepton_sdk_initializeiPCK16CeptonSDKOptions27FpCeptonSensorErrorCallbackPCv" title="cepton_sdk_initialize"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_initialize()</span></code></a>). See <a class="reference internal" href="setup.html"><span class="doc">Setup</span></a>.</li>
-<li>Register point listener function (<a class="reference internal" href="points.html#_CPPv330cepton_sdk_listen_image_frames31FpCeptonSensorImageDataCallbackPCv" title="cepton_sdk_listen_image_frames"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_listen_image_frames()</span></code></a>). See <a class="reference internal" href="points.html"><span class="doc">Points</span></a>.</li>
-<li>Wait for sensor calibration/information packets, then query sensors. See <a class="reference internal" href="sensors.html"><span class="doc">Sensors</span></a>.</li>
-<li>Sleep or run replay. Callbacks will occur asynchronously.</li>
-<li>Deinitialize SDK.</li>
+<li><p>Initialize SDK (<a class="reference internal" href="setup.html#_CPPv421cepton_sdk_initializeiPCK16CeptonSDKOptions27FpCeptonSensorErrorCallbackPCv" title="cepton_sdk_initialize"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_initialize()</span></code></a>). See <a class="reference internal" href="setup.html"><span class="doc">Setup</span></a>.</p></li>
+<li><p>Register point listener callback function (<a class="reference internal" href="points.html#_CPPv430cepton_sdk_listen_image_frames31FpCeptonSensorImageDataCallbackPCv" title="cepton_sdk_listen_image_frames"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_listen_image_frames()</span></code></a>). See <a class="reference internal" href="points.html"><span class="doc">Points</span></a>.</p></li>
+<li><p>Wait for sensor calibration/information packets, then query sensors. See <a class="reference internal" href="sensors.html"><span class="doc">Sensors</span></a>.</p></li>
+<li><p>Sleep or run replay. Callbacks will occur asynchronously.</p></li>
+<li><p>Deinitialize SDK.</p></li>
 </ol>
 </div>
 <div class="section" id="packets">
 <h2>Packets<a class="headerlink" href="#packets" title="Permalink to this headline">¶</a></h2>
 <p>The SDK passively listens for sensor UDP packets. There are 2 types of sensor packets:</p>
 <ul class="simple">
-<li><strong>Calibration/Information</strong>: Contains sensor calibration, statistics, and other information. Published at <code class="docutils literal notranslate"><span class="pre">~1Hz</span></code>.</li>
-<li><strong>Points</strong>: Contains <code class="docutils literal notranslate"><span class="pre">~100</span></code> measurements. Published at <code class="docutils literal notranslate"><span class="pre">~1000Hz</span></code>.</li>
+<li><p><strong>Calibration/Information</strong>: Contains sensor calibration, statistics, and other information. Published at <code class="docutils literal notranslate"><span class="pre">~1Hz</span></code>.</p></li>
+<li><p><strong>Points</strong>: Contains <code class="docutils literal notranslate"><span class="pre">~100</span></code> measurements. Published at <code class="docutils literal notranslate"><span class="pre">~1000Hz</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="errors">
 <h2>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h2>
-<p>Many SDK functions return <a class="reference internal" href="errors.html#_CPPv321CeptonSensorErrorCode" title="CeptonSensorErrorCode"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CeptonSensorErrorCode</span></code></a>. If this is not <a class="reference internal" href="errors.html#_CPPv314CEPTON_SUCCESS" title="CEPTON_SUCCESS"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SUCCESS</span></code></a>, then the user must call <a class="reference internal" href="errors.html#_CPPv320cepton_sdk_get_errorPPKc" title="cepton_sdk_get_error"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_get_error()</span></code></a>, otherwise the SDK will complain that the error was not checked.</p>
-<p>All sensor errors will be returned via <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">FpCeptonSensorErrorCallback</span></code>, which is registered in <a class="reference internal" href="setup.html#_CPPv321cepton_sdk_initializeiPCK16CeptonSDKOptions27FpCeptonSensorErrorCallbackPCv" title="cepton_sdk_initialize"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_initialize()</span></code></a>.</p>
+<p>Many SDK functions return <a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CeptonSensorErrorCode</span></code></a>. If this is not <a class="reference internal" href="errors.html#_CPPv414CEPTON_SUCCESS" title="CEPTON_SUCCESS"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SUCCESS</span></code></a>, then the user must call <a class="reference internal" href="errors.html#_CPPv420cepton_sdk_get_errorPPKc" title="cepton_sdk_get_error"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_get_error()</span></code></a>, otherwise the SDK will complain that the error was not checked.</p>
+<p>All sensor errors will be returned via <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">FpCeptonSensorErrorCallback</span></code>, which is registered in <a class="reference internal" href="setup.html#_CPPv421cepton_sdk_initializeiPCK16CeptonSDKOptions27FpCeptonSensorErrorCallbackPCv" title="cepton_sdk_initialize"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_initialize()</span></code></a>.</p>
 </div>
 <div class="section" id="timestamps">
 <h2>Timestamps<a class="headerlink" href="#timestamps" title="Permalink to this headline">¶</a></h2>
 <p>All <code class="docutils literal notranslate"><span class="pre">int64</span></code> timestamps are microseconds since the Unix epoch (UTC). All <code class="docutils literal notranslate"><span class="pre">float</span></code> times (measurement period, replay time, frame length, etc.) are time differences measured in seconds. Point timestamps are based on one of the following sources (the first valid source is used):</p>
 <ol class="arabic simple">
-<li>GPS (NMEA + PPS)</li>
-<li>PTP</li>
-<li>Host PC</li>
+<li><p>GPS (NMEA + PPS)</p></li>
+<li><p>PTP</p></li>
+<li><p>Host PC</p></li>
 </ol>
 </div>
 <div class="section" id="sensor-fusion">
@@ -307,12 +315,12 @@
 </div>
 <div class="section" id="multiple-returns">
 <h2>Multiple Returns<a class="headerlink" href="#multiple-returns" title="Permalink to this headline">¶</a></h2>
-<p>To enable multiple returns, pass the <a class="reference internal" href="setup.html#_CPPv342CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS" title="CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS</span></code></a> flag during initialization.</p>
+<p>To enable multiple returns, pass the <a class="reference internal" href="setup.html#_CPPv442CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS" title="CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS</span></code></a> flag during initialization.</p>
 <p>The returns are as follows:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>Strongest signal.</li>
-<li>Furthest signal, if it is not the strongest. Otherwise, the second strongest signal.</li>
+<li><p>Strongest signal.</p></li>
+<li><p>Furthest signal, if it is not the strongest. Otherwise, the second strongest signal.</p></li>
 </ol>
 </div></blockquote>
 </div>
@@ -329,7 +337,7 @@
         <a href="building.html" class="btn btn-neutral float-right" title="Building" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="Cepton SDK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Cepton SDK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -355,25 +363,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

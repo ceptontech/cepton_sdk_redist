@@ -27,7 +27,7 @@ For prototyping, it is recommended to use the high level C++ API. The C++ API al
 The general C SDK workflow is as follows: 
 
 1. Initialize SDK (:any:`cepton_sdk_initialize()`). See :doc:`setup`.
-2. Register point listener function (:any:`cepton_sdk_listen_image_frames`). See :doc:`points`. 
+2. Register point listener callback function (:any:`cepton_sdk_listen_image_frames`). See :doc:`points`. 
 3. Wait for sensor calibration/information packets, then query sensors. See :doc:`sensors`.
 4. Sleep or run replay. Callbacks will occur asynchronously.
 5. Deinitialize SDK.

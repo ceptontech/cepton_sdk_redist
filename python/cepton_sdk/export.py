@@ -94,7 +94,7 @@ def load_points_ply(path):
     Returns:
         Points, extra_data
     """
-    plydata = plyfile.PlyData.read(input_path)
+    plydata = plyfile.PlyData.read(path)
     data = plydata.elements[0].data
     n = len(data)
     points = cepton_sdk.Points(n)

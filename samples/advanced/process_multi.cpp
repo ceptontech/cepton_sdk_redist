@@ -1,10 +1,9 @@
 /**
- * Sample code for processing multiple sensor data.
+ * Sample code for processing offline data from multiple sensors.
  */
-#include <string>
-#include <vector>
-
 #include <cepton_sdk_api.hpp>
+
+#include "common.hpp"
 
 struct Frame {
   int64_t timestamp;
@@ -19,8 +18,8 @@ class FrameAccumulator {
       const cepton_sdk::SensorImagePoint* const c_image_points) {
     cepton_sdk::util::LockGuard lock(m_mutex);
 
+    // Add points to buffer
     auto& image_points = m_image_points_dict[handle];
-    image_points.reserve(image_points.size() + n_points);
     image_points.insert(image_points.end(), c_image_points,
                         c_image_points + n_points);
 
@@ -29,12 +28,12 @@ class FrameAccumulator {
 
  private:
   void check_and_publish() {
+    // Check if frame done
     const auto timestamp = cepton_sdk::api::get_time();
-
-    if (timestamp < m_timestamp) return;
     if ((timestamp - m_timestamp) < int64_t(m_frame_length * 1e6f)) return;
     m_timestamp = timestamp;
 
+    // Add frame to queue
     auto frame = std::make_shared<Frame>();
     frame->timestamp = timestamp;
     frame->image_points_dict = m_image_points_dict;
@@ -54,25 +53,29 @@ class FrameAccumulator {
 };
 
 int main(int argc, char** argv) {
-  std::string capture_path;
-  if (argc >= 2) capture_path = argv[1];
+  check_help(argc, argv, "cepton_sdk_sample_process_multi capture_path");
+  if (!CEPTON_ASSERT(argc >= 2, "Capture path not provided!")) std::exit(1);
+  const std::string capture_path = argv[1];
 
   // Initialize
   auto options = cepton_sdk::create_options();
   CEPTON_CHECK_ERROR(cepton_sdk::api::initialize(options, capture_path));
   cepton_sdk::api::SensorImageFrameCallback callback;
   CEPTON_CHECK_ERROR(callback.initialize());
-  if (cepton_sdk::capture_replay::is_open())
-    CEPTON_CHECK_ERROR(cepton_sdk::capture_replay::resume());
 
   // Listen
   FrameAccumulator accumulator;
   CEPTON_CHECK_ERROR(
       callback.listen(&accumulator, &FrameAccumulator::on_image_frame));
-  while (true) {
-    const auto frame = accumulator.queue.pop(0.01f);
+
+  while (!cepton_sdk::capture_replay::is_end()) {
+    // Get frame
+    if (accumulator.queue.empty())
+      CEPTON_CHECK_ERROR(cepton_sdk::capture_replay::resume_blocking(0.1f));
+    const auto frame = accumulator.queue.pop();
     if (!frame) continue;
-    // Do processing
+
+    // Do processing...
   }
 
   // Deinitialize

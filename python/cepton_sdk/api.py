@@ -65,7 +65,7 @@ def wait(duration=-1):
 
 
 def initialize(capture_path=None, capture_seek=0, control_flags=0,
-               error_callback=None, port=None, **kwargs):
+               enable_wait=False, error_callback=None, port=None, **kwargs):
     """Initializes SDK. Optionally starts capture replay.
 
     Arguments:
@@ -86,8 +86,12 @@ def initialize(capture_path=None, capture_seek=0, control_flags=0,
     cepton_sdk.core._frames_callback.initialize()
     cepton_sdk.core._serial_lines_callback.initialize()
 
-    if capture_path is not None:
-        open_replay(capture_path, capture_seek=capture_seek)
+    if capture_path is None:
+        if enable_wait:
+            wait(3)
+    else:
+        open_replay(capture_path, capture_seek=capture_seek,
+                    enable_wait=enable_wait)
 
 
 def deinitialize():
@@ -95,14 +99,15 @@ def deinitialize():
     cepton_sdk.core._manager.deinitialize()
 
 
-def open_replay(capture_path, capture_seek=0, enable_loop=False):
+def open_replay(capture_path, capture_seek=0, enable_loop=False, enable_wait=False):
     if cepton_sdk.capture_replay.is_open():
         cepton_sdk.capture_replay.close()
     cepton_sdk.capture_replay.open(capture_path)
     cepton_sdk.capture_replay.set_enable_loop(enable_loop)
 
-    cepton_sdk.capture_replay.resume_blocking(3)
-    cepton_sdk.capture_replay.seek(capture_seek)
+    if enable_wait:
+        cepton_sdk.capture_replay.resume_blocking(3)
+        cepton_sdk.capture_replay.seek(capture_seek)
 
 
 close_replay = cepton_sdk.capture_replay.close

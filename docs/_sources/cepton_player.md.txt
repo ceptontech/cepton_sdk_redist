@@ -1,0 +1,89 @@
+# Cepton Player
+
+The Cepton Player tool allows creating/viewing data captures. 
+
+- View live/replay data.
+- Capture data.
+- Clip/filter data.
+- Measure LiDAR points.
+- Export LiDAR points.
+
+### Install
+
+Requirements:
+
+- Python 3
+
+Install `cepton_alg`
+
+```sh
+pip3 install --user -U cepton_alg
+```
+
+To launch, run
+
+```sh
+cepton_player.py
+```
+
+### Workflows
+
+#### Open Capture
+
+- Drag and drop capture file/folder onto the main window.
+
+`OR`
+
+- Select `File` -> `Open Replay`.
+
+### Camera Controls
+
+| Command        | Mouse     |
+| -------------- | --------- |
+| Rotate View    | `LButton` |
+| Translate View | `RButton` |
+| Zoom View      | `Scroll`  |
+
+### Cursors
+
+Interactive cursors use a combination of `CTRL` + `LButton`/`RButton`.
+
+#### Distance Ruler
+
+| Command        | Key                |
+| -------------- | ------------------ |
+| Enable/Disable | `D`                |
+| Measure        | `CTRL` + `LButton` |
+
+#### Angle Ruler
+
+| Command        | Key                |
+| -------------- | ------------------ |
+| Enable/Disable | `A`                |
+| Measure        | `CTRL` + `LButton` |
+| Set Center     | `CTRL` + `RButton` |
+
+#### Point Selection
+
+| Command        | Key                |
+| -------------- | ------------------ |
+| Enable/Disable | `S`                |
+| Select         | `CTRL` + `LButton` |
+
+### Keyboard Shortcuts
+
+#### Replay
+
+| Command      | Key     |
+| ------------ | ------- |
+| Pause/Resume | `SPACE` |
+| Next Frame   | `N`     |
+
+#### View
+
+| Command           | Key |
+| ----------------- | --- |
+| Reset View Origin | `O` |
+| Front View        | `1` |
+| Top View          | `2` |
+| Side View         | `3` |

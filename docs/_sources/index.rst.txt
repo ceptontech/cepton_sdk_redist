@@ -8,6 +8,17 @@ Cepton SDK
   building
   samples
   internal
+  legal
+
+Tools
+-----
+
+.. toctree::
+  :maxdepth: 1
+
+  cepton_viewer
+  cepton_player
+  cepton_export
   
   
 API Reference

@@ -1,5 +1,13 @@
 # Cepton SDK Release Notes
 
+### Version 1.16.0 2019-10-24
+
+* Remove deprecated sensor models.
+* Improve `cepton_sdk::util::FrameDetector` (API changed). 
+* Add `cepton_is_sora`, `cepton_is_hr80`, `cepton_is_vista`.
+* Add `segment_id` into `CeptonSensorImagePoint`.
+* Improve documentation.
+
 ### Version 1.15 2019-09-12
 * Add serial lines callback for receiving GPS/INS data.
 * Remove `*_def.h`/`*_undef.h` files.

@@ -1,3 +1,9 @@
+/*
+  Copyright Cepton Technologies Inc., All rights reserved.
+
+  Cepton Sensor SDK C++ utilities for rapid prototyping. API not guaranteed to
+  be stable.
+*/
 #pragma once
 
 #include "cepton_sdk.hpp"
@@ -14,6 +20,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <memory>
 #include <queue>
 
 namespace cepton_sdk {
@@ -22,19 +29,39 @@ namespace util {
 //------------------------------------------------------------------------------
 // Common
 //------------------------------------------------------------------------------
+/// Converts seconds -> microseconds.
 inline int64_t to_usec(float sec) { return int64_t(sec * 1e6); }
+/// Converts microseconds -> seconds.
 inline float from_usec(int64_t usec) { return float(usec) * 1e-6f; }
+/// # of microseconds in second.
 const int64_t second_usec(to_usec(1.0f));
+/// # of microseconds in hour.
 const int64_t hour_usec(to_usec(60.0f * 60.0f));
+/// # of seconds in hour.
 const int64_t hour_sec(3600);
 
 static const float PI = 3.14159265359f;
+/// Converts radians -> degrees.
 inline float to_degrees(float val) { return val * (180.0f / PI); }
+/// Converts degrees -> radians.
 inline float to_radians(float val) { return val * (PI / 180.0f); }
 
+/// Returns `x` squared.
 template <typename T>
 inline T square(T x) {
   return x * x;
+}
+
+/// Returns value in range [0, n).
+template <typename T>
+T positive_modulo(const T &value, const T &n) {
+  if (std::is_integral<T>::value) {
+    T result = value % n;
+    if (result < 0) result += n;
+    return result;
+  } else {
+    return value - n * std::floor(value / n);
+  }
 }
 
 /// Returns current unix timestamp [microseconds].
@@ -46,20 +73,27 @@ inline int64_t get_timestamp_usec() {
   return std::chrono::duration_cast<std::chrono::microseconds>(t_epoch).count();
 }
 
+class RAII {
+ public:
+  RAII() = default;
+  RAII(const std::function<void()> &f)
+      : m_raii(new bool(), [this, f](bool *const ptr_tmp) {
+          delete ptr_tmp;
+          f();
+        }) {}
+
+ private:
+  std::shared_ptr<void> m_raii;
+};
+
 // -----------------------------------------------------------------------------
 // Concurrent
 // -----------------------------------------------------------------------------
+/// Similar to `std::lock_guard`, but throws assert on deadlock.
 class LockGuard {
  public:
-  explicit LockGuard(std::timed_mutex &mutex) : m_mutex(mutex) {
-    m_is_locked = m_mutex.try_lock_for(std::chrono::seconds(1));
-    if (m_is_locked) return;
-    CEPTON_ASSERT(false, "Deadlock!");
-  }
-
-  ~LockGuard() {
-    if (m_is_locked) m_mutex.unlock();
-  }
+  explicit LockGuard(std::timed_mutex &mutex);
+  ~LockGuard();
 
   LockGuard(const LockGuard &) = delete;
   LockGuard &operator=(const LockGuard &) = delete;
@@ -70,27 +104,14 @@ class LockGuard {
 };
 
 /// Object pool for storing large reusable temporary objects.
+/**
+ * Internal use only.
+ */
 template <typename T>
 class LargeObjectPool
     : public std::enable_shared_from_this<LargeObjectPool<T>> {
  public:
-  std::shared_ptr<T> get() {
-    LockGuard lock(m_mutex);
-    T *ptr;
-    if (m_free.empty()) {
-      m_objects.emplace_back();
-      ptr = &m_objects.back();
-    } else {
-      ptr = m_free.back();
-      m_free.pop_back();
-    }
-
-    auto this_ptr = this->shared_from_this();
-    return std::shared_ptr<T>(ptr, [this, this_ptr](T *const ptr_tmp) {
-      LockGuard lock_tmp(m_mutex);
-      m_free.push_back(ptr_tmp);
-    });
-  }
+  std::shared_ptr<T> get();
 
  private:
   std::timed_mutex m_mutex;
@@ -98,50 +119,19 @@ class LargeObjectPool
   std::vector<T *> m_free;
 };
 
+/// Multithreaded queue.
+/**
+ * Internal use only.
+ */
 template <typename T>
 class SingleConsumerQueue {
  public:
-  int size() const { return m_size; }
+  int size() const;
+  bool empty() const;
 
-  bool empty() const { return size() == 0; }
-
-  void clear() {
-    std::lock_guard<std::mutex> lock(m_mutex);
-    m_queue = std::queue<std::shared_ptr<T>>();
-    m_size = (int)m_queue.size();
-  }
-
-  int push(const std::shared_ptr<T> &value, int max_size = 0) {
-    int n_dropped = 0;
-    {
-      std::lock_guard<std::mutex> lock(m_mutex);
-      m_queue.push(value);
-      if (max_size > 0) {
-        while (m_queue.size() > max_size) {
-          m_queue.pop();
-          ++n_dropped;
-        }
-      }
-      m_size = (int)m_queue.size();
-    }
-    m_condition_variable.notify_one();
-    return n_dropped;
-  }
-
-  std::shared_ptr<T> pop(float timeout = 0.0f) {
-    if (!timeout && empty()) return nullptr;
-    std::unique_lock<std::mutex> lock(m_mutex);
-    if (empty()) {
-      m_condition_variable.wait_for(lock,
-                                    std::chrono::microseconds(to_usec(timeout)),
-                                    [this]() -> bool { return !empty(); });
-    }
-    if (empty()) return nullptr;
-    const std::shared_ptr<T> value = m_queue.front();
-    m_queue.pop();
-    m_size = (int)m_queue.size();
-    return value;
-  }
+  void clear();
+  int push(const std::shared_ptr<T> &value, int max_size = 0);
+  std::shared_ptr<T> pop(float timeout = 0.0f);
 
  private:
   mutable std::mutex m_mutex;
@@ -156,6 +146,7 @@ class SingleConsumerQueue {
 /// Accumulates errors
 /**
  * DEPRICATED: use `cepton_sdk::SensorErrorWrapper`.
+ *
  * Useful for accumulating non fatal errors.
  * Currently, stores first error.
  */
@@ -201,8 +192,9 @@ inline void convert_image_point_to_point(float image_x, float image_z,
 /// inclination and azimuth will always fall in [0, pi)
 inline void convert_image_point_to_polar(float image_x, float image_z,
                                          float &inclination, float &azimuth) {
-  azimuth = std::atan2(image_x, 1.0f) + (PI / 2.f);
-  inclination = (PI / 2.f) - std::atan2(-image_z, 1.0f);
+  azimuth = std::atan2(1.0f, -image_x);
+  inclination =
+      std::acos(-image_z / std::sqrt(square(image_x) + square(image_z) + 1.0f));
 }
 
 /// 3d point class.
@@ -210,12 +202,12 @@ inline void convert_image_point_to_polar(float image_x, float image_z,
  * Can't subclass from SensorImagePoint, needs to be POD.
  */
 struct SensorPoint {
-  int64_t timestamp;  ///< Unix time [microseconds].
-  float image_x;      ///< x image coordinate.
-  float distance;     ///< Distance [meters].
-  float image_z;      ///< z image coordinate.
-  float intensity;    ///< Diffuse reflectance.
-  CeptonSensorReturnType return_type;
+  int64_t timestamp;                   ///< Unix time [microseconds].
+  float image_x;                       ///< x image coordinate.
+  float distance;                      ///< Distance [meters].
+  float image_z;                       ///< z image coordinate.
+  float intensity;                     ///< Diffuse reflectance.
+  CeptonSensorReturnType return_type;  ///< Strongest or farthest return.
 
 #ifdef CEPTON_SIMPLE
   /// bit flags
@@ -228,19 +220,41 @@ struct SensorPoint {
   uint8_t flags;
 #else
   union {
+    /// Bit flags.
     uint8_t flags;
     struct {
+      /// If `false`, then the distance and intensity are invalid.
       uint8_t valid : 1;
+      /// If `true`, then the intensity is invalid. Also, the distance is valid,
+      /// but inaccurate.
       uint8_t saturated : 1;
     };
   };
 #endif
-  uint8_t reserved[5];
 
   float x;  ///< x cartesian coordinate
   float y;  ///< y cartesian coordinate
   float z;  ///< z cartesian coordinate
 };
+
+/// Convenience method to convert `cepton_sdk::SensorImagePoint` to
+/// `cepton_sdk::SensorPoint`.
+inline void convert_sensor_image_point_to_point(
+    const SensorImagePoint &image_point, SensorPoint &point) {
+  *(SensorImagePoint *)(&point) = image_point;
+#define COPY(name) point.name = image_point.name;
+  COPY(timestamp);
+  COPY(image_x);
+  COPY(distance);
+  COPY(image_z);
+  COPY(intensity);
+  COPY(return_type);
+  COPY(flags);
+#undef COPY
+
+  convert_image_point_to_point(image_point.image_x, image_point.image_z,
+                               image_point.distance, point.x, point.y, point.z);
+}
 
 /**
  * @brief The OrganizedCloud struct
@@ -427,16 +441,6 @@ class Organizer {
   std::mutex m_organizer_mutex;
 };
 
-/// Convenience method to convert `cepton_sdk::SensorImagePoint` to
-/// `cepton_sdk::SensorPoint`.
-inline void convert_sensor_image_point_to_point(
-    const SensorImagePoint &image_point, SensorPoint &point) {
-  *(SensorImagePoint *)(&point) = image_point;
-
-  convert_image_point_to_point(image_point.image_x, image_point.image_z,
-                               image_point.distance, point.x, point.y, point.z);
-}
-
 // -----------------------------------------------------------------------------
 // Callbacks
 // -----------------------------------------------------------------------------
@@ -455,52 +459,39 @@ class Callback {
   virtual ~Callback() = default;
 
   /// Clear all listeners.
-  void clear() {
-    LockGuard lock(m_mutex);
-    m_i_callback = 0;
-    m_functions.clear();
-  }
+  void clear();
 
   /// Register std::function.
+  /**
+   * @param func Callback function.
+   * @param id Identifier used for `unlisten`.
+   */
   SensorError listen(const std::function<void(TArgs...)> &func,
-                     uint64_t *const id = nullptr) {
-    LockGuard lock(m_mutex);
-    if (id) *id = m_i_callback;
-    m_functions[m_i_callback] = func;
-    ++m_i_callback;
-    return CEPTON_SUCCESS;
-  }
-
-  SensorError unlisten(uint64_t id) {
-    LockGuard lock(m_mutex);
-    CEPTON_ASSERT_ERROR(m_functions.count(id), CEPTON_ERROR_INVALID_ARGUMENTS,
-                        "Invalid function id");
-    m_functions.erase(id);
-    return CEPTON_SUCCESS;
-  }
-
+                     uint64_t *const id = nullptr);
   /// Register instance member function.
+  /**
+   * @param instance Parent class instance pointer.
+   * @param func Callback function pointer.
+   * @param id Identifier used for `unlisten`.
+   */
   template <typename TClass>
   SensorError listen(TClass *const instance,
                      MemberFunction<TClass, TArgs...> func,
-                     uint64_t *const id = nullptr) {
-    return listen(
-        [instance, func](TArgs... args) { (instance->*func)(args...); }, id);
-  }
+                     uint64_t *const id = nullptr);
+  /// Unregister function.
+  /**
+   * @param id Identifier returned by `listen`.
+   */
+  SensorError unlisten(uint64_t id);
 
   /// Emit callback.
-  void operator()(TArgs... args) const {
-    LockGuard lock(m_mutex);
-    for (const auto &iter : m_functions) {
-      const auto &func = iter.second;
-      func(args...);
-    }
-  }
+  /**
+   * Calls all registered functions with `args`.
+   */
+  void operator()(TArgs... args) const;
 
   /// Used for registering as c callback.
-  static void global_on_callback(TArgs... args, void *const instance) {
-    ((Callback *)instance)->operator()(args...);
-  }
+  static void global_on_callback(TArgs... args, void *const instance);
 
  private:
   mutable std::timed_mutex m_mutex;
@@ -511,337 +502,253 @@ class Callback {
 // -----------------------------------------------------------------------------
 // Frame
 // -----------------------------------------------------------------------------
+enum _ExtremaType {
+  EXTREMA_MIN = 0,
+  EXTREMA_MAX = 1,
+};
+using ExtremaType = int32_t;
+
+/// Detects single type extrema.
+template <typename TData = bool>
+class MaxDetector {
+ public:
+  struct Result {
+    bool is_valid = false;
+    ExtremaType type;
+    int64_t timestamp = -1;
+    float value;
+    TData data;
+  };
+
+ public:
+  /// Currently best max (not confirmed).
+  const Result &result() const;
+  /// Previously detected max.
+  const Result &previous_result() const;
+
+  void reset();
+
+  bool update(int64_t timestamp, float value, const TData &data = TData());
+
+ public:
+  ExtremaType type = EXTREMA_MAX;
+  int n_threshold = 0;
+  float value_threshold = 0.0f;
+
+ private:
+  int64_t m_i_before = -1;
+  int64_t m_i_after = -1;
+  Result m_result;
+  Result m_previous_result;
+};
+
+/// Detects alternating type extrema.
+template <typename TData = bool>
+class ExtremaDetector {
+ public:
+  using Result = typename MaxDetector<TData>::Result;
+
+ public:
+  ExtremaDetector();
+
+  /// Previously detected extrema.
+  const Result &previous_result() const;
+  /// Both previously detected extrema (indexed by type).
+  const std::vector<Result> &previous_results() const;
+
+  void reset();
+  bool update(int64_t idx, float value, const TData &data = TData());
+
+ public:
+  int n_threshold = 1;
+  float value_threshold = 0.0f;
+
+ private:
+  int m_type = 0;
+  MaxDetector<TData> m_filter;
+  Result m_previous_result;
+  std::vector<Result> m_previous_results{2};
+};
+
 namespace internal {
-class MaxFilter {
+
+template <typename TData = bool>
+class FrameDetectorBase {
  public:
-  MaxFilter() { reset(); }
-
-  void reset() {
-    peak_found = false;
-    peak_idx = -1;
-    m_n = 0;
-  }
-
-  bool add_value(float v) {
-    assert(!peak_found);
-    if (peak_found) return true;
-
-    ++m_n;
-    if ((peak_idx < 0) || (v > peak_value)) {
-      peak_idx = m_n - 1;
-      peak_value = v;
-    }
-    if ((m_n - peak_idx) < min_n_after) return false;
-
-    peak_found = true;
-    return true;
-  }
+  struct Result {
+    bool is_valid = false;
+    /// Frame type (dependent on sensor model).
+    int type = 0;
+    /// Frame end timestamp.
+    int64_t timestamp = -1;
+    /// Extra data.
+    TData data;
+  };
 
  public:
-  // Arguments
-  int min_n_after = 1;
+  FrameDetectorBase() = default;
+  virtual ~FrameDetectorBase() = default;
 
-  // Outputs
-  bool peak_found = false;
-  int peak_idx;
-  float peak_value;
+  int n_types() const;
 
- private:
-  int m_n;
+  /// Returns last detected frame.
+  const Result &previous_result() const;
+  /// Returns all previous frames indexed by type.
+  const std::vector<Result> &previous_results() const;
+
+  /// Returns frame period in seconds.
+  /**
+   * Invalid if negative.
+   * Next frame will be at `previous_result().timestamp + to_usec(period())`.
+   */
+  float period() const;
+
+  /// Resets detector.
+  /**
+   * Not necessary to call after successful detection.
+   */
+  virtual void reset();
+  /// Adds new point and returns whether new frame is detected.
+  /**
+   * New frame can be queried with `previous_result`.
+   */
+  virtual bool update(const SensorImagePoint &point,
+                      const TData &data = TData()) = 0;
+
+ protected:
+  explicit FrameDetectorBase(int n_types);
+  void init_types(int n_types);
+
+ protected:
+  bool finalize(const Result &result);
+
+ public:
+  /// If true, only record type `0` results.
+  bool enable_cycle = false;
+
+ protected:
+  Result m_previous_result;
+  std::vector<Result> m_previous_results;
+  float m_period = -1.0f;
 };
 
-class PeakFinder {
+/// Detects frames for Sora sensor models (fast x scan).
+template <typename TData = bool>
+class SoraFrameDetector : public FrameDetectorBase<TData> {
  public:
-  PeakFinder() { reset(); }
+  SoraFrameDetector();
 
-  void reset() {
-    peak_found = false;
-    m_filter.reset();
-  }
-
-  bool add_value(float v) {
-    assert(!peak_found);
-    if (peak_found) return true;
-
-    m_filter.min_n_after = min_n_after;
-    m_filter.add_value((float)direction * v);
-    if (!m_filter.peak_found) return false;
-
-    peak_found = true;
-    direction *= -1;
-    peak_idx = m_filter.peak_idx;
-    peak_value = -direction * m_filter.peak_value;
-    return true;
-  }
-
- public:
-  // Arguments
-  int min_n_after = 1;
-
-  // Outputs
-  bool peak_found;
-  int direction = 1;
-  int peak_idx;
-  float peak_value;
+  void reset() override;
+  bool update(const SensorImagePoint &point,
+              const TData &data = TData()) override;
 
  private:
-  MaxFilter m_filter;
+  ExtremaDetector<TData> m_detector;
 };
 
-class CoverFrameDetector {
+/// Detects frames for HR80 sensor models (slow x scan, fast z scan).
+template <typename TData = bool>
+class HR80FrameDetector : public FrameDetectorBase<TData> {
  public:
-  CoverFrameDetector(const SensorInformation &sensor_info) {
-    switch (sensor_info.model) {
-      case HR80T:
-      case HR80T_R2:
-        is_model_supported = true;
-        m_finder.min_n_after = 1200 / 4;  // 1/4 frame
-        break;
-      case HR80W:
-        is_model_supported = true;
-        m_finder.min_n_after = 600 / 4;  // 1/4 frame
-        break;
-      case SORA_200:
-        is_model_supported = true;
-        m_finder.min_n_after = 10;
-        break;
-      default:
-        is_model_supported = false;
-        break;
-    }
-  }
+  HR80FrameDetector();
 
-  void reset() {
-    frame_found = false;
-    m_finder.reset();
-  }
-
-  bool add_point(const SensorImagePoint &point) {
-    assert(!frame_found);
-    if (frame_found) return true;
-
-    if (!m_finder.add_value(point.image_x)) return false;
-
-    frame_found = true;
-    direction = m_finder.direction;
-    frame_idx = m_finder.peak_idx + 1;
-    frame_x = m_finder.peak_value;
-    return true;
-  }
-
- public:
-  // Outputs
-  bool is_model_supported;
-  bool frame_found;
-  int direction;
-  int frame_idx;
-  float frame_x;
+  void reset() override;
+  bool update(const SensorImagePoint &point,
+              const TData &data = TData()) override;
 
  private:
-  PeakFinder m_finder;
+  ExtremaDetector<std::pair<float, TData>> m_fast_detector;
+  ExtremaDetector<TData> m_slow_detector;
 };
 
-class TimedFrameDetector {
+/// Detects frames for Vista sensor models (fast x/z scan).
+template <typename TData = bool>
+class VistaFrameDetector : public FrameDetectorBase<TData> {
  public:
-  TimedFrameDetector(float length_) : length(length_) { reset(); }
+  VistaFrameDetector();
 
-  void reset() {
-    frame_found = false;
-    m_n = 0;
-    m_t = 0;
-  }
-
-  bool add_point(const SensorImagePoint &point) {
-    assert(!frame_found);
-    if (frame_found) return true;
-
-    ++m_n;
-
-    if (m_t == 0) m_t = point.timestamp;
-    const int64_t t_diff = point.timestamp - m_t;
-    if ((t_diff > int64_t(1e6 * -0.5)) && (t_diff < int64_t(1e6 * length)))
-      return false;
-
-    frame_found = true;
-    frame_idx = m_n;
-    frame_x = point.image_x;
-    return true;
-  }
-
- public:
-  // Arguments
-  float length;
-
-  // Outputs
-  bool frame_found;
-  int frame_idx;
-  float frame_x;
+  void reset() override;
+  bool update(const SensorImagePoint &point,
+              const TData &data = TData()) override;
 
  private:
-  int m_n;
-  int64_t m_t;
+  std::vector<ExtremaDetector<TData>> m_detectors;
+  MaxDetector<TData> m_offset_detector;
+  MaxDetector<TData> m_phase_detector;
+  int m_type = 0;
 };
+
+/// Generates frames at periodic time intervals.
+template <typename TData = bool>
+class TimedFrameDetector : public FrameDetectorBase<TData> {
+ public:
+  TimedFrameDetector(float frame_length);
+
+  void reset() override;
+  bool update(const SensorImagePoint &point,
+              const TData &data = TData()) override;
+
+ public:
+  float frame_length;
+
+ private:
+  int64_t m_t = 0;
+};
+
 }  // namespace internal
 
-// Detects scanlines in streaming data.
-class ScanlineDetector {
+/// Detects scanlines (change in image x coordinate).
+template <typename TData = bool>
+class ScanlineDetector : public internal::FrameDetectorBase<TData> {
  public:
-  ScanlineDetector(const SensorInformation &sensor_info) {
-    is_model_supported = true;
-    m_finder.min_n_after = 2;
-    reset();
-  }
+  ScanlineDetector(const SensorInformation &sensor_info);
 
-  void reset() {
-    scanline_found = false;
-    m_n = 0;
-    m_idx_0 = 0;
-    m_finder.reset();
-  }
-
-  bool add_point(const SensorImagePoint &point) {
-    scanline_found = false;
-    scanline_idx = -1;
-
-    ++m_n;
-    if (!m_finder.add_value(point.image_z)) return false;
-
-    scanline_found = true;
-    direction = m_finder.direction;
-    scanline_idx = m_finder.peak_idx + 1;
-    scanline_z = m_finder.peak_value;
-
-    const int idx_0 = m_n - scanline_idx;
-    scanline_idx += m_idx_0;
-    m_idx_0 = idx_0;
-
-    m_n = 0;
-    m_finder.reset();
-    return true;
-  }
-
- public:
-  // Outputs
-  bool is_model_supported;
-  bool scanline_found;
-  int direction;
-  int scanline_idx;
-  float scanline_z;
+  void reset() override;
+  bool update(const SensorImagePoint &point,
+              const TData &data = TData()) override;
 
  private:
-  int m_n;
-  int m_idx_0;
-  internal::PeakFinder m_finder;
+  ExtremaDetector<> m_detector;
 };
 
 /// Detects frames in streaming sensor data.
-class FrameDetector {
+/**
+ * `Result::type`
+ * - Sora: 0=left-right, 1=right-left
+ * - HR80: 0=left-right, 1=right-left
+ * - Vista: undefined
+ */
+template <typename TData = bool>
+class FrameDetector : public internal::FrameDetectorBase<TData> {
  public:
-  FrameDetector(const SensorInformation &sensor_info)
-      : m_sensor_info(sensor_info),
-        m_timed_detector(0),
-        m_cover_detector(sensor_info) {
-    reset();
-  }
+  /// FrameDetector class constructor passing in SensorInformation.
+  FrameDetector(const SensorInformation &sensor_info);
 
-  const FrameOptions &get_options() const { return m_options; }
-
-  SensorError set_options(const FrameOptions &options) {
-    m_options = options;
-
-    // Fix options
-    switch (m_options.mode) {
-      case CEPTON_SDK_FRAME_COVER:
-      case CEPTON_SDK_FRAME_CYCLE:
-        if (!m_cover_detector.is_model_supported) {
-          m_options.mode = CEPTON_SDK_FRAME_TIMED;
-          m_options.length = 0.1f;
-        }
-        break;
-    }
-
-    // Check options
-    switch (m_options.mode) {
-      case CEPTON_SDK_FRAME_TIMED:
-        CEPTON_ASSERT_ERROR(m_options.length, CEPTON_ERROR_INVALID_ARGUMENTS,
-                            "Frame length not set!");
-        m_timed_detector.length = m_options.length;
-        break;
-    }
-
-    reset();
-    return CEPTON_SUCCESS;
-  }
+  /// Returns frame options for FrameDetector.
+  const FrameOptions &get_options() const;
+  /// Set frame options
+  SensorError set_options(const FrameOptions &options);
 
   /// Completely resets detector.
   /**
    * Only use if also clearing points accumulator.
    */
-  void reset() {
-    frame_found = false;
-    m_n = 0;
-    m_idx_0 = 0;
-    m_timed_detector.reset();
-    m_cover_detector.reset();
-  }
-
+  void reset() override;
   /// Returns true if frame found.
   /**
    * Automatically resets after frame is found.
    */
-  bool add_point(const SensorImagePoint &point) {
-    frame_found = false;
-    frame_idx = -1;
-
-    ++m_n;
-    switch (m_options.mode) {
-      case CEPTON_SDK_FRAME_TIMED:
-        if (!m_timed_detector.add_point(point)) return false;
-        frame_idx = m_timed_detector.frame_idx;
-        frame_x = m_timed_detector.frame_x;
-        break;
-      case CEPTON_SDK_FRAME_COVER:
-      case CEPTON_SDK_FRAME_CYCLE:
-        if (!m_cover_detector.add_point(point)) return false;
-        if ((m_options.mode == CEPTON_SDK_FRAME_CYCLE) &&
-            (m_cover_detector.direction < 0))
-          break;
-        frame_idx = m_cover_detector.frame_idx;
-        frame_x = m_cover_detector.frame_x;
-        break;
-      default:
-        assert(false);
-        return true;
-    }
-
-    if (frame_idx < 0) {
-      m_idx_0 += m_n;
-    } else {
-      frame_found = true;
-      const int idx_0 = m_n - frame_idx;
-      frame_idx += m_idx_0;
-      m_idx_0 = idx_0;
-    }
-    m_n = 0;
-    m_timed_detector.reset();
-    m_cover_detector.reset();
-    return frame_found;
-  }
-
- public:
-  // Outputs
-  bool frame_found;
-  int frame_idx;  /// Number of points in current frame.
-  float frame_x;  /// Sanity check.
+  bool update(const SensorImagePoint &point,
+              const TData &data = TData()) override;
 
  private:
-  SensorInformation m_sensor_info;
-  FrameOptions m_options;
+  internal::FrameDetectorBase<TData> *detector();
 
-  int m_n;
-  int m_idx_0;
-  internal::TimedFrameDetector m_timed_detector;
-  internal::CoverFrameDetector m_cover_detector;
+ private:
+  FrameOptions m_options = cepton_sdk_create_frame_options();
+
+  std::unique_ptr<internal::FrameDetectorBase<TData>> m_cover_detector;
+  internal::TimedFrameDetector<TData> m_timed_detector;
 };
 
 /// Accumulates image points, and emits frames to callback.
@@ -850,76 +757,34 @@ class FrameDetector {
  */
 class FrameAccumulator {
  public:
-  FrameAccumulator(const SensorInformation &sensor_info)
-      : m_frame_detector(sensor_info) {
-    m_stride = sensor_info.return_count * sensor_info.segment_count;
-    clear_impl();
-  }
+  /// FrameAccumulator class constructor passing in SensorInformation.
+  FrameAccumulator(const SensorInformation &sensor_info);
 
-  FrameOptions get_options() const {
-    LockGuard lock(m_mutex);
-    return m_frame_detector.get_options();
-  }
+  /// Return frame options for FrameAccumulator.
+  FrameOptions get_options() const;
+  /// Set options for FrameAccumulator
+  SensorError set_options(const FrameOptions &options);
 
-  SensorError set_options(const FrameOptions &options) {
-    LockGuard lock(m_mutex);
-    auto error_code = m_frame_detector.set_options(options);
-    clear_impl();
-    return error_code;
-  }
-
-  void clear() {
-    LockGuard lock(m_mutex);
-    clear_impl();
-  }
-
-  void add_points(int n_points, const SensorImagePoint *const image_points) {
-    LockGuard lock(m_mutex);
-
-    if (m_frame_detector.get_options().mode == CEPTON_SDK_FRAME_STREAMING) {
-      callback(n_points, image_points);
-      return;
-    }
-
-    assert(n_points % m_stride == 0);
-    const int i_0 = (int)m_image_points.size();
-    m_image_points.insert(m_image_points.end(), image_points,
-                          image_points + n_points);
-    for (int i = i_0; i < static_cast<int>(m_image_points.size());
-         i += m_stride) {
-      const auto &image_point = m_image_points[i];
-      if (!m_frame_detector.add_point(image_point)) continue;
-      const int idx = m_frame_detector.frame_idx;
-      assert(m_image_points[(idx - 1) * m_stride].image_x ==
-             m_frame_detector.frame_x);
-
-      if (m_i_frame > 0) callback(idx * m_stride, m_image_points.data());
-      ++m_i_frame;
-
-      m_image_points.erase(m_image_points.begin(),
-                           m_image_points.begin() + idx * m_stride);
-      i -= idx * m_stride;
-    }
-  }
+  void clear();
+  void add_points(std::size_t n_points,
+                  const SensorImagePoint *const image_points);
 
  private:
-  void clear_impl() {
-    m_image_points.clear();
-    m_i_frame = 0;
-    m_frame_detector.reset();
-  }
+  void clear_impl();
 
  public:
-  // Arguments
-  Callback<int, const SensorImagePoint *> callback;  /// Frames callback
+  /// Frames callback
+  Callback<std::size_t, const SensorImagePoint *> callback;
 
  private:
-  mutable std::timed_mutex m_mutex;
-  int m_stride;
-  std::vector<SensorImagePoint> m_image_points;
+  const int m_stride;
 
-  int m_i_frame;
-  FrameDetector m_frame_detector;
+  mutable std::timed_mutex m_mutex;
+  int64_t m_idx_0 = 0;
+  int64_t m_idx = -1;
+  int64_t m_i_frame = -1;
+  FrameDetector<int64_t> m_frame_detector;
+  std::vector<SensorImagePoint> m_image_points;
 };
 
 // -----------------------------------------------------------------------------
@@ -932,84 +797,30 @@ class FrameAccumulator {
 class StrayFilter {
  public:
   StrayFilter() = default;
+  StrayFilter(int segment_count, int return_count);
+  StrayFilter(const cepton_sdk::SensorInformation &sensor_info);
 
-  StrayFilter(int segment_count, int return_count) {
-    init(segment_count, return_count);
-  }
-
-  StrayFilter(const cepton_sdk::SensorInformation &sensor_info) {
-    init(sensor_info);
-  }
-
-  void init(int segment_count, int return_count) {
-    m_segment_count = segment_count;
-    m_return_count = return_count;
-  }
-
-  void init(const cepton_sdk::SensorInformation &sensor_info) {
-    init(sensor_info.segment_count, sensor_info.return_count);
-  }
-
-  void run(int n_points, cepton_sdk::SensorImagePoint *const c_image_points) {
-    static thread_local std::vector<int> indices;
-    const int stride = m_segment_count * m_return_count;
-    for (int i_segment = 0; i_segment < m_segment_count; ++i_segment) {
-      // Find valid indices for segment
-      indices.clear();
-      const int i_0 = i_segment * m_return_count;
-      for (int i = i_0; i < n_points; i += stride) {
-        const auto &image_point = c_image_points[i];
-        if (!image_point.valid) continue;
-        indices.push_back(i);
-      }
-
-      // Compute stray
-      for (int i = 0; i < static_cast<int>(indices.size()); ++i) {
-        for (int i_return = 0; i_return < m_return_count; ++i_return) {
-          auto &image_point = c_image_points[indices[i] + i_return];
-          if (!image_point.valid) continue;
-          const int i_start = std::max<int>(i - n_neighbors, 0);
-          const int i_end =
-              std::min<int>(i + n_neighbors + 1, (int)indices.size());
-          bool valid = false;
-          for (int i_neighbor = i_start; i_neighbor < i_end; ++i_neighbor) {
-            if (i_neighbor == i) continue;
-            for (int i_return_neighbor = 0; i_return_neighbor < m_return_count;
-                 ++i_return_neighbor) {
-              const auto &other_point =
-                  c_image_points[indices[i_neighbor] + i_return_neighbor];
-              if (check_impl(image_point, other_point)) {
-                valid = true;
-                break;
-              }
-            }
-          }
-          image_point.valid = valid;
-        }
-      }
-    }
-  }
+  void init(int segment_count, int return_count);
+  void init(const cepton_sdk::SensorInformation &sensor_info);
+  void run(int n_points, cepton_sdk::SensorImagePoint *const c_image_points);
 
  private:
   bool check_impl(const cepton_sdk::SensorImagePoint &image_point,
-                  const cepton_sdk::SensorImagePoint &other_point) {
-    if (!other_point.valid) return false;
-    const float distance_offset =
-        std::abs(image_point.distance - other_point.distance);
-    return (distance_offset < max_distance_offset);
-  }
+                  const cepton_sdk::SensorImagePoint &other_point);
 
  public:
-  // Options
+  /// Minimum number of adjacent neighbors for point to be not stray.
   int n_neighbors = 2;
+  /// Maximum distance offset to consider points adjacent.
   float max_distance_offset = 10.0f;
 
  private:
-  int m_segment_count;
-  int m_return_count;
+  int m_segment_count = 1;
+  int m_return_count = 1;
 };
 
 }  // namespace util
 }  // namespace cepton_sdk
 
+#include "cepton_sdk_impl/cepton_sdk_util.inc"
 #include "cepton_sdk_impl/organizer.hpp"

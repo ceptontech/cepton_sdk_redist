@@ -43,43 +43,6 @@
   <div class="section" id="general">
 <h1>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h1>
 <p>API for code that is agnostic to live/replay mode.</p>
-<dl class="function">
-<dt id="cepton_sdk.get_time">
-<code class="sig-prename descclassname">cepton_sdk.</code><code class="sig-name descname">get_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns capture replay time or live time.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="cepton_sdk.get_timestamp">
-<code class="sig-prename descclassname">cepton_sdk.</code><code class="sig-name descname">get_timestamp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#get_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.get_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns unix timestamp</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="cepton_sdk.is_end">
-<code class="sig-prename descclassname">cepton_sdk.</code><code class="sig-name descname">is_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#is_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.is_end" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns true if next call to <cite>wait</cite> will throw <cite>CEPTON_ERROR_EOF</cite></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="cepton_sdk.is_live">
-<code class="sig-prename descclassname">cepton_sdk.</code><code class="sig-name descname">is_live</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#is_live"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.is_live" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns true if capture replay is not open.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="cepton_sdk.is_realtime">
-<code class="sig-prename descclassname">cepton_sdk.</code><code class="sig-name descname">is_realtime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#is_realtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.is_realtime" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns true if live or capture replay is running.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="cepton_sdk.wait">
-<code class="sig-prename descclassname">cepton_sdk.</code><code class="sig-name descname">wait</code><span class="sig-paren">(</span><em class="sig-param">duration=-1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cepton_sdk/api.html#wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cepton_sdk.wait" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resumes capture replay or sleeps for duration.</p>
-<p>If <cite>duration</cite> is <cite>0</cite>, then waits forever.</p>
-</dd></dl>
-
 </div>
 
 

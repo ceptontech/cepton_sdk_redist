@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="CMake" href="samples/cmake.html" />
     <link rel="prev" title="Building" href="building.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -96,18 +98,25 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#advanced">Advanced</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="samples/frame.html">Frame</a></li>
+<li class="toctree-l3"><a class="reference internal" href="samples/frame_accumulator.html">Frame Detector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="samples/frame_detector.html">Frame Accumulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="samples/network.html">Network</a></li>
 <li class="toctree-l3"><a class="reference internal" href="samples/organize_points.html">Organize Points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="samples/process_multi.html">Process Multi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="samples/process_single.html">Process Single</a></li>
 <li class="toctree-l3"><a class="reference internal" href="samples/replay.html">Replay</a></li>
-<li class="toctree-l3"><a class="reference internal" href="samples/stray.html">Stray</a></li>
+<li class="toctree-l3"><a class="reference internal" href="samples/stray_filter.html">Stray Filter</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
@@ -183,7 +192,7 @@
         <a href="samples/cmake.html" class="btn btn-neutral float-right" title="CMake" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="building.html" class="btn btn-neutral" title="Building" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="building.html" class="btn btn-neutral float-left" title="Building" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -212,13 +221,18 @@ make
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> cepton_sdk_redist/samples
 mkdir build
 <span class="nb">cd</span> build
-cmake -G <span class="s2">&quot;Visual Studio 15 2017 Win64&quot;</span> ..
+<span class="c1"># You may need to modify the `Visual Studio` version number.</span>
+cmake -G <span class="s2">&quot;Visual Studio 16 2019&quot;</span> ..
 </pre></div>
 </div>
-<p>In Visual Studio:</p>
+<p>To build from the command line, run</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cmake --build . --config Release
+</pre></div>
+</div>
+<p>To build in Visual Studio</p>
 <ul class="simple">
-<li>Click <code class="docutils literal notranslate"><span class="pre">File</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Open</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Project/Solution</span></code>. Select <code class="docutils literal notranslate"><span class="pre">cepton_sdk_redist/samples/build/cepton_sdk_samples.sln</span></code>.</li>
-<li>Build the project.</li>
+<li><p>Click <code class="docutils literal notranslate"><span class="pre">File</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Open</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Project/Solution</span></code>. Select <code class="docutils literal notranslate"><span class="pre">cepton_sdk_redist/samples/build/cepton_sdk_samples.sln</span></code>.</p></li>
+<li><p>Build the project.</p></li>
 </ul>
 </div>
 </div>
@@ -239,13 +253,14 @@ cmake -G <span class="s2">&quot;Visual Studio 15 2017 Win64&quot;</span> ..
 <h2>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="samples/frame.html">Frame</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples/frame_accumulator.html">Frame Detector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples/frame_detector.html">Frame Accumulator</a></li>
 <li class="toctree-l1"><a class="reference internal" href="samples/network.html">Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="samples/organize_points.html">Organize Points</a></li>
 <li class="toctree-l1"><a class="reference internal" href="samples/process_multi.html">Process Multi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="samples/process_single.html">Process Single</a></li>
 <li class="toctree-l1"><a class="reference internal" href="samples/replay.html">Replay</a></li>
-<li class="toctree-l1"><a class="reference internal" href="samples/stray.html">Stray</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples/stray_filter.html">Stray Filter</a></li>
 </ul>
 </div>
 </div>
@@ -262,7 +277,7 @@ cmake -G <span class="s2">&quot;Visual Studio 15 2017 Win64&quot;</span> ..
         <a href="samples/cmake.html" class="btn btn-neutral float-right" title="CMake" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="building.html" class="btn btn-neutral" title="Building" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="building.html" class="btn btn-neutral float-left" title="Building" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -288,25 +303,16 @@ cmake -G <span class="s2">&quot;Visual Studio 15 2017 Win64&quot;</span> ..
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

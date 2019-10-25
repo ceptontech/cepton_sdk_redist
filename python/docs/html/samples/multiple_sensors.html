@@ -90,7 +90,7 @@
     <span class="n">capture_path</span> <span class="o">=</span> <span class="n">get_sample_capture_path</span><span class="p">()</span>
 
     <span class="c1"># Initialize</span>
-    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">capture_path</span><span class="o">=</span><span class="n">capture_path</span><span class="p">)</span>
+    <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">capture_path</span><span class="o">=</span><span class="n">capture_path</span><span class="p">,</span> <span class="n">enable_wait</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
     <span class="c1"># Get sensors</span>
     <span class="n">sensors_dict</span> <span class="o">=</span> <span class="n">cepton_sdk</span><span class="o">.</span><span class="n">get_sensors</span><span class="p">()</span>

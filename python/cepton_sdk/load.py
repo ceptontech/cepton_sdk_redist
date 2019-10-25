@@ -1,3 +1,4 @@
+import copy
 import os
 
 import cepton_sdk.api
@@ -36,7 +37,7 @@ class Loader(cepton_util.common.ArgumentParserMixin):
         self.sensor_clip_manager = load_clips(self.settings_dir.clips_path)
         self.sensor_transform_manager = load_transforms(
             self.settings_dir.transforms_path)
-        self.sdk_options = sdk_options
+        self.sdk_options = copy.deepcopy(sdk_options)
 
     @classmethod
     def add_arguments(cls, parser):
@@ -60,6 +61,7 @@ class Loader(cepton_util.common.ArgumentParserMixin):
             "capture_path": capture_path,
             "capture_seek": cepton_util.common.parse_time_hms(
                 args.capture_seek),
+            "control_flags": 0,
         }
         sdk_options = cepton_util.common.process_options(sdk_options)
 

@@ -23,17 +23,18 @@ add_subdirectory("${CEPTON_SDK_SOURCE_DIR}"
                  "${PROJECT_BINARY_DIR}/third_party/cepton_sdk")
 
 set(CEPTON_SDK_SAMPLE_SOURCES
-    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/frame.cpp"
-    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/get_timestamp_offset.cpp"
+    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/frame_accumulator.cpp"
+    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/frame_detector.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/process_multi.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/process_single.cpp"
-    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/stray.cpp"
+    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/stray_filter.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/basic.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/callback.cpp"
-    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/error.cpp"
-    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/sensor.cpp")
+    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/error.cpp")
 foreach(path ${CEPTON_SDK_SAMPLE_SOURCES})
   get_filename_component(name "${path}" NAME_WE)
   add_executable(cepton_sdk_sample_${name} "${path}")
+  target_include_directories(cepton_sdk_sample_${name}
+                             PRIVATE "${CEPTON_SDK_SAMPLES_SOURCE_DIR}")
   target_link_libraries(cepton_sdk_sample_${name} cepton_sdk::cepton_sdk)
 endforeach()

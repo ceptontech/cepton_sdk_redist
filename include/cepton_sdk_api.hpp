@@ -1,3 +1,8 @@
+/*
+  Copyright Cepton Technologies Inc., All rights reserved.
+
+  Cepton Sensor SDK C++ interface for rapid prototyping.
+*/
 #pragma once
 
 #include <algorithm>
@@ -10,12 +15,13 @@
 namespace cepton_sdk {
 namespace api {
 
-/// Returns true if capture replay is not open.
+/// Returns whether capture replay is not open.
 inline bool is_live() { return !capture_replay::is_open(); }
 
-/// Returns true if live or capture replay is running.
+/// Returns whether live or capture replay is running.
 inline bool is_realtime() { return is_live() || capture_replay::is_running(); }
 
+/// Returns whether capture replay is at the end and enable loop is false.
 inline bool is_end() {
   if (capture_replay::is_open()) {
     if (capture_replay::get_enable_loop()) return false;
@@ -24,7 +30,7 @@ inline bool is_end() {
   return false;
 }
 
-/// Returns capture replay time or live time.
+/// Returns live or capture replay time.
 inline int64_t get_time() {
   return (is_live()) ? util::get_timestamp_usec() : capture_replay::get_time();
 }
@@ -73,7 +79,7 @@ inline SensorError check_error(const SensorError &error,
 
 /// Basic SDK error callback.
 /**
- * Calls `cepton_sdk::api::check_error_code`.
+ * Calls `CEPTON_LOG_ERROR`.
  */
 inline void default_on_error(SensorHandle h, SensorErrorCode error_code,
                              const char *const error_msg,
@@ -123,16 +129,18 @@ inline SensorError initialize(Options options = create_options(),
   return CEPTON_SUCCESS;
 }
 
-inline bool has_control_flags(Control flags) {
-  return (get_control_flags() & flags) == flags;
+/// Returns whether indicated control flags are set.
+inline bool has_control_flags(Control mask) {
+  return (get_control_flags() & mask) == mask;
 }
 
-inline SensorError enable_control_flags(Control flags) {
-  return CEPTON_PROCESS_ERROR(set_control_flags(flags, flags));
-}
-
-inline SensorError disable_control_flags(Control flags) {
-  return CEPTON_PROCESS_ERROR(set_control_flags(flags, 0));
+/// Enables/disables indicated control flags.
+inline SensorError enable_control_flags(Control mask, bool tf) {
+  if (tf) {
+    return CEPTON_PROCESS_ERROR(set_control_flags(mask, mask));
+  } else {
+    return CEPTON_PROCESS_ERROR(set_control_flags(mask, 0));
+  }
 }
 
 /// Callback for sensor errors.
@@ -159,14 +167,15 @@ class SensorImageFrameCallback
     : public util::Callback<SensorHandle, std::size_t,
                             const SensorImagePoint *> {
  public:
+  /// SensorImageFrameCallback class destructor.
   ~SensorImageFrameCallback() { deinitialize(); }
-
+  /// Initializes SensorImageFrameCallback object.
   SensorError initialize() {
     CEPTON_RETURN_ERROR(listen_image_frames(global_on_callback, this));
     m_is_initialized = true;
     return CEPTON_SUCCESS;
   }
-
+  /// Deinitializes SensorImageFrameCallback object.
   SensorError deinitialize() {
     clear();
     if (!m_is_initialized) return CEPTON_SUCCESS;
@@ -175,6 +184,7 @@ class SensorImageFrameCallback
     return CEPTON_SUCCESS;
   }
 
+  /// Returns true if SensorImageFrameCallback is initialized.
   bool is_initialized() const { return m_is_initialized; }
 
  private:
@@ -189,12 +199,15 @@ class NetworkPacketCallback
     : public util::Callback<SensorHandle, int64_t, uint8_t const *,
                             std::size_t> {
  public:
+  /// NetworkPacketCallback class destructor.
   ~NetworkPacketCallback() { deinitialize(); }
+  /// Initialize NetworkPacketCallback object.
   SensorError initialize() {
     CEPTON_RETURN_ERROR(listen_network_packets(global_on_callback, this));
     m_is_initialized = true;
     return CEPTON_SUCCESS;
   }
+  /// Deinitialize NetworkPacketCallback object.
   SensorError deinitialize() {
     clear();
     if (!m_is_initialized) return CEPTON_SUCCESS;
@@ -210,6 +223,7 @@ class NetworkPacketCallback
 // -----------------------------------------------------------------------------
 // Sensors
 // -----------------------------------------------------------------------------
+/// Returns whether SDK has sensor with serial number.
 inline bool has_sensor_by_serial_number(uint64_t serial_number) {
   SensorHandle handle;
   auto error = get_sensor_handle_by_serial_number(serial_number, handle);
@@ -217,6 +231,7 @@ inline bool has_sensor_by_serial_number(uint64_t serial_number) {
   return true;
 }
 
+/// Returns sensor information by serial number.
 /**
  * Returns error if sensor not found.
  */

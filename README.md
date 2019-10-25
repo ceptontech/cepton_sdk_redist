@@ -16,7 +16,11 @@ Please read the API documentation at `docs/html/index.html`.
 
 ## Installation
 
-To install the executables, run the appropriate installer in `cepton_sdk_redist/setup`.
+To install `CeptonViewer`, download and run
+
+- Windows: <https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-win64.exe>
+- OSX: <https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-osx.dmg>
+- Linux: <https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-linux-x86_64.deb>
 
 To clone the entire repository, run
 

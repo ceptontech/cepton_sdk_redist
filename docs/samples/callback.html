@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Error" href="error.html" />
     <link rel="prev" title="C Basic" href="c_basic.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -95,6 +97,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">Errors</a></li>
@@ -172,7 +180,7 @@
         <a href="error.html" class="btn btn-neutral float-right" title="Error" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="c_basic.html" class="btn btn-neutral" title="C Basic" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="c_basic.html" class="btn btn-neutral float-left" title="C Basic" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -222,20 +230,30 @@
 35
 36
 37
-38</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+38
+39
+40
+41
+42
+43
+44</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Sample code for callback usage.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;cepton_sdk_api.hpp&gt;</span><span class="cp"></span>
 
 <span class="c1">// Sample global callback.</span>
 <span class="kt">void</span> <span class="nf">on_image_frame</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
-                    <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{}</span>
+                    <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Handle frame...</span>
+<span class="p">}</span>
 
 <span class="c1">// Sample member callback.</span>
 <span class="n">class</span> <span class="n">FramesListener</span> <span class="p">{</span>
  <span class="nl">public</span><span class="p">:</span>
   <span class="kt">void</span> <span class="n">on_image_frame</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
-                      <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{}</span>
+                      <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Handle frame...</span>
+  <span class="p">}</span>
 <span class="p">};</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
@@ -245,9 +263,11 @@
   <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">initialize</span><span class="p">());</span>
 
   <span class="c1">// Listen lambda</span>
-  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span>
-      <span class="p">[](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
-         <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{}));</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span>
+      <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">([](</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
+                         <span class="k">const</span> <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">SensorImagePoint</span> <span class="o">*</span><span class="n">c_image_points</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//  Handle frame...</span>
+      <span class="p">}));</span>
 
   <span class="c1">// Listen global function</span>
   <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span><span class="n">on_image_frame</span><span class="p">));</span>
@@ -276,7 +296,7 @@
         <a href="error.html" class="btn btn-neutral float-right" title="Error" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="c_basic.html" class="btn btn-neutral" title="C Basic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="c_basic.html" class="btn btn-neutral float-left" title="C Basic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -302,25 +322,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

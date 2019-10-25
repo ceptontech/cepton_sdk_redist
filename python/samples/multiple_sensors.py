@@ -14,7 +14,7 @@ if __name__ == "__main__":
     capture_path = get_sample_capture_path()
 
     # Initialize
-    cepton_sdk.initialize(capture_path=capture_path)
+    cepton_sdk.initialize(capture_path=capture_path, enable_wait=True)
 
     # Get sensors
     sensors_dict = cepton_sdk.get_sensors()

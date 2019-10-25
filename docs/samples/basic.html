@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="C Basic" href="c_basic.html" />
     <link rel="prev" title="CMake" href="cmake.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -95,6 +97,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">Errors</a></li>
@@ -172,7 +180,7 @@
         <a href="c_basic.html" class="btn btn-neutral float-right" title="C Basic" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="cmake.html" class="btn btn-neutral" title="CMake" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cmake.html" class="btn btn-neutral float-left" title="CMake" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -264,19 +272,9 @@
 77
 78
 79
-80
-81
-82
-83
-84
-85
-86
-87
-88</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+80</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Sample code for general SDK usage.</span>
 <span class="cm"> */</span>
-<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
-
 <span class="cp">#include</span> <span class="cpf">&lt;cepton_sdk_api.hpp&gt;</span><span class="cp"></span>
 
 <span class="cp">#include</span> <span class="cpf">&quot;common.hpp&quot;</span><span class="cp"></span>
@@ -293,21 +291,15 @@
     <span class="c1">// Convert points</span>
     <span class="k">static</span> <span class="n">thread_local</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">SensorPoint</span><span class="o">&gt;</span> <span class="n">points</span><span class="p">;</span>
     <span class="n">points</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">n_points</span><span class="p">);</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n_points</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
       <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">util</span><span class="o">::</span><span class="n">convert_sensor_image_point_to_point</span><span class="p">(</span><span class="n">c_image_points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
                                                             <span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
     <span class="p">}</span>
 
     <span class="c1">// Print</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">i_frame</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points from sensor %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">,</span>
-                  <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="o">++</span><span class="n">i_frame</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Received %i points from sensor %i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">n_points</span><span class="p">,</span>
+                <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">sensor_info</span><span class="p">.</span><span class="n">serial_number</span><span class="p">);</span>
   <span class="p">}</span>
-
- <span class="nl">private</span><span class="p">:</span>
-  <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i_frame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">};</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
@@ -324,7 +316,7 @@
   <span class="c1">// By default, return points every packet.</span>
 
   <span class="c1">// Uncomment to return points every frame.</span>
-  <span class="c1">// options.frame.mode = CEPTON_SDK_FRAME_COVER;</span>
+  <span class="n">options</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CEPTON_SDK_FRAME_COVER</span><span class="p">;</span>
 
   <span class="c1">// Uncomment to return points at fixed time interval.</span>
   <span class="c1">// options.frame.mode = CEPTON_SDK_FRAME_TIMED;</span>
@@ -355,7 +347,7 @@
       <span class="n">callback</span><span class="p">.</span><span class="n">listen</span><span class="p">(</span><span class="o">&amp;</span><span class="n">frames_listener</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">FramesListener</span><span class="o">::</span><span class="n">on_image_frame</span><span class="p">));</span>
 
   <span class="c1">// Run (sleep or run replay)</span>
-  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">wait</span><span class="p">());</span>
+  <span class="n">CEPTON_CHECK_ERROR</span><span class="p">(</span><span class="n">cepton_sdk</span><span class="o">::</span><span class="n">api</span><span class="o">::</span><span class="n">wait</span><span class="p">(</span><span class="mf">1.0</span><span class="p">));</span>
 
   <span class="c1">// Deinitialize</span>
   <span class="n">cepton_sdk</span><span class="o">::</span><span class="n">deinitialize</span><span class="p">().</span><span class="n">ignore</span><span class="p">();</span>
@@ -376,7 +368,7 @@
         <a href="c_basic.html" class="btn btn-neutral float-right" title="C Basic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="cmake.html" class="btn btn-neutral" title="CMake" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cmake.html" class="btn btn-neutral float-left" title="CMake" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -402,25 +394,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

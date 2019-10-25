@@ -3,6 +3,7 @@
 ### Unix
 
 ```sh
+cd cepton_sdk_redist/samples
 mkdir build
 cd build
 cmake ..
@@ -11,13 +12,23 @@ make
 
 ### Windows
 
+The following commands are for a UNIX command line (e.g. Git Bash).
+
 ```sh
+cd cepton_sdk_redist/samples
 mkdir build
 cd build
-cmake -G "Visual Studio 15 2017 Win64" ..
+# You may need to modify the `Visual Studio` version number.
+cmake -G "Visual Studio 16 2019" ..
 ```
 
-In Visual Studio:
+To build from the command line, run
 
-- Click `File` -> `Open` -> `Project/Solution`. Select "cepton_sdk_redist/samples/build/cepton_sdk_samples.sln".
+```sh
+cmake --build . --config Release
+```
+
+To build in Visual Studio
+
+- Click `File` -> `Open` -> `Project/Solution`. Select `cepton_sdk_redist/samples/build/cepton_sdk_samples.sln`.
 - Build the project.

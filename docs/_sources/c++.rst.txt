@@ -23,7 +23,6 @@ Setup
 .. doxygenfunction:: cepton_sdk::api::open_replay
 .. doxygenfunction:: cepton_sdk::api::has_control_flags
 .. doxygenfunction:: cepton_sdk::api::enable_control_flags
-.. doxygenfunction:: cepton_sdk::api::disable_control_flags
 .. doxygenclass:: cepton_sdk::api::SensorErrorCallback
     :members:
     :undoc-members:

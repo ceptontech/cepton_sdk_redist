@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Callback" href="callback.html" />
     <link rel="prev" title="Basic" href="basic.html" /> 
-
-  
-  <script src="../_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -95,6 +97,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../errors.html">Errors</a></li>
@@ -172,7 +180,7 @@
         <a href="callback.html" class="btn btn-neutral float-right" title="Callback" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="basic.html" class="btn btn-neutral" title="Basic" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="basic.html" class="btn btn-neutral float-left" title="Basic" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -241,7 +249,8 @@
 54
 55
 56
-57</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+57
+58</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * Sample code for general C SDK usage.</span>
 <span class="cm"> */</span>
 <span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
@@ -256,13 +265,13 @@
   <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">int</span> <span class="n">frames_got</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kt">time_t</span> <span class="n">first_frame_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="kt">time_t</span> <span class="n">current_frame_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">n_frames</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
 <span class="kt">void</span> <span class="nf">image_frame_callback</span><span class="p">(</span><span class="n">CeptonSensorHandle</span> <span class="n">handle</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n_points</span><span class="p">,</span>
                           <span class="k">const</span> <span class="k">struct</span> <span class="n">CeptonSensorImagePoint</span> <span class="o">*</span><span class="n">c_points</span><span class="p">,</span>
                           <span class="kt">void</span> <span class="o">*</span><span class="n">user_data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="o">++</span><span class="n">n_frames</span><span class="p">;</span>
+
   <span class="c1">// Get sensor info</span>
   <span class="k">struct</span> <span class="n">CeptonSensorInformation</span> <span class="n">sensor_info</span><span class="p">;</span>
   <span class="n">cepton_sdk_get_sensor_information</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sensor_info</span><span class="p">);</span>
@@ -272,6 +281,7 @@
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// Initialize</span>
   <span class="k">struct</span> <span class="n">CeptonSDKOptions</span> <span class="n">options</span> <span class="o">=</span> <span class="n">cepton_sdk_create_options</span><span class="p">();</span>
+  <span class="n">options</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CEPTON_SDK_FRAME_COVER</span><span class="p">;</span>
   <span class="n">cepton_sdk_initialize</span><span class="p">(</span><span class="n">CEPTON_SDK_VERSION</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">options</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
   <span class="n">check_sdk_error</span><span class="p">();</span>
 
@@ -291,7 +301,7 @@
   <span class="n">check_sdk_error</span><span class="p">();</span>
 
   <span class="c1">// Sleep</span>
-  <span class="k">while</span> <span class="p">(</span><span class="n">frames_got</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">n_frames</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
     <span class="p">;</span>
 
   <span class="c1">// Deinitialize</span>
@@ -314,7 +324,7 @@
         <a href="callback.html" class="btn btn-neutral float-right" title="Callback" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="basic.html" class="btn btn-neutral" title="Basic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="basic.html" class="btn btn-neutral float-left" title="Basic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -340,25 +350,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="../_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

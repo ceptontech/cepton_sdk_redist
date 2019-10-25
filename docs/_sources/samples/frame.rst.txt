@@ -1,7 +1,0 @@
-Frame
-=====
-
-.. literalinclude:: ../../../samples/advanced/frame.cpp
-  :language: c
-  :linenos:
-  :caption: samples/advanced/frame.cpp

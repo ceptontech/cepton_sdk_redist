@@ -16,7 +16,7 @@ Types
 Methods
 -------
 
-.. doxygenfunction:: cepton_is_vista
+.. doxygenfunction:: cepton_is_sora
 .. doxygenfunction:: cepton_is_hr80
 .. doxygenfunction:: cepton_is_vista
 

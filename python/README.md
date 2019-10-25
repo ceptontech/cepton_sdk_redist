@@ -14,4 +14,4 @@ pip3 install .[capture,export,plot]
 
 ## Documentation
 
-- `docs/html/index.html`
+See `docs`.

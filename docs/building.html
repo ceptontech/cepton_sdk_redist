@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Samples" href="samples.html" />
     <link rel="prev" title="Overview" href="overview.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -83,10 +85,17 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Building</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#cmake">CMake</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#manually">Manually</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#windows">Windows</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
@@ -162,7 +171,7 @@
         <a href="samples.html" class="btn btn-neutral float-right" title="Samples" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -176,11 +185,11 @@
 <div class="section" id="cmake">
 <h2>CMake<a class="headerlink" href="#cmake" title="Permalink to this headline">¶</a></h2>
 <p>The simplest way to include the SDK is as a CMake subdirectory:</p>
-<div class="code cmake highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_subdirectory</span><span class="p">(</span><span class="o">&lt;</span><span class="n">cepton_sdk_source_dir</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span>add_subdirectory(&lt;cepton_sdk_source_dir&gt;)
 
-<span class="o">...</span>
+...
 
-<span class="n">target_link_libraries</span><span class="p">(</span><span class="o">&lt;</span><span class="n">target</span><span class="o">&gt;</span> <span class="n">cepton_sdk</span><span class="p">::</span><span class="n">cepton_sdk</span><span class="p">)</span>
+target_link_libraries(&lt;target&gt; cepton_sdk::cepton_sdk)
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="samples/cmake.html"><span class="doc">CMake</span></a>.</p>
@@ -189,10 +198,17 @@
 <h2>Manually<a class="headerlink" href="#manually" title="Permalink to this headline">¶</a></h2>
 <p>It is also possible to manually link to the SDK as follows:</p>
 <ol class="arabic simple">
-<li>Add the <code class="docutils literal notranslate"><span class="pre">cepton_sdk_redist/include</span></code> path.</li>
-<li>Link to the correct library binary in <code class="docutils literal notranslate"><span class="pre">cepton_sdk_redist/lib</span></code> or <code class="docutils literal notranslate"><span class="pre">cepton_sdk_redist/bin</span></code>.</li>
-<li>If using the static library, define <code class="docutils literal notranslate"><span class="pre">CEPTON_SDK_STATIC</span></code>.</li>
+<li><p>Add the <code class="docutils literal notranslate"><span class="pre">cepton_sdk_redist/include</span></code> path.</p></li>
+<li><p>Link to the correct library binary in <code class="docutils literal notranslate"><span class="pre">cepton_sdk_redist/lib</span></code> or <code class="docutils literal notranslate"><span class="pre">cepton_sdk_redist/bin</span></code>.</p></li>
+<li><p>If statically linking, define <code class="docutils literal notranslate"><span class="pre">CEPTON_SDK_STATIC</span></code>.</p></li>
 </ol>
+</div>
+<div class="section" id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is not possible to statically link in debug mode, since the library does not ship with debug symbols.</p>
+</div>
 </div>
 </div>
 
@@ -207,7 +223,7 @@
         <a href="samples.html" class="btn btn-neutral float-right" title="Samples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -233,25 +249,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

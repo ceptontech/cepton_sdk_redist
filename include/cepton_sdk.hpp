@@ -1,5 +1,5 @@
 /*
-  Copyright Cepton Technologies Inc. 2017, All rights reserved.
+  Copyright Cepton Technologies Inc., All rights reserved.
 
   Cepton Sensor SDK C++ interface.
 */
@@ -17,55 +17,24 @@
 
 namespace cepton_sdk {
 
-inline std::string get_version_string() {
-  return cepton_sdk_get_version_string();
-}
-inline int get_version_major() { return cepton_sdk_get_version_major(); }
-inline int get_version_minor() { return cepton_sdk_get_version_minor(); }
-
 //------------------------------------------------------------------------------
 // Errors
 //------------------------------------------------------------------------------
 namespace internal {
-inline std::string create_context_message(const std::string &file, int line,
-                                          const std::string &code) {
-  std::array<char, 1000> buffer;
-  std::snprintf(buffer.data(), buffer.size(), "  File \"%s\", line %i\n    %s",
-                file.c_str(), line, code.c_str());
-  return std::string(buffer.data());
-}
-
-inline std::string create_assert_message(const std::string &file, int line,
-                                         const std::string &code,
-                                         const std::string &msg) {
-  std::string result;
-  result.append("AssertionError");
-  if (!msg.empty()) {
-    result.append(": ");
-    result.append(msg);
-  }
-#ifdef CEPTON_INTERNAL
-  result.append("\n");
-  result.append(create_context_message(file, line, code));
-#endif
-  return result;
-}
-
-/**
- * - If `CEPTON_ENABLE_EXCEPTIONS` defined, terminates
- * - Otherwise, prints error message.
- */
-inline void throw_assert(const std::string &file, int line,
-                         const std::string &code, const std::string &msg) {
-  std::fprintf(stderr, "%s\n",
-               create_assert_message(file, line, code, msg).c_str());
-#ifdef CEPTON_ENABLE_EXCEPTIONS
-  std::terminate();
-#endif
-}
+std::string create_context_message(const std::string &file, int line,
+                                   const std::string &code);
+std::string create_assert_message(const std::string &file, int line,
+                                  const std::string &code,
+                                  const std::string &msg);
+void throw_assert(const std::string &file, int line, const std::string &code,
+                  const std::string &msg);
 }  // namespace internal
 
 /// Runtime assert check for catching bugs.
+/**
+ * - If `CEPTON_ENABLE_EXCEPTIONS` defined, terminates.
+ * - Otherwise, prints message.
+ */
 #define CEPTON_ASSERT(condition, msg)                                      \
   ((condition) ? true                                                      \
                : (::cepton_sdk::internal::throw_assert(__FILE__, __LINE__, \
@@ -108,85 +77,64 @@ const T *get_error_data(SensorErrorCode error_code, const void *error_data,
 
 /// Error returned by most functions.
 /**
- * Implicitly convertible from/to SensorErrorCode.
+ * Implicitly convertible from/to `SensorErrorCode`.
  * Getter functions do not return an error, because they cannot fail.
- * Will call `CEPTON_RUNTIME_ASSERT` if nonzero error is not used (call
+ * Will call `CEPTON_ASSERT` if nonzero error is not used (call
  * `ignore` to manually use error).
  */
 class SensorError : public std::runtime_error {
  public:
-  SensorError(SensorErrorCode code_, const std::string &msg_)
-      : std::runtime_error(create_message(code_, msg_)),
-        m_code(code_),
-        m_msg(msg_) {
-    CEPTON_ASSERT(!get_error_code_name(code_).empty(),
-                  std::string("Invalid error code: ") + std::to_string(m_code));
-  }
-  SensorError(SensorErrorCode code_) : SensorError(code_, "") {}
-  SensorError() : SensorError(CEPTON_SUCCESS) {}
-  ~SensorError() { check_used(); }
+  /// Create SensorError class object with SensorErrorCode and error message.
+  SensorError(SensorErrorCode code, const std::string &msg);
 
-  SensorError(const SensorError &other) : std::runtime_error(other) {
-    m_code = other.code();
-    m_msg = other.msg();
-  }
-  SensorError &operator=(const SensorError &other) {
-    check_used();
-    std::runtime_error::operator=(other);
-    m_code = other.code();
-    m_msg = other.msg();
-    m_used = false;
-    return *this;
-  }
+  /// Create SensorError class object with error code.
+  SensorError(SensorErrorCode code);
+
+  /// SensorError class default constructor
+  SensorError();
+
+  /// SensorError class destructor
+  ~SensorError();
+
+  /// Create SensorError object using SensorError object.
+  SensorError(const SensorError &other);
+
+  /// SensorError class assignment operator
+  SensorError &operator=(const SensorError &other);
 
   /// Internal use only.
-  bool used() const { return m_used; }
+  bool used() const;
 
   /// Mark error as used.
-  const SensorError &ignore() const {
-    m_used = true;
-    return *this;
-  }
+  const SensorError &ignore() const;
 
-  /// Returns error message;
-  const std::string &msg() const {
-    m_used = true;
-    return m_msg;
-  }
+  const char *what() const noexcept override;
 
-  /// Returns error code
-  SensorErrorCode code() const {
-    m_used = true;
-    return m_code;
-  }
+  /// Returns error message.
+  const std::string &msg() const;
+
+  /// Returns error code.
+  SensorErrorCode code() const;
 
   /// Implicitly convert to `SensorErrorCode`.
-  operator SensorErrorCode() const { return code(); }
+  operator SensorErrorCode() const;
 
-  /// Returns `false` if code is `CEPTON_SUCCESS`, true otherwise.
-  operator bool() const { return code(); }
+  /// Returns `false` if error code is `CEPTON_SUCCESS`, true otherwise.
+  operator bool() const;
 
-  const std::string name() const { return get_error_code_name(code()); }
+  /// Returns error code name.
+  const std::string name() const;
 
-  bool is_error() const { return is_error_code(code()); }
-  bool is_fault() const { return is_fault_code(code()); }
+  /// Returns true if parent object is an error.
+  bool is_error() const;
+
+  /// Returns true if parent object is a fault.
+  bool is_fault() const;
 
  private:
   static std::string create_message(SensorErrorCode code,
-                                    const std::string &msg) {
-    if (!code) return "";
-    std::string result = get_error_code_name(code);
-    if (!msg.empty()) {
-      result.append("\n");
-      result.append(msg);
-    }
-    return result;
-  }
-
-  /// Throw assert if error not used.
-  void check_used() const {
-    CEPTON_ASSERT(!m_code || m_used, std::string("Error not used: ") + what());
-  }
+                                    const std::string &msg);
+  void check_used() const;
 
  private:
   SensorErrorCode m_code;
@@ -195,37 +143,19 @@ class SensorError : public std::runtime_error {
 };
 
 namespace internal {
-inline SensorError add_error_context(const SensorError &error,
-                                     const std::string &context) {
-  if (!error) return error;
-  std::string msg;
-  if (!error.msg().empty()) {
-    msg.append(error.msg());
-    msg.append("\n");
-  }
-  msg.append(context);
-  return SensorError(error.code(), msg);
-}
+SensorError add_error_context(const SensorError &error,
+                              const std::string &context);
 }  // namespace internal
 
 /// Wrapper for adding current context to error stack traces.
 class SensorErrorWrapper {
  public:
-  SensorErrorWrapper(const std::string &context_) : m_context(context_) {}
+  SensorErrorWrapper(const std::string &context);
+  SensorErrorWrapper &operator=(const SensorError &error);
 
-  SensorErrorWrapper &operator=(const SensorError &error_) {
-    if (enable_accumulation && m_error) return *this;
-#ifdef CEPTON_INTERNAL
-    m_error = internal::add_error_context(error_, m_context);
-#else
-    m_error = error_;
-#endif
-    return *this;
-  }
-
-  operator bool() const { return m_error; }
-  const SensorError &error() const { return m_error; }
-  operator const SensorError &() const { return m_error; }
+  operator bool() const;
+  const SensorError &error() const;
+  operator const SensorError &() const;
 
  public:
   /// If true, store first stored error, and ignore future errors.
@@ -243,18 +173,9 @@ class SensorErrorWrapper {
                   __FILE__, __LINE__, #condition, msg));
 
 namespace internal {
-inline SensorError process_error(const std::string &file, int line,
-                                 const std::string &code,
-                                 const SensorError &error, bool enable_log,
-                                 bool enable_raise) {
-  if (!error) return CEPTON_SUCCESS;
-  SensorErrorWrapper wrapper(create_context_message(file, line, code));
-  wrapper = error;
-  if (enable_log || enable_raise)
-    std::fprintf(stderr, "%s\n", wrapper.error().what());
-  if (enable_raise && error.is_error()) std::terminate();
-  return wrapper;
-}
+SensorError process_error(const std::string &file, int line,
+                          const std::string &code, const SensorError &error,
+                          bool enable_log, bool enable_raise);
 }  // namespace internal
 
 /// Add context to error.
@@ -303,12 +224,23 @@ inline SensorError get_error() {
 typedef CeptonSensorHandle SensorHandle;
 const SensorHandle SENSOR_HANDLE_FLAG_MOCK = CEPTON_SENSOR_HANDLE_FLAG_MOCK;
 typedef CeptonSensorModel SensorModel;
+
+inline bool is_sora(SensorModel model) { return cepton_is_sora(model); }
+inline bool is_hr80(SensorModel model) { return cepton_is_hr80(model); }
+inline bool is_vista(SensorModel model) { return cepton_is_vista(model); }
+
 typedef CeptonSensorInformation SensorInformation;
 typedef CeptonSensorImagePoint SensorImagePoint;
 
 //------------------------------------------------------------------------------
 // SDK Setup
 //------------------------------------------------------------------------------
+inline std::string get_version_string() {
+  return cepton_sdk_get_version_string();
+}
+inline int get_version_major() { return cepton_sdk_get_version_major(); }
+inline int get_version_minor() { return cepton_sdk_get_version_minor(); }
+
 typedef CeptonSDKControl Control;
 typedef CeptonSDKFrameMode FrameMode;
 typedef CeptonSDKFrameOptions FrameOptions;
@@ -501,3 +433,5 @@ inline SensorError pause() {
 
 }  // namespace capture_replay
 }  // namespace cepton_sdk
+
+#include "cepton_sdk_impl/cepton_sdk.inc"

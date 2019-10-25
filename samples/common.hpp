@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 
 #include <cepton_sdk_api.hpp>
 

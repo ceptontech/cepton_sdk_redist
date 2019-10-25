@@ -23,4 +23,11 @@ It is also possible to manually link to the SDK as follows:
 
 1. Add the ``cepton_sdk_redist/include`` path.
 2. Link to the correct library binary in ``cepton_sdk_redist/lib`` or ``cepton_sdk_redist/bin``.
-3. If using the static library, define ``CEPTON_SDK_STATIC``.
+3. If statically linking, define ``CEPTON_SDK_STATIC``.
+
+Windows
+-------
+
+.. note::
+	
+	It is not possible to statically link in debug mode, since the library does not ship with debug symbols.

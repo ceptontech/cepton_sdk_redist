@@ -17,34 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Errors" href="errors.html" />
-    <link rel="prev" title="Stray" href="samples/stray.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+    <link rel="next" title="Legal" href="legal.html" />
+    <link rel="prev" title="Stray Filter" href="samples/stray_filter.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -94,6 +96,12 @@
 <li class="toctree-l2"><a class="reference internal" href="#minimal-sdk">Minimal SDK</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_export.html">Cepton Export</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
@@ -166,10 +174,10 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="errors.html" class="btn btn-neutral float-right" title="Errors" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="legal.html" class="btn btn-neutral float-right" title="Legal" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="samples/stray.html" class="btn btn-neutral" title="Stray" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="samples/stray_filter.html" class="btn btn-neutral float-left" title="Stray Filter" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -185,21 +193,19 @@
 <h2>Packet Received<a class="headerlink" href="#packet-received" title="Permalink to this headline">¶</a></h2>
 <p>Occurs when <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_mock_network_receive</span></code> is called.</p>
 <ol class="arabic simple">
-<li><dl class="first docutils">
-<dt>If the packet is a sensor information packet:</dt>
-<dd><ul class="first last">
-<li>Update the internal stored sensor state. This information can be queried with <a class="reference internal" href="sensors.html#_CPPv333cepton_sdk_get_sensor_information18CeptonSensorHandlePC23CeptonSensorInformation" title="cepton_sdk_get_sensor_information"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_get_sensor_information()</span></code></a>.</li>
+<li><dl class="simple">
+<dt>If the packet is a sensor information packet:</dt><dd><ul class="simple">
+<li><p>Update the internal stored sensor state. This information can be queried with <a class="reference internal" href="sensors.html#_CPPv433cepton_sdk_get_sensor_information18CeptonSensorHandlePC23CeptonSensorInformation" title="cepton_sdk_get_sensor_information"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_get_sensor_information()</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>If the packet is a data packet:</dt>
-<dd><ul class="first last">
-<li>If no corresponding sensor information packet has been received, ignore the data packet.</li>
-<li>Compute points from packet.</li>
-<li>Apply sensor calibration.</li>
-<li>Add points to frame accumulator. If frame is complete, emit image frame callback.</li>
+<li><dl class="simple">
+<dt>If the packet is a data packet:</dt><dd><ul class="simple">
+<li><p>If no corresponding sensor information packet has been received, ignore the data packet.</p></li>
+<li><p>Compute points from packet.</p></li>
+<li><p>Apply sensor calibration.</p></li>
+<li><p>Add points to frame accumulator. If frame is complete, emit image frame callback.</p></li>
 </ul>
 </dd>
 </dl>
@@ -210,30 +216,29 @@
 <h2>Threads<a class="headerlink" href="#threads" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="networking-thread-0">
 <h3>Networking Thread 0<a class="headerlink" href="#networking-thread-0" title="Permalink to this headline">¶</a></h3>
-<p>Created if <a class="reference internal" href="setup.html#_CPPv334CEPTON_SDK_CONTROL_DISABLE_NETWORK" title="CEPTON_SDK_CONTROL_DISABLE_NETWORK"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span></code></a> is not set.</p>
+<p>Created if <a class="reference internal" href="setup.html#_CPPv434CEPTON_SDK_CONTROL_DISABLE_NETWORK" title="CEPTON_SDK_CONTROL_DISABLE_NETWORK"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span></code></a> is not set.</p>
 <ul class="simple">
-<li>Start listening on the UDP port (default: <code class="docutils literal notranslate"><span class="pre">8808</span></code>).</li>
-<li>Push received packets on a queue for <code class="docutils literal notranslate"><span class="pre">Thread</span> <span class="pre">1</span></code>.</li>
+<li><p>Start listening on the UDP port (default: <code class="docutils literal notranslate"><span class="pre">8808</span></code>).</p></li>
+<li><p>Push received packets on a queue for <code class="docutils literal notranslate"><span class="pre">Thread</span> <span class="pre">1</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="networking-thread-1">
 <h3>Networking Thread 1<a class="headerlink" href="#networking-thread-1" title="Permalink to this headline">¶</a></h3>
-<p>Created if <a class="reference internal" href="setup.html#_CPPv334CEPTON_SDK_CONTROL_DISABLE_NETWORK" title="CEPTON_SDK_CONTROL_DISABLE_NETWORK"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span></code></a> is not set.</p>
+<p>Created if <a class="reference internal" href="setup.html#_CPPv434CEPTON_SDK_CONTROL_DISABLE_NETWORK" title="CEPTON_SDK_CONTROL_DISABLE_NETWORK"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">CEPTON_SDK_CONTROL_DISABLE_NETWORK</span></code></a> is not set.</p>
 <ul class="simple">
-<li>Pop packets from queue.</li>
-<li>Call internal version of <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_mock_network_receive</span></code>. See <code class="docutils literal notranslate"><span class="pre">Packet</span> <span class="pre">Received</span></code>.</li>
+<li><p>Pop packets from queue.</p></li>
+<li><p>Call internal version of <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_mock_network_receive</span></code>. See <code class="docutils literal notranslate"><span class="pre">Packet</span> <span class="pre">Received</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="capture-replay-thread-0">
 <h3>Capture Replay Thread 0<a class="headerlink" href="#capture-replay-thread-0" title="Permalink to this headline">¶</a></h3>
-<p>Created by <a class="reference internal" href="capture_replay.html#_CPPv332cepton_sdk_capture_replay_resumev" title="cepton_sdk_capture_replay_resume"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_capture_replay_resume()</span></code></a>.</p>
+<p>Created by <a class="reference internal" href="capture_replay.html#_CPPv432cepton_sdk_capture_replay_resumev" title="cepton_sdk_capture_replay_resume"><code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_capture_replay_resume()</span></code></a>.</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>While running</dt>
-<dd><ul class="first last">
-<li>Read next packet from PCAP file.</li>
-<li>Sleep to simulate realtime delays.</li>
-<li>Call <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_mock_network_receive</span></code>.</li>
+<li><dl class="simple">
+<dt>While running</dt><dd><ul>
+<li><p>Read next packet from PCAP file.</p></li>
+<li><p>Sleep to simulate realtime delays.</p></li>
+<li><p>Call <code class="xref cpp cpp-any docutils literal notranslate"><span class="pre">cepton_sdk_mock_network_receive</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -249,9 +254,9 @@
 <h2>Minimal SDK<a class="headerlink" href="#minimal-sdk" title="Permalink to this headline">¶</a></h2>
 <p>If desired, the following SDK features can be disabled in the SDK and performed manually by the user:</p>
 <ul class="simple">
-<li>Capture Replay: <a class="reference internal" href="samples/replay.html"><span class="doc">Replay</span></a>.</li>
-<li>Frame Accumulation: <a class="reference internal" href="samples/frame.html"><span class="doc">Frame</span></a>.</li>
-<li>Networking: <a class="reference internal" href="samples/network.html"><span class="doc">Network</span></a>.</li>
+<li><p>Capture Replay: <a class="reference internal" href="samples/replay.html"><span class="doc">Replay</span></a>.</p></li>
+<li><p>Frame Accumulation: <a class="reference internal" href="samples/frame_accumulator.html"><span class="doc">Frame Detector</span></a>.</p></li>
+<li><p>Networking: <a class="reference internal" href="samples/network.html"><span class="doc">Network</span></a>.</p></li>
 </ul>
 </div>
 </div>
@@ -264,10 +269,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="errors.html" class="btn btn-neutral float-right" title="Errors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="legal.html" class="btn btn-neutral float-right" title="Legal" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="samples/stray.html" class="btn btn-neutral" title="Stray" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="samples/stray_filter.html" class="btn btn-neutral float-left" title="Stray Filter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -293,25 +298,16 @@
   
 
 
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

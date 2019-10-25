@@ -1,7 +1,0 @@
-Stray
-=====
-
-.. literalinclude:: ../../../samples/advanced/stray.cpp
-  :language: c
-  :linenos:
-  :caption: samples/advanced/stray.cpp
