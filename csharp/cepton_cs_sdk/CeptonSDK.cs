@@ -333,6 +333,8 @@ namespace Cepton.SDK
         public const int MAX_POINTS_PER_SECOND = 1000000;
         public const int MAX_FRAMES_PER_SECOND = 40;
 
+        private static FpCeptonSensorErrorCallback lastErrorCallback;
+
         public static void Initialize(FpCeptonSensorErrorCallback cb,
             ControlFlags control_flags = ControlFlags.ENABLE_MULTIPLE_RETURNS)
         {
@@ -341,12 +343,14 @@ namespace Cepton.SDK
             _E(_Initialize(SDK_VERSION, ref opt, cb, IntPtr.Zero));
             // Start listening to image points
             ListenImageFrames(imageDataCallback, IntPtr.Zero);
+            lastErrorCallback = cb;
         }
 
         public static bool IsInitialized => _IsInitialized() != 0;
 
         public static void DeInitialize()
         {
+            lastErrorCallback = null;
             UnlistenImageFrames();
             _E(_DeInitialize());
         }
