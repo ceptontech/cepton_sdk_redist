@@ -12,17 +12,11 @@ The Cepton SDK provides the following features
 
 Currently, the Cepton LiDAR packet formats are under active development, and are not publicly available. The SDK is required for **Parsing** and **Calibration**. All other SDK features are optional, and can be done manually by the user.
 
-Please read the API documentation at `docs/html/index.html`.
-
 ## Installation
 
-To install `CeptonViewer`, download and run
+First, install [CeptonViewer](https://ceptontech.github.io/cepton_sdk_redist/cepton_viewer.html).
 
-- Windows: <https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-win64.exe>
-- OSX: <https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-osx.dmg>
-- Linux: <https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-linux-x86_64.deb>
-
-To clone the entire repository, run
+To clone the repository, run
 
 ```sh
 git clone https://github.com/ceptontech/cepton_sdk_redist.git

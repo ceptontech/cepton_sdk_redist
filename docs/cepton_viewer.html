@@ -96,9 +96,9 @@
 <li class="toctree-l3"><a class="reference internal" href="#open-capture">Open Capture</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#save-capture">Save Capture</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#take-screenshot">Take Screenshot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#update-sensor-transforms-clips">Update Sensor Transforms/Clips</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#update-sensor-transforms-clips">Update Sensor Transforms/Clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#keyboard-shortcuts">Keyboard Shortcuts</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#gui">GUI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#replay">Replay</a></li>
@@ -203,11 +203,10 @@
 </ul>
 <div class="section" id="downloads">
 <h2>Downloads<a class="headerlink" href="#downloads" title="Permalink to this headline">¶</a></h2>
-<p>Cepton Viewer can be downloaded from our SDK repository: <a class="reference external" href="https://github.com/ceptontech/cepton_sdk_redist/setup">https://github.com/ceptontech/cepton_sdk_redist/setup</a>.</p>
 <ul class="simple">
-<li><p><strong>Windows x64:</strong> <a class="reference external" href="https://www.cepton.com/downloads/cepton_sdk/latest/win64/cepton_sdk-win64.deb">https://www.cepton.com/downloads/cepton_sdk/latest/win64/cepton_sdk-win64.deb</a></p></li>
-<li><p><strong>Linux x64:</strong> <a class="reference external" href="https://www.cepton.com/downloads/cepton_sdk/latest/linux-x86_64/cepton_sdk-linux-x86_64.deb">https://www.cepton.com/downloads/cepton_sdk/latest/linux-x86_64/cepton_sdk-linux-x86_64.deb</a></p></li>
-<li><p><strong>Mac x64:</strong> <a class="reference external" href="https://www.cepton.com/downloads/cepton_sdk/latest/osx/cepton_sdk-osx.deb">https://www.cepton.com/downloads/cepton_sdk/latest/osx/cepton_sdk-osx.deb</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-win64.exe">Windows</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-osx.dmg">OSX</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-linux-x86_64.deb">Linux</a></p></li>
 </ul>
 <p>On Windows, a firewall popup will appear the first time Cepton Viewer is launched. Select “Allow access” for both private and public networks.</p>
 </div>
@@ -264,7 +263,7 @@
 <li><p>Wait for desired duration.</p></li>
 <li><p>Select <code class="docutils literal notranslate"><span class="pre">Capture</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Stop</span> <span class="pre">Capture</span></code>.</p></li>
 </ul>
-<p>The capture is saved in <code class="docutils literal notranslate"><span class="pre">~/Media/CeptonViewer</span></code>.</p>
+<p>The capture is saved at <code class="docutils literal notranslate"><span class="pre">~/Documents/CeptonViewer/&lt;date&gt;/capture_&lt;time&gt;</span></code>.</p>
 </div>
 <div class="section" id="take-screenshot">
 <h3>Take Screenshot<a class="headerlink" href="#take-screenshot" title="Permalink to this headline">¶</a></h3>
@@ -272,16 +271,16 @@
 <li><p>Switch to <code class="docutils literal notranslate"><span class="pre">General</span></code> tab.</p></li>
 <li><p>Select <code class="docutils literal notranslate"><span class="pre">Tools</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Screenshot</span></code>.</p></li>
 </ul>
-<p>The screenshot is saved in <code class="docutils literal notranslate"><span class="pre">~/Media/CeptonViewer</span></code>.</p>
-</div>
+<p>The screenshot is saved at <code class="docutils literal notranslate"><span class="pre">~/Documents/CeptonViewer/&lt;date&gt;/screenshot_&lt;time&gt;.png</span></code>.</p>
 </div>
 <div class="section" id="update-sensor-transforms-clips">
-<h2>Update Sensor Transforms/Clips<a class="headerlink" href="#update-sensor-transforms-clips" title="Permalink to this headline">¶</a></h2>
+<h3>Update Sensor Transforms/Clips<a class="headerlink" href="#update-sensor-transforms-clips" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Switch to <code class="docutils literal notranslate"><span class="pre">Settings</span></code> tab.</p></li>
 <li><p>For each sensor, update the transforms/clips.</p></li>
 <li><p>Select <code class="docutils literal notranslate"><span class="pre">File</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Save</span></code>/<code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">As...</span></code>.</p></li>
 </ul>
+</div>
 </div>
 <div class="section" id="keyboard-shortcuts">
 <h2>Keyboard Shortcuts<a class="headerlink" href="#keyboard-shortcuts" title="Permalink to this headline">¶</a></h2>
@@ -298,10 +297,7 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Help</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">F1</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p>Hide GUI</p></td>
+<tr class="row-even"><td><p>Hide GUI</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">F11</span></code></p></td>
 </tr>
 </tbody>
@@ -339,16 +335,16 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Reset View Origin</p></td>
+<tr class="row-even"><td><p>Reset Camera Translation</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">O</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Front View</p></td>
+<tr class="row-odd"><td><p>Camera Front View</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>Top View</p></td>
+<tr class="row-even"><td><p>Camera Top View</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>Side View</p></td>
+<tr class="row-odd"><td><p>Camera Side View</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
 </tr>
 </tbody>

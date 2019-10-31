@@ -1,0 +1,4 @@
+<!-- Launches nodelet manager. -->
+<launch>
+  <node pkg="nodelet" type="nodelet" name="cepton_manager" args="manager" output="screen"/>
+</launch>

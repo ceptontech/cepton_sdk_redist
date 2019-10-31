@@ -1,8 +1,5 @@
 macro(PARSE_VERSION_STRING PREFIX)
-  string(REPLACE "."
-                 ";"
-                 ${PREFIX}_VERSION_LIST
-                 "${${PREFIX}_VERSION}")
+  string(REPLACE "." ";" ${PREFIX}_VERSION_LIST "${${PREFIX}_VERSION}")
   list(LENGTH ${PREFIX}_VERSION_LIST ${PREFIX}_VERSION_LIST_SIZE)
   set(${PREFIX}_VERSION_MAJOR 0)
   set(${PREFIX}_VERSION_MINOR 0)

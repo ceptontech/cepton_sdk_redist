@@ -8,11 +8,9 @@ The Cepton Viewer tool allows viewing raw Cepton sensor data. It is primarily us
 
 ### Downloads
 
-Cepton Viewer can be downloaded from our SDK repository: <https://github.com/ceptontech/cepton_sdk_redist/setup>.
-
-- **Windows x64:** <https://www.cepton.com/downloads/cepton_sdk/latest/win64/cepton_sdk-win64.deb>
-- **Linux x64:** <https://www.cepton.com/downloads/cepton_sdk/latest/linux-x86_64/cepton_sdk-linux-x86_64.deb>
-- **Mac x64:** <https://www.cepton.com/downloads/cepton_sdk/latest/osx/cepton_sdk-osx.deb>
+- [Windows](https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-win64.exe)
+- [OSX](https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-osx.dmg)
+- [Linux](https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-linux-x86_64.deb)
 
 On Windows, a firewall popup will appear the first time Cepton Viewer is launched. Select "Allow access" for both private and public networks.
 
@@ -47,16 +45,16 @@ On Windows, a firewall popup will appear the first time Cepton Viewer is launche
 - Wait for desired duration.
 - Select `Capture` -> `Stop Capture`.
 
-The capture is saved in `~/Media/CeptonViewer`.
+The capture is saved at `~/Documents/CeptonViewer/<date>/capture_<time>`.
 
 #### Take Screenshot
 
 - Switch to `General` tab.
 - Select `Tools` -> `Screenshot`.
 
-The screenshot is saved in `~/Media/CeptonViewer`.
+The screenshot is saved at `~/Documents/CeptonViewer/<date>/screenshot_<time>.png`.
 
-### Update Sensor Transforms/Clips
+#### Update Sensor Transforms/Clips
 
 - Switch to `Settings` tab.
 - For each sensor, update the transforms/clips.
@@ -68,7 +66,6 @@ The screenshot is saved in `~/Media/CeptonViewer`.
 
 | Command  | Key   |
 | -------- | ----- |
-| Help     | `F1`  |
 | Hide GUI | `F11` |
 
 #### Replay
@@ -79,9 +76,9 @@ The screenshot is saved in `~/Media/CeptonViewer`.
 
 #### View
 
-| Command           | Key |
-| ----------------- | --- |
-| Reset View Origin | `O` |
-| Front View        | `1` |
-| Top View          | `2` |
-| Side View         | `3` |
+| Command                  | Key |
+| ------------------------ | --- |
+| Reset Camera Translation | `O` |
+| Camera Front View        | `1` |
+| Camera Top View          | `2` |
+| Camera Side View         | `3` |

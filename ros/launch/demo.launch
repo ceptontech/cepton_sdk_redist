@@ -1,0 +1,17 @@
+<!-- Launches SDK driver and rviz. -->
+<launch>
+  <arg name="capture_path" default="" doc="Capture replay PCAP file path."/>
+  <arg name="rviz_config_path" default="" doc="rviz config file path."/>
+  <arg name="transforms_path" default="" doc="Sensor transforms json file path."/>
+
+  <include file="$(find cepton_ros)/launch/manager.launch"/>
+
+  <include file="$(find cepton_ros)/launch/driver.launch">
+    <arg name="capture_path" value="$(arg capture_path)"/>
+    <arg name="transforms_path" value="$(arg transforms_path)"/>
+  </include>
+
+  <include file="$(find cepton_ros)/launch/rviz.launch">
+    <arg name="rviz_config_path" value="$(arg rviz_config_path)" if="$(eval rviz_config_path != '')"/>
+  </include>
+</launch>

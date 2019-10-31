@@ -350,9 +350,9 @@ namespace Cepton.SDK
 
         public static void DeInitialize()
         {
-            lastErrorCallback = null;
             UnlistenImageFrames();
             _E(_DeInitialize());
+            lastErrorCallback = null;
         }
 
         // Sensors lookup by serial number

@@ -1,0 +1,8 @@
+<library path="lib/libcepton_ros">
+  <class name="cepton_ros/DriverNodelet" type="cepton_ros::DriverNodelet" base_class_type="nodelet::Nodelet">
+    <description>Cepton SDK driver.</description>
+  </class>
+  <class name="cepton_ros/SubscriberNodelet" type="cepton_ros::SubscriberNodelet" base_class_type="nodelet::Nodelet">
+    <description>Sample subscriber.</description>
+  </class>
+</library>

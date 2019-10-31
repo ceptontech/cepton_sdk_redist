@@ -232,7 +232,10 @@
 37
 38
 39
-40</pre></div></td><td class="code"><div class="highlight"><pre><span></span>#[[
+40
+41
+42
+43</pre></div></td><td class="code"><div class="highlight"><pre><span></span>#[[
 CMake file for building samples.
 ]]
 cmake_minimum_required(VERSION 3.1)
@@ -243,7 +246,10 @@ get_filename_component(CEPTON_SDK_SOURCE_DIR
 list(APPEND CMAKE_MODULE_PATH &quot;${CEPTON_SDK_SOURCE_DIR}/cmake&quot;)
 
 include(&quot;CeptonVersion&quot;)
-project(cepton_sdk_samples VERSION ${CEPTON_VERSION} LANGUAGES C CXX)
+project(
+  cepton_sdk_samples
+  VERSION ${CEPTON_VERSION}
+  LANGUAGES C CXX)
 
 include(&quot;CeptonCommon&quot;)
 

@@ -9,7 +9,10 @@ get_filename_component(CEPTON_SDK_SOURCE_DIR
 list(APPEND CMAKE_MODULE_PATH "${CEPTON_SDK_SOURCE_DIR}/cmake")
 
 include("CeptonVersion")
-project(cepton_sdk_samples VERSION ${CEPTON_VERSION} LANGUAGES C CXX)
+project(
+  cepton_sdk_samples
+  VERSION ${CEPTON_VERSION}
+  LANGUAGES C CXX)
 
 include("CeptonCommon")
 
