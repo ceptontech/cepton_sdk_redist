@@ -14,6 +14,13 @@ The Cepton Viewer tool allows viewing raw Cepton sensor data. It is primarily us
 
 On Windows, a firewall popup will appear the first time Cepton Viewer is launched. Select "Allow access" for both private and public networks.
 
+
+### Tutorials
+
+- [Overview](https://www.cepton.com/downloads/videos/cepton_viewer_overview.mp4)
+- [Network Capture](https://www.cepton.com/downloads/videos/cepton_viewer_capture.mp4)
+- [Sensor Settings](https://www.cepton.com/downloads/videos/cepton_viewer_settings.mp4)
+
 ### Main Menu
 
 - Hover over menu items to view tooltips.

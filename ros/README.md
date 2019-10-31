@@ -2,15 +2,11 @@
 
 ## Overview
 
-This package provides ROS support for the Cepton SDK.
-
-Before using this ROS driver, we recommend that you download CeptonViewer to test your sensor setup.
-
-## Compatibility
-
-Currently, this driver only works on Ubuntu (>=16.04).
+This package provides ROS support for Cepton LiDAR.
 
 ## Installation
+
+First, install [CeptonViewer](https://ceptontech.github.io/cepton_sdk_redist/cepton_viewer.html).
 
 If you have not done so already, install ROS, and [create a catkin workspace](http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment).
 
@@ -35,8 +31,6 @@ source devel/setup.bash
 ```
 
 ## Getting started
-
-First, check that the sensor works using `CeptonViewer`. 
 
 Launch the ROS demo
 
@@ -92,8 +86,6 @@ roslaunch cepton_ros demo.launch capture_path:=<path_to_capture.pcap>
 ## Troubleshooting
 
 First, try viewing the sensor in CeptonViewer to determine if the issue is ROS or the sensor/network.
-
-The most common issue is the host computer blocking the sensor packets. Using Wireshark, or another networking tool, check that you are receiving packets on port 8808. If you not, check your networking/firewall settings.
 
 ## Reference
 

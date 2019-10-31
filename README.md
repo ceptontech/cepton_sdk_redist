@@ -42,6 +42,7 @@ See `samples`.
 - **licenses**: Third party licenses.
 - **matlab**: MATLAB SDK.
 - **python**: Python SDK.
+- **ros**: ROS SDK.
 - **samples**: Sample C/C++ code.
 - **setup**: Installers.
 - **source**: Partial SDK source code (for reference only).
@@ -50,11 +51,11 @@ See `samples`.
 
 The library requires C++11 support.
 
-| OS              | Compiler             | Target          |
-| --------------- | -------------------- | --------------- |
-| `osx`           | `LLVM 9.1`           |                 |
-| `win64`         | `Visual Studio 2017` | `Windows Vista` |
-| `linux-i386`    | `gcc-5`              | `Ubuntu 16.04`  |
-| `linux-x86_64`  | `gcc-5`              | `Ubuntu 16.04`  |
-| `linux-arm`     | `gcc-5`              | `Ubuntu 16.04`  |
-| `linux-aarch64` | `gcc-5`              | `Ubuntu 16.04`  |
+| OS              | Minimum Version |
+| --------------- | --------------- |
+| `osx`           | `OSX 10.15`     |
+| `win64`         | `Windows Vista` |
+| `linux-i386`    | `Ubuntu 16.04`  |
+| `linux-x86_64`  | `Ubuntu 16.04`  |
+| `linux-arm`     | `Ubuntu 16.04`  |
+| `linux-aarch64` | `Ubuntu 16.04`  |
