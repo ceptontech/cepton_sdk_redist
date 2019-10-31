@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+    <name>cepton_ros</name>
+    <version>1.10.1</version>
+    <description>Cepton LiDAR SDK.</description>
+    <license>None</license>
+    <url type="repository">https://github.com/ceptontech/cepton_ros.git</url>
+    <maintainer email="support@cepton.com">Cepton Technologies</maintainer>
+
+    <buildtool_depend>catkin</buildtool_depend>
+
+    <depend>nodelet</depend>
+    <depend>pcl_conversions</depend>
+    <depend>pcl_ros</depend>
+    <depend>pluginlib</depend>
+    <depend>roscpp</depend>
+    <depend>roslib</depend>
+    <depend>rospy</depend>
+    <depend>std_msgs</depend>
+    <depend>tf</depend>
+
+    <build_depend>message_generation</build_depend>
+    <exec_depend>message_runtime</exec_depend>
+
+    <export>
+        <nodelet plugin="${prefix}/nodelets.xml"/>
+    </export>
+</package>

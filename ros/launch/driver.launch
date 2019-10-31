@@ -1,0 +1,27 @@
+<!-- 
+Launches SDK driver and transforms publisher.
+Depends on `manager.launch`.
+-->
+<launch>
+  <arg name="capture_loop" default="true" doc="Enable cpture replay looping."/>
+  <arg name="capture_path" default="" doc="Capture replay PCAP file path."/>
+  <arg name="control_flags" default="0" doc="SDK control flags."/>
+  <arg name="frame_mode" default="CYCLE" doc="SDK frame mode (STREAMING, COVER, CYCLE)."/>
+  <arg name="manager_name" default="cepton_manager" doc="Nodelet manager node name."/>
+  <arg name="transforms_path" default="" doc="Sensor transforms json file path."/>
+
+  <arg name="combine_sensors" value="$(eval transforms_path == '')"/>
+
+  <node pkg="nodelet" type="nodelet" name="cepton_driver" required="true" args="load cepton_ros/DriverNodelet $(arg manager_name)" output="screen">
+    <param name="capture_path" value="$(arg capture_path)"/>
+    <param name="capture_loop" value="$(arg capture_loop)"/>
+    <param name="combine_sensors" value="$(arg combine_sensors)"/>
+    <param name="control_flags" value="$(arg control_flags)"/>
+    <param name="frame_mode" value="$(arg frame_mode)"/>
+  </node>
+
+  <include file="$(find cepton_ros)/launch/transforms.launch">
+    <arg name="transforms_path" value="$(find cepton_ros)/launch/settings/cepton_transforms.json" if="$(arg combine_sensors)"/>
+    <arg name="transforms_path" value="$(arg transforms_path)" unless="$(arg combine_sensors)"/>
+  </include>
+</launch>

@@ -1,0 +1,7 @@
+<launch>
+  <arg name="data_dir" value="$(find cepton_ros)/tests/1"/>
+
+  <include file="$(find cepton_ros)/launch/demo.launch">
+    <arg name="capture_path" value="$(arg data_dir)/lidar.pcap"/>
+  </include>
+</launch>

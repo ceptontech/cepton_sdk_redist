@@ -21,6 +21,7 @@ Dependencies: dumpcap, ffmpeg
     parser.add_argument(
         "--network", action="store_true", help="Capture network.")
     parser.add_argument("--network_interface")
+    parser.add_argument("--ros_topics")
     parser.add_argument("--settings_dir")
     parser.add_argument("--video_devices")
     args = parser.parse_args()
@@ -44,6 +45,11 @@ Dependencies: dumpcap, ffmpeg
         print("Network interface: {}".format(network_interface))
         pcap_capture = PCAPCapture(
             capture.pcap_path, interface=network_interface)
+
+    if args.ros_topics is not None:
+        ros_topics = sorted(args.ros_topics.split(","))
+        print("ROS topics: {}".format(ros_topics))
+        BagCapture(ros_topics, capture.bag_path)
 
     if args.video_devices is not None:
         video_devices = sorted(args.video_devices.split(","))

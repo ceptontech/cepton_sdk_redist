@@ -1,0 +1,17 @@
+<!-- Converts capture to bag. -->
+<launch>
+  <arg name="capture_path" doc="Capture replay PCAP file path."/>
+  <arg name="output_path" doc="Output bag file path."/>
+
+  <arg name="transforms_path" default="" doc="Sensor transforms json file path."/>
+
+  <include file="$(find cepton_ros)/launch/manager.launch"/>
+
+  <include file="$(find cepton_ros)/launch/driver.launch">
+    <arg name="capture_loop" value="false"/>
+    <arg name="capture_path" value="$(arg capture_path)"/>
+    <arg name="transforms_path" value="$(arg transforms_path)"/>
+  </include>
+
+  <node pkg="rosbag" type="record" name="cepton_rosbag" args="record -O '$(arg output_path)' '/tf' '/cepton/sensor_information' '/cepton/points'"/>
+</launch>

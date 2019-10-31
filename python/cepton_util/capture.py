@@ -26,18 +26,14 @@ class CaptureBase:
         return get_timestamp() - self.start_time
 
 
-def find_network_interface(network="192.168.0.0/16"):
-    network = ipaddress.ip_network(network)
+def find_network_interface():
     interfaces = []
     for interface in netifaces.interfaces():
         try:
-            interface_address = \
-                netifaces.ifaddresses(interface)[netifaces.AF_INET][0]["addr"]
+            if netifaces.ifaddresses(interface)[netifaces.AF_INET][0]["broadcast"] == "192.168.255.255":
+                interfaces.append(interface)
         except:
-            continue
-        interface_address = ipaddress.ip_address(interface_address)
-        if interface_address in network:
-            interfaces.append(interface)
+            continue            
     if len(interfaces) == 0:
         raise RuntimeError("No network interface found!")
     if len(interfaces) > 1:
@@ -107,6 +103,32 @@ class CameraCapture(CaptureBase):
             "-copyts",  # Copy timestamps
             output_path,
         ]
+        options = {
+            "background": True,
+        }
+        self._proc = execute_command(cmd_list, **options)
+
+    def close(self):
+        try:
+            self._proc.close()
+        except:
+            pass
+        self._proc = None
+
+
+class BagCapture(CaptureBase):
+    def __init__(self, ros_topics, output_path, **kwargs):
+        if shutil.which("rosbag") is None:
+            raise OSError("Cannot find rosbag!")
+
+        super().__init__(**kwargs)
+
+        cmd_list = [
+            "rosbag", "record",
+            "--lz4",
+            "-O", output_path,
+        ]
+        cmd_list.extend(ros_topics)
         options = {
             "background": True,
         }

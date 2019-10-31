@@ -1,0 +1,131 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration build-checksum="1690140844" file="/home/jonathan/Projects/cepton_sdk/matlab/cepton_sdk.prj" location="/home/jonathan/Projects/cepton_sdk/matlab" name="cepton_sdk" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>cepton_sdk</param.appname>
+    <param.authnamewatermark>Cepton Technologies</param.authnamewatermark>
+    <param.email>support@cepton.com</param.email>
+    <param.company>Cepton Technologies</param.company>
+    <param.summary>Cepton MATLAB SDK</param.summary>
+    <param.description />
+    <param.screenshot />
+    <param.version>1.16.1</param.version>
+    <param.output>${PROJECT_ROOT}/cepton_sdk.mltbx</param.output>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.guid>f6b3f942-82ad-4b99-9905-9f19d62ff53f</param.guid>
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+% .svn
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%
+samples
+source</param.exclude.filters>
+    <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
+    <param.examples />
+    <param.demosxml />
+    <param.apps />
+    <param.registered.apps />
+    <param.docs />
+    <param.getting.started.guide />
+    <param.matlabpath.excludes />
+    <param.javaclasspath.excludes />
+    <param.exported.on.package>false</param.exported.on.package>
+    <param.release.start />
+    <param.release.end />
+    <param.release.current.only>false</param.release.current.only>
+    <param.compatiblity.windows>true</param.compatiblity.windows>
+    <param.compatiblity.macos>true</param.compatiblity.macos>
+    <param.compatiblity.linux>true</param.compatiblity.linux>
+    <param.compatiblity.matlabonline>true</param.compatiblity.matlabonline>
+    <param.installation.map />
+    <param.additional.sw.names />
+    <param.additional.sw.licenses />
+    <param.additional.sw.win.url />
+    <param.additional.sw.mac.url />
+    <param.additional.sw.linux.url />
+    <unset>
+      <param.description />
+      <param.screenshot />
+      <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.exclude.pcodedmfiles />
+      <param.examples />
+      <param.demosxml />
+      <param.apps />
+      <param.registered.apps />
+      <param.docs />
+      <param.getting.started.guide />
+      <param.matlabpath.excludes />
+      <param.javaclasspath.excludes />
+      <param.exported.on.package />
+      <param.release.start />
+      <param.release.end />
+      <param.release.current.only />
+      <param.compatiblity.windows />
+      <param.compatiblity.macos />
+      <param.compatiblity.linux />
+      <param.compatiblity.matlabonline />
+      <param.installation.map />
+      <param.additional.sw.names />
+      <param.additional.sw.licenses />
+      <param.additional.sw.win.url />
+      <param.additional.sw.mac.url />
+      <param.additional.sw.linux.url />
+    </unset>
+    <fileset.rootdir>
+      <file>/home/jonathan/Projects/cepton_sdk_redist/matlab</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>/home/jonathan/Projects/cepton_sdk_redist/matlab/+cepton_sdk</file>
+      <file>/home/jonathan/Projects/cepton_sdk_redist/matlab/COPYRIGHT.txt</file>
+      <file>/home/jonathan/Projects/cepton_sdk_redist/matlab/README.md</file>
+      <file>/home/jonathan/Projects/cepton_sdk_redist/matlab/VERSION</file>
+      <file>/home/jonathan/Projects/cepton_sdk_redist/matlab/include</file>
+      <file>/home/jonathan/Projects/cepton_sdk_redist/matlab/lib</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included />
+    <fileset.depfun.excluded />
+    <fileset.package />
+    <build-deliverables>
+      <file location="/home/jonathan/Projects/cepton_sdk/matlab" name="cepton_sdk.mltbx" optional="false">/home/jonathan/Projects/cepton_sdk/matlab/cepton_sdk.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/usr/local/MATLAB/R2018b</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>false</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>true</linux>
+      <solaris>false</solaris>
+      <osver>4.15.0-66-generic</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>glnxa64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

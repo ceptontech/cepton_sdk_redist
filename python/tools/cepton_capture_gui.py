@@ -3,6 +3,7 @@
 import glob
 import os
 import os.path
+import subprocess
 import sys
 
 import imageio
@@ -34,6 +35,7 @@ class Capture:
             self.network_interface = None
         self.enable_network = self.network_interface is not None
         self.camera_devices = {}
+        self.ros_topics = {}
 
         self.is_monitors_open = False
         self.camera_readers = {}
@@ -43,6 +45,7 @@ class Capture:
         self.dummy_capture = None
         self.pcap_capture = None
         self.camera_captures = []
+        self.bag_capture = None
 
         self.window.setWindowTitle("Cepton Capture")
 
@@ -172,6 +175,20 @@ class Capture:
                 set([x.text() for x in camera_devices.selectedItems()])
         camera_devices.selectionModel().selectionChanged.connect(on_camera_devices)
 
+        header = create_toolbox_header("ROS")
+        layout.addRow(header)
+
+        # ROS topics
+        ros_topics = QListWidget()
+        layout.addRow(create_expanding_label("Topics"), ros_topics)
+        ros_topics.setFixedHeight(100)
+        ros_topics.setSelectionMode(QAbstractItemView.MultiSelection)
+
+        def on_ros_topics():
+            self.ros_topics = \
+                set([x.text() for x in ros_topics.selectedItems()])
+        ros_topics.selectionModel().selectionChanged.connect(on_ros_topics)
+
         def update():
             enable_network.setChecked(self.enable_network)
             if self.network_interface is None:
@@ -189,6 +206,20 @@ class Capture:
                     item = QListWidgetItem(device)
                     item.setSelected = device in self.camera_devices
                     camera_devices.addItem(item)
+
+            try:
+                all_ros_topics = subprocess.check_output(
+                    ["rostopic", "list"]).decode("utf-8").split()
+            except subprocess.CalledProcessError:
+                pass
+            else:
+                if set([ros_topics.item(i).text() for i in range(ros_topics.count())]) \
+                        != set(all_ros_topics):
+                    ros_topics.clear()
+                    for device in all_ros_topics:
+                        item = QListWidgetItem(device)
+                        item.setSelected = device in self.ros_topics
+                        ros_topics.addItem(item)
 
         self.update_callbacks.append(update)
 
@@ -267,6 +298,9 @@ class Capture:
         if self.network_interface is not None:
             self.pcap_capture = PCAPCapture(
                 self.capture.pcap_path, interface=self.network_interface)
+        if self.ros_topics:
+            self.bag_capture = BagCapture(
+                self.ros_topics, self.capture.bag_path)
         self.camera_captures = [
             CameraCapture(camera_device, self.capture.camera_path(i))
             for i, camera_device in enumerate(self.camera_devices)
