@@ -1,6 +1,6 @@
 # Cepton SDK Release Notes
 
-## Version 1.16.1 2019-11-01
+## Version 1.17.0 2019-11-01
 
 - Minor CeptonViewer UI tweaks.
 
