@@ -1,6 +1,11 @@
 # Cepton SDK Release Notes
 
-## Version 1.17.0 2019-11-01
+## Version 1.17.1 2019-10-31
+
+- Add `cepton_sdk_get_version_patch`
+- Minor CeptonViewer fixes.
+  
+## Version 1.17.0 2019-10-30
 
 - Minor CeptonViewer UI tweaks.
 

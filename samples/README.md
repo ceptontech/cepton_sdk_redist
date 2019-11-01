@@ -18,7 +18,6 @@ The following commands are for a UNIX command line (e.g. Git Bash).
 cd cepton_sdk_redist/samples
 mkdir build
 cd build
-# You may need to modify the `Visual Studio` version number.
 cmake -G "Visual Studio 16 2019" ..
 ```
 

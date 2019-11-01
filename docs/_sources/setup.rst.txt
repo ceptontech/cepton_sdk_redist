@@ -30,6 +30,7 @@ Methods
 .. doxygenfunction:: cepton_sdk_get_version_string
 .. doxygenfunction:: cepton_sdk_get_version_major
 .. doxygenfunction:: cepton_sdk_get_version_minor
+.. doxygenfunction:: cepton_sdk_get_version_patch
 
 .. doxygenfunction:: cepton_sdk_initialize
 .. doxygenfunction:: cepton_sdk_deinitialize

@@ -337,6 +337,8 @@ CEPTON_SDK_EXPORT const char *cepton_sdk_get_version_string();
 CEPTON_SDK_EXPORT int cepton_sdk_get_version_major();
 /// Returns library version minor.
 CEPTON_SDK_EXPORT int cepton_sdk_get_version_minor();
+/// Returns library version patch.
+CEPTON_SDK_EXPORT int cepton_sdk_get_version_patch();
 
 /// SDK setup flags.
 typedef uint32_t CeptonSDKControl;

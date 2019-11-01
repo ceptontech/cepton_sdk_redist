@@ -240,6 +240,7 @@ inline std::string get_version_string() {
 }
 inline int get_version_major() { return cepton_sdk_get_version_major(); }
 inline int get_version_minor() { return cepton_sdk_get_version_minor(); }
+inline int get_version_patch() { return cepton_sdk_get_version_patch(); }
 
 typedef CeptonSDKControl Control;
 typedef CeptonSDKFrameMode FrameMode;

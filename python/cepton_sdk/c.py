@@ -28,6 +28,9 @@ c_get_version_major.restype = c_int
 c_get_version_minor = lib.cepton_sdk_get_version_minor
 c_get_version_minor.restype = c_int
 
+c_get_version_patch = lib.cepton_sdk_get_version_patch
+c_get_version_patch.restype = c_int
+
 
 def get_version_string():
     return c_get_version_string().decode("utf-8")
@@ -39,6 +42,10 @@ def get_version_major():
 
 def get_version_minor():
     return c_get_version_minor()
+
+
+def get_version_patch():
+    return c_get_version_patch()
 
 
 # ------------------------------------------------------------------------------
