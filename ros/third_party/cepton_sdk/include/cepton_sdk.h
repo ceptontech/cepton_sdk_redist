@@ -349,38 +349,16 @@ enum _CeptonSDKControl {
    * Must pass packets manually to `cepton_sdk::mock_network_receive`.
    */
   CEPTON_SDK_CONTROL_DISABLE_NETWORK = 1 << 1,
-  /// Disable marking image clipped points as invalid.
-  /**
-   * Internal use.
-   * Does not affect number of points returned.
-   */
-  CEPTON_SDK_CONTROL_DISABLE_IMAGE_CLIP = 1 << 2,
-  /// Disable marking distance clipped points as invalid.
-  /**
-   * Internal use.
-   * Does not affect number of points returned.
-   */
-  CEPTON_SDK_CONTROL_DISABLE_DISTANCE_CLIP = 1 << 3,
   /// Enable multiple returns.
   /**
    * When set, `cepton_sdk::SensorInformation::return_count` will indicate the
-   * number of returns per laser. Can only be set at SDK initialization.
+   * number of returns per laser. 
+   * Can only be set at SDK initialization.
    */
   CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS = 1 << 4,
-  /// Enable marking stray points as invalid (measurement noise).
-  /**
-   * Uses `cepton_sdk::util::StrayFilter` to mark points invalid.
-   *
-   * Does not affect number of points returned.
-   */
-  CEPTON_SDK_CONTROL_ENABLE_STRAY_FILTER = 1 << 5,
   /// Always use packet timestamps (disable GPS/PTP timestamps).
   CEPTON_SDK_CONTROL_HOST_TIMESTAMPS = 1 << 6,
-  /// Enable marking crosstalk points as invalid.
-  /**
-   * Not implemented.
-   */
-  CEPTON_SDK_CONTROL_ENABLE_CROSSTALK_FILTER = 1 << 7,
+  CEPTON_SDK_CONTROL_RESERVED = 1 << 7,
 };
 
 /// Controls frequency of points being reported.

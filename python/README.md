@@ -3,15 +3,9 @@
 ## Installation
 
 ```sh
-pip3 install .
+pip3 install --user -U cepton_sdk[samples]
 ```
 
-To install extra dependencies
+## Getting Started
 
-```sh
-pip3 install .[capture,export,plot]
-```
-
-## Documentation
-
-See `docs`.
+See `samples`.

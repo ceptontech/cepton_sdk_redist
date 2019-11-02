@@ -13,12 +13,8 @@ _all_builder = AllBuilder(__name__)
 @enum.unique
 class ControlFlag(enum.IntEnum):
     DISABLE_NETWORK = 1 << 1
-    DISABLE_IMAGE_CLIP = 1 << 2
-    DISABLE_DISTANCE_CLIP = 1 << 3
     ENABLE_MULTIPLE_RETURNS = 1 << 4
-    ENABLE_STRAY_FILTER = 1 << 5
     HOST_TIMESTAMPS = 1 << 6
-    ENABLE_CROSSTALK_FILTER = 1 << 7
 
 
 @enum.unique

@@ -11,7 +11,7 @@ Requirements:
 Install the Cepton Python SDK
 
 ```sh
-pip3 install --user -U cepton_sdk[export]
+pip3 install --user -U cepton_sdk[samples]
 ```
 
 For usage, run

@@ -787,40 +787,7 @@ class FrameAccumulator {
   std::vector<SensorImagePoint> m_image_points;
 };
 
-// -----------------------------------------------------------------------------
-// Filter
-// -----------------------------------------------------------------------------
-/// Finds stray points caused by measurement noise.
-/**
- * Marks point stray if its distance is different from neighbor points.
- */
-class StrayFilter {
- public:
-  StrayFilter() = default;
-  StrayFilter(int segment_count, int return_count);
-  StrayFilter(const cepton_sdk::SensorInformation &sensor_info);
-
-  void init(int segment_count, int return_count);
-  void init(const cepton_sdk::SensorInformation &sensor_info);
-  void run(int n_points, cepton_sdk::SensorImagePoint *const c_image_points);
-
- private:
-  bool check_impl(const cepton_sdk::SensorImagePoint &image_point,
-                  const cepton_sdk::SensorImagePoint &other_point);
-
- public:
-  /// Minimum number of adjacent neighbors for point to be not stray.
-  int n_neighbors = 2;
-  /// Maximum distance offset to consider points adjacent.
-  float max_distance_offset = 10.0f;
-
- private:
-  int m_segment_count = 1;
-  int m_return_count = 1;
-};
-
 }  // namespace util
 }  // namespace cepton_sdk
 
 #include "cepton_sdk_impl/cepton_sdk_util.inc"
-#include "cepton_sdk_impl/organizer.hpp"

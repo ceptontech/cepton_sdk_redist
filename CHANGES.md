@@ -1,5 +1,12 @@
 # Cepton SDK Release Notes
 
+## Version 1.17.2 2019-11-02
+
+- Minor CeptonViewer fixes.
+- Remove stray filer.
+- Remove crosstalk filter.
+- Remove control flags: `CEPTON_SDK_CONTROL_DISABLE_IMAGE_CLIP`, `CEPTON_SDK_CONTROL_DISABLE_IMAGE_CLIP`.
+
 ## Version 1.17.1 2019-10-31
 
 - Add `cepton_sdk_get_version_patch`

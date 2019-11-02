@@ -98,6 +98,175 @@ std::shared_ptr<T> SingleConsumerQueue<T>::pop(float timeout) {
 }
 
 // -----------------------------------------------------------------------------
+// Organizer
+// -----------------------------------------------------------------------------
+inline Organizer::Organizer(cepton_sdk::SensorInformation sensor_info) {
+  m_settings.vertical_range_radians = to_radians(30.f);
+  switch (sensor_info.model) {
+    case HR80W:
+    case VISTA_860_GEN2:
+    case VISTA_P60:
+      m_settings.horizontal_range_radians = to_radians(70.f);
+      break;
+    case VISTA_X120:
+    case VISTA_X15:
+      m_settings.horizontal_range_radians = to_radians(130.f);
+      m_settings.vertical_range_radians = to_radians(40.f);
+      break;
+    case HR80T_R2:
+    default:
+      m_settings.horizontal_range_radians = to_radians(40.f);
+  }
+}
+
+inline void Organizer::organize_points(
+    const int num_points_in, const int n_returns,
+    const CeptonSensorImagePoint *const unorganized_points,
+    cepton_sdk::util::OrganizedCloud &organized_cloud) {
+  std::lock_guard<std::mutex> lock(m_organizer_mutex);
+
+  // set start and end timestamps to numeric limits
+  organized_cloud.timestamp_start = std::numeric_limits<long>::max();
+  organized_cloud.timestamp_end = std::numeric_limits<long>::min();
+
+  organized_cloud.width =
+      static_cast<int>(m_settings.horizontal_range_radians /
+                       m_settings.horizontal_bin_size_radians);
+  organized_cloud.height = static_cast<int>(
+      m_settings.vertical_range_radians / m_settings.vertical_bin_size_radians);
+  organized_cloud.n_returns = n_returns;
+
+  int cloud_size = organized_cloud.width * organized_cloud.height * n_returns;
+
+  // initialize points
+  organized_cloud.points.resize(cloud_size);
+
+  // initialize info cells
+  organized_cloud.info_cells.clear();
+  organized_cloud.info_cells.resize(cloud_size);
+
+  for (int point_index = 0; point_index < num_points_in; point_index++) {
+    const auto &unorganized_point = unorganized_points[point_index];
+    const auto grid_index = getGridIndex(
+        organized_cloud, unorganized_point.image_x, unorganized_point.image_z);
+
+    int n_return = 0;
+    if (unorganized_point.return_type | CEPTON_RETURN_STRONGEST) {
+      n_return = 0;
+    } else if (n_returns > 1) {
+      n_return = 1;
+    }
+
+    if (grid_index.row >= 0 && grid_index.col >= 0) {
+      const size_t organized_index = static_cast<size_t>(
+          organized_cloud.getIndex(grid_index.row, grid_index.col, n_return));
+
+      auto &organized_point = organized_cloud.points[organized_index];
+      auto &info_cell = organized_cloud.info_cells[organized_index];
+
+      // If the existing cell is unoccupied populate. If we have a valid point
+      // and it's more recent we always want to populate with it.
+      if (!info_cell.occupied_cell ||
+          (unorganized_point.valid &&
+           organized_point.timestamp < unorganized_point.timestamp)) {
+        organized_cloud.timestamp_start = std::min(
+            organized_cloud.timestamp_start, unorganized_point.timestamp);
+        organized_cloud.timestamp_end = std::max(organized_cloud.timestamp_end,
+                                                 unorganized_point.timestamp);
+        info_cell.occupied_cell = true;
+        info_cell.original_index = point_index;
+
+        // We always populated everything except the image_x and image_z
+        organized_point.timestamp = unorganized_point.timestamp;
+        organized_point.distance = unorganized_point.distance;
+        organized_point.intensity = unorganized_point.intensity;
+        organized_point.return_type = unorganized_point.return_type;
+        organized_point.valid = unorganized_point.valid;
+        organized_point.saturated = unorganized_point.saturated;
+        organized_point.segment_id = unorganized_point.segment_id;
+
+        // In RECENT mode, populate the image xy points with the unorganized
+        // point for accuracy.
+        if (m_settings.mode == OrganizerMode::RECENT) {
+          organized_point.image_x = unorganized_point.image_x;
+          organized_point.image_z = unorganized_point.image_z;
+        } else {
+          auto image_xz = getXZ(organized_cloud.width, organized_cloud.height,
+                                grid_index.row, grid_index.col);
+          organized_point.image_x = image_xz.X;
+          organized_point.image_z = image_xz.Z;
+        }
+      }
+    }
+  }
+  for (int row = 0; row < organized_cloud.height; ++row) {
+    for (int col = 0; col < organized_cloud.width; ++col) {
+      for (int n_return = 0; n_return < organized_cloud.n_returns; ++n_return) {
+        int index = organized_cloud.getIndex(row, col, n_return);
+        auto &pt = organized_cloud.points[index];
+        if (pt.distance == 0.f) {
+          ImageXZ image_xz =
+              getXZ(organized_cloud.width, organized_cloud.height, row, col);
+          pt.image_x = image_xz.X;
+          pt.image_z = image_xz.Z;
+        }
+      }
+    }
+  }
+}
+
+inline void Organizer::mode(Organizer::OrganizerMode mode) {
+  std::lock_guard<std::mutex> lock(m_organizer_mutex);
+  m_settings.mode = std::move(mode);
+}
+
+inline void Organizer::binSize(float bin_size) {
+  std::lock_guard<std::mutex> lock(m_organizer_mutex);
+  m_settings.horizontal_bin_size_radians = bin_size;
+  m_settings.vertical_bin_size_radians = bin_size;
+}
+
+inline Organizer::OrganizerSettings Organizer::settings() { return m_settings; }
+
+inline void Organizer::settings(OrganizerSettings organizer_settings) {
+  std::lock_guard<std::mutex> lock(m_organizer_mutex);
+  m_settings = organizer_settings;
+}
+
+inline Organizer::ImageXZ Organizer::getXZ(int width, int height, int row,
+                                           int col) {
+  float angle_horizontal = (m_settings.horizontal_range_radians / width) *
+                           ((col + 0.5f) - width / 2);
+  float angle_vertical = (m_settings.vertical_range_radians / height) *
+                         ((row + 0.5f) - height / 2);
+  return {tanf(angle_horizontal), tanf(angle_vertical)};
+}
+
+inline Organizer::GridIndex Organizer::getGridIndex(const OrganizedCloud &cloud,
+                                                    float X, float Z) {
+  float angle_horizontal = atanf(X);
+  float angle_vertical = atanf(Z);
+  GridIndex index;
+
+  index.col =
+      cloud.width / 2 + static_cast<int>(cloud.width * angle_horizontal /
+                                         m_settings.horizontal_range_radians);
+  index.row =
+      cloud.height / 2 + static_cast<int>(cloud.height * angle_vertical /
+                                          m_settings.vertical_range_radians);
+  if (index.col < 0 || index.col >= cloud.width) {
+    // Data outside of expected range given invalid index
+    index.col = -1;
+  }
+
+  if (index.row < 0 || index.row >= cloud.height) {
+    // Data outside of expected range given invalid index
+    index.row = -1;
+  }
+  return index;
+}
+
+// -----------------------------------------------------------------------------
 // Callback
 // -----------------------------------------------------------------------------
 template <typename... TArgs>
@@ -627,78 +796,6 @@ inline void FrameAccumulator::add_points(
                          m_image_points.begin() + n_image);
     i -= n_image;
   }
-}
-
-// -----------------------------------------------------------------------------
-// StrayFilter
-// -----------------------------------------------------------------------------
-inline StrayFilter::StrayFilter(int segment_count, int return_count) {
-  init(segment_count, return_count);
-}
-
-inline StrayFilter::StrayFilter(
-    const cepton_sdk::SensorInformation &sensor_info) {
-  init(sensor_info);
-}
-
-inline void StrayFilter::init(int segment_count, int return_count) {
-  m_segment_count = segment_count;
-  m_return_count = return_count;
-}
-
-inline void StrayFilter::init(
-    const cepton_sdk::SensorInformation &sensor_info) {
-  init(sensor_info.segment_count, sensor_info.return_count);
-}
-
-inline void StrayFilter::run(
-    int n_points, cepton_sdk::SensorImagePoint *const c_image_points) {
-  static thread_local std::vector<int> indices;
-  const int stride = m_segment_count * m_return_count;
-  for (int i_segment = 0; i_segment < m_segment_count; ++i_segment) {
-    // Find valid indices for segment
-    indices.clear();
-    const int i_0 = i_segment * m_return_count;
-    for (int i = i_0; i < n_points; i += stride) {
-      const auto &image_point = c_image_points[i];
-      if (!image_point.valid) continue;
-      indices.push_back(i);
-    }
-
-    // Compute stray
-    for (int i = 0; i < static_cast<int>(indices.size()); ++i) {
-      for (int i_return = 0; i_return < m_return_count; ++i_return) {
-        auto &image_point = c_image_points[indices[i] + i_return];
-        if (!image_point.valid) continue;
-        const int i_start = std::max<int>(i - n_neighbors, 0);
-        const int i_end =
-            std::min<int>(i + n_neighbors + 1, (int)indices.size());
-        bool valid = false;
-        for (int i_neighbor = i_start; i_neighbor < i_end; ++i_neighbor) {
-          if (i_neighbor == i) continue;
-          for (int i_return_neighbor = 0; i_return_neighbor < m_return_count;
-               ++i_return_neighbor) {
-            const auto &other_point =
-                c_image_points[indices[i_neighbor] + i_return_neighbor];
-            if (check_impl(image_point, other_point)) {
-              valid = true;
-              break;
-            }
-          }
-        }
-        image_point.valid = valid;
-      }
-    }
-  }
-}
-
-inline bool StrayFilter::check_impl(
-    const cepton_sdk::SensorImagePoint &image_point,
-    const cepton_sdk::SensorImagePoint &other_point) {
-  if (!other_point.valid) return false;
-  const float distance_offset =
-      std::abs(image_point.distance - other_point.distance);
-  return (distance_offset < max_distance_offset);
 }
 
 }  // namespace util

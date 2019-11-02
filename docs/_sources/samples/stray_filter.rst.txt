@@ -1,7 +1,0 @@
-Stray Filter
-============
-
-.. literalinclude:: ../../../samples/advanced/stray_filter.cpp
-  :language: c
-  :linenos:
-  :caption: samples/advanced/stray_filter.cpp

@@ -27,19 +27,15 @@ if __name__ == "__main__":
             "pyserial",
         ],
         extras_require={
-            "capture": [
-                "imageio",
+            "samples": [
                 "imageio-ffmpeg",
-                "netifaces",
-                "pyqt5",
-            ],
-            "export": [
+                "imageio",
                 "laspy",
-                "uuid",
+                "netifaces",
                 "plyfile",
-            ],
-            "plot": [
                 "pyqt5",
+                "pyqt5",
+                "uuid",
                 "vispy",
             ],
         },

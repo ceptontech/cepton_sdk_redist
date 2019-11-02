@@ -31,4 +31,3 @@ Advanced
   samples/process_multi
   samples/process_single
   samples/replay
-  samples/stray_filter

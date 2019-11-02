@@ -30,7 +30,6 @@ set(CEPTON_SDK_SAMPLE_SOURCES
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/frame_detector.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/process_multi.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/process_single.cpp"
-    "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/advanced/stray_filter.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/basic.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/callback.cpp"
     "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/error.cpp")

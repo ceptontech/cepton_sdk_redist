@@ -45,7 +45,6 @@ See `samples`.
 - **ros**: ROS SDK.
 - **samples**: Sample C/C++ code.
 - **setup**: Installers.
-- **source**: Partial SDK source code (for reference only).
 
 ## Compatibility
 

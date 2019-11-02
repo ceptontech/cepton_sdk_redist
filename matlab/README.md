@@ -12,6 +12,6 @@ To test the installation, run
 cepton_sdk.is_initialized()
 ```
 
-## Demo
+## Getting Started
 
 In MATLAB, change to the `samples` folder. Open, and run the sample scripts.

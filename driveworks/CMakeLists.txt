@@ -7,7 +7,8 @@ set(CMAKE_CXX_COMPILER aarch64-linux-gnu-gcc)
 
 file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/*.c)
 
-include_directories(SYSTEM ${Driveworks_INCLUDE_DIRS} "/usr/local/cuda/include" ${PROJECT_SOURCE_DIR}/../include/)
+include_directories(SYSTEM ${Driveworks_INCLUDE_DIRS} "/usr/local/cuda/include"
+                    ${PROJECT_SOURCE_DIR}/../include/)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
