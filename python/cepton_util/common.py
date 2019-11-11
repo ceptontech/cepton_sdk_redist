@@ -505,10 +505,6 @@ class ClearMixin(ObjectBase):
 
 
 class DataDirectoryMixin:
-    @classmethod
-    def default_camera_name(self, i):
-        return "camera_{}.mkv".format(i)
-
     def _get_path(self, name):
         if self.path is None:
             return None
@@ -516,9 +512,6 @@ class DataDirectoryMixin:
 
     def __bool__(self):
         return self.path is not None
-
-    def default_camera_path(self, i):
-        return self._get_path(self.default_camera_name(i))
 
 
 class InputDataDirectory(DataDirectoryMixin):
@@ -537,13 +530,6 @@ class InputDataDirectory(DataDirectoryMixin):
             return path
         return None
 
-    @property
-    def camera_paths(self):
-        return glob.glob(os.path.join(self.path, "camera_[0-9].mkv"))
-
-    def camera_path(self, i):
-        return self._find_file(self.default_camera_path(i))
-
 
 def copy_settings(src, dst):
     if src == dst:
@@ -556,12 +542,11 @@ def copy_settings(src, dst):
 
 
 class OutputDataDirectory(DataDirectoryMixin, ArgumentParserMixin):
-    def __init__(self, path=None, duration=None, name="", postfix="", root_dir="~/Captures"):
+    def __init__(self, path=None, duration=None, postfix="", root_dir="~/Captures"):
         self.duration = duration
 
         if path is None:
-            self.name = os.path.join(
-                get_day_str(), name, get_sec_str() + postfix)
+            self.name = os.path.join(get_day_str(), get_sec_str() + postfix)
             self.path = fix_path(os.path.join(root_dir, self.name))
         else:
             self.name = os.path.basename(path)
@@ -572,7 +557,6 @@ class OutputDataDirectory(DataDirectoryMixin, ArgumentParserMixin):
     def add_arguments(cls, parser):
         group = parser.add_argument_group("OutputDataDirectory")
         group.add_argument("--duration", help="Capture duration.")
-        group.add_argument("--name", default="", help="Capture name.")
         return group
 
     @classmethod
@@ -587,9 +571,6 @@ class OutputDataDirectory(DataDirectoryMixin, ArgumentParserMixin):
         if input_path is None:
             input_path = os.getcwd()
         copy_settings(input_path, self.path)
-
-    def camera_path(self, i):
-        return self.default_camera_path(i)
 
     def wait(self):
         if self.duration is None:
@@ -620,17 +601,48 @@ def _add_data_directory_path(name, path):
         name), property(output_path_func))
 
 
-_add_data_directory_path("alg_settings", "cepton_alg_config.json")
-_add_data_directory_path("bag", "ros.bag")
 _add_data_directory_path("clips", "cepton_clips.json")
 _add_data_directory_path("gps", "gps.txt")
 _add_data_directory_path("imu", "imu.txt")
 _add_data_directory_path("odometry", "odometry.txt")
-_add_data_directory_path("pcap", "lidar.pcap")
+_add_data_directory_path("network", "lidar.pcap")
 _add_data_directory_path("player_settings", "cepton_player_config.json")
-_add_data_directory_path("render_settings", "cepton_render_config.json")
+_add_data_directory_path("ros", "ros.bag")
 _add_data_directory_path("rviz_config", "rviz_config.rviz")
 _add_data_directory_path("transforms", "cepton_transforms.json")
 _add_data_directory_path("viewer_config", "cepton_viewer_config.json")
+
+
+def _add_data_directory_multi_path(name, path):
+    default_name_member = "default_{}_name".format(name)
+
+    @classmethod
+    def default_name_func(cls, i):
+        return path.format(i)
+    setattr(DataDirectoryMixin, default_name_member, default_name_func)
+
+    def default_path_func(self, i):
+        return self._get_path(getattr(self, default_name_member)(i))
+    default_path_member = "default_{}_path".format(name)
+    setattr(DataDirectoryMixin, default_path_member, default_path_func)
+
+    def input_paths_func(self):
+        if self.path is None:
+            return []
+        return glob.glob(os.path.join(self.path, path.format("[0-9]")))
+    setattr(InputDataDirectory, "{}_paths".format(name), input_paths_func)
+
+    def input_path_func(self, i):
+        return self._find_file(getattr(self, default_path_member)(i))
+    setattr(InputDataDirectory, "{}_path".format(name), input_path_func)
+
+    def output_path_func(self, i):
+        return getattr(self, default_path_member)(i)
+    setattr(OutputDataDirectory, "{}_path".format(name), output_path_func)
+
+
+_add_data_directory_multi_path("camera", "camera_{}.mkv")
+_add_data_directory_multi_path("serial", "serial_{}.mkv")
+
 
 __all__ = _all_builder.get()

@@ -619,7 +619,7 @@ bool TimedFrameDetector<TData>::update(const SensorImagePoint &point,
                                        const TData &data) {
   if (m_t == 0) m_t = point.timestamp;
   const float t_diff = from_usec(point.timestamp - m_t);
-  if (t_diff < frame_length) return false;
+  if ((t_diff < frame_length) && (t_diff > -0.01f)) return false;
 
   m_t = 0;
 

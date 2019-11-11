@@ -40,10 +40,10 @@ if __name__ == "__main__":
             ],
         },
         scripts=[
-            "samples/advanced/cepton_export_serial.py",
-            "samples/cepton_export.py",
-            "samples/cepton_list_sensors.py",
-            "tools/cepton_capture.py",
             "tools/cepton_capture_gui.py",
+            "tools/cepton_capture.py",
+            "tools/cepton_export_serial.py",
+            "tools/cepton_export.py",
+            "tools/cepton_list_sensors.py",
         ]
     )

@@ -21,7 +21,7 @@ namespace Cepton.SDK
         private static extern SensorErrorCode _Close();
 
         [DllImport("cepton_sdk.dll", EntryPoint = "cepton_sdk_capture_replay_get_start_time")]
-        private static extern ulong _GetStartTime();
+        private static extern long _GetStartTime();
 
         [DllImport("cepton_sdk.dll", EntryPoint = "cepton_sdk_capture_replay_get_position")]
         private static extern float _GetStartPosition();
@@ -69,7 +69,7 @@ namespace Cepton.SDK
         public static void Rewind() { _E(_Rewind()); }
         public static void Seek(float position) { _E(_Seek(position)); }
         public static void SeekRelative(float position) { Seek(StartPosition + position); }
-        public static void EnableLoop(bool enabled) { }
+        public static void EnableLoop(bool enabled) { _E(_EnableLoop(enabled)); }
 
         public static bool IsOpen => _IsOpen();
         public static bool IsEnd => _IsEnd();
@@ -85,7 +85,7 @@ namespace Cepton.SDK
             set { _E(_SetSpeed(value)); }
         }
 
-        public static ulong StartTime => _GetStartTime();
+        public static long StartTime => _GetStartTime();
         public static float StartPosition => _GetStartPosition();
         public static float CaptureLength => _GetLength();
     }

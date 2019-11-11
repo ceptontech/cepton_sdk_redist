@@ -104,10 +104,9 @@ def open_replay(capture_path, capture_seek=0, enable_loop=False, enable_wait=Fal
         cepton_sdk.capture_replay.close()
     cepton_sdk.capture_replay.open(capture_path)
     cepton_sdk.capture_replay.set_enable_loop(enable_loop)
-
     if enable_wait:
         cepton_sdk.capture_replay.resume_blocking(3)
-        cepton_sdk.capture_replay.seek(capture_seek)
+    cepton_sdk.capture_replay.seek(capture_seek)
 
 
 close_replay = cepton_sdk.capture_replay.close
@@ -136,7 +135,7 @@ def _wait_on_func(func, timeout=None):
     if timeout is not None:
         t_start = get_timestamp()
     while not func():
-        wait(0.001)
+        wait(0.1)
         if timeout is not None:
             if (get_timestamp() - t_start) > timeout:
                 raise RuntimeError("Timed out!")

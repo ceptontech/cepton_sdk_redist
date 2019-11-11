@@ -70,12 +70,14 @@ def main():
     transforms = Transforms(len(serial_lines))
     i_transform = 0
     for line in serial_lines:
-        if line.startswith("#INSPVAA"):
+        if line.startswith("#INSPVA"):
             # Novatel
             line = line.lstrip("#").split("*")[0]
             header, data = line.split(";")
             header = header.split(",")
             data = [None, None] + data.split(",")
+            if len(data) != 14:
+                continue
             if data[13] != "INS_SOLUTION_GOOD":
                 continue
             transforms.timestamps[i_transform] = \
@@ -96,11 +98,15 @@ def main():
     t_diff = numpy.diff(transforms.timestamps)
     assert (numpy.all(t_diff > 0))
 
-    # HACK: no PPS
-    # print(datetime.datetime.utcfromtimestamp(points.timestamps[0]))
-    # print(datetime.datetime.utcfromtimestamp(transforms.timestamps[0]))
-    points.timestamps_usec[:] += \
-        int(1e6 * (transforms.timestamps[0] - points.timestamps[0]))
+    # DEBUG
+    print(datetime.datetime.utcfromtimestamp(transforms.timestamps[0]))
+    print(datetime.datetime.utcfromtimestamp(points.timestamps[0]))
+    print(datetime.datetime.utcfromtimestamp(points.timestamps[-1]))
+    print(datetime.datetime.utcfromtimestamp(transforms.timestamps[-1]))
+
+    # HACK
+    # points.timestamps_usec[:] += to_usec(
+    #     30 + transforms.timestamps[0] - points.timestamps[0])
 
     # Plot point timestamps
     # matplotlib.pyplot.plot(points.timestamps)
@@ -119,7 +125,7 @@ def main():
     # Plot 2d trajectory with directions
     # matplotlib.pyplot.axis("equal")
     # matplotlib.pyplot.plot(
-    #     transforms.translations[:, 0], transforms.translations[:, 1], 'o')
+    #     transforms.translations[:, 0], transforms.translations[:, 1])
     # directions = numpy.zeros([len(transforms), 3])
     # directions[:, 1] = 1.0
     # directions = transforms.rotations.apply(directions)
@@ -132,7 +138,6 @@ def main():
     indices = numpy.arange(0, len(points))
 
     # Apply pose
-    # TODO: skip if measurement spacing large
     is_valid = numpy.logical_and(
         points.timestamps > transforms.timestamps[0],
         points.timestamps < transforms.timestamps[-1])

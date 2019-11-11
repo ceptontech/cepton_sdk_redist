@@ -28,6 +28,11 @@ def create_expanding_label(name):
     return label
 
 
+def clear_layout(layout):
+    while layout.count():
+        layout.takeAt(0).widget().deleteLater()
+
+
 class VariableLabel(QLabel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

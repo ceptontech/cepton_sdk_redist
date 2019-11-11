@@ -1,5 +1,10 @@
 # Cepton SDK Release Notes
 
+## Version 1.17.3 2019-11-11
+
+- Fix timed frame detection bug with timestamp jumps.
+- Minor CeptonViewer fixes.
+
 ## Version 1.17.2 2019-11-02
 
 - Minor CeptonViewer fixes.

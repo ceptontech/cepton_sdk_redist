@@ -76,6 +76,9 @@ By default, exports frames to individual files.
 
     # Initialize
     loader = cepton_sdk.load.Loader.from_arguments(args)
+    loader.sdk_options.update({
+        "enable_wait": True,
+    })
     # TODO: uncomment to set custom frame length
     # loader.sdk_options.update({
     #     "frame_length": 0.1,
@@ -130,8 +133,8 @@ By default, exports frames to individual files.
                     os.makedirs(sensor_dir)
                 for points in points_list:
                     # Process points
-                    points = \
-                        loader.process_sensor_points(serial_number, points)
+                    points = loader.process_sensor_points(
+                        serial_number, points)
                     points = process_points(points)
 
                     # Save
