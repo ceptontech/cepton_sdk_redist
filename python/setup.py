@@ -44,6 +44,7 @@ if __name__ == "__main__":
             "tools/cepton_capture.py",
             "tools/cepton_export_serial.py",
             "tools/cepton_export.py",
+            "tools/cepton_georeference.py",
             "tools/cepton_list_sensors.py",
         ]
     )

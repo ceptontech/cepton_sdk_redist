@@ -61,13 +61,20 @@ def load_points_las(load_path, cls=cepton_sdk.point.Points):
 class PlyPoint(ctypes.Structure):
     _fields_ = [
         ("position", 3 * ctypes.c_float),
+        ("color", 4 * ctypes.c_ubyte),
+        ("size", ctypes.c_float),
     ]
 
 
-def save_points_ply(points, path):
+def save_points_ply(points, path, colors=None, sizes=None):
     """Save points to PLY file.
     """
     n = len(points)
+
+    if colors is None:
+        colors = numpy.ones([n, 4])
+    if sizes is None:
+        sizes = numpy.ones([n])
 
     with open(path, "w") as f:
         lines = [
@@ -77,6 +84,11 @@ def save_points_ply(points, path):
             "property float x\n",
             "property float y\n",
             "property float z\n",
+            "property uchar red\n"
+            "property uchar green\n"
+            "property uchar blue\n"
+            "property uchar alpha\n"
+            "property float size\n"
             "end_header\n",
         ]
         f.writelines(lines)
@@ -84,6 +96,8 @@ def save_points_ply(points, path):
     dtype = numpy.dtype(PlyPoint)
     data = numpy.zeros([n], dtype=dtype)
     data["position"][:, :] = points.positions
+    data["color"][:, :] = (255 * numpy.clip(colors, 0, 1)).round()
+    data["size"][:] = sizes
     with open(path, "ab") as f:
         f.write(data.tobytes())
 
@@ -101,7 +115,17 @@ def load_points_ply(path):
     points.positions[:, 0] = data["x"]
     points.positions[:, 1] = data["y"]
     points.positions[:, 2] = data["z"]
-    extra_data = {}
+    colors = numpy.ones([n, 4])
+    colors[:, 0] = data["red"]
+    colors[:, 1] = data["green"]
+    colors[:, 2] = data["blue"]
+    colors[:, 3] = data["alpha"]
+    sizes = numpy.ones([n])
+    sizes[:] = data["size"]
+    extra_data = {
+        "colors": colors,
+        "sizes": sizes,
+    }
     return points, extra_data
 
 
@@ -157,7 +181,8 @@ def save_points_csv(points, path):
          "spherical azimuth coordinate (from +y axis)[rad]", azimuths, "%.3f"),
         ("elevation",
          "spherical elevation coordinate (from +y axis)[rad]", elevations, "%.3f"),
-        ("intensity", "diffuse reflectance (normal: 0-1 | retroreflective: >1)", points.intensities, "%.2f"),
+        ("intensity", "diffuse reflectance (normal: 0-1 | retroreflective: >1)",
+         points.intensities, "%.2f"),
         ("return_strongest", "measurement is strongest (multi-return)",
          points.return_strongest, "%i"),
         ("return_farthest", "measurement is farthest (multi-return)",

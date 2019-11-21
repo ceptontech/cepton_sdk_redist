@@ -87,6 +87,10 @@ enum _CeptonSensorErrorCode {
   CEPTON_ERROR_NOT_OPEN = -14,
   /// End of file.
   CEPTON_ERROR_EOF = -15,
+  /// Functionality not supported by device
+  CEPTON_ERROR_NOT_SUPPORTED = -16,
+  /// Device response invalid
+  CEPTON_ERROR_INVALID_RESPONSE = -17,
 
   /// Internal sensor parameter out of range.
   CEPTON_FAULT_INTERNAL = -1000,
@@ -158,7 +162,8 @@ enum _CeptonSensorModel {
   SORA_P90 = 15,
   VISTA_P61 = 16,
   SORA_P61 = 17,
-  VISTA_H120 = 18,
+  // 18 is reserved for VISTA_H
+  // 19 is reserved for VISTA_P60 Rev2 firmware releases
   CEPTON_SENSOR_MODEL_MAX = 18,
 };
 

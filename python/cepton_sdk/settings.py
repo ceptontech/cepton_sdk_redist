@@ -1,3 +1,4 @@
+import collections
 import copy
 import json
 
@@ -83,7 +84,8 @@ class _ManagerBase:
 
 class SensorTransformManager(_ManagerBase):
     def __init__(self):
-        self.transforms = {}
+        self.transforms = collections.defaultdict(
+            cepton_sdk.common.transform.Transform3d)
 
     def update_from_dict(self, transforms_dict):
         for key, transform_dict in transforms_dict.items():

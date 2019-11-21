@@ -105,6 +105,11 @@ macro(MESSAGE_LIST l)
   endforeach()
 endmacro()
 
+# Copy variable to parent scope
+macro(SET_PARENT_SCOPE variable)
+  set(${variable} "${${variable}}" PARENT_SCOPE)
+endmacro()
+
 # Append to string
 macro(STRING_APPEND result other)
   set(${result} "${${result}} ${other}")

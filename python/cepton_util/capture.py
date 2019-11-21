@@ -108,6 +108,7 @@ class NetworkCapture(CaptureBase):
         ]
         options = {
             "background": True,
+            "quiet": True,
         }
         self._proc = execute_command(cmd_list, **options)
 
@@ -158,7 +159,7 @@ def get_all_serial_ports():
 
 class SerialCapture(CaptureBase):
     def __init__(self, port, output_path, **kwargs):
-        if not platform.startswith("linux"):
+        if not sys.platform.startswith("linux"):
             raise OSError("Unsupported platform!")
 
         super().__init__(**kwargs)

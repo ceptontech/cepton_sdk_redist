@@ -288,12 +288,30 @@ SensorError Callback<TArgs...>::listen(
 }
 
 template <typename... TArgs>
+RAII Callback<TArgs...>::listen_auto(
+    const std::function<void(TArgs...)> &func) {
+  uint64_t id;
+  CEPTON_CHECK_ERROR(listen(func, &id));
+  return RAII([this, id]() { CEPTON_CHECK_ERROR(unlisten(id)); });
+}
+
+template <typename... TArgs>
 template <typename TClass>
 SensorError Callback<TArgs...>::listen(TClass *const instance,
                                        MemberFunction<TClass, TArgs...> func,
                                        uint64_t *const id) {
   return listen([instance, func](TArgs... args) { (instance->*func)(args...); },
                 id);
+}
+
+template <typename... TArgs>
+template <typename TClass>
+RAII Callback<TArgs...>::listen_auto(TClass *const instance,
+                                     MemberFunction<TClass, TArgs...> func) {
+  uint64_t id;
+  CEPTON_CHECK_ERROR(listen(
+      [instance, func](TArgs... args) { (instance->*func)(args...); }, &id));
+  return RAII([this, id]() { CEPTON_CHECK_ERROR(unlisten(id)); });
 }
 
 template <typename... TArgs>

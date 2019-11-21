@@ -14,6 +14,18 @@ from cepton_util.capture import *
 from cepton_util.gui import *
 
 
+def get_selected_list_items(widget):
+    return [x.text() for x in widget.selectedItems()]
+
+
+def set_list_items(widget, items, selected_items):
+    widget.clear()
+    for i, item in enumerate(items):
+        widget.addItem(QListWidgetItem(item))
+        widget.item(i).setSelected(item in selected_items)
+    return selected_items
+
+
 class Capture:
     def __init__(self):
         self.window = QMainWindow()
@@ -65,8 +77,13 @@ class Capture:
         widget.setLayout(layout)
         layout.setAlignment(Qt.AlignTop)
 
-        self.create_toolbox_setup(layout)
-        self.create_toolbox_monitor(layout)
+        setup_widget = QWidget(widget)
+        setup_layout = QHBoxLayout()
+        setup_widget.setLayout(setup_layout)
+        layout.addWidget(setup_widget)
+
+        self.create_toolbox_setup(setup_layout)
+        self.create_toolbox_monitor(setup_layout)
         self.create_toolbox_info(layout)
 
         # Start
@@ -81,6 +98,7 @@ class Capture:
         start_stop.clicked.connect(on_start_stop)
 
         def update():
+            setup_widget.setEnabled(not self.is_started)
             start_stop.setText("Stop" if self.is_started else "Start")
         self.update_callbacks.append(update)
 
@@ -135,8 +153,7 @@ class Capture:
         camera_devices_input.setSelectionMode(QAbstractItemView.MultiSelection)
 
         def on_camera_devices():
-            self.camera_devices = \
-                [x.text() for x in camera_devices_input.selectedItems()]
+            self.camera_devices = get_selected_list_items(camera_devices_input)
         camera_devices_input.selectionModel().selectionChanged.connect(on_camera_devices)
 
         layout.addRow(create_toolbox_header("ROS"))
@@ -148,8 +165,7 @@ class Capture:
         ros_topics_input.setSelectionMode(QAbstractItemView.MultiSelection)
 
         def on_ros_topics():
-            self.ros_topics = \
-                [x.text() for x in ros_topics_input.selectedItems()]
+            self.ros_topics = get_selected_list_items(ros_topic_input)
         ros_topics_input.selectionModel().selectionChanged.connect(on_ros_topics)
 
         layout.addRow(create_toolbox_header("Serial"))
@@ -161,8 +177,7 @@ class Capture:
         serial_ports_input.setSelectionMode(QAbstractItemView.MultiSelection)
 
         def on_serial_ports():
-            self.serial_ports = \
-                [x.text() for x in serial_ports_input.selectedItems()]
+            self.serial_ports = get_selected_list_items(serial_ports_input)
         serial_ports_input.selectionModel().selectionChanged.connect(on_serial_ports)
 
         def update():
@@ -176,23 +191,12 @@ class Capture:
         self.update_callbacks.append(update)
 
         def on_refresh():
-            camera_devices_input.clear()
-            for device in get_all_camera_devices():
-                item = QListWidgetItem(device)
-                item.setSelected = device in self.camera_devices
-                camera_devices_input.addItem(item)
-
-            ros_topics_input.clear()
-            for topic in get_all_ros_topics():
-                item = QListWidgetItem(topic)
-                item.setSelected = topic in self.ros_topics
-                ros_topics_input.addItem(item)
-
-            serial_ports_input.clear()
-            for port in get_all_serial_ports():
-                item = QListWidgetItem(port)
-                item.setSelected = port in self.serial_ports
-                serial_ports_input.addItem(item)
+            self.camera_devices = set_list_items(
+                camera_devices_input, get_all_camera_devices(), self.camera_devices)
+            self.ros_topics = set_list_items(
+                ros_topics_input, get_all_ros_topics(), self.ros_topics)
+            self.serial_ports = set_list_items(
+                serial_ports_input, get_all_serial_ports(), self.serial_ports)
 
         on_refresh()
         refresh_button.pressed.connect(on_refresh)

@@ -60,7 +60,7 @@ class Transform3d:
 
     def to_matrix(self):
         result = numpy.identity(4)
-        result[:3, :3] = self.rotation.to_mat()
+        result[:3, :3] = self.rotation.to_matrix()
         result[:3, 3] = self.translation
         return result
 

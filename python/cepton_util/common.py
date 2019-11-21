@@ -273,18 +273,12 @@ def run_background(func, args=(), kwargs={}):
     return thread
 
 
-def check_command(name):
-    if shutil.which(IPDefragUtil) is None:
-        raise OSError("Command not found: {}".format(name))
-
-
-def execute_command(cmd_list, background=False, quiet=False, **kwargs):
+def execute_command(cmd_list, background=False, quiet=False, verbose=False, **kwargs):
     options = {}
+    if quiet or (not verbose):
+        options["stdout"] = subprocess.DEVNULL
     if quiet:
-        options.update({
-            "stdout": subprocess.DEVNULL,
-            "stderr": subprocess.DEVNULL,
-        })
+        options["stderr"] = subprocess.DEVNULL
     options.update(kwargs)
     if background:
         proc = BackgroundProcess(cmd_list, **options)
@@ -296,12 +290,14 @@ def execute_command(cmd_list, background=False, quiet=False, **kwargs):
 
 
 def add_execute_command_arguments(parser):
+    parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("-q", "--quiet", action="store_true")
 
 
 def parse_execute_command_arguments(args):
     return {
         "quiet": args.quiet,
+        "verbose": args.verbose,
     }
 
 
@@ -642,7 +638,7 @@ def _add_data_directory_multi_path(name, path):
 
 
 _add_data_directory_multi_path("camera", "camera_{}.mkv")
-_add_data_directory_multi_path("serial", "serial_{}.mkv")
+_add_data_directory_multi_path("serial", "serial_{}.txt")
 
 
 __all__ = _all_builder.get()

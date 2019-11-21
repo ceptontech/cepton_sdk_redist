@@ -76,11 +76,13 @@ inline int64_t get_timestamp_usec() {
 class RAII {
  public:
   RAII() = default;
-  RAII(const std::function<void()> &f)
+  explicit RAII(const std::function<void()> &f)
       : m_raii(new bool(), [this, f](bool *const ptr_tmp) {
           delete ptr_tmp;
           f();
         }) {}
+
+  void reset() { m_raii.reset(); }
 
  private:
   std::shared_ptr<void> m_raii;
@@ -468,6 +470,7 @@ class Callback {
    */
   SensorError listen(const std::function<void(TArgs...)> &func,
                      uint64_t *const id = nullptr);
+  RAII listen_auto(const std::function<void(TArgs...)> &func);
   /// Register instance member function.
   /**
    * @param instance Parent class instance pointer.
@@ -478,6 +481,10 @@ class Callback {
   SensorError listen(TClass *const instance,
                      MemberFunction<TClass, TArgs...> func,
                      uint64_t *const id = nullptr);
+  template <typename TClass>
+  RAII listen_auto(TClass *const instance,
+                   MemberFunction<TClass, TArgs...> func);
+
   /// Unregister function.
   /**
    * @param id Identifier returned by `listen`.
