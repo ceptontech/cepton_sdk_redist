@@ -1,18 +1,13 @@
-# Cepton Driveworks: WIP
+# Cepton Driveworks
 
-## TIPS and FAQs:
+This driver is meant as reference code only. It is completely untested, and is not guaranteed to work.
 
-### Networking on Pegasaus:
+## Getting started
 
-- Everything must be sent to the bridge (br0)
-- Make sure br0 has the proper IPV4 address and netmask.
-
-### Running the sample_lidar_replay
-
-- Command (notice sudo is needed)
+Run `sample_lidar_replay`
 
 ```sh
-   cd /usr/local/driveworks/bin
-   sudo ifconfig br0 192.168.0.11 netmask 255.255.0.0
-   sudo ./sample_lidar_replay --protocol=lidar.socket --params=device=CUSTOM,ip=192.168.65.198,port=8808,decoder=/home/nvidia/tmp/libcepton_driveworks.so,scan-frequency=10,protocol=udp
+cd /usr/local/driveworks/bin
+sudo ifconfig br0 192.168.0.11 netmask 255.255.0.0
+sudo ./sample_lidar_replay --protocol=lidar.socket --params=device=CUSTOM,ip=<lidar_ip_address>,port=8808,decoder=/home/nvidia/tmp/libcepton_driveworks.so,scan-frequency=10,protocol=udp
 ```
