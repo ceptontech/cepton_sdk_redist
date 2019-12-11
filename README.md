@@ -50,11 +50,11 @@ See `samples`.
 
 The library requires C++11 support.
 
-| OS              | Minimum Version |
-| --------------- | --------------- |
-| `osx`           | `OSX 10.15`     |
-| `win64`         | `Windows Vista` |
-| `linux-i386`    | `Ubuntu 16.04`  |
-| `linux-x86_64`  | `Ubuntu 16.04`  |
-| `linux-arm`     | `Ubuntu 16.04`  |
-| `linux-aarch64` | `Ubuntu 16.04`  |
+| OS                          | Minimum Version |
+| --------------------------- | --------------- |
+| `osx`                       | `OSX 10.15`     |
+| `win64`                     | `Windows Vista` |
+| `linux-x86_64`              | `Ubuntu 16.04`  |
+| `linux-aarch64`             | `Ubuntu 16.04`  |
+| `linux-i386` (experimental) | `Ubuntu 16.04`  |
+| `linux-arm` (experimental)  | `Ubuntu 16.04`  |

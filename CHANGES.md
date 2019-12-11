@@ -1,5 +1,10 @@
 # Cepton SDK Release Notes
 
+## Version 1.17.5 2019-12-10
+
+- Add `cepton_clip.py` tool.
+- Minor CeptonViewer improvements.
+
 ## Version 1.17.4 2019-11-21
 
 - Minor CeptonViewer improvements.

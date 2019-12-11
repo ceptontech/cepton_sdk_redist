@@ -201,7 +201,8 @@ struct CEPTON_SDK_EXPORT CeptonSensorInformation {
     uint8_t major;
     /// Minor firmware version.
     uint8_t minor;
-    uint8_t unused[2];
+    uint8_t build;
+    uint8_t unused;
   } formal_firmware_version;
 #endif
 

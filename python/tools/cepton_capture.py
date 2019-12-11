@@ -10,9 +10,9 @@ from cepton_util.common import *
 
 def main():
     description = """
-Captures network and video.
+Captures camera, network, ROS, and serial.
 
-Dependencies: dumpcap, ffmpeg
+Dependencies: ffmpeg, wireshark.
 """
     parser = argparse.ArgumentParser(
         usage="%(prog)s [OPTIONS] output_dir",
@@ -26,9 +26,6 @@ Dependencies: dumpcap, ffmpeg
     parser.add_argument("--settings_dir")
     parser.add_argument("--serial_ports")
     args = parser.parse_args()
-
-    if (not args.network) and (args.camera_devices is None):
-        raise ValueError("Nothing to capture!")
 
     capture = OutputDataDirectory.from_arguments(args)
     print("Capture Path: {}".format(capture.path))

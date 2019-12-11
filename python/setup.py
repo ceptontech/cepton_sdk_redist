@@ -42,6 +42,7 @@ if __name__ == "__main__":
         scripts=[
             "tools/cepton_capture_gui.py",
             "tools/cepton_capture.py",
+            "tools/cepton_clip.py",
             "tools/cepton_export_serial.py",
             "tools/cepton_export.py",
             "tools/cepton_georeference.py",

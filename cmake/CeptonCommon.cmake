@@ -310,3 +310,10 @@ macro(CEPTON_IMPORT_STATIC_LIBRARY lib root lib_name)
       IMPORTED_LOCATION
       "${cepton_import_static_library_path}${CEPTON_STATIC_LIBRARY_EXTENSION}")
 endmacro()
+
+# ------------------------------------------------------------------------------
+# Install
+# ------------------------------------------------------------------------------
+set(FILE_PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ)
+set(PROGRAM_PERMISSIONS ${FILE_PERMISSIONS} OWNER_EXECUTE GROUP_EXECUTE
+                        WORLD_EXECUTE)

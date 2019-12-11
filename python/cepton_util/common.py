@@ -154,6 +154,10 @@ def parse_time_hms(s):
     return sec
 
 
+def serialize_time_hms(s):
+    return time.strftime("%H:%M:%S", time.gmtime(s))
+
+
 @optional_function
 def parse_list(s, **kwargs):
     options = {
@@ -519,17 +523,23 @@ class InputDataDirectory(DataDirectoryMixin):
         if (self.path is not None) and (not os.path.isdir(self.path)):
             raise ValueError("Invalid directory: {}".format(self.path))
 
-    def _find_file(self, path):
+    def _find_file(self, path, other_extensions=[]):
         if path is None:
             return None
         if os.path.exists(path):
             return path
+        for ext in other_extensions:
+            path_tmp = set_extension(path, ext)
+            if os.path.exists(path_tmp):
+                return path_tmp
         return None
 
 
 def copy_settings(src, dst):
     if src == dst:
         return
+    if not os.path.isdir(dst):
+        os.makedirs(dst)
     patterns = ["*.json"]
     for pattern in patterns:
         for path in glob.glob(os.path.join(src, pattern)):
@@ -559,7 +569,6 @@ class OutputDataDirectory(DataDirectoryMixin, ArgumentParserMixin):
     def parse_arguments(cls, args):
         options = {
             "duration": parse_time_hms(args.duration),
-            "name": args.name,
         }
         return process_options(options)
 
@@ -576,7 +585,7 @@ class OutputDataDirectory(DataDirectoryMixin, ArgumentParserMixin):
             kill_background()
 
 
-def _add_data_directory_path(name, path):
+def _add_data_directory_path(name, path, other_extensions=[]):
     default_name_member = "default_{}_name".format(name)
     setattr(DataDirectoryMixin, default_name_member, path)
 
@@ -587,7 +596,8 @@ def _add_data_directory_path(name, path):
             property(default_path_func))
 
     def input_path_func(self):
-        return self._find_file(getattr(self, default_path_member))
+        return self._find_file(
+            getattr(self, default_path_member), other_extensions=other_extensions)
     setattr(InputDataDirectory, "{}_path".format(
         name), property(input_path_func))
 
@@ -598,9 +608,9 @@ def _add_data_directory_path(name, path):
 
 
 _add_data_directory_path("clips", "cepton_clips.json")
-_add_data_directory_path("gps", "gps.txt")
-_add_data_directory_path("imu", "imu.txt")
-_add_data_directory_path("odometry", "odometry.txt")
+_add_data_directory_path("gps", "gps.txt", [".csv"])
+_add_data_directory_path("imu", "imu.txt", [".csv"])
+_add_data_directory_path("odometry", "odometry.txt", [".csv"])
 _add_data_directory_path("network", "lidar.pcap")
 _add_data_directory_path("player_settings", "cepton_player_config.json")
 _add_data_directory_path("ros", "ros.bag")
@@ -609,7 +619,7 @@ _add_data_directory_path("transforms", "cepton_transforms.json")
 _add_data_directory_path("viewer_config", "cepton_viewer_config.json")
 
 
-def _add_data_directory_multi_path(name, path):
+def _add_data_directory_multi_path(name, path, other_extensions=[]):
     default_name_member = "default_{}_name".format(name)
 
     @classmethod
@@ -625,11 +635,17 @@ def _add_data_directory_multi_path(name, path):
     def input_paths_func(self):
         if self.path is None:
             return []
-        return glob.glob(os.path.join(self.path, path.format("[0-9]")))
+        path_tmp = os.path.join(self.path, path.format("[0-9]"))
+        result = glob.glob(path_tmp)
+        for ext in other_extensions:
+            result += glob.glob(
+                os.path.join(self.path, set_extension(path_tmp, ext)))
+        return result
     setattr(InputDataDirectory, "{}_paths".format(name), input_paths_func)
 
     def input_path_func(self, i):
-        return self._find_file(getattr(self, default_path_member)(i))
+        return self._find_file(
+            getattr(self, default_path_member)(i), other_extensions=other_extensions)
     setattr(InputDataDirectory, "{}_path".format(name), input_path_func)
 
     def output_path_func(self, i):
@@ -637,7 +653,7 @@ def _add_data_directory_multi_path(name, path):
     setattr(OutputDataDirectory, "{}_path".format(name), output_path_func)
 
 
-_add_data_directory_multi_path("camera", "camera_{}.mkv")
+_add_data_directory_multi_path("camera", "camera_{}.mkv", [".mp4"])
 _add_data_directory_multi_path("serial", "serial_{}.txt")
 
 

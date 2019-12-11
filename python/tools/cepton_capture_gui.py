@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import glob
 import os
 import os.path
 import subprocess
@@ -26,7 +25,7 @@ def set_list_items(widget, items, selected_items):
     return selected_items
 
 
-class Capture:
+class Window:
     def __init__(self):
         self.window = QMainWindow()
         self.window.closeEvent = self.on_close
@@ -87,19 +86,19 @@ class Capture:
         self.create_toolbox_info(layout)
 
         # Start
-        start_stop = QPushButton("Start")
-        layout.addWidget(start_stop)
+        start_stop_button = QPushButton("Start")
+        layout.addWidget(start_stop_button)
 
         def on_start_stop():
             if self.is_started:
                 self.stop()
             else:
                 self.start()
-        start_stop.clicked.connect(on_start_stop)
+        start_stop_button.clicked.connect(on_start_stop)
 
         def update():
             setup_widget.setEnabled(not self.is_started)
-            start_stop.setText("Stop" if self.is_started else "Start")
+            start_stop_button.setText("Stop" if self.is_started else "Start")
         self.update_callbacks.append(update)
 
     def create_toolbox_setup(self, parent_layout):
@@ -130,7 +129,7 @@ class Capture:
         refresh_button = QPushButton("Refresh")
         layout.addRow(refresh_button)
 
-        layout.addRow(create_toolbox_header("LiDAR"))
+        layout.addRow(create_toolbox_header("Network"))
 
         # Enable network
         enable_network_input = QCheckBox("Enable")
@@ -259,13 +258,13 @@ class Capture:
             for topic in get_all_ros_topics():
                 try:
                     message = subprocess.check_output(
-                        ["rostopic", "echo", "-n", "1"])[:20]
+                        ["rostopic", "echo", "-n", "1", topic], timeout=1)[:20]
                 except:
                     continue
 
-                output = QLabel()
-                layout.addRow(output)
-                output.setText(line)
+                label = QLabel()
+                layout.addRow(label)
+                label.setText(line)
 
             layout.addRow(create_toolbox_header("Serial"))
 
@@ -277,9 +276,9 @@ class Capture:
                 finally:
                     reader.close()
 
-                output = QLabel()
-                layout.addRow(port, output)
-                output.setText(line)
+                label = QLabel()
+                layout.addRow(port, label)
+                label.setText(line)
 
         refresh_button.pressed.connect(on_refresh)
 
@@ -322,7 +321,7 @@ class Capture:
             CameraCapture(camera_device, self.capture.camera_path(i))
             for i, camera_device in enumerate(self.camera_devices)
         ]
-        if self.network_interface is not None:
+        if self.enable_network and (self.network_interface is not None):
             self.network_capture = NetworkCapture(
                 self.capture.network_path, interface=self.network_interface)
         if self.ros_topics:
@@ -359,7 +358,7 @@ class Capture:
 def main():
     app = QApplication(sys.argv)
 
-    capture = Capture()
+    window = Window()
     code = app.exec_()
     sys.exit(code)
 
