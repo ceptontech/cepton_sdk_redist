@@ -38,7 +38,7 @@ def get_all_camera_devices():
         raise NotImplementedError("OS not supported!")
 
 
-def process_video(input_path):
+def process_video(input_path, **kwargs):
     output_path = modify_path(input_path, postfix="_tmp")
     cmd_list = [
         "ffmpeg",
@@ -80,12 +80,14 @@ class CameraCapture(CaptureBase):
         self._proc = execute_command(cmd_list, **options)
 
     def close(self):
+        if self._proc is None:
+            return
         try:
             self._proc.close()
         except:
             pass
         self._proc = None
-        process_video(self.output_path)
+        run_background(process_video, args=(self.output_path,))
 
 
 def find_network_interface():
@@ -125,6 +127,8 @@ class NetworkCapture(CaptureBase):
         self._proc = execute_command(cmd_list, **options)
 
     def close(self):
+        if self._proc is None:
+            return
         try:
             self._proc.close()
         except:
@@ -156,6 +160,8 @@ class ROSCapture(CaptureBase):
         self._proc = execute_command(cmd_list, **options)
 
     def close(self):
+        if self._proc is None:
+            return
         try:
             self._proc.close()
         except:
@@ -181,6 +187,8 @@ class SerialCapture(CaptureBase):
         self._proc = execute_command(cmd_list, **options)
 
     def close(self):
+        if self._proc is None:
+            return
         try:
             self._proc.close()
         except:

@@ -265,9 +265,21 @@ def wait_on_background():
     del __local["threads"][:]
 
 
+def _cleanup_background():
+    __local["procs"] = [
+        proc for proc in __local["procs"] if proc.proc.poll() is None]
+    __local["threads"] = [
+        thread for thread in __local["threads"] if thread.thread.is_alive()]
+
+
 def kill_background():
     del __local["procs"][:]
     del __local["threads"][:]
+
+
+def has_background():
+    _cleanup_background()
+    return __local["procs"] or __local["threads"]
 
 
 def run_background(func, args=(), kwargs={}):

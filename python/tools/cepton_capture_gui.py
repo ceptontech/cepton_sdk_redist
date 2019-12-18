@@ -61,11 +61,10 @@ class Window:
 
         self.window.show()
 
-    def __del__(self):
-        self.stop()
-
     def on_close(self, *args):
         self._update_timer.stop()
+        self.stop()
+        wait_on_background()
 
     def update(self):
         for f in self.update_callbacks:
@@ -294,13 +293,23 @@ class Window:
 
         # Path
         path_input = VariableLabel()
-        layout.addRow("Path", path_input)
+        layout.addRow("Path:", path_input)
 
         # Length
         length_input = QLabel()
-        layout.addRow("Length", length_input)
+        layout.addRow("Length:", length_input)
+
+        # Status
+        status_input = QLabel()
+        layout.addRow("Status:", status_input)
 
         def update():
+            if self.is_started:
+                status_input.setText("Capturing")
+            elif has_background():
+                status_input.setText("Processing")
+            else:
+                status_input.setText("Done")
             if self.capture is None:
                 return
             path_input.setText(self.capture.path)

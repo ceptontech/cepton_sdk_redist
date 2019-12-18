@@ -62,7 +62,9 @@ Dependencies: ffmpeg, wireshark.
         for i, port in enumerate(serial_ports):
             SerialCapture(port, capture.serial_path(i))
 
+    print("Capturing...")
     capture.wait()
+    print("Processing...")
 
 
 if __name__ == "__main__":

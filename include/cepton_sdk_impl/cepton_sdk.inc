@@ -119,7 +119,7 @@ inline std::string SensorError::create_message(SensorErrorCode code,
 }
 
 inline void SensorError::check_used() const {
-  CEPTON_ASSERT(!m_code || m_used, std::string("Error not used: ") + what());
+  CEPTON_ASSERT(!m_code || m_used, std::string("Error not used: ") + what()); // NOLINT
 }
 
 namespace internal {
