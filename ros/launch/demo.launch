@@ -2,13 +2,13 @@
 <launch>
   <arg name="capture_path" default="" doc="Capture replay PCAP file path."/>
   <arg name="rviz_config_path" default="" doc="rviz config file path."/>
-  <arg name="transforms_path" default="" doc="Sensor transforms json file path."/>
+  <arg name="settings_dir" default="" doc="Sensor settings directory."/>
 
   <include file="$(find cepton_ros)/launch/manager.launch"/>
 
   <include file="$(find cepton_ros)/launch/driver.launch">
     <arg name="capture_path" value="$(arg capture_path)"/>
-    <arg name="transforms_path" value="$(arg transforms_path)"/>
+    <param name="settings_dir" value="$(arg settings_dir)"/>
   </include>
 
   <include file="$(find cepton_ros)/launch/rviz.launch">

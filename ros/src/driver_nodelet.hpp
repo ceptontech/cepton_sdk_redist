@@ -6,6 +6,7 @@
 #include <pcl_ros/point_cloud.h>
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <tf2_ros/static_transform_broadcaster.h>
 #include <cepton_sdk_api.hpp>
 
 #include "cepton_ros/SensorInformation.h"
@@ -30,6 +31,7 @@ class DriverNodelet : public nodelet::Nodelet {
   void onInit() override;
 
  private:
+  void publish_transforms(const std::string &transforms_path);
   void publish_sensor_information(
       const cepton_sdk::SensorInformation &sensor_info);
   void publish_points(uint64_t serial_number);
@@ -38,7 +40,7 @@ class DriverNodelet : public nodelet::Nodelet {
   ros::NodeHandle node_handle;
   ros::NodeHandle private_node_handle;
 
-  bool combine_sensors = false;
+  std::string parent_frame_id = "cepton";
 
   cepton_sdk::api::SensorErrorCallback error_callback;
   cepton_sdk::api::SensorImageFrameCallback image_frame_callback;
@@ -46,6 +48,8 @@ class DriverNodelet : public nodelet::Nodelet {
   ros::Timer watchdog_timer;
   ros::Publisher sensor_info_publisher;
   ros::Publisher points_publisher;
+  tf2_ros::StaticTransformBroadcaster tf_broadcaster;
+  std::set<uint64_t> tf_serial_numbers;
 
   std::vector<cepton_sdk::SensorImagePoint> image_points;
   std::vector<cepton_sdk::util::SensorPoint> points;

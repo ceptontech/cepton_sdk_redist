@@ -2,7 +2,7 @@
 
 ## Overview
 
-This package provides ROS support for Cepton LiDAR.
+This package provides ROS support for Cepton LiDAR. It is meant as reference code, and not actively developed.
 
 ## Installation
 
@@ -61,13 +61,13 @@ roslaunch --ros-args cepton_ros driver.launch
 
 ### Using multiple sensors
 
-If the `transforms_path` parameter is passed, the driver will output each sensor point cloud with a unique tf frame id.
+If the `settings_dir` parameter is passed, the driver will load sensor transforms (use `CeptonViewer` to generate the settings directory)
+
+- Publish transforms in the `cepton_transforms.json` file.
 
 ```sh
-roslaunch cepton_ros driver.launch transforms_path:=<path_to_cepton_transforms.json>
+roslaunch cepton_ros driver.launch settings_dir:=<path_to_settings_directory>
 ```
-
-A sample transforms file can be found at `launch/settings/cepton_transforms.json`. The rotation is in Quaternion format `<x, y, z, w>`. The coordinate system is as follows: `+x` = right, `+y` = forward, `+z` = up.
 
 ## Capture Replay
 

@@ -37,9 +37,8 @@ set(CEPTON_ROS_CATKIN_DEPENDS
     pluginlib
     roscpp
     roslib
-    rospy
     std_msgs
-    tf)
+    tf2_ros)
 find_package(catkin REQUIRED COMPONENTS ${CEPTON_ROS_CATKIN_DEPENDS}
                                         message_generation)
 include_directories(SYSTEM ${catkin_INCLUDE_DIRS})
@@ -103,9 +102,6 @@ install(
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
-
-catkin_install_python(PROGRAMS "src/transforms_node.py" DESTINATION
-                      ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
