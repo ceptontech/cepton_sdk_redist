@@ -234,7 +234,19 @@
 39
 40
 41
-42</pre></div></td><td class="code"><div class="highlight"><pre><span></span>#[[
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54</pre></div></td><td class="code"><div class="highlight"><pre><span></span>#[[
 CMake file for building samples.
 ]]
 cmake_minimum_required(VERSION 3.1)
@@ -253,7 +265,7 @@ project(
 include(&quot;CeptonCommon&quot;)
 
 if(GCC OR CLANG)
-  add_flags(-Wall)
+  add_flags(-Wall -Wextra -pedentic)
   add_linker_flags(-pthread)
 endif()
 
@@ -276,6 +288,18 @@ foreach(path ${CEPTON_SDK_SAMPLE_SOURCES})
                              PRIVATE &quot;${CEPTON_SDK_SAMPLES_SOURCE_DIR}&quot;)
   target_link_libraries(cepton_sdk_sample_${name} cepton_sdk::cepton_sdk)
 endforeach()
+
+if(GCC OR CLANG)
+  set(CEPTON_SDK_POSIX_SAMPLE_SOURCES
+      &quot;${CEPTON_SDK_SAMPLES_SOURCE_DIR}/posix/direct_networking.c&quot;)
+  foreach(path ${CEPTON_SDK_POSIX_SAMPLE_SOURCES})
+    get_filename_component(name &quot;${path}&quot; NAME_WE)
+    add_executable(cepton_sdk_sample_${name} &quot;${path}&quot;)
+    target_include_directories(cepton_sdk_sample_${name}
+                                PRIVATE &quot;${CEPTON_SDK_SAMPLES_SOURCE_DIR}&quot;)
+    target_link_libraries(cepton_sdk_sample_${name} cepton_sdk::cepton_sdk)
+  endforeach()
+endif()
 </pre></div>
 </td></tr></table></div>
 </div>

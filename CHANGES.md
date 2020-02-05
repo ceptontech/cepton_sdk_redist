@@ -1,9 +1,18 @@
 # Cepton SDK Release Notes
 
+## Version 1.17.7 2020-02-03
+
+- Add `segment_id` in `cepton_export.py` generated CSVs
+- Fix `cepton_export.py` output_dir bahavior
+- New error codes
+- New samples for thread-less direct networking
+- Fix `cepton_is_fault_code()` function
+
 ## Version 1.17.6 2019-12-17
 
 - Minor CeptonViewer bugfixes.
 - Improve `cepton_capture_gui.py`.
+- Move ROS transforms publisher into driver.
 
 ## Version 1.17.5 2019-12-10
 

@@ -339,7 +339,8 @@ class C_SensorImagePoint(Structure):
         ("intensity", c_float),
         ("return_type", c_uint8),
         ("flags", c_uint8),
-        ("reserved", 2 * c_uint8),
+        ("segment_id", c_uint8),
+        ("reserved", c_uint8),
     ]
 
 

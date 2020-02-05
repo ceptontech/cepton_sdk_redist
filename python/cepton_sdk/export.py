@@ -189,6 +189,7 @@ def save_points_csv(points, path):
          points.return_farthest, "%i"),
         ("valid", "measurement is valid", points.valid, "%i"),
         ("saturated", "measurement is saturated", points.saturated, "%i"),
+        ("segment_id", "segment ID", points.segment_ids, "%i"),
     ]
     dtype = numpy.dtype([(x[0], x[2].dtype) for x in fields])
     data = numpy.zeros(len(points), dtype=dtype)

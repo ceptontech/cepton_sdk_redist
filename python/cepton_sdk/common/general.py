@@ -126,12 +126,12 @@ class ToCMixin:
     def _to_c_value(self, member_name, value):
         c_member = self._get_c_member(member_name)
         if issubclass(c_member.type, ctypes.Array):
-            if issubclass(c_member.type._type_, c_char):
+            if issubclass(c_member.type._type_, ctypes.c_char):
                 if isinstance(value, str):
                     c_value = value.encode("utf-8")
                 else:
                     c_value = value
-            elif issubclass(c_member.type._type_, c_wchar):
+            elif issubclass(c_member.type._type_, ctypes.c_wchar):
                 c_value = value
             else:
                 c_value = c_member.type(*value)
@@ -148,7 +148,7 @@ class ToCMixin:
         return list(cls.__get_c_members().keys())
 
     @classmethod
-    def _get_c_member(cls):
+    def _get_c_member(cls, member_name):
         return cls.__get_c_members()[member_name]
 
     @classmethod
@@ -231,7 +231,7 @@ class StructureOfArrays:
         if name not in self._get_array_member_names():
             # Check member
             raise AttributeError(
-                "Member not listed in `_get_array_member_names`!")
+                "Member `" + name + "` not listed in `_get_array_member_names`!")
         return super().__setattr__(name, value)
 
     @classmethod
@@ -332,7 +332,6 @@ class ToCArrayMixin:
         self.update_from_c(c_a)
         return self
 
-    @classmethod
     def to_c(self, c_type=None):
         if c_type is None:
             c_type = self._get_c_class()

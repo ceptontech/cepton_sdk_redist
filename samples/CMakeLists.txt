@@ -17,7 +17,7 @@ project(
 include("CeptonCommon")
 
 if(GCC OR CLANG)
-  add_flags(-Wall)
+  add_flags(-Wall -Wextra -pedantic)
   add_linker_flags(-pthread)
 endif()
 
@@ -40,3 +40,15 @@ foreach(path ${CEPTON_SDK_SAMPLE_SOURCES})
                              PRIVATE "${CEPTON_SDK_SAMPLES_SOURCE_DIR}")
   target_link_libraries(cepton_sdk_sample_${name} cepton_sdk::cepton_sdk)
 endforeach()
+
+if(GCC OR CLANG)
+  set(CEPTON_SDK_POSIX_SAMPLE_SOURCES
+      "${CEPTON_SDK_SAMPLES_SOURCE_DIR}/posix/direct_networking.c")
+  foreach(path ${CEPTON_SDK_POSIX_SAMPLE_SOURCES})
+    get_filename_component(name "${path}" NAME_WE)
+    add_executable(cepton_sdk_sample_${name} "${path}")
+    target_include_directories(cepton_sdk_sample_${name}
+                                PRIVATE "${CEPTON_SDK_SAMPLES_SOURCE_DIR}")
+    target_link_libraries(cepton_sdk_sample_${name} cepton_sdk::cepton_sdk)
+  endforeach()
+endif()

@@ -71,8 +71,7 @@ By default, exports frames to individual files.
     # Create directory
     output_dir = fix_path(remove_extension(args.output_dir))
     if not (args.combine_sensors and args.combine_frames):
-        shutil.rmtree(output_dir, ignore_errors=True)
-        os.makedirs(output_dir)
+        os.makedirs(output_dir, exist_ok=True)
 
     # Initialize
     loader = cepton_sdk.load.Loader.from_arguments(args)

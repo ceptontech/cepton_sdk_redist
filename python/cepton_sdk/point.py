@@ -92,13 +92,13 @@ class Points(StructureOfArrays, ToCArrayMixin):
         self.intensities = numpy.zeros([n])
         self.return_types = numpy.zeros([n, 8], dtype=bool)
         self.flags = numpy.zeros([n, 8], dtype=bool)
-        
         self.flags[:, PointFlag.VALID] = True
+        self.segment_ids = numpy.zeros([n], dtype=numpy.uint8)
 
     @classmethod
     def _get_array_member_names(cls):
         return ["timestamps_usec", "image_positions", "distances", "positions",
-                "intensities", "return_types", "flags"]
+                "intensities", "return_types", "flags", "segment_ids"]
 
     @classmethod
     def _get_c_class(cls):
@@ -114,6 +114,7 @@ class Points(StructureOfArrays, ToCArrayMixin):
         self.return_types[:, :] = cepton_sdk.common.c.unpack_bits(
             data["return_type"])
         self.flags[:, :] = cepton_sdk.common.c.unpack_bits(data["flags"])
+        self.segment_ids[:] = data["segment_id"]
 
         self.positions[:, :] = convert_image_points_to_points(
             self.image_positions, self.distances)
@@ -125,6 +126,7 @@ class Points(StructureOfArrays, ToCArrayMixin):
         data["distance"][:] = self.distances
         data["intensity"][:] = self.intensities
         data["return_type"][:] = self.return_types
+        data["segment_id"][:] = self.segment_ids
         data["flags"] = self.flags
 
     @numpy_property
@@ -146,6 +148,5 @@ class Points(StructureOfArrays, ToCArrayMixin):
     @numpy_property
     def saturated(self):
         return self.flags[:, PointFlag.SATURATED]
-
 
 __all__ = _all_builder.get()

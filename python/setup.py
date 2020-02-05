@@ -25,15 +25,16 @@ if __name__ == "__main__":
         install_requires=[
             "numpy",
             "pyserial",
+            "laspy",
+            "plyfile",
+            "transforms3d"
         ],
         extras_require={
             "samples": [
                 "imageio-ffmpeg",
                 "imageio",
-                "laspy",
                 "netifaces",
                 "plyfile",
-                "pyqt5",
                 "pyqt5",
                 "uuid",
                 "vispy",

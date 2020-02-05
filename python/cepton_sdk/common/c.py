@@ -160,7 +160,7 @@ def pack_bits(bits, c_type):
     dtype = numpy.dtype(c_type)
     if bits.size == 0:
         return numpy.zeros(bits.shape[:-1], dtype=dtype)
-    bits = bits_tmp.reshape([-1, 8])[:, ::-1]
+    # bits = bits_tmp.reshape([-1, 8])[:, ::-1]
     a = numpy.packbits(bits.flatten()).view(dtype)
     a = numpy.reshape([bits.shape[:-1]])
     return a
