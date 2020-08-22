@@ -33,7 +33,6 @@ void image_frame_callback(CeptonSensorHandle handle, size_t n_points,
 }
 
 int main() {
-  int err;
   // Initialize
   struct CeptonSDKOptions options = cepton_sdk_create_options();
   options.frame.mode = CEPTON_SDK_FRAME_COVER;

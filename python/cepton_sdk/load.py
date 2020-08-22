@@ -47,6 +47,8 @@ class Loader(cepton_util.common.ArgumentParserMixin):
                            help="Capture file seek position [seconds].")
         group.add_argument("--settings_dir",
                            help="Load settings from directory.")
+        # Default control_flags is ControlFlags.ENABLE_MULTIPLE_RETURNS
+        group.add_argument("--control_flags", default=16, help="SDK control flags")
         return group
 
     @classmethod
@@ -61,7 +63,7 @@ class Loader(cepton_util.common.ArgumentParserMixin):
             "capture_path": capture_path,
             "capture_seek": cepton_util.common.parse_time_hms(
                 args.capture_seek),
-            "control_flags": 0,
+            "control_flags": int(args.control_flags),
         }
         sdk_options = cepton_util.common.process_options(sdk_options)
 

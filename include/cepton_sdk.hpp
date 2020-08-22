@@ -16,7 +16,6 @@
 #include <vector>
 
 namespace cepton_sdk {
-
 //------------------------------------------------------------------------------
 // Errors
 //------------------------------------------------------------------------------
@@ -368,7 +367,6 @@ inline SensorError mock_network_receive(SensorHandle handle, int64_t timestamp,
 // Capture Replay
 //------------------------------------------------------------------------------
 namespace capture_replay {
-
 inline bool is_open() { return (bool)cepton_sdk_capture_replay_is_open(); }
 inline SensorError open(const std::string &path) {
   return CEPTON_SDK_WRAP_C(cepton_sdk_capture_replay_open(path.c_str()));
@@ -431,7 +429,6 @@ inline SensorError resume() {
 inline SensorError pause() {
   return CEPTON_SDK_WRAP_C(cepton_sdk_capture_replay_pause());
 }
-
 }  // namespace capture_replay
 }  // namespace cepton_sdk
 

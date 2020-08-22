@@ -265,7 +265,7 @@ project(
 include(&quot;CeptonCommon&quot;)
 
 if(GCC OR CLANG)
-  add_flags(-Wall -Wextra -pedentic)
+  add_flags(-Wall -Wextra -pedantic)
   add_linker_flags(-pthread)
 endif()
 

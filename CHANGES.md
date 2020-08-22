@@ -1,5 +1,11 @@
 # Cepton SDK Release Notes
 
+## Version 1.18.0 2020-08-22
+
+- Add support for new product Vista-P61.
+- New cepton_exporter tool in samples
+- Timestamp handling improvements
+
 ## Version 1.17.7 2020-02-03
 
 - Add `segment_id` in `cepton_export.py` generated CSVs

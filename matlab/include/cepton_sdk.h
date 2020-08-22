@@ -103,7 +103,7 @@ enum _CeptonSensorErrorCode {
   /// Extreme sensor acceleration fault.
   CEPTON_FAULT_EXTREME_ACCELERATION = -1003,
   /// Abnormal sensor FOV fault.
-  CEPTON_FAULT_ABNORMAL_FOV = -1004,
+  CEPTON_FAULT_SCAN_COVERAGE = -1004,
   /// Abnormal sensor frame rate fault.
   CEPTON_FAULT_ABNORMAL_FRAME_RATE = -1005,
   /// Sensor motor malfunction fault.
@@ -166,7 +166,8 @@ enum _CeptonSensorModel {
   SORA_P61 = 17,
   // 18 is reserved for VISTA_H
   // 19 is reserved for VISTA_P60 Rev2 firmware releases
-  CEPTON_SENSOR_MODEL_MAX = 18,
+  VISTA_T30 = 21,
+  CEPTON_SENSOR_MODEL_MAX,
 };
 
 /// Returns whether sensor model is of the form `SORA_*`.
@@ -360,7 +361,7 @@ enum _CeptonSDKControl {
   /// Enable multiple returns.
   /**
    * When set, `cepton_sdk::SensorInformation::return_count` will indicate the
-   * number of returns per laser. 
+   * number of returns per laser.
    * Can only be set at SDK initialization.
    */
   CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS = 1 << 4,
@@ -380,6 +381,7 @@ enum _CeptonSDKFrameMode {
    */
   CEPTON_SDK_FRAME_TIMED = 1,
   /// Report points when the field of view is covered once.
+  /// NOTE: USE THE COVER MODE AS THE DEFAULT MODE IN SDK
   /**
    * Use this for a fast frame rate.
    * - For Sora series, detects scanline (left-to-right or right-to-left).
@@ -395,7 +397,7 @@ enum _CeptonSDKFrameMode {
    */
   CEPTON_SDK_FRAME_CYCLE = 3,
 
-  CEPTON_SDK_FRAME_MODE_MAX = 3
+  CEPTON_SDK_FRAME_MODE_MAX = 4
 };
 
 /// SDK frame options.
@@ -415,8 +417,8 @@ struct CEPTON_SDK_EXPORT CeptonSDKFrameOptions {
   float length;
 };
 /// Create frame options.
-CEPTON_SDK_EXPORT struct CeptonSDKFrameOptions
-cepton_sdk_create_frame_options(void);
+CEPTON_SDK_EXPORT struct CeptonSDKFrameOptions cepton_sdk_create_frame_options(
+    void);
 
 /// SDK initialization options.
 /**
@@ -639,7 +641,8 @@ CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_listen_network_packet(
     FpCeptonNetworkReceiveCallback cb, void *const user_data);
 
 /// Clears network packet callback.
-CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_network_packet(void);
+CEPTON_SDK_EXPORT CeptonSensorErrorCode
+cepton_sdk_unlisten_network_packet(void);
 
 /// Manually passes packets to sdk.
 /**

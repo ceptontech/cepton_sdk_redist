@@ -25,7 +25,6 @@
 
 namespace cepton_sdk {
 namespace util {
-
 //------------------------------------------------------------------------------
 // Common
 //------------------------------------------------------------------------------
@@ -578,7 +577,6 @@ class ExtremaDetector {
 };
 
 namespace internal {
-
 template <typename TData = bool>
 class FrameDetectorBase {
  public:
@@ -701,7 +699,6 @@ class TimedFrameDetector : public FrameDetectorBase<TData> {
  private:
   int64_t m_t = 0;
 };
-
 }  // namespace internal
 
 /// Detects scanlines (change in image x coordinate).
@@ -748,6 +745,8 @@ class FrameDetector : public internal::FrameDetectorBase<TData> {
   bool update(const SensorImagePoint &point,
               const TData &data = TData()) override;
 
+  void set_frame_mode(CeptonSDKFrameMode mode);
+
  private:
   internal::FrameDetectorBase<TData> *detector();
 
@@ -793,7 +792,6 @@ class FrameAccumulator {
   FrameDetector<int64_t> m_frame_detector;
   std::vector<SensorImagePoint> m_image_points;
 };
-
 }  // namespace util
 }  // namespace cepton_sdk
 

@@ -7,7 +7,6 @@
 
 namespace cepton_sdk {
 namespace util {
-
 // -----------------------------------------------------------------------------
 // LockGuard
 // -----------------------------------------------------------------------------
@@ -109,9 +108,16 @@ inline Organizer::Organizer(cepton_sdk::SensorInformation sensor_info) {
       m_settings.horizontal_range_radians = to_radians(70.f);
       break;
     case VISTA_X120:
+      m_settings.horizontal_range_radians = to_radians(120.f);
+      m_settings.vertical_range_radians = to_radians(18.f);
+      break;
     case VISTA_X15:
-      m_settings.horizontal_range_radians = to_radians(130.f);
-      m_settings.vertical_range_radians = to_radians(40.f);
+      m_settings.horizontal_range_radians = to_radians(15.f);
+      m_settings.vertical_range_radians = to_radians(18.f);
+      break;
+    case VISTA_T30:
+      m_settings.horizontal_range_radians = to_radians(30.f);
+      m_settings.vertical_range_radians = to_radians(18.f);
       break;
     case HR80T_R2:
     default:
@@ -429,7 +435,6 @@ bool ExtremaDetector<TData>::update(int64_t timestamp, float value,
 }
 
 namespace internal {
-
 // -----------------------------------------------------------------------------
 // FrameDetectorBase
 // -----------------------------------------------------------------------------
@@ -647,7 +652,6 @@ bool TimedFrameDetector<TData>::update(const SensorImagePoint &point,
   result.data = data;
   return this->finalize(result);
 }
-
 }  // namespace internal
 
 // -----------------------------------------------------------------------------
@@ -756,6 +760,11 @@ bool FrameDetector<TData>::update(const SensorImagePoint &point,
   return this->finalize(detector()->previous_result());
 }
 
+template <typename TData>
+void FrameDetector<TData>::set_frame_mode(CeptonSDKFrameMode mode) {
+  m_options.mode = mode;
+}
+
 // -----------------------------------------------------------------------------
 // FrameAccumulator
 // -----------------------------------------------------------------------------
@@ -815,6 +824,5 @@ inline void FrameAccumulator::add_points(
     i -= n_image;
   }
 }
-
 }  // namespace util
 }  // namespace cepton_sdk
