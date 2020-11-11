@@ -1,7 +1,0 @@
-C Basic
-=======
-
-.. literalinclude:: ../../../samples/c_basic.c
-  :language: c
-  :linenos:
-  :caption: samples/c_basic.c

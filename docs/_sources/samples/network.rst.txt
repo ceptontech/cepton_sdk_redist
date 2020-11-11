@@ -1,7 +1,0 @@
-Network
-=======
-
-.. literalinclude:: ../../../samples/advanced/network.cpp
-  :language: c
-  :linenos:
-  :caption: samples/advanced/network.cpp

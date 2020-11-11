@@ -147,7 +147,7 @@ int CeptonExporter::InitializeSDK() {
     // Use cover mode as the default mode
     opts.frame.mode = CEPTON_SDK_FRAME_COVER;
   }
-  
+
   if (!capture_file.empty())
     opts.control_flags |= CEPTON_SDK_CONTROL_DISABLE_NETWORK;
   err = cepton_sdk_initialize(CEPTON_SDK_VERSION, &opts, CbCeptonSensorError,
@@ -169,7 +169,7 @@ int CeptonExporter::InitializeSDK() {
       ReportError(err, "set replay speed");
       return -1;
     }
-    err = cepton_sdk_capture_replay_resume_blocking(1.2f);
+    err = cepton_sdk_capture_replay_resume_blocking(2.0f);
     if (err != CEPTON_SUCCESS) {
       ReportError(err, "pre-replay");
       return -1;
@@ -177,11 +177,6 @@ int CeptonExporter::InitializeSDK() {
     err = cepton_sdk_capture_replay_seek(0);
     if (err != CEPTON_SUCCESS) {
       ReportError(err, "rewind");
-      return -1;
-    }
-    err = cepton_sdk_clear();
-    if (err != CEPTON_SUCCESS) {
-      ReportError(err, "clear");
       return -1;
     }
   }
@@ -292,7 +287,7 @@ int CeptonExporter::ParseOptions(int argc, char **argv) {
 
     if (InitializeSDK() == 0) {
       unique_lock<mutex> lock(waiter_mutex);
-      waiter.wait_for(lock, chrono::milliseconds(1500));
+      waiter.wait_for(lock, chrono::milliseconds(2000));
       if (sensor.size() == 0) {
         ReportError("No sensor found");
         return -1;
@@ -319,6 +314,7 @@ int CeptonExporter::ParseOptions(int argc, char **argv) {
         }
       }
     }
+
     CleanupSDK();
   } catch (const cxxopts::OptionException &e) {
     ReportError(CEPTON_SUCCESS, e.what());

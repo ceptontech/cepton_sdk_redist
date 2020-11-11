@@ -1,5 +1,0 @@
-# Legal
-
-"Cepton", "MMT", "Vista", "Vista-Edge" and "Helius" are all registered trademarks of Cepton Technologies, Inc., and may not be used without express permission from Cepton.
-
-Your use of the Cepton products is subject to the Terms of Sale signed between you and Cepton or authorized distributor/integrator. It is prohibited by the terms to remove or open the product housing, inspect the internal of the product, reverse-engineer any part of the product, or permit any third party to do any of the foregoing. Please contact <info@cepton.com> if you have any questions.

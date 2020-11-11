@@ -1,7 +1,0 @@
-Frame Detector
-==============
-
-.. literalinclude:: ../../../samples/advanced/frame_detector.cpp
-  :language: c
-  :linenos:
-  :caption: samples/advanced/frame_detector.cpp

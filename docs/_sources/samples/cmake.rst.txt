@@ -1,6 +1,0 @@
-CMake
-=====
-
-.. literalinclude:: ../../../samples/CMakeLists.txt
-  :linenos:
-  :caption: samples/CMakeLists.txt

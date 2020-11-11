@@ -652,6 +652,56 @@ bool TimedFrameDetector<TData>::update(const SensorImagePoint &point,
   result.data = data;
   return this->finalize(result);
 }
+
+template <typename TData>
+ParityBitDetector<TData>::ParityBitDetector()
+    : internal::FrameDetectorBase<TData>(1) {}
+
+template <typename TData>
+void ParityBitDetector<TData>::reset() {
+  m_init = false;
+  m_count = 0;
+}
+
+template <typename TData>
+bool ParityBitDetector<TData>::update(const SensorImagePoint &point,
+                                      const TData &data) {
+  // Required use of CEPTON_IMAGE_POINT_FLAG_FRAME, hard-coded to avoid
+  // inclusion of sdk internal
+  bool parity = (point.flags & 0x80);
+  if (!m_init) {
+    // Set initial frame parity
+    m_init = true;
+    m_last_parity = parity;
+  }
+
+  if (m_count >= CEPTON_SDK_MAX_POINTS_PER_FRAME) {
+    // Return true but do not change tracked parity
+    m_count = 0;
+
+    typename FrameDetectorBase<TData>::Result result;
+    result.is_valid = true;
+    result.type = 0;
+    result.timestamp = point.timestamp;
+    result.data = data;
+    return this->finalize(result);
+  }
+
+  bool frame_switch = parity != m_last_parity;
+  if (frame_switch) {
+    m_count = 0;  // This point is rechecked in the next frame
+    m_last_parity = parity;
+
+    typename FrameDetectorBase<TData>::Result result;
+    result.is_valid = true;
+    result.type = 0;
+    result.timestamp = point.timestamp;
+    result.data = data;
+    return this->finalize(result);
+  }
+  return false;
+}
+
 }  // namespace internal
 
 // -----------------------------------------------------------------------------
@@ -694,7 +744,11 @@ FrameDetector<TData>::FrameDetector(const SensorInformation &sensor_info)
   } else if (cepton_sdk::is_hr80(sensor_info.model)) {
     m_cover_detector.reset(new internal::HR80FrameDetector<TData>());
   } else if (cepton_sdk::is_vista(sensor_info.model)) {
-    m_cover_detector.reset(new internal::VistaFrameDetector<TData>());
+    if (sensor_info.model == VISTA_P61) {
+      m_cover_detector.reset(new internal::ParityBitDetector<TData>());
+    } else {
+      m_cover_detector.reset(new internal::VistaFrameDetector<TData>());
+    }
   }
 }
 

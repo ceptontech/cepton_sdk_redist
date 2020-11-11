@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(cepton_exporter VERSION 0.9.6 LANGUAGES C CXX)
+project(cepton_exporter VERSION 0.9.8 LANGUAGES C CXX)
 
 add_definitions(-DVERSION_MAJOR=${PROJECT_VERSION_MAJOR})
 add_definitions(-DVERSION_MINOR=${PROJECT_VERSION_MINOR})

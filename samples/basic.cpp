@@ -43,6 +43,9 @@ int main(int argc, char **argv) {
 
   // Uncomment to return points every frame.
   options.frame.mode = CEPTON_SDK_FRAME_COVER;
+ 
+  // Uncomment to enable double returns
+  // options.control_flags |= CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS;
 
   // Uncomment to return points at fixed time interval.
   // options.frame.mode = CEPTON_SDK_FRAME_TIMED;

@@ -6,22 +6,21 @@
 */
 #pragma once
 
-#include "cepton_sdk.hpp"
-
-#include <cassert>
-#include <cmath>
-#include <cstdio>
-
 #include <algorithm>
 #include <array>
 #include <atomic>
+#include <cassert>
 #include <chrono>
+#include <cmath>
 #include <condition_variable>
+#include <cstdio>
 #include <iostream>
 #include <list>
 #include <map>
 #include <memory>
 #include <queue>
+
+#include "cepton_sdk.hpp"
 
 namespace cepton_sdk {
 namespace util {
@@ -635,6 +634,21 @@ class FrameDetectorBase {
   Result m_previous_result;
   std::vector<Result> m_previous_results;
   float m_period = -1.0f;
+};
+
+template <typename TData = bool>
+class ParityBitDetector : public FrameDetectorBase<TData> {
+ public:
+  ParityBitDetector();
+
+  void reset() override;
+  bool update(const SensorImagePoint &point,
+              const TData &data = TData()) override;
+
+ private:
+  bool m_init;                 // If initial parity is set
+  bool m_last_parity = false;  // Parity of last included point
+  int m_count = 0;             // Count of included points;
 };
 
 /// Detects frames for Sora sensor models (fast x scan).

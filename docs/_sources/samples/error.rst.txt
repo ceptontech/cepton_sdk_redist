@@ -1,7 +1,0 @@
-Error
-=====
-
-.. literalinclude:: ../../../samples/error.cpp
-  :language: c
-  :linenos:
-  :caption: samples/error.cpp
