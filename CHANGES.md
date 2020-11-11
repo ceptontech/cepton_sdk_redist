@@ -1,5 +1,10 @@
 # Cepton SDK Release Notes
 
+## Version 1.18.1 2020-11-11
+
+- Minor CeptonViewer improvements
+- Fixes for P61 frame aggregation
+
 ## Version 1.18.0 2020-08-22
 
 - Add support for new product Vista-P61.
