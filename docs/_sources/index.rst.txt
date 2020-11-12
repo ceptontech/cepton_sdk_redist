@@ -1,0 +1,38 @@
+Cepton SDK
+==========
+
+.. toctree::
+  :maxdepth: 1
+
+  overview
+  building
+  samples
+  internal
+  legal
+
+Tools
+-----
+
+.. toctree::
+  :maxdepth: 1
+
+  cepton_viewer
+  cepton_player
+  cepton_export
+  
+  
+API Reference
+-------------
+
+.. toctree::
+  :maxdepth: 1
+
+  errors
+  setup
+  sensors
+  points
+  capture_replay
+  networking
+  serial
+  c++
+  utilities

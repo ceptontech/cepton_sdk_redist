@@ -1,0 +1,38 @@
+C++
+===
+
+High level C++ API for prototyping (``cepton_sdk.hpp``, ``cepton_sdk_api.hpp``). Methods are agnostic to live/replay mode.
+
+.. doxygenfunction:: cepton_sdk::api::is_live
+.. doxygenfunction:: cepton_sdk::api::is_end
+.. doxygenfunction:: cepton_sdk::api::get_time
+.. doxygenfunction:: cepton_sdk::api::wait
+
+Errors
+------
+
+.. doxygendefine:: CEPTON_PROCESS_ERROR
+.. doxygendefine:: CEPTON_CHECK_ERROR
+.. doxygendefine:: CEPTON_LOG_ERROR
+.. doxygendefine:: CEPTON_RETURN_ERROR
+
+Setup
+-----
+
+.. doxygenfunction:: cepton_sdk::api::initialize
+.. doxygenfunction:: cepton_sdk::api::open_replay
+.. doxygenfunction:: cepton_sdk::api::has_control_flags
+.. doxygenfunction:: cepton_sdk::api::enable_control_flags
+.. doxygenclass:: cepton_sdk::api::SensorErrorCallback
+    :members:
+    :undoc-members:
+.. doxygenclass:: cepton_sdk::api::SensorImageFrameCallback
+    :members:
+    :undoc-members:
+
+Sensors
+-------
+
+.. doxygenfunction:: cepton_sdk::api::has_sensor_by_serial_number
+.. doxygenfunction:: cepton_sdk::api::get_sensor_information_by_serial_number
+.. doxygenfunction:: cepton_sdk::api::get_sensor_serial_numbers

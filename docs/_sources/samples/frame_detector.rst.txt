@@ -1,0 +1,7 @@
+Frame Accumulator
+=================
+
+.. literalinclude:: ../../../samples/advanced/frame_accumulator.cpp
+  :language: c
+  :linenos:
+  :caption: samples/advanced/frame_accumulator.cpp

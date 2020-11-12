@@ -1,0 +1,33 @@
+Samples
+=======
+
+.. mdinclude:: ../../samples/README.md
+
+
+Basic
+-----
+
+Start with :doc:`samples/basic` or :doc:`samples/c_basic`.
+
+.. toctree::
+  :maxdepth: 1
+  
+  samples/cmake
+  samples/basic
+  samples/c_basic
+  samples/callback
+  samples/error
+
+Advanced
+--------
+
+.. toctree::
+  :maxdepth: 1
+
+  samples/frame_accumulator
+  samples/frame_detector
+  samples/network
+  samples/organize_points
+  samples/process_multi
+  samples/process_single
+  samples/replay

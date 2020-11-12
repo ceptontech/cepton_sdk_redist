@@ -1,0 +1,7 @@
+Process Multi
+=============
+
+.. literalinclude:: ../../../samples/advanced/process_multi.cpp
+  :language: c
+  :linenos:
+  :caption: samples/advanced/process_multi.cpp

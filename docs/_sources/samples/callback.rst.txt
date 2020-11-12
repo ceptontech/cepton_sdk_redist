@@ -1,0 +1,7 @@
+Callback
+========
+
+.. literalinclude:: ../../../samples/callback.cpp
+  :language: c
+  :linenos:
+  :caption: samples/callback.cpp

@@ -1,0 +1,7 @@
+Process Single
+==============
+
+.. literalinclude:: ../../../samples/advanced/process_single.cpp
+  :language: c
+  :linenos:
+  :caption: samples/advanced/process_single.cpp

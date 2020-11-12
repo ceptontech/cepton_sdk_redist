@@ -1,0 +1,21 @@
+# Cepton Export
+
+The Cepton Export tool allows exporting LiDAR points in various file formats.
+
+### Install
+
+Requirements:
+
+- Python 3
+
+Install the Cepton Python SDK
+
+```sh
+pip3 install --user -U cepton_sdk[samples]
+```
+
+For usage, run
+
+```sh
+cepton_export.py -h
+```
