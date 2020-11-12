@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Points &mdash; cepton_sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Capture Replay" href="capture_replay.html" />
+    <link rel="prev" title="Sensors" href="sensors.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cepton_sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legal.html">Legal</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cepton_viewer.html">Cepton Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_export.html">Cepton Export</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensors.html">Sensors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Points</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#types">Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methods">Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="capture_replay.html">Capture Replay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serial.html">Serial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c++.html">C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cepton_sdk</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Points</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/points.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="capture_replay.html" class="btn btn-neutral float-right" title="Capture Replay" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sensors.html" class="btn btn-neutral float-left" title="Sensors" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="points">
+<h1>Points<a class="headerlink" href="#points" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="types">
+<h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv422CeptonSensorImagePoint">
+<span id="_CPPv322CeptonSensorImagePoint"></span><span id="_CPPv222CeptonSensorImagePoint"></span><span id="CeptonSensorImagePoint"></span><span class="target" id="structCeptonSensorImagePoint"></span><em class="property">struct </em><code class="sig-name descname">CeptonSensorImagePoint</code><a class="headerlink" href="#_CPPv422CeptonSensorImagePoint" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Point in pinhole image coordinates (focal length = 1). </p>
+<p>To convert to 3d point, use <code class="docutils literal notranslate"><a class="reference internal" href="utilities.html#namespacecepton__sdk_1_1util_1a32907b1248ff53e4da5818ac796b6c95"><span class="std std-ref"><span class="pre">cepton_sdk::util::convert_sensor_image_point_to_point</span></span></a></code>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric">Public Members</p>
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint9timestampE">
+<span id="_CPPv3N22CeptonSensorImagePoint9timestampE"></span><span id="_CPPv2N22CeptonSensorImagePoint9timestampE"></span><span id="CeptonSensorImagePoint::timestamp__int64_t"></span><span class="target" id="structCeptonSensorImagePoint_1ac59e5893f10251b6c4a745215e1f4e73"></span>int64_t <code class="sig-name descname">timestamp</code><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint9timestampE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Unix time [microseconds]. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint7image_xE">
+<span id="_CPPv3N22CeptonSensorImagePoint7image_xE"></span><span id="_CPPv2N22CeptonSensorImagePoint7image_xE"></span><span id="CeptonSensorImagePoint::image_x__float"></span><span class="target" id="structCeptonSensorImagePoint_1a47d41d7dd90343dfeedfdc7e5c3936d1"></span>float <code class="sig-name descname">image_x</code><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint7image_xE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>x image coordinate. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint8distanceE">
+<span id="_CPPv3N22CeptonSensorImagePoint8distanceE"></span><span id="_CPPv2N22CeptonSensorImagePoint8distanceE"></span><span id="CeptonSensorImagePoint::distance__float"></span><span class="target" id="structCeptonSensorImagePoint_1a7fa44ce4d2acfd5802516c0e5d8b3bea"></span>float <code class="sig-name descname">distance</code><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint8distanceE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Distance [meters]. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint7image_zE">
+<span id="_CPPv3N22CeptonSensorImagePoint7image_zE"></span><span id="_CPPv2N22CeptonSensorImagePoint7image_zE"></span><span id="CeptonSensorImagePoint::image_z__float"></span><span class="target" id="structCeptonSensorImagePoint_1a8f2372e2e00456f674a7f4cd3262506c"></span>float <code class="sig-name descname">image_z</code><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint7image_zE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>z image coordinate. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint9intensityE">
+<span id="_CPPv3N22CeptonSensorImagePoint9intensityE"></span><span id="_CPPv2N22CeptonSensorImagePoint9intensityE"></span><span id="CeptonSensorImagePoint::intensity__float"></span><span class="target" id="structCeptonSensorImagePoint_1aacdac6dfdaa7670c64dbfa2bc78d0512"></span>float <code class="sig-name descname">intensity</code><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint9intensityE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Diffuse reflectance (normal: [0-1], retroreflective: &gt;1). </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint11return_typeE">
+<span id="_CPPv3N22CeptonSensorImagePoint11return_typeE"></span><span id="_CPPv2N22CeptonSensorImagePoint11return_typeE"></span><span id="CeptonSensorImagePoint::return_type__CeptonSensorReturnType"></span><span class="target" id="structCeptonSensorImagePoint_1a0a6b3ca4affd3c48b9361776b9dd1f66"></span>CeptonSensorReturnType <code class="sig-name descname">return_type</code><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint11return_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return type flags. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint5flagsE">
+<span id="_CPPv3N22CeptonSensorImagePoint5flagsE"></span><span id="_CPPv2N22CeptonSensorImagePoint5flagsE"></span><span id="CeptonSensorImagePoint::flags__uint8_t"></span><span class="target" id="structCeptonSensorImagePoint_1add10d50456111d3fe529c4163d674548"></span>uint8_t <code class="sig-name descname">flags</code><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint5flagsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Bit flags. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint5validE">
+<span id="_CPPv3N22CeptonSensorImagePoint5validE"></span><span id="_CPPv2N22CeptonSensorImagePoint5validE"></span><span id="CeptonSensorImagePoint::valid__uint8_t"></span><span class="target" id="structCeptonSensorImagePoint_1acf94f34b4c3a5f7d411bd9ad3f7205ff"></span>uint8_t <code class="sig-name descname">valid</code> : 1<a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint5validE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">false</span></code>, then <code class="docutils literal notranslate"><span class="pre">distance</span></code> and <code class="docutils literal notranslate"><span class="pre">intensity</span></code> are invalid. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint9saturatedE">
+<span id="_CPPv3N22CeptonSensorImagePoint9saturatedE"></span><span id="_CPPv2N22CeptonSensorImagePoint9saturatedE"></span><span id="CeptonSensorImagePoint::saturated__uint8_t"></span><span class="target" id="structCeptonSensorImagePoint_1aa7d11ac48bd0964bfff6616e62ad7bc8"></span>uint8_t <code class="sig-name descname">saturated</code> : 1<a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint9saturatedE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">true</span></code>, then <code class="docutils literal notranslate"><span class="pre">intensity</span></code> is invalid, and the <code class="docutils literal notranslate"><span class="pre">distance</span></code> is innacurate. </p>
+</dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePointUt2_22E">
+<span id="_CPPv3N22CeptonSensorImagePointUt2_22E"></span><span class="target" id="structCeptonSensorImagePoint_1ae7cdf1ad12070a1346deceee29747c67"></span><em class="property">union</em> <a class="reference internal" href="#_CPPv422CeptonSensorImagePoint" title="CeptonSensorImagePoint">CeptonSensorImagePoint</a>::<strong>[anonymous]</strong> <strong>[anonymous]</strong><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePointUt2_22E" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint10segment_idE">
+<span id="_CPPv3N22CeptonSensorImagePoint10segment_idE"></span><span id="_CPPv2N22CeptonSensorImagePoint10segment_idE"></span><span id="CeptonSensorImagePoint::segment_id__uint8_t"></span><span class="target" id="structCeptonSensorImagePoint_1a31daa73e1fc72766e02c945318cddafb"></span>uint8_t <code class="sig-name descname">segment_id</code><a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint10segment_idE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="member">
+<dt id="_CPPv4N22CeptonSensorImagePoint8reservedE">
+<span id="_CPPv3N22CeptonSensorImagePoint8reservedE"></span><span id="_CPPv2N22CeptonSensorImagePoint8reservedE"></span><span id="CeptonSensorImagePoint::reserved__uint8_tA"></span><span class="target" id="structCeptonSensorImagePoint_1a97568993f79487ccddda8c98e6223e39"></span>uint8_t <code class="sig-name descname">reserved</code>[1]<a class="headerlink" href="#_CPPv4N22CeptonSensorImagePoint8reservedE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<dl class="type">
+<dt id="_CPPv431FpCeptonSensorImageDataCallback">
+<span id="_CPPv331FpCeptonSensorImageDataCallback"></span><span id="_CPPv231FpCeptonSensorImageDataCallback"></span><span id="FpCeptonSensorImageDataCallback"></span><span class="target" id="cepton__sdk_8h_1aa6ec324da7ea067ac3dfe81c9674ce38"></span><em class="property">typedef </em>void (*<code class="sig-name descname">FpCeptonSensorImageDataCallback</code>)<span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv418CeptonSensorHandle" title="CeptonSensorHandle">CeptonSensorHandle</a> handle, size_t n_points, <em class="property">const</em> <em class="property">struct</em> <a class="reference internal" href="#_CPPv422CeptonSensorImagePoint" title="CeptonSensorImagePoint">CeptonSensorImagePoint</a> *c_points, void *user_data<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431FpCeptonSensorImageDataCallback" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Callback for receiving image points. </p>
+<p>Set the frame options to control the callback rate. <dl class="simple">
+<dt><strong>Parameters</strong></dt><dd><ul class="breatheparameterlist simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">handle</span></code>: Sensor handle. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_points</span></code>: Points array size. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c_points</span></code>: Points array. Owned by SDK. </p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user_data</span></code>: User instance pointer. </p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv430cepton_sdk_listen_image_frames31FpCeptonSensorImageDataCallbackPCv">
+<span id="_CPPv330cepton_sdk_listen_image_frames31FpCeptonSensorImageDataCallbackPCv"></span><span id="_CPPv230cepton_sdk_listen_image_frames31FpCeptonSensorImageDataCallbackPCv"></span><span id="cepton_sdk_listen_image_frames__FpCeptonSensorImageDataCallback.voidPC"></span><span class="target" id="cepton__sdk_8h_1a0c61e4080b2a10f8081cc5ce6a9767b4"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_listen_image_frames</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv431FpCeptonSensorImageDataCallback" title="FpCeptonSensorImageDataCallback">FpCeptonSensorImageDataCallback</a> <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430cepton_sdk_listen_image_frames31FpCeptonSensorImageDataCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Sets image frame callback. </p>
+<p>Returns points at frequency specified by <code class="docutils literal notranslate"><a class="reference internal" href="setup.html#structCeptonSDKFrameOptions_1a8d7f23eb435f258c835cf7050547aa11"><span class="std std-ref"><span class="pre">cepton_sdk::FrameOptions::mode</span></span></a></code>. Each frame contains all possible points (use <code class="docutils literal notranslate"><a class="reference internal" href="#structCeptonSensorImagePoint_1acf94f34b4c3a5f7d411bd9ad3f7205ff"><span class="std std-ref"><span class="pre">cepton_sdk::SensorImagePoint::valid</span></span></a></code> to filter points). Points are ordered by measurement, segment, and return:</p>
+<p><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">measurement_count</span> <span class="o">=</span> <span class="n">n_points</span> <span class="o">/</span> <span class="p">(</span><span class="n">segment_count</span> <span class="o">*</span> <span class="n">return_count</span><span class="p">)</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="p">((</span><span class="n">i_measurement</span><span class="p">)</span> <span class="o">*</span> <span class="n">segment_count</span> <span class="o">+</span> <span class="n">i_segment</span><span class="p">)</span> <span class="o">*</span> <span class="n">return_count</span> <span class="o">+</span> <span class="n">i_return</span>
+</pre></div>
+</div>
+</p>
+<p>Returns error if callback already registered. </p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv432cepton_sdk_unlisten_image_framesv">
+<span id="_CPPv332cepton_sdk_unlisten_image_framesv"></span><span id="_CPPv232cepton_sdk_unlisten_image_framesv"></span><span id="cepton_sdk_unlisten_image_frames__void"></span><span class="target" id="cepton__sdk_8h_1af66f79171f1e9fc08a632ef54905a0c6"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_unlisten_image_frames</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432cepton_sdk_unlisten_image_framesv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Clears image frame callback. </p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="capture_replay.html" class="btn btn-neutral float-right" title="Capture Replay" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sensors.html" class="btn btn-neutral float-left" title="Sensors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cepton Technologies
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

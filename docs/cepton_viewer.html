@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cepton Viewer &mdash; cepton_sdk  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Cepton Player" href="cepton_player.html" />
+    <link rel="prev" title="Legal" href="legal.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> cepton_sdk
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Samples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="internal.html">Internal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="legal.html">Legal</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Cepton Viewer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#downloads">Downloads</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tutorials">Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-menu">Main Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#camera-controls">Camera Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflows">Workflows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#open-capture">Open Capture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-capture">Save Capture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#take-screenshot">Take Screenshot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#update-sensor-transforms-clips">Update Sensor Transforms/Clips</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#keyboard-shortcuts">Keyboard Shortcuts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gui">GUI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#replay">Replay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view">View</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_player.html">Cepton Player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cepton_export.html">Cepton Export</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Errors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensors.html">Sensors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="points.html">Points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capture_replay.html">Capture Replay</a></li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serial.html">Serial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c++.html">C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cepton_sdk</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Cepton Viewer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/cepton_viewer.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="cepton_player.html" class="btn btn-neutral float-right" title="Cepton Player" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="legal.html" class="btn btn-neutral float-left" title="Legal" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cepton-viewer">
+<h1>Cepton Viewer<a class="headerlink" href="#cepton-viewer" title="Permalink to this headline">¶</a></h1>
+<p>The Cepton Viewer tool allows viewing raw Cepton sensor data. It is primarily used for sensor debugging.</p>
+<ul class="simple">
+<li><p>View live or replay sensor data.</p></li>
+<li><p>View sensor information.</p></li>
+<li><p>Update extrinsic sensor transforms.</p></li>
+</ul>
+<div class="section" id="downloads">
+<h2>Downloads<a class="headerlink" href="#downloads" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-win64.exe">Windows</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-osx.dmg">OSX</a></p></li>
+<li><p><a class="reference external" href="https://github.com/ceptontech/cepton_sdk_redist/raw/master/setup/cepton_sdk-linux-x86_64.deb">Linux</a></p></li>
+</ul>
+<p>On Linux, you will need to set a static IP for the Ethernet interface: <code class="docutils literal notranslate"><span class="pre">192.168.0.1/16</span></code> (<a class="reference external" href="https://www.cepton.com/downloads/videos/cepton_viewer_ubuntu_network.mp4">tutorial</a>).</p>
+</div>
+<div class="section" id="tutorials">
+<h2>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.cepton.com/downloads/videos/cepton_viewer_overview.mp4">Overview</a></p></li>
+<li><p><a class="reference external" href="https://www.cepton.com/downloads/videos/cepton_viewer_capture.mp4">Network Capture</a></p></li>
+<li><p><a class="reference external" href="https://www.cepton.com/downloads/videos/cepton_viewer_settings.mp4">Sensor Settings</a></p></li>
+</ul>
+</div>
+<div class="section" id="main-menu">
+<h2>Main Menu<a class="headerlink" href="#main-menu" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Hover over menu items to view tooltips.</p></li>
+<li><p>When editing value fields, press <code class="docutils literal notranslate"><span class="pre">ESC</span></code> to undo new value and <code class="docutils literal notranslate"><span class="pre">ENTER</span></code> to accept new value.</p></li>
+</ul>
+</div>
+<div class="section" id="camera-controls">
+<h2>Camera Controls<a class="headerlink" href="#camera-controls" title="Permalink to this headline">¶</a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Mouse</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Rotate View</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">LButton</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Translate View</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">RButton</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Zoom View</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MButton</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="workflows">
+<h2>Workflows<a class="headerlink" href="#workflows" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="open-capture">
+<h3>Open Capture<a class="headerlink" href="#open-capture" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Drag and drop capture file/folder onto the main window.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">OR</span></code></p>
+<ul class="simple">
+<li><p>Switch to <code class="docutils literal notranslate"><span class="pre">General</span></code> tab.</p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">Capture</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">Capture</span></code>.</p></li>
+</ul>
+</div>
+<div class="section" id="save-capture">
+<h3>Save Capture<a class="headerlink" href="#save-capture" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Switch to <code class="docutils literal notranslate"><span class="pre">General</span></code> tab.</p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">Capture</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Start</span> <span class="pre">Capture</span></code>.</p></li>
+<li><p>Wait for desired duration.</p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">Capture</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Stop</span> <span class="pre">Capture</span></code>.</p></li>
+</ul>
+<p>The capture is saved at <code class="docutils literal notranslate"><span class="pre">~/Documents/CeptonViewer/&lt;date&gt;/capture_&lt;time&gt;</span></code>.</p>
+</div>
+<div class="section" id="take-screenshot">
+<h3>Take Screenshot<a class="headerlink" href="#take-screenshot" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Switch to <code class="docutils literal notranslate"><span class="pre">General</span></code> tab.</p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">Tools</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Screenshot</span></code>.</p></li>
+</ul>
+<p>The screenshot is saved at <code class="docutils literal notranslate"><span class="pre">~/Documents/CeptonViewer/&lt;date&gt;/screenshot_&lt;time&gt;.png</span></code>.</p>
+</div>
+<div class="section" id="update-sensor-transforms-clips">
+<h3>Update Sensor Transforms/Clips<a class="headerlink" href="#update-sensor-transforms-clips" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Switch to <code class="docutils literal notranslate"><span class="pre">Settings</span></code> tab.</p></li>
+<li><p>For each sensor, update the transforms/clips.</p></li>
+<li><p>Select <code class="docutils literal notranslate"><span class="pre">File</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">Save</span></code>/<code class="docutils literal notranslate"><span class="pre">Save</span> <span class="pre">As...</span></code>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="keyboard-shortcuts">
+<h2>Keyboard Shortcuts<a class="headerlink" href="#keyboard-shortcuts" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="gui">
+<h3>GUI<a class="headerlink" href="#gui" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Hide GUI</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">F11</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="replay">
+<h3>Replay<a class="headerlink" href="#replay" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Pause/Resume</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SPACE</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="view">
+<h3>View<a class="headerlink" href="#view" title="Permalink to this headline">¶</a></h3>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reset Camera Translation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">O</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Camera Front View</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Camera Top View</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Camera Side View</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cepton_player.html" class="btn btn-neutral float-right" title="Cepton Player" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="legal.html" class="btn btn-neutral float-left" title="Legal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Cepton Technologies
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
