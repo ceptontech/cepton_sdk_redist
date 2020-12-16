@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Networking" href="networking.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> cepton_sdk
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> cepton_sdk
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -100,13 +102,14 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Capture Replay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="serial.html">Serial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="c++.html">C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c%2B%2B.html">C++</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -145,7 +148,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Capture Replay</li>
     
@@ -178,13 +181,13 @@
   <div class="section" id="capture-replay">
 <h1>Capture Replay<a class="headerlink" href="#capture-replay" title="Permalink to this headline">¶</a></h1>
 <p>PCAP capture file replay. Functions are not thread safe, and should only be called from the main thread.</p>
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv433cepton_sdk_capture_replay_is_openv">
 <span id="_CPPv333cepton_sdk_capture_replay_is_openv"></span><span id="_CPPv233cepton_sdk_capture_replay_is_openv"></span><span id="cepton_sdk_capture_replay_is_open__void"></span><span class="target" id="cepton__sdk_8h_1a5e9d66967ebf71be588885bb59d3f6fc"></span>int <code class="sig-name descname">cepton_sdk_capture_replay_is_open</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv433cepton_sdk_capture_replay_is_openv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns whether capture replay is open. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv430cepton_sdk_capture_replay_openPCKc">
 <span id="_CPPv330cepton_sdk_capture_replay_openPCKc"></span><span id="_CPPv230cepton_sdk_capture_replay_openPCKc"></span><span id="cepton_sdk_capture_replay_open__cCPC"></span><span class="target" id="cepton__sdk_8h_1ac6b4f7122d47092efa0d1bdd3dfc4778"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_open</code><span class="sig-paren">(</span><em class="property">const</em> char *<em class="property">const</em> <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430cepton_sdk_capture_replay_openPCKc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Opens capture replay. </p>
@@ -198,44 +201,44 @@
 </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv431cepton_sdk_capture_replay_closev">
 <span id="_CPPv331cepton_sdk_capture_replay_closev"></span><span id="_CPPv231cepton_sdk_capture_replay_closev"></span><span id="cepton_sdk_capture_replay_close__void"></span><span class="target" id="cepton__sdk_8h_1a7874feea4c57f07e68150ac2507a79a2"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_close</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431cepton_sdk_capture_replay_closev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Closes capture replay. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv438cepton_sdk_capture_replay_get_filenamev">
 <span id="_CPPv338cepton_sdk_capture_replay_get_filenamev"></span><span id="_CPPv238cepton_sdk_capture_replay_get_filenamev"></span><span id="cepton_sdk_capture_replay_get_filename__void"></span><span class="target" id="cepton__sdk_8h_1a4aa0100843449a14d330888cfab50bdb"></span><em class="property">const</em> char *<code class="sig-name descname">cepton_sdk_capture_replay_get_filename</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv438cepton_sdk_capture_replay_get_filenamev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture replay file name. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv440cepton_sdk_capture_replay_get_start_timev">
 <span id="_CPPv340cepton_sdk_capture_replay_get_start_timev"></span><span id="_CPPv240cepton_sdk_capture_replay_get_start_timev"></span><span id="cepton_sdk_capture_replay_get_start_time__void"></span><span class="target" id="cepton__sdk_8h_1add715df30381be0defccd259bc2a7e0d"></span>int64_t <code class="sig-name descname">cepton_sdk_capture_replay_get_start_time</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv440cepton_sdk_capture_replay_get_start_timev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture start Unix timestamp [microseconds]. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv438cepton_sdk_capture_replay_get_positionv">
 <span id="_CPPv338cepton_sdk_capture_replay_get_positionv"></span><span id="_CPPv238cepton_sdk_capture_replay_get_positionv"></span><span id="cepton_sdk_capture_replay_get_position__void"></span><span class="target" id="cepton__sdk_8h_1ad48d397ead1b2d8ec9b83be3ec444a6d"></span>float <code class="sig-name descname">cepton_sdk_capture_replay_get_position</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv438cepton_sdk_capture_replay_get_positionv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture file position [seconds]. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv436cepton_sdk_capture_replay_get_lengthv">
 <span id="_CPPv336cepton_sdk_capture_replay_get_lengthv"></span><span id="_CPPv236cepton_sdk_capture_replay_get_lengthv"></span><span id="cepton_sdk_capture_replay_get_length__void"></span><span class="target" id="cepton__sdk_8h_1acf37130e98f3b4de2d95e4b45db9e0fc"></span>float <code class="sig-name descname">cepton_sdk_capture_replay_get_length</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv436cepton_sdk_capture_replay_get_lengthv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture file length [seconds]. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv432cepton_sdk_capture_replay_is_endv">
 <span id="_CPPv332cepton_sdk_capture_replay_is_endv"></span><span id="_CPPv232cepton_sdk_capture_replay_is_endv"></span><span id="cepton_sdk_capture_replay_is_end__void"></span><span class="target" id="cepton__sdk_8h_1ab90c27a738e7025c590860393d53ea73"></span>int <code class="sig-name descname">cepton_sdk_capture_replay_is_end</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432cepton_sdk_capture_replay_is_endv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns whether at end of capture file. </p>
 <p>This is only relevant when using <code class="docutils literal notranslate"><span class="pre">resume_blocking</span></code> methods. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv430cepton_sdk_capture_replay_seekf">
 <span id="_CPPv330cepton_sdk_capture_replay_seekf"></span><span id="_CPPv230cepton_sdk_capture_replay_seekf"></span><span id="cepton_sdk_capture_replay_seek__float"></span><span class="target" id="cepton__sdk_8h_1a3a147217aaa2cda5765ebbc2f8cdb1a1"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_seek</code><span class="sig-paren">(</span>float <em>position</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430cepton_sdk_capture_replay_seekf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Seek to capture file position [seconds]. </p>
@@ -248,39 +251,39 @@
 </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv441cepton_sdk_capture_replay_set_enable_loopi">
 <span id="_CPPv341cepton_sdk_capture_replay_set_enable_loopi"></span><span id="_CPPv241cepton_sdk_capture_replay_set_enable_loopi"></span><span id="cepton_sdk_capture_replay_set_enable_loop__i"></span><span class="target" id="cepton__sdk_8h_1a02b04f9007efc36f3fc646907fe0171e"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_set_enable_loop</code><span class="sig-paren">(</span>int <em>enable_loop</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv441cepton_sdk_capture_replay_set_enable_loopi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets capture replay looping. </p>
 <p>If enabled, replay will automatically rewind at end. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv441cepton_sdk_capture_replay_get_enable_loopv">
 <span id="_CPPv341cepton_sdk_capture_replay_get_enable_loopv"></span><span id="_CPPv241cepton_sdk_capture_replay_get_enable_loopv"></span><span id="cepton_sdk_capture_replay_get_enable_loop__void"></span><span class="target" id="cepton__sdk_8h_1a61be7ac1620725a56a724fbb67feec23"></span>int <code class="sig-name descname">cepton_sdk_capture_replay_get_enable_loop</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv441cepton_sdk_capture_replay_get_enable_loopv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns whether capture replay looping is enabled. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv435cepton_sdk_capture_replay_set_speedf">
 <span id="_CPPv335cepton_sdk_capture_replay_set_speedf"></span><span id="_CPPv235cepton_sdk_capture_replay_set_speedf"></span><span id="cepton_sdk_capture_replay_set_speed__float"></span><span class="target" id="cepton__sdk_8h_1a5de8947bb6dada80177afc12856756ed"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_set_speed</code><span class="sig-paren">(</span>float <em>speed</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv435cepton_sdk_capture_replay_set_speedf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets speed multiplier for asynchronous replay. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv435cepton_sdk_capture_replay_get_speedv">
 <span id="_CPPv335cepton_sdk_capture_replay_get_speedv"></span><span id="_CPPv235cepton_sdk_capture_replay_get_speedv"></span><span id="cepton_sdk_capture_replay_get_speed__void"></span><span class="target" id="cepton__sdk_8h_1a8d65e22d763d9c8f60c54be01d6ce3d3"></span>float <code class="sig-name descname">cepton_sdk_capture_replay_get_speed</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv435cepton_sdk_capture_replay_get_speedv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns capture replay speed. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv446cepton_sdk_capture_replay_resume_blocking_oncev">
 <span id="_CPPv346cepton_sdk_capture_replay_resume_blocking_oncev"></span><span id="_CPPv246cepton_sdk_capture_replay_resume_blocking_oncev"></span><span id="cepton_sdk_capture_replay_resume_blocking_once__void"></span><span class="target" id="cepton__sdk_8h_1a416c1db1e3f84dd6f3fd6496993afb6b"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_resume_blocking_once</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv446cepton_sdk_capture_replay_resume_blocking_oncev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Replay next packet in current thread without sleeping. </p>
 <p>Pauses replay thread if running. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv441cepton_sdk_capture_replay_resume_blockingf">
 <span id="_CPPv341cepton_sdk_capture_replay_resume_blockingf"></span><span id="_CPPv241cepton_sdk_capture_replay_resume_blockingf"></span><span id="cepton_sdk_capture_replay_resume_blocking__float"></span><span class="target" id="cepton__sdk_8h_1a8fb0b2af6f4738ade13c8329f2a2858a"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_resume_blocking</code><span class="sig-paren">(</span>float <em>duration</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv441cepton_sdk_capture_replay_resume_blockingf" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Replay multiple packets synchronously. </p>
@@ -294,20 +297,20 @@
 </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv436cepton_sdk_capture_replay_is_runningv">
 <span id="_CPPv336cepton_sdk_capture_replay_is_runningv"></span><span id="_CPPv236cepton_sdk_capture_replay_is_runningv"></span><span id="cepton_sdk_capture_replay_is_running__void"></span><span class="target" id="cepton__sdk_8h_1ab1faf4f7067ca82dc4021b01131e8ea5"></span>int <code class="sig-name descname">cepton_sdk_capture_replay_is_running</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv436cepton_sdk_capture_replay_is_runningv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns true if replay thread is running. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv432cepton_sdk_capture_replay_resumev">
 <span id="_CPPv332cepton_sdk_capture_replay_resumev"></span><span id="_CPPv232cepton_sdk_capture_replay_resumev"></span><span id="cepton_sdk_capture_replay_resume__void"></span><span class="target" id="cepton__sdk_8h_1abf63579ccbde2cb4eba606a31e64082c"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_resume</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432cepton_sdk_capture_replay_resumev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Resumes asynchronous replay thread. </p>
 <p>Packets are replayed in realtime. Replay thread sleeps in between packets. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv431cepton_sdk_capture_replay_pausev">
 <span id="_CPPv331cepton_sdk_capture_replay_pausev"></span><span id="_CPPv231cepton_sdk_capture_replay_pausev"></span><span id="cepton_sdk_capture_replay_pause__void"></span><span class="target" id="cepton__sdk_8h_1aae94ca8a8f9d3f766664871b13133f1c"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_capture_replay_pause</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv431cepton_sdk_capture_replay_pausev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Pauses asynchronous replay thread. </p>
@@ -335,11 +338,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, Cepton Technologies
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -350,7 +361,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

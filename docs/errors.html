@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Setup" href="setup.html" />
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> cepton_sdk
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> cepton_sdk
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -104,13 +106,14 @@
 <li class="toctree-l1"><a class="reference internal" href="capture_replay.html">Capture Replay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="serial.html">Serial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="c++.html">C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c%2B%2B.html">C++</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -149,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Errors</li>
     
@@ -183,103 +186,103 @@
 <h1>Errors<a class="headerlink" href="#errors" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="types">
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv4N10cepton_sdk11SensorErrorE">
-<span id="_CPPv3N10cepton_sdk11SensorErrorE"></span><span id="_CPPv2N10cepton_sdk11SensorErrorE"></span><span id="cepton_sdk::SensorError"></span><span class="target" id="classcepton__sdk_1_1SensorError"></span><em class="property">class </em><code class="sig-name descname">SensorError</code> : <em class="property">public</em> runtime_error<a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorErrorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N10cepton_sdk11SensorErrorE"></span><span id="_CPPv2N10cepton_sdk11SensorErrorE"></span><span id="cepton_sdk::SensorError"></span><span class="target" id="classcepton__sdk_1_1SensorError"></span><em class="property">class </em><code class="sig-prename descclassname">cepton_sdk<code class="sig-prename descclassname">::</code></code><code class="sig-name descname">SensorError</code> : <em class="property">public</em> runtime_error<a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorErrorE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Error returned by most functions. </p>
 <p>Implicitly convertible from/to <code class="docutils literal notranslate"><span class="pre">SensorErrorCode</span></code>. Getter functions do not return an error, because they cannot fail. Will call <code class="docutils literal notranslate"><span class="pre">CEPTON_ASSERT</span></code> if nonzero error is not used (call <code class="docutils literal notranslate"><span class="pre">ignore</span></code> to manually use error). </p>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Public Functions</p>
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE">
 <span id="_CPPv3N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE"></span><span id="_CPPv2N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE"></span><span id="cepton_sdk::SensorError::SensorError__SensorErrorCode.ssCR"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a7b66e511fe24205723f347a1805c99e8"></span><code class="sig-name descname">SensorError</code><span class="sig-paren">(</span>SensorErrorCode <em>code</em>, <em class="property">const</em> std::string &amp;<em>msg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create <a class="reference internal" href="#classcepton__sdk_1_1SensorError"><span class="std std-ref">SensorError</span></a> class object with SensorErrorCode and error message. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCode">
 <span id="_CPPv3N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCode"></span><span id="_CPPv2N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCode"></span><span id="cepton_sdk::SensorError::SensorError__SensorErrorCode"></span><span class="target" id="classcepton__sdk_1_1SensorError_1ac447c7dfa78e85af6d915e663edbe240"></span><code class="sig-name descname">SensorError</code><span class="sig-paren">(</span>SensorErrorCode <em>code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create <a class="reference internal" href="#classcepton__sdk_1_1SensorError"><span class="std std-ref">SensorError</span></a> class object with error code. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N10cepton_sdk11SensorError11SensorErrorEv">
 <span id="_CPPv3N10cepton_sdk11SensorError11SensorErrorEv"></span><span id="_CPPv2N10cepton_sdk11SensorError11SensorErrorEv"></span><span id="cepton_sdk::SensorError::SensorError"></span><span class="target" id="classcepton__sdk_1_1SensorError_1afd3c5c84562612e9388943e250998342"></span><code class="sig-name descname">SensorError</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><a class="reference internal" href="#classcepton__sdk_1_1SensorError"><span class="std std-ref">SensorError</span></a> class default constructor. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N10cepton_sdk11SensorErrorD0Ev">
 <span id="_CPPv3N10cepton_sdk11SensorErrorD0Ev"></span><span id="_CPPv2N10cepton_sdk11SensorErrorD0Ev"></span><span id="cepton_sdk::SensorError::~SensorError"></span><span class="target" id="classcepton__sdk_1_1SensorError_1acb17c01b6d2d4fe5c0f779f5f1aa91c5"></span><code class="sig-name descname">~SensorError</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorErrorD0Ev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><a class="reference internal" href="#classcepton__sdk_1_1SensorError"><span class="std std-ref">SensorError</span></a> class destructor. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N10cepton_sdk11SensorError11SensorErrorERK11SensorError">
-<span id="_CPPv3N10cepton_sdk11SensorError11SensorErrorERK11SensorError"></span><span id="_CPPv2N10cepton_sdk11SensorError11SensorErrorERK11SensorError"></span><span id="cepton_sdk::SensorError::SensorError__SensorErrorCR"></span><span class="target" id="classcepton__sdk_1_1SensorError_1abf81ae0cdd992ef259208675c810142c"></span><code class="sig-name descname">SensorError</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE" title="cepton_sdk::SensorError::SensorError">SensorError</a> &amp;<em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorERK11SensorError" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N10cepton_sdk11SensorError11SensorErrorERK11SensorError"></span><span id="_CPPv2N10cepton_sdk11SensorError11SensorErrorERK11SensorError"></span><span id="cepton_sdk::SensorError::SensorError__SensorErrorCR"></span><span class="target" id="classcepton__sdk_1_1SensorError_1abf81ae0cdd992ef259208675c810142c"></span><code class="sig-name descname">SensorError</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorERK11SensorError" title="cepton_sdk::SensorError::SensorError">SensorError</a> &amp;<em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorError11SensorErrorERK11SensorError" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create <a class="reference internal" href="#classcepton__sdk_1_1SensorError"><span class="std std-ref">SensorError</span></a> object using <a class="reference internal" href="#classcepton__sdk_1_1SensorError"><span class="std std-ref">SensorError</span></a> object. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N10cepton_sdk11SensorErroraSERK11SensorError">
 <span id="_CPPv3N10cepton_sdk11SensorErroraSERK11SensorError"></span><span id="_CPPv2N10cepton_sdk11SensorErroraSERK11SensorError"></span><span id="cepton_sdk::SensorError::assign-operator__SensorErrorCR"></span><span class="target" id="classcepton__sdk_1_1SensorError_1aca9e065c64b319b3a21866ae34fc69ab"></span><a class="reference internal" href="#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<code class="sig-name descname">operator=</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<em>other</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10cepton_sdk11SensorErroraSERK11SensorError" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><a class="reference internal" href="#classcepton__sdk_1_1SensorError"><span class="std std-ref">SensorError</span></a> class assignment operator. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorError4usedEv">
 <span id="_CPPv3NK10cepton_sdk11SensorError4usedEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError4usedEv"></span><span id="cepton_sdk::SensorError::usedC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a49d9c5d75f86a592e6d20e3fea102287"></span>bool <code class="sig-name descname">used</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError4usedEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Internal use only. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorError6ignoreEv">
 <span id="_CPPv3NK10cepton_sdk11SensorError6ignoreEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError6ignoreEv"></span><span id="cepton_sdk::SensorError::ignoreC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1ab844554dc8275c25842b42e22339ed15"></span><em class="property">const</em> <a class="reference internal" href="#_CPPv4N10cepton_sdk11SensorErrorE" title="cepton_sdk::SensorError">SensorError</a> &amp;<code class="sig-name descname">ignore</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError6ignoreEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Mark error as used. </p>
 </dd></dl>
 
-<dl class="function">
-<dt id="_CPPv4NK10cepton_sdk11SensorError4whatEv">
-<span id="_CPPv3NK10cepton_sdk11SensorError4whatEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError4whatEv"></span><span id="cepton_sdk::SensorError::whatC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1aed7e54d43d4c7d5421f10e7fcf7976a2"></span><em class="property">const</em> char *<code class="sig-name descname">what</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError4whatEv" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp function">
+<dt>
+<span class="target" id="classcepton__sdk_1_1SensorError_1aed7e54d43d4c7d5421f10e7fcf7976a2"></span><code class="sig-name descname">const char * what () const noexceptoverride</code></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorError3msgEv">
 <span id="_CPPv3NK10cepton_sdk11SensorError3msgEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError3msgEv"></span><span id="cepton_sdk::SensorError::msgC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1af23b63f696ecadfb6c27084ffd61dcb0"></span><em class="property">const</em> std::string &amp;<code class="sig-name descname">msg</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError3msgEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns error message. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorError4codeEv">
 <span id="_CPPv3NK10cepton_sdk11SensorError4codeEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError4codeEv"></span><span id="cepton_sdk::SensorError::codeC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a4d89ed0ef7d3db2dffb0947ea9c6dc75"></span>SensorErrorCode <code class="sig-name descname">code</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError4codeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns error code. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorErrorcv15SensorErrorCodeEv">
 <span id="_CPPv3NK10cepton_sdk11SensorErrorcv15SensorErrorCodeEv"></span><span id="_CPPv2NK10cepton_sdk11SensorErrorcv15SensorErrorCodeEv"></span><span id="cepton_sdk::SensorError::castto-SensorErrorCode-operatorC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1af2329ded33f75c470c8b245c9031bb5b"></span><code class="sig-name descname">operator SensorErrorCode</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorErrorcv15SensorErrorCodeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Implicitly convert to <code class="docutils literal notranslate"><span class="pre">SensorErrorCode</span></code>. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorErrorcvbEv">
 <span id="_CPPv3NK10cepton_sdk11SensorErrorcvbEv"></span><span id="_CPPv2NK10cepton_sdk11SensorErrorcvbEv"></span><span id="cepton_sdk::SensorError::castto-b-operatorC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1ab8d4da4d109afbafeb6fa8e07367f7c4"></span><code class="sig-name descname">operator bool</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorErrorcvbEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns <code class="docutils literal notranslate"><span class="pre">false</span></code> if error code is <code class="docutils literal notranslate"><span class="pre">CEPTON_SUCCESS</span></code>, true otherwise. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorError4nameEv">
 <span id="_CPPv3NK10cepton_sdk11SensorError4nameEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError4nameEv"></span><span id="cepton_sdk::SensorError::nameC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a250fdf394e1e5ce5843d5d696226fae9"></span><em class="property">const</em> std::string <code class="sig-name descname">name</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError4nameEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns error code name. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorError8is_errorEv">
 <span id="_CPPv3NK10cepton_sdk11SensorError8is_errorEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError8is_errorEv"></span><span id="cepton_sdk::SensorError::is_errorC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1ae770c1095f7bd1db36123af85f067910"></span>bool <code class="sig-name descname">is_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError8is_errorEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns true if parent object is an error. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4NK10cepton_sdk11SensorError8is_faultEv">
 <span id="_CPPv3NK10cepton_sdk11SensorError8is_faultEv"></span><span id="_CPPv2NK10cepton_sdk11SensorError8is_faultEv"></span><span id="cepton_sdk::SensorError::is_faultC"></span><span class="target" id="classcepton__sdk_1_1SensorError_1a7a80615ed87919ed2d28cf4340520994"></span>bool <code class="sig-name descname">is_fault</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK10cepton_sdk11SensorError8is_faultEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns true if parent object is a fault. </p>
@@ -288,176 +291,176 @@
 </div>
 </dd></dl>
 
-<dl class="type">
+<dl class="cpp type">
 <dt id="_CPPv421CeptonSensorErrorCode">
 <span id="_CPPv321CeptonSensorErrorCode"></span><span id="_CPPv221CeptonSensorErrorCode"></span><span id="CeptonSensorErrorCode"></span><span class="target" id="cepton__sdk_8h_1a764f05e2d3a865262416e27fbfb21246"></span><em class="property">typedef </em>int32_t <code class="sig-name descname">CeptonSensorErrorCode</code><a class="headerlink" href="#_CPPv421CeptonSensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Error code returned by most library functions. </p>
 <p>Must call <code class="docutils literal notranslate"><span class="pre">cepton_sdk_get_error</span></code> if nonzero error code is returned. </p>
 </dd></dl>
 
-<dl class="enum">
+<dl class="cpp enum">
 <dt id="_CPPv422_CeptonSensorErrorCode">
 <span id="_CPPv322_CeptonSensorErrorCode"></span><span id="_CPPv222_CeptonSensorErrorCode"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8"></span><em class="property">enum </em><code class="sig-name descname">_CeptonSensorErrorCode</code><a class="headerlink" href="#_CPPv422_CeptonSensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><em>Values:</em></p>
-<dl class="enumerator">
-<dt id="_CPPv414CEPTON_SUCCESS">
-<span id="_CPPv314CEPTON_SUCCESS"></span><span id="_CPPv214CEPTON_SUCCESS"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8ad7180c8b4e4e172b6fa259bf4a6b3a53"></span><code class="sig-name descname">CEPTON_SUCCESS</code> = 0<a class="headerlink" href="#_CPPv414CEPTON_SUCCESS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode14CEPTON_SUCCESSE">
+<span id="_CPPv3N22_CeptonSensorErrorCode14CEPTON_SUCCESSE"></span><span id="_CPPv2N22_CeptonSensorErrorCode14CEPTON_SUCCESSE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8ad7180c8b4e4e172b6fa259bf4a6b3a53"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_SUCCESS</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode14CEPTON_SUCCESSE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>No error. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv420CEPTON_ERROR_GENERIC">
-<span id="_CPPv320CEPTON_ERROR_GENERIC"></span><span id="_CPPv220CEPTON_ERROR_GENERIC"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a71d3526d1c2e7e3d1d814b2f9d81e208"></span><code class="sig-name descname">CEPTON_ERROR_GENERIC</code> = -1<a class="headerlink" href="#_CPPv420CEPTON_ERROR_GENERIC" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode20CEPTON_ERROR_GENERICE">
+<span id="_CPPv3N22_CeptonSensorErrorCode20CEPTON_ERROR_GENERICE"></span><span id="_CPPv2N22_CeptonSensorErrorCode20CEPTON_ERROR_GENERICE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a71d3526d1c2e7e3d1d814b2f9d81e208"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_GENERIC</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode20CEPTON_ERROR_GENERICE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Generic error. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv426CEPTON_ERROR_OUT_OF_MEMORY">
-<span id="_CPPv326CEPTON_ERROR_OUT_OF_MEMORY"></span><span id="_CPPv226CEPTON_ERROR_OUT_OF_MEMORY"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a97b3aba11d2ebcb7d65459d622ab1601"></span><code class="sig-name descname">CEPTON_ERROR_OUT_OF_MEMORY</code> = -2<a class="headerlink" href="#_CPPv426CEPTON_ERROR_OUT_OF_MEMORY" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_OUT_OF_MEMORYE">
+<span id="_CPPv3N22_CeptonSensorErrorCode26CEPTON_ERROR_OUT_OF_MEMORYE"></span><span id="_CPPv2N22_CeptonSensorErrorCode26CEPTON_ERROR_OUT_OF_MEMORYE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a97b3aba11d2ebcb7d65459d622ab1601"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_OUT_OF_MEMORY</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_OUT_OF_MEMORYE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Failed to allocate heap memory. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv429CEPTON_ERROR_SENSOR_NOT_FOUND">
-<span id="_CPPv329CEPTON_ERROR_SENSOR_NOT_FOUND"></span><span id="_CPPv229CEPTON_ERROR_SENSOR_NOT_FOUND"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a5822bd68f254685a4178b1ede4558903"></span><code class="sig-name descname">CEPTON_ERROR_SENSOR_NOT_FOUND</code> = -4<a class="headerlink" href="#_CPPv429CEPTON_ERROR_SENSOR_NOT_FOUND" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode29CEPTON_ERROR_SENSOR_NOT_FOUNDE">
+<span id="_CPPv3N22_CeptonSensorErrorCode29CEPTON_ERROR_SENSOR_NOT_FOUNDE"></span><span id="_CPPv2N22_CeptonSensorErrorCode29CEPTON_ERROR_SENSOR_NOT_FOUNDE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a5822bd68f254685a4178b1ede4558903"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_SENSOR_NOT_FOUND</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode29CEPTON_ERROR_SENSOR_NOT_FOUNDE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Could not find sensor. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv433CEPTON_ERROR_SDK_VERSION_MISMATCH">
-<span id="_CPPv333CEPTON_ERROR_SDK_VERSION_MISMATCH"></span><span id="_CPPv233CEPTON_ERROR_SDK_VERSION_MISMATCH"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a3f47044a8a70b1ea1c76538ae7480ffd"></span><code class="sig-name descname">CEPTON_ERROR_SDK_VERSION_MISMATCH</code> = -5<a class="headerlink" href="#_CPPv433CEPTON_ERROR_SDK_VERSION_MISMATCH" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode33CEPTON_ERROR_SDK_VERSION_MISMATCHE">
+<span id="_CPPv3N22_CeptonSensorErrorCode33CEPTON_ERROR_SDK_VERSION_MISMATCHE"></span><span id="_CPPv2N22_CeptonSensorErrorCode33CEPTON_ERROR_SDK_VERSION_MISMATCHE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a3f47044a8a70b1ea1c76538ae7480ffd"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_SDK_VERSION_MISMATCH</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode33CEPTON_ERROR_SDK_VERSION_MISMATCHE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>SDK version mismatch. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv426CEPTON_ERROR_COMMUNICATION">
-<span id="_CPPv326CEPTON_ERROR_COMMUNICATION"></span><span id="_CPPv226CEPTON_ERROR_COMMUNICATION"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8aebf7e587805d1fc61d12ba51bd8c166b"></span><code class="sig-name descname">CEPTON_ERROR_COMMUNICATION</code> = -6<a class="headerlink" href="#_CPPv426CEPTON_ERROR_COMMUNICATION" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_COMMUNICATIONE">
+<span id="_CPPv3N22_CeptonSensorErrorCode26CEPTON_ERROR_COMMUNICATIONE"></span><span id="_CPPv2N22_CeptonSensorErrorCode26CEPTON_ERROR_COMMUNICATIONE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8aebf7e587805d1fc61d12ba51bd8c166b"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_COMMUNICATION</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_COMMUNICATIONE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Networking error. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv431CEPTON_ERROR_TOO_MANY_CALLBACKS">
-<span id="_CPPv331CEPTON_ERROR_TOO_MANY_CALLBACKS"></span><span id="_CPPv231CEPTON_ERROR_TOO_MANY_CALLBACKS"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a9423c4124071dd7a68c8a53220ea6b76"></span><code class="sig-name descname">CEPTON_ERROR_TOO_MANY_CALLBACKS</code> = -7<a class="headerlink" href="#_CPPv431CEPTON_ERROR_TOO_MANY_CALLBACKS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode31CEPTON_ERROR_TOO_MANY_CALLBACKSE">
+<span id="_CPPv3N22_CeptonSensorErrorCode31CEPTON_ERROR_TOO_MANY_CALLBACKSE"></span><span id="_CPPv2N22_CeptonSensorErrorCode31CEPTON_ERROR_TOO_MANY_CALLBACKSE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a9423c4124071dd7a68c8a53220ea6b76"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_TOO_MANY_CALLBACKS</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode31CEPTON_ERROR_TOO_MANY_CALLBACKSE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback already set. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv430CEPTON_ERROR_INVALID_ARGUMENTS">
-<span id="_CPPv330CEPTON_ERROR_INVALID_ARGUMENTS"></span><span id="_CPPv230CEPTON_ERROR_INVALID_ARGUMENTS"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a3984a85628318523b8781e12a48f53bc"></span><code class="sig-name descname">CEPTON_ERROR_INVALID_ARGUMENTS</code> = -8<a class="headerlink" href="#_CPPv430CEPTON_ERROR_INVALID_ARGUMENTS" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_ARGUMENTSE">
+<span id="_CPPv3N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_ARGUMENTSE"></span><span id="_CPPv2N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_ARGUMENTSE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a3984a85628318523b8781e12a48f53bc"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_INVALID_ARGUMENTS</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_ARGUMENTSE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Invalid value or uninitialized struct. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv432CEPTON_ERROR_ALREADY_INITIALIZED">
-<span id="_CPPv332CEPTON_ERROR_ALREADY_INITIALIZED"></span><span id="_CPPv232CEPTON_ERROR_ALREADY_INITIALIZED"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a69f1732dca14d9100f24381adceebd9c"></span><code class="sig-name descname">CEPTON_ERROR_ALREADY_INITIALIZED</code> = -9<a class="headerlink" href="#_CPPv432CEPTON_ERROR_ALREADY_INITIALIZED" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode32CEPTON_ERROR_ALREADY_INITIALIZEDE">
+<span id="_CPPv3N22_CeptonSensorErrorCode32CEPTON_ERROR_ALREADY_INITIALIZEDE"></span><span id="_CPPv2N22_CeptonSensorErrorCode32CEPTON_ERROR_ALREADY_INITIALIZEDE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a69f1732dca14d9100f24381adceebd9c"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_ALREADY_INITIALIZED</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode32CEPTON_ERROR_ALREADY_INITIALIZEDE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Already initialized. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv428CEPTON_ERROR_NOT_INITIALIZED">
-<span id="_CPPv328CEPTON_ERROR_NOT_INITIALIZED"></span><span id="_CPPv228CEPTON_ERROR_NOT_INITIALIZED"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a25717dcff2d002ed22dd840d5adfc545"></span><code class="sig-name descname">CEPTON_ERROR_NOT_INITIALIZED</code> = -10<a class="headerlink" href="#_CPPv428CEPTON_ERROR_NOT_INITIALIZED" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode28CEPTON_ERROR_NOT_INITIALIZEDE">
+<span id="_CPPv3N22_CeptonSensorErrorCode28CEPTON_ERROR_NOT_INITIALIZEDE"></span><span id="_CPPv2N22_CeptonSensorErrorCode28CEPTON_ERROR_NOT_INITIALIZEDE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a25717dcff2d002ed22dd840d5adfc545"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_NOT_INITIALIZED</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode28CEPTON_ERROR_NOT_INITIALIZEDE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Not initialized. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv430CEPTON_ERROR_INVALID_FILE_TYPE">
-<span id="_CPPv330CEPTON_ERROR_INVALID_FILE_TYPE"></span><span id="_CPPv230CEPTON_ERROR_INVALID_FILE_TYPE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a560741d658df77f452a4ed85a4f07b72"></span><code class="sig-name descname">CEPTON_ERROR_INVALID_FILE_TYPE</code> = -11<a class="headerlink" href="#_CPPv430CEPTON_ERROR_INVALID_FILE_TYPE" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_FILE_TYPEE">
+<span id="_CPPv3N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_FILE_TYPEE"></span><span id="_CPPv2N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_FILE_TYPEE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a560741d658df77f452a4ed85a4f07b72"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_INVALID_FILE_TYPE</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_FILE_TYPEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Invalid file type. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv420CEPTON_ERROR_FILE_IO">
-<span id="_CPPv320CEPTON_ERROR_FILE_IO"></span><span id="_CPPv220CEPTON_ERROR_FILE_IO"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8ab553e1ef5d822caeb3f2674e1cb06824"></span><code class="sig-name descname">CEPTON_ERROR_FILE_IO</code> = -12<a class="headerlink" href="#_CPPv420CEPTON_ERROR_FILE_IO" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode20CEPTON_ERROR_FILE_IOE">
+<span id="_CPPv3N22_CeptonSensorErrorCode20CEPTON_ERROR_FILE_IOE"></span><span id="_CPPv2N22_CeptonSensorErrorCode20CEPTON_ERROR_FILE_IOE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8ab553e1ef5d822caeb3f2674e1cb06824"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_FILE_IO</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode20CEPTON_ERROR_FILE_IOE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>File IO error. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv425CEPTON_ERROR_CORRUPT_FILE">
-<span id="_CPPv325CEPTON_ERROR_CORRUPT_FILE"></span><span id="_CPPv225CEPTON_ERROR_CORRUPT_FILE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8afe965d74f8ee3fdafff0058df60f08f0"></span><code class="sig-name descname">CEPTON_ERROR_CORRUPT_FILE</code> = -13<a class="headerlink" href="#_CPPv425CEPTON_ERROR_CORRUPT_FILE" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode25CEPTON_ERROR_CORRUPT_FILEE">
+<span id="_CPPv3N22_CeptonSensorErrorCode25CEPTON_ERROR_CORRUPT_FILEE"></span><span id="_CPPv2N22_CeptonSensorErrorCode25CEPTON_ERROR_CORRUPT_FILEE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8afe965d74f8ee3fdafff0058df60f08f0"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_CORRUPT_FILE</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode25CEPTON_ERROR_CORRUPT_FILEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Corrupt/invalid file. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv421CEPTON_ERROR_NOT_OPEN">
-<span id="_CPPv321CEPTON_ERROR_NOT_OPEN"></span><span id="_CPPv221CEPTON_ERROR_NOT_OPEN"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a1654fa47d80650b53249f4de5b18136f"></span><code class="sig-name descname">CEPTON_ERROR_NOT_OPEN</code> = -14<a class="headerlink" href="#_CPPv421CEPTON_ERROR_NOT_OPEN" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode21CEPTON_ERROR_NOT_OPENE">
+<span id="_CPPv3N22_CeptonSensorErrorCode21CEPTON_ERROR_NOT_OPENE"></span><span id="_CPPv2N22_CeptonSensorErrorCode21CEPTON_ERROR_NOT_OPENE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a1654fa47d80650b53249f4de5b18136f"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_NOT_OPEN</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode21CEPTON_ERROR_NOT_OPENE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Not open. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv416CEPTON_ERROR_EOF">
-<span id="_CPPv316CEPTON_ERROR_EOF"></span><span id="_CPPv216CEPTON_ERROR_EOF"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a825b7a5765359b94c20abe00042f6b84"></span><code class="sig-name descname">CEPTON_ERROR_EOF</code> = -15<a class="headerlink" href="#_CPPv416CEPTON_ERROR_EOF" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode16CEPTON_ERROR_EOFE">
+<span id="_CPPv3N22_CeptonSensorErrorCode16CEPTON_ERROR_EOFE"></span><span id="_CPPv2N22_CeptonSensorErrorCode16CEPTON_ERROR_EOFE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a825b7a5765359b94c20abe00042f6b84"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_EOF</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode16CEPTON_ERROR_EOFE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>End of file. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv426CEPTON_ERROR_NOT_SUPPORTED">
-<span id="_CPPv326CEPTON_ERROR_NOT_SUPPORTED"></span><span id="_CPPv226CEPTON_ERROR_NOT_SUPPORTED"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a98c9843f6fada75510e2e4238131ce13"></span><code class="sig-name descname">CEPTON_ERROR_NOT_SUPPORTED</code> = -16<a class="headerlink" href="#_CPPv426CEPTON_ERROR_NOT_SUPPORTED" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_NOT_SUPPORTEDE">
+<span id="_CPPv3N22_CeptonSensorErrorCode26CEPTON_ERROR_NOT_SUPPORTEDE"></span><span id="_CPPv2N22_CeptonSensorErrorCode26CEPTON_ERROR_NOT_SUPPORTEDE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a98c9843f6fada75510e2e4238131ce13"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_NOT_SUPPORTED</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_NOT_SUPPORTEDE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Functionality not supported by device. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv429CEPTON_ERROR_INVALID_RESPONSE">
-<span id="_CPPv329CEPTON_ERROR_INVALID_RESPONSE"></span><span id="_CPPv229CEPTON_ERROR_INVALID_RESPONSE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a95a4e68e7cd38da4ed6e0f5f0e26f749"></span><code class="sig-name descname">CEPTON_ERROR_INVALID_RESPONSE</code> = -17<a class="headerlink" href="#_CPPv429CEPTON_ERROR_INVALID_RESPONSE" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode29CEPTON_ERROR_INVALID_RESPONSEE">
+<span id="_CPPv3N22_CeptonSensorErrorCode29CEPTON_ERROR_INVALID_RESPONSEE"></span><span id="_CPPv2N22_CeptonSensorErrorCode29CEPTON_ERROR_INVALID_RESPONSEE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a95a4e68e7cd38da4ed6e0f5f0e26f749"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_INVALID_RESPONSE</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode29CEPTON_ERROR_INVALID_RESPONSEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Device response invalid. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv426CEPTON_ERROR_INVALID_STATE">
-<span id="_CPPv326CEPTON_ERROR_INVALID_STATE"></span><span id="_CPPv226CEPTON_ERROR_INVALID_STATE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a8d08dd772cc15bb0b684ffd803243234"></span><code class="sig-name descname">CEPTON_ERROR_INVALID_STATE</code> = -18<a class="headerlink" href="#_CPPv426CEPTON_ERROR_INVALID_STATE" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_INVALID_STATEE">
+<span id="_CPPv3N22_CeptonSensorErrorCode26CEPTON_ERROR_INVALID_STATEE"></span><span id="_CPPv2N22_CeptonSensorErrorCode26CEPTON_ERROR_INVALID_STATEE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a8d08dd772cc15bb0b684ffd803243234"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_ERROR_INVALID_STATE</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_INVALID_STATEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Software state invalid. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv421CEPTON_FAULT_INTERNAL">
-<span id="_CPPv321CEPTON_FAULT_INTERNAL"></span><span id="_CPPv221CEPTON_FAULT_INTERNAL"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8aa07edabc8868d1645b9bc00652563fdb"></span><code class="sig-name descname">CEPTON_FAULT_INTERNAL</code> = -1000<a class="headerlink" href="#_CPPv421CEPTON_FAULT_INTERNAL" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode21CEPTON_FAULT_INTERNALE">
+<span id="_CPPv3N22_CeptonSensorErrorCode21CEPTON_FAULT_INTERNALE"></span><span id="_CPPv2N22_CeptonSensorErrorCode21CEPTON_FAULT_INTERNALE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8aa07edabc8868d1645b9bc00652563fdb"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_INTERNAL</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode21CEPTON_FAULT_INTERNALE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Internal sensor parameter out of range. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv432CEPTON_FAULT_EXTREME_TEMPERATURE">
-<span id="_CPPv332CEPTON_FAULT_EXTREME_TEMPERATURE"></span><span id="_CPPv232CEPTON_FAULT_EXTREME_TEMPERATURE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8afd2d469866d470f26a237bbd9f2590a4"></span><code class="sig-name descname">CEPTON_FAULT_EXTREME_TEMPERATURE</code> = -1001<a class="headerlink" href="#_CPPv432CEPTON_FAULT_EXTREME_TEMPERATURE" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode32CEPTON_FAULT_EXTREME_TEMPERATUREE">
+<span id="_CPPv3N22_CeptonSensorErrorCode32CEPTON_FAULT_EXTREME_TEMPERATUREE"></span><span id="_CPPv2N22_CeptonSensorErrorCode32CEPTON_FAULT_EXTREME_TEMPERATUREE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8afd2d469866d470f26a237bbd9f2590a4"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_EXTREME_TEMPERATURE</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode32CEPTON_FAULT_EXTREME_TEMPERATUREE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Extreme sensor temperature fault. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv429CEPTON_FAULT_EXTREME_HUMIDITY">
-<span id="_CPPv329CEPTON_FAULT_EXTREME_HUMIDITY"></span><span id="_CPPv229CEPTON_FAULT_EXTREME_HUMIDITY"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8adcb5560a2c7cd47ebb5e53e0d7698be2"></span><code class="sig-name descname">CEPTON_FAULT_EXTREME_HUMIDITY</code> = -1002<a class="headerlink" href="#_CPPv429CEPTON_FAULT_EXTREME_HUMIDITY" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode29CEPTON_FAULT_EXTREME_HUMIDITYE">
+<span id="_CPPv3N22_CeptonSensorErrorCode29CEPTON_FAULT_EXTREME_HUMIDITYE"></span><span id="_CPPv2N22_CeptonSensorErrorCode29CEPTON_FAULT_EXTREME_HUMIDITYE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8adcb5560a2c7cd47ebb5e53e0d7698be2"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_EXTREME_HUMIDITY</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode29CEPTON_FAULT_EXTREME_HUMIDITYE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Extreme sensor humidity fault. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv433CEPTON_FAULT_EXTREME_ACCELERATION">
-<span id="_CPPv333CEPTON_FAULT_EXTREME_ACCELERATION"></span><span id="_CPPv233CEPTON_FAULT_EXTREME_ACCELERATION"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a1405a7a2469bc256437ee4906e382dab"></span><code class="sig-name descname">CEPTON_FAULT_EXTREME_ACCELERATION</code> = -1003<a class="headerlink" href="#_CPPv433CEPTON_FAULT_EXTREME_ACCELERATION" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode33CEPTON_FAULT_EXTREME_ACCELERATIONE">
+<span id="_CPPv3N22_CeptonSensorErrorCode33CEPTON_FAULT_EXTREME_ACCELERATIONE"></span><span id="_CPPv2N22_CeptonSensorErrorCode33CEPTON_FAULT_EXTREME_ACCELERATIONE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a1405a7a2469bc256437ee4906e382dab"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_EXTREME_ACCELERATION</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode33CEPTON_FAULT_EXTREME_ACCELERATIONE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Extreme sensor acceleration fault. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv426CEPTON_FAULT_SCAN_COVERAGE">
-<span id="_CPPv326CEPTON_FAULT_SCAN_COVERAGE"></span><span id="_CPPv226CEPTON_FAULT_SCAN_COVERAGE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a64553e23fc60123cfadf056b737c36d6"></span><code class="sig-name descname">CEPTON_FAULT_SCAN_COVERAGE</code> = -1004<a class="headerlink" href="#_CPPv426CEPTON_FAULT_SCAN_COVERAGE" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode26CEPTON_FAULT_SCAN_COVERAGEE">
+<span id="_CPPv3N22_CeptonSensorErrorCode26CEPTON_FAULT_SCAN_COVERAGEE"></span><span id="_CPPv2N22_CeptonSensorErrorCode26CEPTON_FAULT_SCAN_COVERAGEE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a64553e23fc60123cfadf056b737c36d6"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_SCAN_COVERAGE</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode26CEPTON_FAULT_SCAN_COVERAGEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Abnormal sensor FOV fault. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv432CEPTON_FAULT_ABNORMAL_FRAME_RATE">
-<span id="_CPPv332CEPTON_FAULT_ABNORMAL_FRAME_RATE"></span><span id="_CPPv232CEPTON_FAULT_ABNORMAL_FRAME_RATE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8adaded51ab9124c17725b7ce4538ec949"></span><code class="sig-name descname">CEPTON_FAULT_ABNORMAL_FRAME_RATE</code> = -1005<a class="headerlink" href="#_CPPv432CEPTON_FAULT_ABNORMAL_FRAME_RATE" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode32CEPTON_FAULT_ABNORMAL_FRAME_RATEE">
+<span id="_CPPv3N22_CeptonSensorErrorCode32CEPTON_FAULT_ABNORMAL_FRAME_RATEE"></span><span id="_CPPv2N22_CeptonSensorErrorCode32CEPTON_FAULT_ABNORMAL_FRAME_RATEE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8adaded51ab9124c17725b7ce4538ec949"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_ABNORMAL_FRAME_RATE</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode32CEPTON_FAULT_ABNORMAL_FRAME_RATEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Abnormal sensor frame rate fault. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv430CEPTON_FAULT_MOTOR_MALFUNCTION">
-<span id="_CPPv330CEPTON_FAULT_MOTOR_MALFUNCTION"></span><span id="_CPPv230CEPTON_FAULT_MOTOR_MALFUNCTION"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a386f23f21e71d2d4386a7c276747c480"></span><code class="sig-name descname">CEPTON_FAULT_MOTOR_MALFUNCTION</code> = -1006<a class="headerlink" href="#_CPPv430CEPTON_FAULT_MOTOR_MALFUNCTION" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode30CEPTON_FAULT_MOTOR_MALFUNCTIONE">
+<span id="_CPPv3N22_CeptonSensorErrorCode30CEPTON_FAULT_MOTOR_MALFUNCTIONE"></span><span id="_CPPv2N22_CeptonSensorErrorCode30CEPTON_FAULT_MOTOR_MALFUNCTIONE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a386f23f21e71d2d4386a7c276747c480"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_MOTOR_MALFUNCTION</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode30CEPTON_FAULT_MOTOR_MALFUNCTIONE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sensor motor malfunction fault. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv430CEPTON_FAULT_LASER_MALFUNCTION">
-<span id="_CPPv330CEPTON_FAULT_LASER_MALFUNCTION"></span><span id="_CPPv230CEPTON_FAULT_LASER_MALFUNCTION"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a9fbe6e1a4116f6faae7eb8a05a257181"></span><code class="sig-name descname">CEPTON_FAULT_LASER_MALFUNCTION</code> = -1007<a class="headerlink" href="#_CPPv430CEPTON_FAULT_LASER_MALFUNCTION" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode30CEPTON_FAULT_LASER_MALFUNCTIONE">
+<span id="_CPPv3N22_CeptonSensorErrorCode30CEPTON_FAULT_LASER_MALFUNCTIONE"></span><span id="_CPPv2N22_CeptonSensorErrorCode30CEPTON_FAULT_LASER_MALFUNCTIONE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a9fbe6e1a4116f6faae7eb8a05a257181"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_LASER_MALFUNCTION</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode30CEPTON_FAULT_LASER_MALFUNCTIONE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sensor laser malfunction fault. </p>
 </dd></dl>
 
-<dl class="enumerator">
-<dt id="_CPPv433CEPTON_FAULT_DETECTOR_MALFUNCTION">
-<span id="_CPPv333CEPTON_FAULT_DETECTOR_MALFUNCTION"></span><span id="_CPPv233CEPTON_FAULT_DETECTOR_MALFUNCTION"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a24eb87b4a350978543ce649c6778797e"></span><code class="sig-name descname">CEPTON_FAULT_DETECTOR_MALFUNCTION</code> = -1008<a class="headerlink" href="#_CPPv433CEPTON_FAULT_DETECTOR_MALFUNCTION" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N22_CeptonSensorErrorCode33CEPTON_FAULT_DETECTOR_MALFUNCTIONE">
+<span id="_CPPv3N22_CeptonSensorErrorCode33CEPTON_FAULT_DETECTOR_MALFUNCTIONE"></span><span id="_CPPv2N22_CeptonSensorErrorCode33CEPTON_FAULT_DETECTOR_MALFUNCTIONE"></span><span class="target" id="cepton__sdk_8h_1a6b9daea1f2a5a16039ca87c11f7ab7c8a24eb87b4a350978543ce649c6778797e"></span><em class="property">enumerator </em><code class="sig-name descname">CEPTON_FAULT_DETECTOR_MALFUNCTION</code><a class="headerlink" href="#_CPPv4N22_CeptonSensorErrorCode33CEPTON_FAULT_DETECTOR_MALFUNCTIONE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sensor detector malfunction fault. </p>
 </dd></dl>
 
@@ -466,7 +469,7 @@
 </div>
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv426cepton_get_error_code_name21CeptonSensorErrorCode">
 <span id="_CPPv326cepton_get_error_code_name21CeptonSensorErrorCode"></span><span id="_CPPv226cepton_get_error_code_name21CeptonSensorErrorCode"></span><span id="cepton_get_error_code_name__CeptonSensorErrorCode"></span><span class="target" id="cepton__sdk_8h_1ab7ad3a528d31dc7dfc08237fb107b591"></span><em class="property">const</em> char *<code class="sig-name descname">cepton_get_error_code_name</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv426cepton_get_error_code_name21CeptonSensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns error code name string. </p>
@@ -478,19 +481,19 @@
 </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv420cepton_is_error_code21CeptonSensorErrorCode">
 <span id="_CPPv320cepton_is_error_code21CeptonSensorErrorCode"></span><span id="_CPPv220cepton_is_error_code21CeptonSensorErrorCode"></span><span id="cepton_is_error_code__CeptonSensorErrorCode"></span><span class="target" id="cepton__sdk_8h_1a6c24b53493943453340d33adc97374c3"></span>int <code class="sig-name descname">cepton_is_error_code</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420cepton_is_error_code21CeptonSensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns whether <code class="docutils literal notranslate"><span class="pre">error_code</span></code> is of the form <code class="docutils literal notranslate"><span class="pre">CEPTON_ERROR_*</span></code>. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv420cepton_is_fault_code21CeptonSensorErrorCode">
 <span id="_CPPv320cepton_is_fault_code21CeptonSensorErrorCode"></span><span id="_CPPv220cepton_is_fault_code21CeptonSensorErrorCode"></span><span id="cepton_is_fault_code__CeptonSensorErrorCode"></span><span class="target" id="cepton__sdk_8h_1af0f32fa83a045156f7737221451fdae4"></span>int <code class="sig-name descname">cepton_is_fault_code</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <em>error_code</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420cepton_is_fault_code21CeptonSensorErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns whether <code class="docutils literal notranslate"><span class="pre">error_code</span></code> is of the form <code class="docutils literal notranslate"><span class="pre">CEPTON_FAULT_*</span></code>. </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv420cepton_sdk_get_errorPPKc">
 <span id="_CPPv320cepton_sdk_get_errorPPKc"></span><span id="_CPPv220cepton_sdk_get_errorPPKc"></span><span id="cepton_sdk_get_error__cCPP"></span><span class="target" id="cepton__sdk_8h_1a26a6d4d4fc093f03d63d6435711e4203"></span><a class="reference internal" href="#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_get_error</code><span class="sig-paren">(</span><em class="property">const</em> char **<em>error_msg</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420cepton_sdk_get_errorPPKc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns and clears last sdk error. </p>
@@ -528,11 +531,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, Cepton Technologies
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -543,7 +554,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

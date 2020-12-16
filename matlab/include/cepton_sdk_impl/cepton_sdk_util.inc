@@ -157,7 +157,7 @@ inline void Organizer::organize_points(
         organized_cloud, unorganized_point.image_x, unorganized_point.image_z);
 
     int n_return = 0;
-    if (unorganized_point.return_type | CEPTON_RETURN_STRONGEST) {
+    if ((unorganized_point.return_type | CEPTON_RETURN_STRONGEST) != 0) {
       n_return = 0;
     } else if (n_returns > 1) {
       n_return = 1;

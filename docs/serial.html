@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,30 +11,32 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="C++" href="c++.html" />
+    <link rel="next" title="C++" href="c%2B%2B.html" />
     <link rel="prev" title="Networking" href="networking.html" /> 
 </head>
 
@@ -50,7 +51,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> cepton_sdk
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> cepton_sdk
           
 
           
@@ -73,6 +74,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -104,13 +106,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#methods">Methods</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="c++.html">C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c%2B%2B.html">C++</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -149,7 +152,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Serial</li>
     
@@ -167,7 +170,7 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="c++.html" class="btn btn-neutral float-right" title="C++" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="c%2B%2B.html" class="btn btn-neutral float-right" title="C++" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="networking.html" class="btn btn-neutral float-left" title="Networking" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -184,7 +187,7 @@
 <p>Serial callback. Primarily used for receiving data from GPS/INS attached to sensor.</p>
 <div class="section" id="types">
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
-<dl class="type">
+<dl class="cpp type">
 <dt id="_CPPv429FpCeptonSerialReceiveCallback">
 <span id="_CPPv329FpCeptonSerialReceiveCallback"></span><span id="_CPPv229FpCeptonSerialReceiveCallback"></span><span id="FpCeptonSerialReceiveCallback"></span><span class="target" id="cepton__sdk_8h_1a082ed9bd698da8b06c758c485314c8ef"></span><em class="property">typedef </em>void (*<code class="sig-name descname">FpCeptonSerialReceiveCallback</code>)<span class="sig-paren">(</span><a class="reference internal" href="sensors.html#_CPPv418CeptonSensorHandle" title="CeptonSensorHandle">CeptonSensorHandle</a> handle, <em class="property">const</em> char *str, void *user_data<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv429FpCeptonSerialReceiveCallback" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Callback for receiving serial data (e.g. NMEA). </p>
@@ -202,7 +205,7 @@
 </div>
 <div class="section" id="methods">
 <h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv430cepton_sdk_listen_serial_lines29FpCeptonSerialReceiveCallbackPCv">
 <span id="_CPPv330cepton_sdk_listen_serial_lines29FpCeptonSerialReceiveCallbackPCv"></span><span id="_CPPv230cepton_sdk_listen_serial_lines29FpCeptonSerialReceiveCallbackPCv"></span><span id="cepton_sdk_listen_serial_lines__FpCeptonSerialReceiveCallback.voidPC"></span><span class="target" id="cepton__sdk_8h_1a7be27c150bd4725a99783cda608ca8a8"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_listen_serial_lines</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv429FpCeptonSerialReceiveCallback" title="FpCeptonSerialReceiveCallback">FpCeptonSerialReceiveCallback</a> <em>cb</em>, void *<em class="property">const</em> <em>user_data</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv430cepton_sdk_listen_serial_lines29FpCeptonSerialReceiveCallbackPCv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sets serial line callback. </p>
@@ -218,7 +221,7 @@
 </p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv432cepton_sdk_unlisten_serial_linesv">
 <span id="_CPPv332cepton_sdk_unlisten_serial_linesv"></span><span id="_CPPv232cepton_sdk_unlisten_serial_linesv"></span><span id="cepton_sdk_unlisten_serial_lines__void"></span><span class="target" id="cepton__sdk_8h_1a31d4cbcc1ca5f0cc4e69ba1c9d6b74a6"></span><a class="reference internal" href="errors.html#_CPPv421CeptonSensorErrorCode" title="CeptonSensorErrorCode">CeptonSensorErrorCode</a> <code class="sig-name descname">cepton_sdk_unlisten_serial_lines</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv432cepton_sdk_unlisten_serial_linesv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Clears serial line callback. </p>
@@ -235,7 +238,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="c++.html" class="btn btn-neutral float-right" title="C++" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="c%2B%2B.html" class="btn btn-neutral float-right" title="C++" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="networking.html" class="btn btn-neutral float-left" title="Networking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -247,11 +250,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, Cepton Technologies
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -262,7 +273,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -1,9 +1,7 @@
 
 
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -13,27 +11,29 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" /> 
 </head>
@@ -49,7 +49,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> cepton_sdk
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> cepton_sdk
           
 
           
@@ -72,6 +72,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -99,13 +100,14 @@
 <li class="toctree-l1"><a class="reference internal" href="capture_replay.html">Capture Replay</a></li>
 <li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="serial.html">Serial</a></li>
-<li class="toctree-l1"><a class="reference internal" href="c++.html">C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="c%2B%2B.html">C++</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utilities.html">Utilities</a></li>
 </ul>
 
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -144,7 +146,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Index</li>
     
@@ -170,9 +172,6 @@
  <a href="#_"><strong>_</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#F"><strong>F</strong></a>
- | <a href="#H"><strong>H</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#V"><strong>V</strong></a>
  
 </div>
 <h2 id="_">_</h2>
@@ -180,13 +179,111 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="setup.html#_CPPv417_CeptonSDKControl">_CeptonSDKControl (C++ enum)</a>
 </li>
+      <li><a href="setup.html#_CPPv4N17_CeptonSDKControl34CEPTON_SDK_CONTROL_DISABLE_NETWORKE">_CeptonSDKControl::CEPTON_SDK_CONTROL_DISABLE_NETWORK (C++ enumerator)</a>
+</li>
+      <li><a href="setup.html#_CPPv4N17_CeptonSDKControl42CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNSE">_CeptonSDKControl::CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS (C++ enumerator)</a>
+</li>
+      <li><a href="setup.html#_CPPv4N17_CeptonSDKControl34CEPTON_SDK_CONTROL_HOST_TIMESTAMPSE">_CeptonSDKControl::CEPTON_SDK_CONTROL_HOST_TIMESTAMPS (C++ enumerator)</a>
+</li>
+      <li><a href="setup.html#_CPPv4N17_CeptonSDKControl27CEPTON_SDK_CONTROL_RESERVEDE">_CeptonSDKControl::CEPTON_SDK_CONTROL_RESERVED (C++ enumerator)</a>
+</li>
       <li><a href="setup.html#_CPPv419_CeptonSDKFrameMode">_CeptonSDKFrameMode (C++ enum)</a>
+</li>
+      <li><a href="setup.html#_CPPv4N19_CeptonSDKFrameMode22CEPTON_SDK_FRAME_COVERE">_CeptonSDKFrameMode::CEPTON_SDK_FRAME_COVER (C++ enumerator)</a>
+</li>
+      <li><a href="setup.html#_CPPv4N19_CeptonSDKFrameMode22CEPTON_SDK_FRAME_CYCLEE">_CeptonSDKFrameMode::CEPTON_SDK_FRAME_CYCLE (C++ enumerator)</a>
+</li>
+      <li><a href="setup.html#_CPPv4N19_CeptonSDKFrameMode25CEPTON_SDK_FRAME_MODE_MAXE">_CeptonSDKFrameMode::CEPTON_SDK_FRAME_MODE_MAX (C++ enumerator)</a>
+</li>
+      <li><a href="setup.html#_CPPv4N19_CeptonSDKFrameMode26CEPTON_SDK_FRAME_STREAMINGE">_CeptonSDKFrameMode::CEPTON_SDK_FRAME_STREAMING (C++ enumerator)</a>
+</li>
+      <li><a href="setup.html#_CPPv4N19_CeptonSDKFrameMode22CEPTON_SDK_FRAME_TIMEDE">_CeptonSDKFrameMode::CEPTON_SDK_FRAME_TIMED (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv422_CeptonSensorErrorCode">_CeptonSensorErrorCode (C++ enum)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode32CEPTON_ERROR_ALREADY_INITIALIZEDE">_CeptonSensorErrorCode::CEPTON_ERROR_ALREADY_INITIALIZED (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_COMMUNICATIONE">_CeptonSensorErrorCode::CEPTON_ERROR_COMMUNICATION (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode25CEPTON_ERROR_CORRUPT_FILEE">_CeptonSensorErrorCode::CEPTON_ERROR_CORRUPT_FILE (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode16CEPTON_ERROR_EOFE">_CeptonSensorErrorCode::CEPTON_ERROR_EOF (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode20CEPTON_ERROR_FILE_IOE">_CeptonSensorErrorCode::CEPTON_ERROR_FILE_IO (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode20CEPTON_ERROR_GENERICE">_CeptonSensorErrorCode::CEPTON_ERROR_GENERIC (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_ARGUMENTSE">_CeptonSensorErrorCode::CEPTON_ERROR_INVALID_ARGUMENTS (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode30CEPTON_ERROR_INVALID_FILE_TYPEE">_CeptonSensorErrorCode::CEPTON_ERROR_INVALID_FILE_TYPE (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode29CEPTON_ERROR_INVALID_RESPONSEE">_CeptonSensorErrorCode::CEPTON_ERROR_INVALID_RESPONSE (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_INVALID_STATEE">_CeptonSensorErrorCode::CEPTON_ERROR_INVALID_STATE (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode28CEPTON_ERROR_NOT_INITIALIZEDE">_CeptonSensorErrorCode::CEPTON_ERROR_NOT_INITIALIZED (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode21CEPTON_ERROR_NOT_OPENE">_CeptonSensorErrorCode::CEPTON_ERROR_NOT_OPEN (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_NOT_SUPPORTEDE">_CeptonSensorErrorCode::CEPTON_ERROR_NOT_SUPPORTED (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode26CEPTON_ERROR_OUT_OF_MEMORYE">_CeptonSensorErrorCode::CEPTON_ERROR_OUT_OF_MEMORY (C++ enumerator)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="errors.html#_CPPv422_CeptonSensorErrorCode">_CeptonSensorErrorCode (C++ enum)</a>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode33CEPTON_ERROR_SDK_VERSION_MISMATCHE">_CeptonSensorErrorCode::CEPTON_ERROR_SDK_VERSION_MISMATCH (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode29CEPTON_ERROR_SENSOR_NOT_FOUNDE">_CeptonSensorErrorCode::CEPTON_ERROR_SENSOR_NOT_FOUND (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode31CEPTON_ERROR_TOO_MANY_CALLBACKSE">_CeptonSensorErrorCode::CEPTON_ERROR_TOO_MANY_CALLBACKS (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode32CEPTON_FAULT_ABNORMAL_FRAME_RATEE">_CeptonSensorErrorCode::CEPTON_FAULT_ABNORMAL_FRAME_RATE (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode33CEPTON_FAULT_DETECTOR_MALFUNCTIONE">_CeptonSensorErrorCode::CEPTON_FAULT_DETECTOR_MALFUNCTION (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode33CEPTON_FAULT_EXTREME_ACCELERATIONE">_CeptonSensorErrorCode::CEPTON_FAULT_EXTREME_ACCELERATION (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode29CEPTON_FAULT_EXTREME_HUMIDITYE">_CeptonSensorErrorCode::CEPTON_FAULT_EXTREME_HUMIDITY (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode32CEPTON_FAULT_EXTREME_TEMPERATUREE">_CeptonSensorErrorCode::CEPTON_FAULT_EXTREME_TEMPERATURE (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode21CEPTON_FAULT_INTERNALE">_CeptonSensorErrorCode::CEPTON_FAULT_INTERNAL (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode30CEPTON_FAULT_LASER_MALFUNCTIONE">_CeptonSensorErrorCode::CEPTON_FAULT_LASER_MALFUNCTION (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode30CEPTON_FAULT_MOTOR_MALFUNCTIONE">_CeptonSensorErrorCode::CEPTON_FAULT_MOTOR_MALFUNCTION (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode26CEPTON_FAULT_SCAN_COVERAGEE">_CeptonSensorErrorCode::CEPTON_FAULT_SCAN_COVERAGE (C++ enumerator)</a>
+</li>
+      <li><a href="errors.html#_CPPv4N22_CeptonSensorErrorCode14CEPTON_SUCCESSE">_CeptonSensorErrorCode::CEPTON_SUCCESS (C++ enumerator)</a>
 </li>
       <li><a href="sensors.html#_CPPv418_CeptonSensorModel">_CeptonSensorModel (C++ enum)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel23CEPTON_SENSOR_MODEL_MAXE">_CeptonSensorModel::CEPTON_SENSOR_MODEL_MAX (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel8HR80T_R2E">_CeptonSensorModel::HR80T_R2 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel5HR80WE">_CeptonSensorModel::HR80W (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel8SORA_P60E">_CeptonSensorModel::SORA_P60 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel8SORA_P61E">_CeptonSensorModel::SORA_P61 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel8SORA_P90E">_CeptonSensorModel::SORA_P90 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel14VISTA_860_GEN2E">_CeptonSensorModel::VISTA_860_GEN2 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel9VISTA_P60E">_CeptonSensorModel::VISTA_P60 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel9VISTA_P61E">_CeptonSensorModel::VISTA_P61 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel9VISTA_P90E">_CeptonSensorModel::VISTA_P90 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel9VISTA_T30E">_CeptonSensorModel::VISTA_T30 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel10VISTA_X120E">_CeptonSensorModel::VISTA_X120 (C++ enumerator)</a>
+</li>
+      <li><a href="sensors.html#_CPPv4N18_CeptonSensorModel9VISTA_X15E">_CeptonSensorModel::VISTA_X15 (C++ enumerator)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -194,59 +291,7 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="c++.html#c.CEPTON_CHECK_ERROR">CEPTON_CHECK_ERROR (C macro)</a>
-</li>
-      <li><a href="errors.html#_CPPv432CEPTON_ERROR_ALREADY_INITIALIZED">CEPTON_ERROR_ALREADY_INITIALIZED (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv426CEPTON_ERROR_COMMUNICATION">CEPTON_ERROR_COMMUNICATION (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv425CEPTON_ERROR_CORRUPT_FILE">CEPTON_ERROR_CORRUPT_FILE (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv416CEPTON_ERROR_EOF">CEPTON_ERROR_EOF (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv420CEPTON_ERROR_FILE_IO">CEPTON_ERROR_FILE_IO (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv420CEPTON_ERROR_GENERIC">CEPTON_ERROR_GENERIC (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv430CEPTON_ERROR_INVALID_ARGUMENTS">CEPTON_ERROR_INVALID_ARGUMENTS (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv430CEPTON_ERROR_INVALID_FILE_TYPE">CEPTON_ERROR_INVALID_FILE_TYPE (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv429CEPTON_ERROR_INVALID_RESPONSE">CEPTON_ERROR_INVALID_RESPONSE (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv426CEPTON_ERROR_INVALID_STATE">CEPTON_ERROR_INVALID_STATE (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv428CEPTON_ERROR_NOT_INITIALIZED">CEPTON_ERROR_NOT_INITIALIZED (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv421CEPTON_ERROR_NOT_OPEN">CEPTON_ERROR_NOT_OPEN (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv426CEPTON_ERROR_NOT_SUPPORTED">CEPTON_ERROR_NOT_SUPPORTED (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv426CEPTON_ERROR_OUT_OF_MEMORY">CEPTON_ERROR_OUT_OF_MEMORY (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv433CEPTON_ERROR_SDK_VERSION_MISMATCH">CEPTON_ERROR_SDK_VERSION_MISMATCH (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv429CEPTON_ERROR_SENSOR_NOT_FOUND">CEPTON_ERROR_SENSOR_NOT_FOUND (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv431CEPTON_ERROR_TOO_MANY_CALLBACKS">CEPTON_ERROR_TOO_MANY_CALLBACKS (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv432CEPTON_FAULT_ABNORMAL_FRAME_RATE">CEPTON_FAULT_ABNORMAL_FRAME_RATE (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv433CEPTON_FAULT_DETECTOR_MALFUNCTION">CEPTON_FAULT_DETECTOR_MALFUNCTION (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv433CEPTON_FAULT_EXTREME_ACCELERATION">CEPTON_FAULT_EXTREME_ACCELERATION (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv429CEPTON_FAULT_EXTREME_HUMIDITY">CEPTON_FAULT_EXTREME_HUMIDITY (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv432CEPTON_FAULT_EXTREME_TEMPERATURE">CEPTON_FAULT_EXTREME_TEMPERATURE (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv421CEPTON_FAULT_INTERNAL">CEPTON_FAULT_INTERNAL (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv430CEPTON_FAULT_LASER_MALFUNCTION">CEPTON_FAULT_LASER_MALFUNCTION (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv430CEPTON_FAULT_MOTOR_MALFUNCTION">CEPTON_FAULT_MOTOR_MALFUNCTION (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv426CEPTON_FAULT_SCAN_COVERAGE">CEPTON_FAULT_SCAN_COVERAGE (C++ enumerator)</a>
+      <li><a href="c%2B%2B.html#c.CEPTON_CHECK_ERROR">CEPTON_CHECK_ERROR (C macro)</a>
 </li>
       <li><a href="errors.html#_CPPv426cepton_get_error_code_name21CeptonSensorErrorCode">cepton_get_error_code_name (C++ function)</a>
 </li>
@@ -260,47 +305,47 @@
 </li>
       <li><a href="sensors.html#_CPPv415cepton_is_vista17CeptonSensorModel">cepton_is_vista (C++ function)</a>
 </li>
-      <li><a href="c++.html#c.CEPTON_LOG_ERROR">CEPTON_LOG_ERROR (C macro)</a>
+      <li><a href="c%2B%2B.html#c.CEPTON_LOG_ERROR">CEPTON_LOG_ERROR (C macro)</a>
 </li>
-      <li><a href="c++.html#c.CEPTON_PROCESS_ERROR">CEPTON_PROCESS_ERROR (C macro)</a>
+      <li><a href="c%2B%2B.html#c.CEPTON_PROCESS_ERROR">CEPTON_PROCESS_ERROR (C macro)</a>
 </li>
-      <li><a href="c++.html#c.CEPTON_RETURN_ERROR">CEPTON_RETURN_ERROR (C macro)</a>
+      <li><a href="c%2B%2B.html#c.CEPTON_RETURN_ERROR">CEPTON_RETURN_ERROR (C macro)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api20enable_control_flagsE7Controlb">cepton_sdk::api::enable_control_flags (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api20enable_control_flagsE7Controlb">cepton_sdk::api::enable_control_flags (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api39get_sensor_information_by_serial_numberE8uint64_tR17SensorInformation">cepton_sdk::api::get_sensor_information_by_serial_number (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api39get_sensor_information_by_serial_numberE8uint64_tR17SensorInformation">cepton_sdk::api::get_sensor_information_by_serial_number (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api25get_sensor_serial_numbersEv">cepton_sdk::api::get_sensor_serial_numbers (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api25get_sensor_serial_numbersEv">cepton_sdk::api::get_sensor_serial_numbers (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api8get_timeEv">cepton_sdk::api::get_time (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api8get_timeEv">cepton_sdk::api::get_time (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api17has_control_flagsE7Control">cepton_sdk::api::has_control_flags (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api17has_control_flagsE7Control">cepton_sdk::api::has_control_flags (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api27has_sensor_by_serial_numberE8uint64_t">cepton_sdk::api::has_sensor_by_serial_number (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api27has_sensor_by_serial_numberE8uint64_t">cepton_sdk::api::has_sensor_by_serial_number (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api10initializeE7OptionsRKNSt6stringEb">cepton_sdk::api::initialize (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api10initializeE7OptionsRKNSt6stringEb">cepton_sdk::api::initialize (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api6is_endEv">cepton_sdk::api::is_end (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api6is_endEv">cepton_sdk::api::is_end (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api7is_liveEv">cepton_sdk::api::is_live (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api7is_liveEv">cepton_sdk::api::is_live (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api11open_replayERKNSt6stringEb">cepton_sdk::api::open_replay (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api11open_replayERKNSt6stringEb">cepton_sdk::api::open_replay (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api19SensorErrorCallbackE">cepton_sdk::api::SensorErrorCallback (C++ class)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api19SensorErrorCallbackE">cepton_sdk::api::SensorErrorCallback (C++ class)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api19SensorErrorCallback18global_on_callbackE12SensorHandle15SensorErrorCodePKcPCKv6size_tPCv">cepton_sdk::api::SensorErrorCallback::global_on_callback (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api19SensorErrorCallback18global_on_callbackE12SensorHandle15SensorErrorCodePKcPCKv6size_tPCv">cepton_sdk::api::SensorErrorCallback::global_on_callback (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api24SensorImageFrameCallbackE">cepton_sdk::api::SensorImageFrameCallback (C++ class)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api24SensorImageFrameCallbackE">cepton_sdk::api::SensorImageFrameCallback (C++ class)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api24SensorImageFrameCallback12deinitializeEv">cepton_sdk::api::SensorImageFrameCallback::deinitialize (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api24SensorImageFrameCallback12deinitializeEv">cepton_sdk::api::SensorImageFrameCallback::deinitialize (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api24SensorImageFrameCallback10initializeEv">cepton_sdk::api::SensorImageFrameCallback::initialize (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api24SensorImageFrameCallback10initializeEv">cepton_sdk::api::SensorImageFrameCallback::initialize (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4NK10cepton_sdk3api24SensorImageFrameCallback14is_initializedEv">cepton_sdk::api::SensorImageFrameCallback::is_initialized (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4NK10cepton_sdk3api24SensorImageFrameCallback14is_initializedEv">cepton_sdk::api::SensorImageFrameCallback::is_initialized (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api24SensorImageFrameCallbackD0Ev">cepton_sdk::api::SensorImageFrameCallback::~SensorImageFrameCallback (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api24SensorImageFrameCallbackD0Ev">cepton_sdk::api::SensorImageFrameCallback::~SensorImageFrameCallback (C++ function)</a>
 </li>
-      <li><a href="c++.html#_CPPv4N10cepton_sdk3api4waitEf">cepton_sdk::api::wait (C++ function)</a>
+      <li><a href="c%2B%2B.html#_CPPv4N10cepton_sdk3api4waitEf">cepton_sdk::api::wait (C++ function)</a>
 </li>
       <li><a href="setup.html#_CPPv4N10cepton_sdk21FpSensorErrorCallbackE">cepton_sdk::FpSensorErrorCallback (C++ type)</a>
 </li>
@@ -327,8 +372,6 @@
       <li><a href="errors.html#_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCode">cepton_sdk::SensorError::SensorError (C++ function)</a>, <a href="errors.html#_CPPv4N10cepton_sdk11SensorError11SensorErrorE15SensorErrorCodeRKNSt6stringE">[1]</a>, <a href="errors.html#_CPPv4N10cepton_sdk11SensorError11SensorErrorERK11SensorError">[2]</a>, <a href="errors.html#_CPPv4N10cepton_sdk11SensorError11SensorErrorEv">[3]</a>
 </li>
       <li><a href="errors.html#_CPPv4NK10cepton_sdk11SensorError4usedEv">cepton_sdk::SensorError::used (C++ function)</a>
-</li>
-      <li><a href="errors.html#_CPPv4NK10cepton_sdk11SensorError4whatEv">cepton_sdk::SensorError::what (C++ function)</a>
 </li>
       <li><a href="errors.html#_CPPv4N10cepton_sdk11SensorErrorD0Ev">cepton_sdk::SensorError::~SensorError (C++ function)</a>
 </li>
@@ -376,9 +419,9 @@
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util18get_timestamp_usecEv">cepton_sdk::util::get_timestamp_usec (C++ function)</a>
 </li>
-      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util14OrganizedCloudE">cepton_sdk::util::OrganizedCloud (C++ class)</a>
+      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util14OrganizedCloudE">cepton_sdk::util::OrganizedCloud (C++ struct)</a>
 </li>
-      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfoE">cepton_sdk::util::OrganizedCloud::CellInfo (C++ class)</a>
+      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfoE">cepton_sdk::util::OrganizedCloud::CellInfo (C++ struct)</a>
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util14OrganizedCloud8CellInfo13occupied_cellE">cepton_sdk::util::OrganizedCloud::CellInfo::occupied_cell (C++ member)</a>
 </li>
@@ -404,8 +447,6 @@
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer7binSizeEf">cepton_sdk::util::Organizer::binSize (C++ function)</a>
 </li>
-      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer6CENTERE">cepton_sdk::util::Organizer::CENTER (C++ enumerator)</a>
-</li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer4modeE13OrganizerMode">cepton_sdk::util::Organizer::mode (C++ function)</a>
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer15organize_pointsEKiKiPCK22CeptonSensorImagePointRN10cepton_sdk4util14OrganizedCloudE">cepton_sdk::util::Organizer::organize_points (C++ function)</a>
@@ -414,7 +455,11 @@
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer13OrganizerModeE">cepton_sdk::util::Organizer::OrganizerMode (C++ enum)</a>
 </li>
-      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettingsE">cepton_sdk::util::Organizer::OrganizerSettings (C++ class)</a>
+      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer13OrganizerMode6CENTERE">cepton_sdk::util::Organizer::OrganizerMode::CENTER (C++ enumerator)</a>
+</li>
+      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer13OrganizerMode6RECENTE">cepton_sdk::util::Organizer::OrganizerMode::RECENT (C++ enumerator)</a>
+</li>
+      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettingsE">cepton_sdk::util::Organizer::OrganizerSettings (C++ struct)</a>
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings27horizontal_bin_size_radiansE">cepton_sdk::util::Organizer::OrganizerSettings::horizontal_bin_size_radians (C++ member)</a>
 </li>
@@ -426,11 +471,9 @@
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer17OrganizerSettings22vertical_range_radiansE">cepton_sdk::util::Organizer::OrganizerSettings::vertical_range_radians (C++ member)</a>
 </li>
-      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer6RECENTE">cepton_sdk::util::Organizer::RECENT (C++ enumerator)</a>
-</li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer8settingsE17OrganizerSettings">cepton_sdk::util::Organizer::settings (C++ function)</a>, <a href="utilities.html#_CPPv4N10cepton_sdk4util9Organizer8settingsEv">[1]</a>
 </li>
-      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util11SensorPointE">cepton_sdk::util::SensorPoint (C++ class)</a>
+      <li><a href="utilities.html#_CPPv4N10cepton_sdk4util11SensorPointE">cepton_sdk::util::SensorPoint (C++ struct)</a>
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util11SensorPointUt2_28E">cepton_sdk::util::SensorPoint::[anonymous] (C++ member)</a>
 </li>
@@ -444,8 +487,6 @@
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util11SensorPoint9intensityE">cepton_sdk::util::SensorPoint::intensity (C++ member)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util11SensorPoint11return_typeE">cepton_sdk::util::SensorPoint::return_type (C++ member)</a>
 </li>
       <li><a href="utilities.html#_CPPv4N10cepton_sdk4util11SensorPoint9saturatedE">cepton_sdk::util::SensorPoint::saturated (C++ member)</a>
@@ -462,6 +503,8 @@
 </li>
       <li><a href="capture_replay.html#_CPPv431cepton_sdk_capture_replay_closev">cepton_sdk_capture_replay_close (C++ function)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capture_replay.html#_CPPv441cepton_sdk_capture_replay_get_enable_loopv">cepton_sdk_capture_replay_get_enable_loop (C++ function)</a>
 </li>
       <li><a href="capture_replay.html#_CPPv438cepton_sdk_capture_replay_get_filenamev">cepton_sdk_capture_replay_get_filename (C++ function)</a>
@@ -498,29 +541,11 @@
 </li>
       <li><a href="setup.html#_CPPv416cepton_sdk_clearv">cepton_sdk_clear (C++ function)</a>
 </li>
-      <li><a href="setup.html#_CPPv434CEPTON_SDK_CONTROL_DISABLE_NETWORK">CEPTON_SDK_CONTROL_DISABLE_NETWORK (C++ enumerator)</a>
-</li>
-      <li><a href="setup.html#_CPPv442CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS">CEPTON_SDK_CONTROL_ENABLE_MULTIPLE_RETURNS (C++ enumerator)</a>
-</li>
-      <li><a href="setup.html#_CPPv434CEPTON_SDK_CONTROL_HOST_TIMESTAMPS">CEPTON_SDK_CONTROL_HOST_TIMESTAMPS (C++ enumerator)</a>
-</li>
-      <li><a href="setup.html#_CPPv427CEPTON_SDK_CONTROL_RESERVED">CEPTON_SDK_CONTROL_RESERVED (C++ enumerator)</a>
-</li>
       <li><a href="setup.html#_CPPv431cepton_sdk_create_frame_optionsv">cepton_sdk_create_frame_options (C++ function)</a>
 </li>
       <li><a href="setup.html#_CPPv425cepton_sdk_create_optionsv">cepton_sdk_create_options (C++ function)</a>
 </li>
       <li><a href="setup.html#_CPPv423cepton_sdk_deinitializev">cepton_sdk_deinitialize (C++ function)</a>
-</li>
-      <li><a href="setup.html#_CPPv422CEPTON_SDK_FRAME_COVER">CEPTON_SDK_FRAME_COVER (C++ enumerator)</a>
-</li>
-      <li><a href="setup.html#_CPPv422CEPTON_SDK_FRAME_CYCLE">CEPTON_SDK_FRAME_CYCLE (C++ enumerator)</a>
-</li>
-      <li><a href="setup.html#_CPPv425CEPTON_SDK_FRAME_MODE_MAX">CEPTON_SDK_FRAME_MODE_MAX (C++ enumerator)</a>
-</li>
-      <li><a href="setup.html#_CPPv426CEPTON_SDK_FRAME_STREAMING">CEPTON_SDK_FRAME_STREAMING (C++ enumerator)</a>
-</li>
-      <li><a href="setup.html#_CPPv422CEPTON_SDK_FRAME_TIMED">CEPTON_SDK_FRAME_TIMED (C++ enumerator)</a>
 </li>
       <li><a href="setup.html#_CPPv428cepton_sdk_get_control_flagsv">cepton_sdk_get_control_flags (C++ function)</a>
 </li>
@@ -570,15 +595,11 @@
 </li>
       <li><a href="serial.html#_CPPv432cepton_sdk_unlisten_serial_linesv">cepton_sdk_unlisten_serial_lines (C++ function)</a>
 </li>
-      <li><a href="sensors.html#_CPPv423CEPTON_SENSOR_MODEL_MAX">CEPTON_SENSOR_MODEL_MAX (C++ enumerator)</a>
-</li>
-      <li><a href="errors.html#_CPPv414CEPTON_SUCCESS">CEPTON_SUCCESS (C++ enumerator)</a>
-</li>
       <li><a href="setup.html#_CPPv416CeptonSDKControl">CeptonSDKControl (C++ type)</a>
 </li>
       <li><a href="setup.html#_CPPv418CeptonSDKFrameMode">CeptonSDKFrameMode (C++ type)</a>
 </li>
-      <li><a href="setup.html#_CPPv421CeptonSDKFrameOptions">CeptonSDKFrameOptions (C++ class)</a>
+      <li><a href="setup.html#_CPPv421CeptonSDKFrameOptions">CeptonSDKFrameOptions (C++ struct)</a>
 </li>
       <li><a href="setup.html#_CPPv4N21CeptonSDKFrameOptions6lengthE">CeptonSDKFrameOptions::length (C++ member)</a>
 </li>
@@ -586,7 +607,7 @@
 </li>
       <li><a href="setup.html#_CPPv4N21CeptonSDKFrameOptions9signatureE">CeptonSDKFrameOptions::signature (C++ member)</a>
 </li>
-      <li><a href="setup.html#_CPPv416CeptonSDKOptions">CeptonSDKOptions (C++ class)</a>
+      <li><a href="setup.html#_CPPv416CeptonSDKOptions">CeptonSDKOptions (C++ struct)</a>
 </li>
       <li><a href="setup.html#_CPPv4N16CeptonSDKOptions13control_flagsE">CeptonSDKOptions::control_flags (C++ member)</a>
 </li>
@@ -600,7 +621,7 @@
 </li>
       <li><a href="sensors.html#_CPPv418CeptonSensorHandle">CeptonSensorHandle (C++ type)</a>
 </li>
-      <li><a href="points.html#_CPPv422CeptonSensorImagePoint">CeptonSensorImagePoint (C++ class)</a>
+      <li><a href="points.html#_CPPv422CeptonSensorImagePoint">CeptonSensorImagePoint (C++ struct)</a>
 </li>
       <li><a href="points.html#_CPPv4N22CeptonSensorImagePointUt2_22E">CeptonSensorImagePoint::[anonymous] (C++ member)</a>
 </li>
@@ -626,7 +647,7 @@
 </li>
       <li><a href="points.html#_CPPv4N22CeptonSensorImagePoint5validE">CeptonSensorImagePoint::valid (C++ member)</a>
 </li>
-      <li><a href="sensors.html#_CPPv423CeptonSensorInformation">CeptonSensorInformation (C++ class)</a>
+      <li><a href="sensors.html#_CPPv423CeptonSensorInformation">CeptonSensorInformation (C++ struct)</a>
 </li>
       <li><a href="sensors.html#_CPPv4N23CeptonSensorInformationUt2_18E">CeptonSensorInformation::[anonymous] (C++ member)</a>
 </li>
@@ -713,54 +734,6 @@
   </ul></td>
 </tr></table>
 
-<h2 id="H">H</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sensors.html#_CPPv48HR80T_R2">HR80T_R2 (C++ enumerator)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sensors.html#_CPPv45HR80W">HR80W (C++ enumerator)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sensors.html#_CPPv48SORA_P60">SORA_P60 (C++ enumerator)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sensors.html#_CPPv48SORA_P61">SORA_P61 (C++ enumerator)</a>
-</li>
-      <li><a href="sensors.html#_CPPv48SORA_P90">SORA_P90 (C++ enumerator)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="V">V</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sensors.html#_CPPv414VISTA_860_GEN2">VISTA_860_GEN2 (C++ enumerator)</a>
-</li>
-      <li><a href="sensors.html#_CPPv49VISTA_P60">VISTA_P60 (C++ enumerator)</a>
-</li>
-      <li><a href="sensors.html#_CPPv49VISTA_P61">VISTA_P61 (C++ enumerator)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="sensors.html#_CPPv49VISTA_P90">VISTA_P90 (C++ enumerator)</a>
-</li>
-      <li><a href="sensors.html#_CPPv49VISTA_T30">VISTA_T30 (C++ enumerator)</a>
-</li>
-      <li><a href="sensors.html#_CPPv410VISTA_X120">VISTA_X120 (C++ enumerator)</a>
-</li>
-      <li><a href="sensors.html#_CPPv49VISTA_X15">VISTA_X15 (C++ enumerator)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 
 
            </div>
@@ -773,11 +746,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2018, Cepton Technologies
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -788,7 +769,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
