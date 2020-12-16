@@ -1,5 +1,11 @@
 # Cepton SDK Release Notes
 
+## Version 1.18.2 2020-12-15
+
+- Improvements to mock_network_receive buffer handling
+    * Allow max buffer size 2048
+    * Better error messages
+
 ## Version 1.18.0 2020-08-22
 
 - Add support for new product Vista-P61.
