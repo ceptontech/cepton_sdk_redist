@@ -17,7 +17,7 @@ project(
 include("CeptonCommon")
 
 cmake_policy(SET CMP0077 NEW)
-option(BUILD_SHARED_LIBS "Use shared cepton sdk libraries." ON)
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 include(CMakeDependentOption)
 cmake_dependent_option(CEPTON_SDK_USE_STATIC "Use static cepton sdk libraries." OFF BUILD_SHARED_LIBS ON)
 
