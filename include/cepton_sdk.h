@@ -112,6 +112,8 @@ enum _CeptonSensorErrorCode {
   CEPTON_FAULT_LASER_MALFUNCTION = -1007,
   /// Sensor detector malfunction fault.
   CEPTON_FAULT_DETECTOR_MALFUNCTION = -1008,
+  /// Fault for newer sensors with higher shutdown temperatures
+  CEPTON_FAULT_EXTREME_TEMPERATURE_NEW = -1009,
 };
 
 /// Returns error code name string.
@@ -159,15 +161,16 @@ enum _CeptonSensorModel {
   VISTA_X120 = 10,
   SORA_P60 = 11,
   VISTA_P60 = 12,
-  VISTA_X15 = 13,
+  // 13 is reserved
   VISTA_P90 = 14,
   SORA_P90 = 15,
   VISTA_P61 = 16,
   SORA_P61 = 17,
-  // 18 is reserved for VISTA_H
+  NOVA_A = 18,
   // 19 is reserved for VISTA_P60 Rev2 firmware releases
+  // 20 Reserved
   VISTA_T30 = 21,
-  CEPTON_SENSOR_MODEL_MAX,
+  CEPTON_SENSOR_MODEL_MAX = 23,
 };
 
 /// Returns whether sensor model is of the form `SORA_*`.
@@ -580,6 +583,21 @@ cepton_sdk_get_sensor_information_by_index(
  */
 CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_get_sensor_information(
     CeptonSensorHandle handle, struct CeptonSensorInformation *const info);
+
+typedef void (*FpCeptonSensorInfoCallback)(
+    CeptonSensorHandle handle, const struct CeptonSensorInformation *info,
+    void *user_data);
+
+/// Listen for information packets
+/**
+ * CeptonSensorInformation structs are stack-allocated internally, and are
+ * no longer valid after the callback returns. It is left to the user to make
+ * their own copy if needed
+ */
+CEPTON_SDK_EXPORT CeptonSensorErrorCode
+cepton_sdk_listen_info_packets(FpCeptonSensorInfoCallback cb, void *user_data);
+
+CEPTON_SDK_EXPORT CeptonSensorErrorCode cepton_sdk_unlisten_info_packets();
 
 //------------------------------------------------------------------------------
 // Serial
