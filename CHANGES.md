@@ -1,5 +1,10 @@
 # Cepton SDK Release Notes
 
+## Version 1.18.3 2023-6-30
+
+- CEPTON_FAULT_EXTREME_TEMPERATURE_NEW added into cepton_sdk.h and win64, linux-arm, and linux-x86_64 library files.
+- CEPTON_FAULT_EXTREME_TEMPERATURE_NEW will trigger at -40C and 100C. CEPTON_FAULT_EXTREME_TEMPERATURE remains and will continue to trigger at -40C and 80C.
+
 ## Version 1.18.2 2020-12-15
 
 - Improvements to mock_network_receive buffer handling
