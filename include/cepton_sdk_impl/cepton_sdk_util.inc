@@ -111,10 +111,6 @@ inline Organizer::Organizer(cepton_sdk::SensorInformation sensor_info) {
       m_settings.horizontal_range_radians = to_radians(120.f);
       m_settings.vertical_range_radians = to_radians(18.f);
       break;
-    case VISTA_X15:
-      m_settings.horizontal_range_radians = to_radians(15.f);
-      m_settings.vertical_range_radians = to_radians(18.f);
-      break;
     case VISTA_T30:
       m_settings.horizontal_range_radians = to_radians(30.f);
       m_settings.vertical_range_radians = to_radians(18.f);
